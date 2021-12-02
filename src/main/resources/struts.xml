@@ -4,17 +4,4 @@
    "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
     <constant name="struts.devMode" value="true" />
-    <package name="default" namespace="/" extends="struts-default">
-        <action name="index"
-                class="com.lamminhthien.struts2_crud_mybatis.Index"
-                method="execute">
-            <result name="success">/index.jsp</result>
-        </action>
-        
-        <action name="create"
-                class="com.lamminhthien.struts2_crud_mybatis.Create"
-                method="execute">
-            <result name="success">/index.html</result>
-        </action>
-    </package>
 </struts>

@@ -3,8 +3,9 @@ package mybatis.main;
 import java.io.IOException;
 import java.io.Reader;
 
+import com.lamminhthien.struts2_crud_mybatis.model.Student;
+
 import mybatis.mapper.StudentMapper;
-import mybatis.mapper.entity.Student;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
