@@ -1,4 +1,4 @@
-package mybatis.mapper.entity;
+package com.lamminhthien.struts2_crud_mybatis.model;
 
 public class Student {
     private int id;

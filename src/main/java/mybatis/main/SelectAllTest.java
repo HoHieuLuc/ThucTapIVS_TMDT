@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
+import com.lamminhthien.struts2_crud_mybatis.model.Student;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import mybatis.mapper.StudentMapper;
-import mybatis.mapper.entity.Student;
 
 public class SelectAllTest {
     public static void main(String[] args) throws IOException {
