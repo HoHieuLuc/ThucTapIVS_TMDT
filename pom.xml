@@ -9,8 +9,8 @@
     <name>struts2_crud_mybatis</name>
 
     <properties>
-        <struts2.version>2.5.22</struts2.version>
-        <log4j2.version>2.12.1</log4j2.version>
+        <struts2.version>2.5.27</struts2.version>
+        <log4j2.version>2.14.1</log4j2.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -71,13 +71,13 @@
          <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.3.0</version>
+            <version>3.5.7</version>
         </dependency>
         
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.6</version>
+            <version>8.0.27</version>
         </dependency>
 
     </dependencies>
