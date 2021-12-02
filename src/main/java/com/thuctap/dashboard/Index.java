@@ -1,4 +1,4 @@
-package com.lamminhthien.struts2_crud_mybatis;
+package com.thuctap.dashboard;
 
 import java.io.Reader;
 import java.util.List;
