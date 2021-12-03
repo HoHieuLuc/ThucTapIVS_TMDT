@@ -1,4 +1,4 @@
-package com.lamminhthien.struts2_crud_mybatis.action;
+package com.thuctap.struts2_crud_mybatis.action;
 
 import java.io.Reader;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.struts2.convention.annotation.*;
 
-import com.lamminhthien.struts2_crud_mybatis.model.Student;
+import com.thuctap.struts2_crud_mybatis.model.Student;
 import com.opensymphony.xwork2.ActionSupport;
 
 import mybatis.mapper.StudentMapper;
