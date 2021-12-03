@@ -5,8 +5,7 @@ import java.io.Reader;
 
 import com.lamminhthien.struts2_crud_mybatis.model.Student;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.io.Resthuctapon.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 

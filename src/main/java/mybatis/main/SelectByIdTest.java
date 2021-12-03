@@ -7,8 +7,7 @@ import com.lamminhthien.struts2_crud_mybatis.model.Student;
 
 import mybatis.mapper.StudentMapper;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.io.Resthuctapon.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
