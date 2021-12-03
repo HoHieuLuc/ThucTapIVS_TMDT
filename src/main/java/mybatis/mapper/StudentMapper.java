@@ -2,7 +2,7 @@ package mybatis.mapper;
 
 import java.util.List;
 
-import com.lamminhthien.struts2_crud_mybatis.model.Student;
+import com.thuctap.struts2_crud_mybatis.model.Student;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;

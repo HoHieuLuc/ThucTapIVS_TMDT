@@ -1,4 +1,4 @@
-package com.lamminhthien.struts2_crud_mybatis.model;
+package com.thuctap.struts2_crud_mybatis.model;
 
 public class Student {
     private int id;

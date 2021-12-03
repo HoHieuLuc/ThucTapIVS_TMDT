@@ -3,7 +3,7 @@ package mybatis.main;
 import java.io.IOException;
 import java.io.Reader;
 
-import com.lamminhthien.struts2_crud_mybatis.model.Student;
+import com.thuctap.struts2_crud_mybatis.model.Student;
 
 import mybatis.mapper.StudentMapper;
 
