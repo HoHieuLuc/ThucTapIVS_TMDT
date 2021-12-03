@@ -7,7 +7,7 @@
 <title>List Student</title>
 </head>
 <body>
-    <h2>List Student</h2>
+    <h2>List Student 2</h2>
     <a href="create.jsp">Add New Student</a>
     
     <table border="1"> 
