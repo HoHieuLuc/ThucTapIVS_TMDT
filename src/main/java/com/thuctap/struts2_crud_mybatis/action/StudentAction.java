@@ -208,7 +208,6 @@ public class StudentAction extends ActionSupport {
          * System.out.println(request.getMethod());
          */
         HttpServletResponse response = ServletActionContext.getResponse();
-        response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter printWriter = response.getWriter();
