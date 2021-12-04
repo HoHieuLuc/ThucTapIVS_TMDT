@@ -39,8 +39,6 @@ public class StudentAction extends ActionSupport {
 
     @Action(value = "/student/index", results = { @Result(location = "/index.html") })
     public String listStudent() {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setCharacterEncoding("utf-8");
         return SUCCESS;
     }
 
@@ -65,7 +63,6 @@ public class StudentAction extends ActionSupport {
 
         // trả về kết quả là json
         HttpServletResponse response = ServletActionContext.getResponse();
-        response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter pw = response.getWriter();
@@ -145,15 +142,12 @@ public class StudentAction extends ActionSupport {
 
     @Action(value = "/student/create", results = { @Result(location = "/create.html") })
     public String viewCreateStudent() {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setCharacterEncoding("utf-8");
         return SUCCESS;
     }
 
     @Action(value = "/api/v1/student/create", results = { @Result(location = "/index.html") })
     public String createStudent() throws IOException {
         HttpServletResponse response = ServletActionContext.getResponse();
-        response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter pw = response.getWriter();
@@ -216,7 +210,6 @@ public class StudentAction extends ActionSupport {
          * System.out.println(request.getMethod());
          */
         HttpServletResponse response = ServletActionContext.getResponse();
-        response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter pw = response.getWriter();
