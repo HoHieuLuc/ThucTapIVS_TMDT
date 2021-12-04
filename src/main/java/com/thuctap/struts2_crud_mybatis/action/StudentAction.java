@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -24,6 +22,7 @@ import com.thuctap.struts2_crud_mybatis.model.Student;
 
 import mybatis.mapper.StudentMapper;
 
+@Namespace("/api/v1/student")
 public class StudentAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
@@ -37,16 +36,20 @@ public class StudentAction extends ActionSupport {
         this.listStudents = listStudents;
     }
 
-    @Action(value = "/student/index", results = { @Result(location = "/index.html") })
-    public String listStudent() {
+    @Actions({
+            @Action(value = "/student/index", results = { @Result(location = "/index.html") }),
+            @Action(value = "/student/create", results = { @Result(location = "/create.html") })
+    })
+    public String viewStudent() {
         return SUCCESS;
     }
 
-    @Action(value = "/api/v1/student/list", results = { @Result(location = "/index.html") })
-    public String viewStudents() throws IOException {
-
+    /* api */
+    @Action(value = "list", results = { @Result(location = "/index.html") })
+    public String getAllStudents() throws IOException {
         Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         // Mở Session
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -65,10 +68,10 @@ public class StudentAction extends ActionSupport {
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
-        PrintWriter pw = response.getWriter();
-        pw.print(json);
-        pw.flush();
-        pw.close();
+        PrintWriter printWriter = response.getWriter();
+        printWriter.print(json);
+        printWriter.flush();
+        printWriter.close();
 
         // System.out.println(json);
 
@@ -140,27 +143,27 @@ public class StudentAction extends ActionSupport {
                 && percentage > 0 && phone > 0 && email != null && email.length() > 0;
     }
 
-    @Action(value = "/student/create", results = { @Result(location = "/create.html") })
-    public String viewCreateStudent() {
-        return SUCCESS;
-    }
 
-    @Action(value = "/api/v1/student/create", results = { @Result(location = "/index.html") })
+    @Action(value = "create", results = {
+            @Result(name = "success", location = "/index.html"),
+            @Result(name = "input", location = "/student/create")
+    })
     public String createStudent() throws IOException {
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
-        PrintWriter pw = response.getWriter();
+        PrintWriter printWriter = response.getWriter();
         if (!isValid()) {
             response.setStatus(400);
-            pw.print("{\"message\":\"Vui lòng nhập đầy đủ thông tin\"}");
-            pw.flush();
-            pw.close();
+            printWriter.print("{\"message\":\"Vui lòng nhập đầy đủ thông tin\"}");
+            printWriter.flush();
+            printWriter.close();
             return SUCCESS;
         }
 
         Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         SqlSession session = sqlSessionFactory.openSession();
 
         Gson gson = new Gson();
@@ -174,9 +177,9 @@ public class StudentAction extends ActionSupport {
         // System.out.println(student.toString());
         String json = gson.toJson(student);
 
-        pw.print(json);
-        pw.flush();
-        pw.close();
+        printWriter.print(json);
+        printWriter.flush();
+        printWriter.close();
 
         // System.out.println(json);
         // System.out.println(student.toString());
@@ -190,11 +193,8 @@ public class StudentAction extends ActionSupport {
         return SUCCESS;
     }
 
-    //
-
     // mai làm tiếp đoạn update
-    // @Update("/api/v1/student/update/{id}")
-    @Action(value = "/api/v1/student/update", results = { @Result(location = "/index.html") })
+    @Action(value = "update", results = { @Result(location = "/index.html") })
     public String updateStudent() throws IOException {
         Gson gson = new Gson();
         // System.out.println(getJsonStudent());
@@ -212,10 +212,10 @@ public class StudentAction extends ActionSupport {
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
-        PrintWriter pw = response.getWriter();
-        pw.print(json);
-        pw.flush();
-        pw.close();
+        PrintWriter printWriter = response.getWriter();
+        printWriter.print(json);
+        printWriter.flush();
+        printWriter.close();
 
         System.out.println(json);
         System.out.println(student.toString());
@@ -226,14 +226,13 @@ public class StudentAction extends ActionSupport {
         return SUCCESS;
     }
 
-    // đổi nhánh xong xài delete bị lỗi luôn
-    // @Delete("/api/v1/student/delete/{id}")
     @Action(value = "/api/v1/student/delete/*", params = { "id", "{1}" }, results = {
             @Result(location = "/index.html") })
     public String deleteStudent() throws IOException {
         System.out.println(getId());
         Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         SqlSession session = sqlSessionFactory.openSession();
 
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);

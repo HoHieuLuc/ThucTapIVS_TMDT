@@ -19,8 +19,5 @@
         </environment>
     </environments>
 
-	<!-- Bảo mybatis biết Interface mapper chứa các lệnh truy vấn mà ta sẽ dùng nó sau này -->
-    <mappers>
-        <mapper class="mybatis.mapper.StudentMapper" />
-    </mappers>
+	
 </configuration>
