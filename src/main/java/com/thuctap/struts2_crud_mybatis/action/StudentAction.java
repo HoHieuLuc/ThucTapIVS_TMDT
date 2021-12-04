@@ -143,8 +143,10 @@ public class StudentAction extends ActionSupport {
                 && percentage > 0 && phone > 0 && email != null && email.length() > 0;
     }
 
-    @Action(value = "create", results = { @Result(location = "/index.html") }, interceptorRefs = {
-            @InterceptorRef("validation") })
+    @Action(value = "create", results = {
+            @Result(name = "success", location = "/index.html"),
+            @Result(name = "input", location = "/student/create")
+    })
     public String createStudent() throws IOException {
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
