@@ -41,15 +41,15 @@ public class StudentAction extends ActionSupport {
             @Action(value = "/student/create", results = { @Result(location = "/create.html") })
     })
     public String viewStudent() {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setCharacterEncoding("utf-8");
         return SUCCESS;
     }
 
+    /* api */
     @Action(value = "list", results = { @Result(location = "/index.html") })
     public String getAllStudents() throws IOException {
         Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         // Mở Session
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -143,6 +143,7 @@ public class StudentAction extends ActionSupport {
                 && percentage > 0 && phone > 0 && email != null && email.length() > 0;
     }
 
+
     @Action(value = "create", results = {
             @Result(name = "success", location = "/index.html"),
             @Result(name = "input", location = "/student/create")
@@ -162,6 +163,7 @@ public class StudentAction extends ActionSupport {
 
         Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         SqlSession session = sqlSessionFactory.openSession();
 
         Gson gson = new Gson();
@@ -230,6 +232,7 @@ public class StudentAction extends ActionSupport {
         System.out.println(getId());
         Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         SqlSession session = sqlSessionFactory.openSession();
 
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);
