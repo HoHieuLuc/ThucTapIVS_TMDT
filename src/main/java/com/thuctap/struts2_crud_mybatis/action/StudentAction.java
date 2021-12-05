@@ -26,6 +26,7 @@ public class StudentAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
     private List<Student> listStudents;
+    private String search;
 
     public List<Student> getListStudents() {
         return listStudents;
@@ -33,6 +34,14 @@ public class StudentAction extends ActionSupport {
 
     public void setListStudents(List<Student> listStudents) {
         this.listStudents = listStudents;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     @Override
@@ -63,8 +72,9 @@ public class StudentAction extends ActionSupport {
         // vấn sql bằng mybatis annotation)
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);
 
-        // Lấy dữ liệu toàn bộ học sinh
-        listStudents = studentMapper.getAll();
+        // Lấy dữ liệu sinh viên
+        //System.out.println(search);
+        listStudents = studentMapper.search(search);
 
         // chuyển danh sách học sinh sang json
         Gson gson = new Gson();

@@ -1,9 +1,19 @@
+const searchFormDOM = document.querySelector('#search-form');
+const searchInputDOM = document.querySelector('#search');
 const studentListDOM = document.querySelector('#student-list');
+
 
 const showStudentList = async () => {
     studentListDOM.textContent = 'Loading...';
+    const params = window.location.search;
+    // đặt value trong ô input bằng giá trị search của params
+    searchInputDOM.value = new URLSearchParams(params).get('search') ?? "";
+    const searchString = searchInputDOM.value;
     try {
-        const { data: students } = await axios.get('../api/v1/student/list');
+        // nếu không có encodeURIComponent thì khi nhập ký tự đặc biệt sẽ bị lỗi
+        // Invalid character found in the request target. 
+        // The valid characters are defined in RFC 7230 and RFC 3986
+        const { data: students } = await axios.get(`../api/v1/student/list?search=${encodeURIComponent(searchString)}`);
         console.log(students);
         const allStudents = students.map((student) => {
             const { id, name, branch, percentage, phone, email } = student;
@@ -39,8 +49,16 @@ studentListDOM.addEventListener('click', async (event) => {
         try {
             await axios.post(`../api/v1/student/delete/${id}`);
             showStudentList();
-        } catch (error) {         
+        } catch (error) {
             console.log(error);
         }
     }
+});
+
+
+searchFormDOM.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    // thay đổi url không cần reload
+    window.history.pushState('search', '','?search=' + searchInputDOM.value);
+    showStudentList();
 });
