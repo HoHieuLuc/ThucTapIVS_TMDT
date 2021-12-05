@@ -3,7 +3,6 @@ package com.thuctap.struts2_crud_mybatis.action;
 import java.io.Reader;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
@@ -36,9 +35,16 @@ public class StudentAction extends ActionSupport {
         this.listStudents = listStudents;
     }
 
+    @Override
+    public String execute() throws Exception {
+        System.out.println("This always runs");
+        return super.execute();
+    }
+
     @Actions({
             @Action(value = "/student/index", results = { @Result(location = "/index.html") }),
-            @Action(value = "/student/create", results = { @Result(location = "/create.html") })
+            @Action(value = "/student/create", results = { @Result(location = "/create.html") }),
+            @Action(value = "/student/edit/*", results = { @Result(location = "/edit.html") }),
     })
     public String viewStudent() {
         return SUCCESS;
@@ -143,7 +149,6 @@ public class StudentAction extends ActionSupport {
                 && percentage > 0 && phone > 0 && email != null && email.length() > 0;
     }
 
-
     @Action(value = "create", results = {
             @Result(name = "success", location = "/index.html"),
             @Result(name = "input", location = "/student/create")
@@ -173,62 +178,115 @@ public class StudentAction extends ActionSupport {
 
         // insert student
         Student student = new Student(name, branch, percentage, phone, email);
-        // Student student = gson.fromJson(jsonStudent, Student.class);
-        // System.out.println(student.toString());
         String json = gson.toJson(student);
 
         printWriter.print(json);
         printWriter.flush();
         printWriter.close();
 
-        // System.out.println(json);
-        // System.out.println(student.toString());
         studentMapper.insert(student);
         session.commit();
-        System.out.println("insert sucessfully");
-
-        // close session
         session.close();
 
         return SUCCESS;
     }
 
-    // mai làm tiếp đoạn update
-    @Action(value = "update", results = { @Result(location = "/index.html") })
-    public String updateStudent() throws IOException {
+    // get student by id
+
+    @Action(value = "*", params = { "id", "{1}" }, results = {
+            @Result(location = "/index.html") })
+    public String getStudent() throws IOException {
         Gson gson = new Gson();
-        // System.out.println(getJsonStudent());
-        // create student mapper
-
-        // insert student
-        Student student = new Student(getName(), getBranch(), getPercentage(), getPhone(), getEmail());
-        // Student student = gson.fromJson(jsonStudent, Student.class);
-        String json = gson.toJson(student);
-
-        /*
-         * HttpServletRequest request = ServletActionContext.getRequest();
-         * System.out.println(request.getMethod());
-         */
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter printWriter = response.getWriter();
+
+        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
+        SqlSession session = sqlSessionFactory.openSession();
+
+        StudentMapper studentMapper = session.getMapper(StudentMapper.class);
+
+        Student student = studentMapper.getById(id);
+        if (student == null) {
+            response.setStatus(404);
+            printWriter.print("{\"message\":\"Không tồn tại sinh viên này\"}");
+            printWriter.flush();
+            printWriter.close();
+            return SUCCESS;
+        }
+
+        String json = gson.toJson(student);
+
         printWriter.print(json);
         printWriter.flush();
         printWriter.close();
 
-        System.out.println(json);
-        System.out.println(student.toString());
-        // System.out.println(student.toString());
-        System.out.println("insert sucessfully");
-
-        // TODO Auto-generated method stub
         return SUCCESS;
     }
+
+    // edit student
+
+    @Action(value = "/api/v1/student/edit/*", params = { "id", "{1}" }, results = {
+            @Result(name = "success", location = "/index.html"),
+            @Result(name = "input", location = "/index.html")
+    })
+    public String editStudent() throws IOException {
+        Gson gson = new Gson();
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter printWriter = response.getWriter();
+
+        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
+        SqlSession session = sqlSessionFactory.openSession();
+
+        StudentMapper studentMapper = session.getMapper(StudentMapper.class);
+
+        Student student = studentMapper.getById(id);
+        if (student == null) {
+            response.setStatus(404);
+            printWriter.print("{\"message\":\"Không tồn tại sinh viên này\"}");
+            printWriter.flush();
+            printWriter.close();
+            return SUCCESS;
+        }
+        if(!isValid()){
+            response.setStatus(400);
+            printWriter.print("{\"message\":\"Vui lòng nhập đầy đủ thông tin\"}");
+            printWriter.flush();
+            printWriter.close();
+            return SUCCESS;
+        }
+        student.setName(name);
+        student.setBranch(branch);
+        student.setPercentage(percentage);
+        student.setPhone(phone);
+        student.setEmail(email);
+        studentMapper.update(student);
+
+        String json = gson.toJson(student);
+
+        printWriter.print(json);
+        printWriter.flush();
+        printWriter.close();
+
+        session.commit();
+        session.close();
+
+        return SUCCESS;
+    }
+
+    // delete student
 
     @Action(value = "/api/v1/student/delete/*", params = { "id", "{1}" }, results = {
             @Result(location = "/index.html") })
     public String deleteStudent() throws IOException {
+        System.out.println("delete student");
         System.out.println(getId());
         Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
