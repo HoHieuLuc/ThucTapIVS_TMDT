@@ -1,6 +1,5 @@
 package com.thuctap.struts2_crud_mybatis.action;
 
-import java.io.Reader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,25 +7,31 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
 import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
+import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
+import com.thuctap.struts2_crud_mybatis.errors.CustomError;
 import com.thuctap.struts2_crud_mybatis.model.Student;
 
 import mybatis.mapper.StudentMapper;
 
+// tất cả các lỗi về input (nhập số nhưng lại nhập chữ,...) sẽ bị trả về lỗi 400 bad request
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
 @Namespace("/api/v1/student")
 public class StudentAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
     private List<Student> listStudents;
     private String search;
+    private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
     public List<Student> getListStudents() {
         return listStudents;
@@ -44,12 +49,6 @@ public class StudentAction extends ActionSupport {
         this.search = search;
     }
 
-    @Override
-    public String execute() throws Exception {
-        System.out.println("This always runs");
-        return super.execute();
-    }
-
     @Actions({
             @Action(value = "/student/index", results = { @Result(location = "/index.html") }),
             @Action(value = "/student/create", results = { @Result(location = "/create.html") }),
@@ -62,9 +61,6 @@ public class StudentAction extends ActionSupport {
     /* api */
     @Action(value = "list", results = { @Result(location = "/index.html") })
     public String getAllStudents() throws IOException {
-        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         // Mở Session
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -73,7 +69,7 @@ public class StudentAction extends ActionSupport {
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);
 
         // Lấy dữ liệu sinh viên
-        //System.out.println(search);
+        // System.out.println(search);
         listStudents = studentMapper.search(search);
 
         // chuyển danh sách học sinh sang json
@@ -161,33 +157,25 @@ public class StudentAction extends ActionSupport {
 
     @Action(value = "create", results = {
             @Result(name = "success", location = "/index.html"),
-            @Result(name = "input", location = "/student/create")
     })
     public String createStudent() throws IOException {
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
+        response.setStatus(201);
         PrintWriter printWriter = response.getWriter();
         if (!isValid()) {
-            response.setStatus(400);
-            printWriter.print("{\"message\":\"Vui lòng nhập đầy đủ thông tin\"}");
-            printWriter.flush();
-            printWriter.close();
-            return SUCCESS;
+            return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response, printWriter);
         }
 
-        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         SqlSession session = sqlSessionFactory.openSession();
-
-        Gson gson = new Gson();
 
         // create student mapper
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);
 
         // insert student
         Student student = new Student(name, branch, percentage, phone, email);
+        Gson gson = new Gson();
         String json = gson.toJson(student);
 
         printWriter.print(json);
@@ -204,30 +192,24 @@ public class StudentAction extends ActionSupport {
     // get student by id
 
     @Action(value = "*", params = { "id", "{1}" }, results = {
-            @Result(location = "/index.html") })
+            @Result(location = "/index.html"),
+    })
     public String getStudent() throws IOException {
-        Gson gson = new Gson();
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter printWriter = response.getWriter();
 
-        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         SqlSession session = sqlSessionFactory.openSession();
 
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);
 
         Student student = studentMapper.getById(id);
         if (student == null) {
-            response.setStatus(404);
-            printWriter.print("{\"message\":\"Không tồn tại sinh viên này\"}");
-            printWriter.flush();
-            printWriter.close();
-            return SUCCESS;
+            return CustomError.createCustomError("Không tồn tại sinh viên có ID " + id, 404, response, printWriter);
         }
 
+        Gson gson = new Gson();
         String json = gson.toJson(student);
 
         printWriter.print(json);
@@ -241,36 +223,23 @@ public class StudentAction extends ActionSupport {
 
     @Action(value = "/api/v1/student/edit/*", params = { "id", "{1}" }, results = {
             @Result(name = "success", location = "/index.html"),
-            @Result(name = "input", location = "/index.html")
     })
     public String editStudent() throws IOException {
-        Gson gson = new Gson();
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter printWriter = response.getWriter();
 
-        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
         SqlSession session = sqlSessionFactory.openSession();
 
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);
 
         Student student = studentMapper.getById(id);
         if (student == null) {
-            response.setStatus(404);
-            printWriter.print("{\"message\":\"Không tồn tại sinh viên này\"}");
-            printWriter.flush();
-            printWriter.close();
-            return SUCCESS;
+            return CustomError.createCustomError("Không tồn tại sinh viên có ID " + id, 404, response, printWriter);
         }
-        if(!isValid()){
-            response.setStatus(400);
-            printWriter.print("{\"message\":\"Vui lòng nhập đầy đủ thông tin\"}");
-            printWriter.flush();
-            printWriter.close();
-            return SUCCESS;
+        if (!isValid()) {
+            return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response, printWriter);
         }
         student.setName(name);
         student.setBranch(branch);
@@ -279,6 +248,7 @@ public class StudentAction extends ActionSupport {
         student.setEmail(email);
         studentMapper.update(student);
 
+        Gson gson = new Gson();
         String json = gson.toJson(student);
 
         printWriter.print(json);
@@ -295,14 +265,8 @@ public class StudentAction extends ActionSupport {
 
     @Action(value = "/api/v1/student/delete/*", params = { "id", "{1}" }, results = {
             @Result(location = "/index.html") })
-    public String deleteStudent() throws IOException {
-        System.out.println("delete student");
-        System.out.println(getId());
-        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        sqlSessionFactory.getConfiguration().addMapper(StudentMapper.class);
+    public String deleteStudent() {
         SqlSession session = sqlSessionFactory.openSession();
-
         StudentMapper studentMapper = session.getMapper(StudentMapper.class);
         studentMapper.delete(getId());
         session.commit();
