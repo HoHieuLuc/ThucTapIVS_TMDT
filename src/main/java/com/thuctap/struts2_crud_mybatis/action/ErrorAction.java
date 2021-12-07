@@ -12,7 +12,7 @@ import com.thuctap.struts2_crud_mybatis.errors.CustomError;
 
 public class ErrorAction {
     @Action(value = "/bad-request", results = { @Result(location = "/index.html") })
-    public String errorAction() throws IOException {
+    public String badRequest() throws IOException {
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache");
