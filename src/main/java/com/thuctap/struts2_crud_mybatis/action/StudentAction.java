@@ -22,14 +22,17 @@ import com.thuctap.struts2_crud_mybatis.model.Student;
 
 import mybatis.mapper.StudentMapper;
 
+// để truy cập đc vào student thì người dùng phải đăng nhập
+@InterceptorRef(value = "loginStack")
 // tất cả các lỗi về input (nhập số nhưng lại nhập chữ,...) sẽ bị trả về lỗi 400 bad request
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
         "namespace", "/",
         "actionName", "bad-request"
 })
+
 @Namespace("/api/v1/student")
 public class StudentAction extends ActionSupport {
-    
+
     // Khởi tạo HttpSession
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
@@ -86,35 +89,29 @@ public class StudentAction extends ActionSupport {
 
         // Lấy dữ liệu sinh viên
         // System.out.println(search);
-        if (session.getAttribute("userName").equals("admin"))
-        {
-            int offset = (getPage() - 1) * rowsPerPage;
-            int countStudent = studentMapper.count(getSearch());
-            int pageCount = (int) Math.ceil(countStudent / (double) rowsPerPage);
-            listStudents = studentMapper.getByPage(getSearch(), offset, rowsPerPage);
-    
-            // chuyển danh sách học sinh sang json
-            Gson gson = new Gson();
-            String studentJsonString = gson.toJson(listStudents);
-            String json = "{\"students\":" + studentJsonString +
-                    ", \"pageCount\":\"" + pageCount +
-                    "\"}";
-            System.out.println(json);
-    
-            // trả về kết quả là json
-            HttpServletResponse response = ServletActionContext.getResponse();
-            response.setContentType("application/json;charset=utf-8");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter printWriter = response.getWriter();
-            printWriter.print(json);
-            printWriter.flush();
-            printWriter.close();
+        int offset = (getPage() - 1) * rowsPerPage;
+        int countStudent = studentMapper.count(getSearch());
+        int pageCount = (int) Math.ceil(countStudent / (double) rowsPerPage);
+        listStudents = studentMapper.getByPage(getSearch(), offset, rowsPerPage);
 
-            // System.out.println(json); 
-        }
-        
+        // chuyển danh sách học sinh sang json
+        Gson gson = new Gson();
+        String studentJsonString = gson.toJson(listStudents);
+        String json = "{\"students\":" + studentJsonString +
+                ", \"pageCount\":\"" + pageCount +
+                "\"}";
+        System.out.println(json);
+
+        // trả về kết quả là json
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter printWriter = response.getWriter();
+        printWriter.print(json);
+        printWriter.flush();
+        printWriter.close();
+
         // System.out.println(json);
-
         return SUCCESS;
     }
 
