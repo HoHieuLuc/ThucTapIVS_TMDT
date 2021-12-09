@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -60,4 +61,14 @@ public interface StudentMapper {
 
 	@Select(SEARCH_STUDENT)
 	public List<Student> search(String search);
+
+	// đếm số lượng với điều kiện để phân trang
+	final String COUNT_STUDENT = "SELECT COUNT(*) FROM STUDENT WHERE NAME LIKE CONCAT('%', #{search}, '%') OR EMAIL LIKE CONCAT('%', #{search}, '%')";
+	@Select(COUNT_STUDENT)
+	public int count(String search);
+
+	// get student by page
+	final String GET_STUDENT_BY_PAGE = "SELECT * FROM STUDENT WHERE NAME LIKE CONCAT('%', #{search}, '%') OR EMAIL LIKE CONCAT('%', #{search}, '%') LIMIT #{offset}, #{rowsPerPage}";
+	@Select(GET_STUDENT_BY_PAGE)
+	public List<Student> getByPage(@Param("search") String search, @Param("offset") int offset, @Param("rowsPerPage") int rowsPerPage);
 }
