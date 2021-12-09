@@ -1,20 +1,45 @@
 const searchFormDOM = document.querySelector('#search-form');
-const searchInputDOM = document.querySelector('#search');
 const studentListDOM = document.querySelector('#student-list');
+const searchInput = document.querySelector('#search');
+const params = window.location.search;
+searchInput.value = new URLSearchParams(params).get('search') ?? "";
 
+let queryString = "";
+
+const changeURL = () => {
+    const newParams = window.location.search;
+    const page = new URLSearchParams(newParams).get('page') ?? 0;
+    const pageString = page === 0 ? '' : `page=${page}`;
+    
+    // đặt value trong ô input bằng giá trị search của params
+    console.log(searchInput.value);
+    const searchString = searchInput.value === "" ? "" : `search=${encodeURIComponent(searchInput.value)}`;
+
+    queryString = [pageString, searchString].filter(x => x !== "").join('&');
+    queryString = queryString === "" ? "" : `?${queryString}`;
+    console.log(pageString);
+    console.log(searchString);
+    console.log(queryString);
+    // thay đổi url không cần reload
+    if (queryString === ""){
+        window.history.pushState('search', '', `index`);
+        return;
+    }
+    window.history.pushState('search', '', `${queryString}`);
+}
+
+changeURL();
 
 const showStudentList = async () => {
     studentListDOM.textContent = 'Loading...';
-    const params = window.location.search;
-    // đặt value trong ô input bằng giá trị search của params
-    searchInputDOM.value = new URLSearchParams(params).get('search') ?? "";
-    const searchString = searchInputDOM.value;
+
     try {
         // nếu không có encodeURIComponent thì khi nhập ký tự đặc biệt sẽ bị lỗi
         // Invalid character found in the request target. 
         // The valid characters are defined in RFC 7230 and RFC 3986
-        const { data: students } = await axios.get(`../api/v1/student/list?search=${encodeURIComponent(searchString)}`);
+        const { data: { students, pageCount } } = await axios.get(`../api/v1/student/list${queryString}`);
         console.log(students);
+        console.log(pageCount);
         const allStudents = students.map((student) => {
             const { id, name, branch, percentage, phone, email } = student;
             return `
@@ -58,7 +83,11 @@ studentListDOM.addEventListener('click', async (event) => {
 
 searchFormDOM.addEventListener('submit', async (event) => {
     event.preventDefault();
-    // thay đổi url không cần reload
-    window.history.pushState('search', '','?search=' + searchInputDOM.value);
+    changeURL();
+    showStudentList();
+});
+
+const btnReloadDOM = document.querySelector('#btn-reload');
+btnReloadDOM.addEventListener('click', () => {
     showStudentList();
 });

@@ -22,14 +22,17 @@ import com.thuctap.struts2_crud_mybatis.model.Student;
 
 import mybatis.mapper.StudentMapper;
 
+// để truy cập đc vào student thì người dùng phải đăng nhập
+@InterceptorRef(value = "loginStack")
 // tất cả các lỗi về input (nhập số nhưng lại nhập chữ,...) sẽ bị trả về lỗi 400 bad request
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
+        "namespace", "/",
+        "actionName", "bad-request"
 })
+
 @Namespace("/api/v1/student")
 public class StudentAction extends ActionSupport {
-    
+
     // Khởi tạo HttpSession
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
@@ -37,6 +40,8 @@ public class StudentAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private List<Student> listStudents;
     private String search;
+    private int page;
+    private int rowsPerPage = 5;
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
     public List<Student> getListStudents() {
@@ -48,11 +53,19 @@ public class StudentAction extends ActionSupport {
     }
 
     public String getSearch() {
-        return search;
+        return search == null ? "" : search;
     }
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public int getPage() {
+        return page > 0 ? page : 1;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 
     @Actions({
@@ -67,39 +80,38 @@ public class StudentAction extends ActionSupport {
     /* api */
     @Action(value = "list", results = { @Result(location = "/index.html") })
     public String getAllStudents() throws IOException {
-        HttpServletRequest request = ServletActionContext.getRequest();
-        HttpSession session = request.getSession();
-
         // Mở Session
-        SqlSession sessionSQL = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
 
         // Tạo instance cho Interface StudentMapper (Chính là file lưu trữ các code truy
         // vấn sql bằng mybatis annotation)
-        StudentMapper studentMapper = sessionSQL.getMapper(StudentMapper.class);
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 
         // Lấy dữ liệu sinh viên
         // System.out.println(search);
-        if (session.getAttribute("userName").equals("admin"))
-        {
-            listStudents = studentMapper.search(search);
-            // chuyển danh sách học sinh sang json
-            Gson gson = new Gson();
-            String json = gson.toJson(listStudents);
+        int offset = (getPage() - 1) * rowsPerPage;
+        int countStudent = studentMapper.count(getSearch());
+        int pageCount = (int) Math.ceil(countStudent / (double) rowsPerPage);
+        listStudents = studentMapper.getByPage(getSearch(), offset, rowsPerPage);
 
-            // trả về kết quả là json
-            HttpServletResponse response = ServletActionContext.getResponse();
-            response.setContentType("application/json;charset=utf-8");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter printWriter = response.getWriter();
-            printWriter.print(json);
-            printWriter.flush();
-            printWriter.close();
+        // chuyển danh sách học sinh sang json
+        Gson gson = new Gson();
+        String studentJsonString = gson.toJson(listStudents);
+        String json = "{\"students\":" + studentJsonString +
+                ", \"pageCount\":\"" + pageCount +
+                "\"}";
+        System.out.println(json);
 
-            // System.out.println(json);
+        // trả về kết quả là json
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter printWriter = response.getWriter();
+        printWriter.print(json);
+        printWriter.flush();
+        printWriter.close();
 
-           
-        }
-        
+        // System.out.println(json);
         return SUCCESS;
     }
 
@@ -181,10 +193,10 @@ public class StudentAction extends ActionSupport {
             return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response, printWriter);
         }
 
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
 
         // create student mapper
-        StudentMapper studentMapper = session.getMapper(StudentMapper.class);
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 
         // insert student
         Student student = new Student(name, branch, percentage, phone, email);
@@ -196,8 +208,8 @@ public class StudentAction extends ActionSupport {
         printWriter.close();
 
         studentMapper.insert(student);
-        session.commit();
-        session.close();
+        sqlSession.commit();
+        sqlSession.close();
 
         return SUCCESS;
     }
@@ -213,9 +225,9 @@ public class StudentAction extends ActionSupport {
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter printWriter = response.getWriter();
 
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
 
-        StudentMapper studentMapper = session.getMapper(StudentMapper.class);
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 
         Student student = studentMapper.getById(id);
         if (student == null) {
@@ -243,9 +255,9 @@ public class StudentAction extends ActionSupport {
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter printWriter = response.getWriter();
 
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
 
-        StudentMapper studentMapper = session.getMapper(StudentMapper.class);
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 
         Student student = studentMapper.getById(id);
         if (student == null) {
@@ -268,22 +280,23 @@ public class StudentAction extends ActionSupport {
         printWriter.flush();
         printWriter.close();
 
-        session.commit();
-        session.close();
+        sqlSession.commit();
+        sqlSession.close();
 
         return SUCCESS;
     }
 
     // delete student
-
     @Action(value = "/api/v1/student/delete/*", params = { "id", "{1}" }, results = {
             @Result(location = "/index.html") })
     public String deleteStudent() {
-        SqlSession session = sqlSessionFactory.openSession();
-        StudentMapper studentMapper = session.getMapper(StudentMapper.class);
+        System.out.println("delete student: " + id);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
         studentMapper.delete(getId());
-        session.commit();
-        session.close();
+        sqlSession.commit();
+        sqlSession.close();
+        System.out.println("done");
         return SUCCESS;
     }
 }
