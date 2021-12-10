@@ -6,6 +6,7 @@ import java.sql.Date;
 import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
 import com.thuctap.struts2_crud_mybatis.model.UserAdmin;
 
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mindrot.jbcrypt.BCrypt;
@@ -39,8 +40,18 @@ public class InsertUserAdmin {
         UserAdmin userAdmin = new UserAdmin(userName, password, email, date_created, date_expired);
 
         // Thêm dữ liệu vào database
-        userAdminMapper.insert(userAdmin);
+        //userAdminMapper.insert(userAdmin);
         // Flush database connection, batch script and close connection
+
+        //Log Exception
+        try {
+            userAdminMapper.insert(userAdmin);
+        }
+        catch (PersistenceException e) {
+            System.out.println(e.getMessage());
+        }
+        
+
         sqlSession.commit();
         sqlSession.close();
     }
