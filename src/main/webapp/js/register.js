@@ -25,7 +25,7 @@ function validateUNameFrontEnd(){
     var username = document.getElementById("username").value;
     console.log(username);
 
-    if (!username.match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,14}$/g"))
+    if (!username.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,14}$/g))
         {
             document.getElementById("username_error").innerHTML=`
             Username Tối thiểu 6 ký tự và tối đa 14 kí tự,
@@ -42,7 +42,7 @@ function validatePasswordFrontEnd(){
     var password = document.getElementById("password").value;
     console.log(password);
 
-    if (!password.match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,14}$/g"))
+    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,14}$/g))
         {
             document.getElementById("password_error").innerHTML=`
             Password Tối thiểu 8 và tối đa 14 ký tự, 

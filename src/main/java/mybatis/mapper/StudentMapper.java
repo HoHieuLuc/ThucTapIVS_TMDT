@@ -21,12 +21,6 @@ public interface StudentMapper {
 	final String GET_ALL_STUDENT = "SELECT * FROM STUDENT";
 
 	@Select(GET_ALL_STUDENT)
-	@Results(value = { @Result(property = "id", column = "ID"),
-			@Result(property = "name", column = "NAME"),
-			@Result(property = "branch", column = "BRANCH"),
-			@Result(property = "percentage", column = "PERCENTAGE"),
-			@Result(property = "phone", column = "PHONE"),
-			@Result(property = "email", column = "EMAIL") })
 	public List<Student> getAll();
 
 	// get student by id
