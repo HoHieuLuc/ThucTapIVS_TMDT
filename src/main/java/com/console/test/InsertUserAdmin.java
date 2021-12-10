@@ -19,7 +19,7 @@ public class InsertUserAdmin {
         SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
-        String userName = "lamminhthien";
+        String userName = "lamminhthien2";
         String email = "lamminhthien@gmail.com";
         String password = "MinhThien2000$";
 
@@ -44,11 +44,18 @@ public class InsertUserAdmin {
         // Flush database connection, batch script and close connection
 
         //Log Exception
+        userAdminMapper.insert(userAdmin);
         try {
             userAdminMapper.insert(userAdmin);
         }
         catch (PersistenceException e) {
             System.out.println(e.getMessage());
+            if (e.getMessage().contains("user_admin.username_UNIQUE")){
+                System.out.println("Ây da, username này đã có người dùng");
+            }
+            if (e.getMessage().contains("user_admin.email_UNIQUE")){
+                System.out.println("Ây chà, email này đã có người dùng");
+            }
         }
         
 
