@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
@@ -31,6 +32,7 @@ public class RegisterAction extends ActionSupport {
 
     // Respone hay dùng cho AJAX và JSON
     HttpServletResponse response = ServletActionContext.getResponse();
+ 
 
     private String username, password, email;
 
@@ -71,6 +73,9 @@ public class RegisterAction extends ActionSupport {
             @Result(name = "input", location = "/login.html")
     })
     public String register() throws IOException {
+        //PrintWriter dùng để in thông báo lỗi
+        PrintWriter printWriter = response.getWriter();
+
         if (isValid()) {
             // Ở đây insert vô database sau khi validate form ok
             SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -90,8 +95,24 @@ public class RegisterAction extends ActionSupport {
             // Tạo đối tượng lấy dữ liệu useradmin từ constructor
             UserAdmin userAdmin = new UserAdmin(username, password, email, date_created, date_expired);
 
-            // Thêm dữ liệu vào database
-            userAdminMapper.insert(userAdmin);
+            // Thêm dữ liệu vào database, 
+            //khoan khoan, kiểm tra xem có trùng username, trùng password không đã
+            try {
+                userAdminMapper.insert(userAdmin);
+            }
+            catch (PersistenceException e) {
+                //System.out.println(e.getMessage());
+                ArrayList<String> messages = new ArrayList<String>();
+                if (e.getMessage().contains("user_admin.username_UNIQUE")){
+                    messages.add("Ây da, username này đã có người dùng");
+                    messages.add("email sẽ được kiểm tra khi username không bị trùng");
+                }
+                if (e.getMessage().contains("user_admin.email_UNIQUE")){
+                    messages.add("Good job babe, username không bị trùng");
+                    messages.add("Oh nồ nô, email bị trùng rồi");
+                }
+                return ValidateError.push(messages, 400, response, printWriter);
+            }
             // Flush database connection, batch script and close connection
             sqlSession.commit();
             sqlSession.close();
@@ -104,7 +125,6 @@ public class RegisterAction extends ActionSupport {
                     "Username Tối thiểu 6 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, không có kí tự khoảng trắng ");
             messages.add(
                     "Password Tối thiểu 8 và tối đa 14 ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt, không có khoảng trắng ");
-            PrintWriter printWriter = response.getWriter();
             return ValidateError.push(messages, 400, response, printWriter);
         }
     }

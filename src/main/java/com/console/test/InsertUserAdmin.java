@@ -39,12 +39,11 @@ public class InsertUserAdmin {
         // Tạo đối tượng lấy dữ liệu useradmin từ constructor
         UserAdmin userAdmin = new UserAdmin(userName, password, email, date_created, date_expired);
 
-        // Thêm dữ liệu vào database
-        //userAdminMapper.insert(userAdmin);
-        // Flush database connection, batch script and close connection
+        
+       
 
-        //Log Exception
-        userAdminMapper.insert(userAdmin);
+        // Thêm dữ liệu vào database
+        //Log Exception with try catch
         try {
             userAdminMapper.insert(userAdmin);
         }
@@ -58,7 +57,7 @@ public class InsertUserAdmin {
             }
         }
         
-
+         // Flush database connection, batch script and close connection
         sqlSession.commit();
         sqlSession.close();
     }
