@@ -5,9 +5,8 @@ import com.thuctap.struts2_crud_mybatis.model.UserAdmin;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import com.google.common.hash.Hashing;
+
+
 
 import mybatis.mapper.UserAdminMapper;
 
