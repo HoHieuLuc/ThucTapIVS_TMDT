@@ -33,7 +33,7 @@ function validateUNameFrontEnd(){
             `;
         }
     else {
-            document.getElementById("username_error").innerHTML=`Username hợp lệ`;
+            document.getElementById("username_error").innerHTML=`Username đúng quy tắc`;
     }
 
 }  
@@ -51,7 +51,7 @@ function validatePasswordFrontEnd(){
             `;
         }
     else {
-            document.getElementById("password_error").innerHTML=`Password hợp lệ`;
+            document.getElementById("password_error").innerHTML=`Password đúng quy tắc`;
     }
 
 }  

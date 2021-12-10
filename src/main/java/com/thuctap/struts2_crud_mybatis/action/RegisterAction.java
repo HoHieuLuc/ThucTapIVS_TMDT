@@ -33,6 +33,10 @@ public class RegisterAction extends ActionSupport {
     // Respone hay dùng cho AJAX và JSON
     HttpServletResponse response = ServletActionContext.getResponse();
  
+    //Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ thể cho phía Client
+    String password_regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,14}$";
+    String username_regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,14}$";
+    String email_regex = "^(.+)@(\\S+)$";
 
     private String username, password, email;
 
@@ -61,9 +65,6 @@ public class RegisterAction extends ActionSupport {
     }
 
     public boolean isValid() {
-        String password_regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,14}$";
-        String username_regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,14}$";
-        String email_regex = "^(.+)@(\\S+)$";
         return Pattern.matches(username_regex, username) && Pattern.matches(password_regex, password)
                 && Pattern.matches(email_regex, email);
     }
@@ -121,12 +122,16 @@ public class RegisterAction extends ActionSupport {
             return SUCCESS;
         } else {
             ArrayList<String> messages = new ArrayList<String>();
+            if (!Pattern.matches(username_regex, username))
             messages.add(
                     "Username Tối thiểu 6 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, không có kí tự khoảng trắng ");
+            else messages.add("Username đúng quy tắc");
+
+            if (!Pattern.matches(password_regex, password))
             messages.add(
                     "Password Tối thiểu 8 và tối đa 14 ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt, không có khoảng trắng ");
+            else messages.add("Password đúng quy tắc");
             return ValidateError.push(messages, 400, response, printWriter);
         }
     }
-
 }
