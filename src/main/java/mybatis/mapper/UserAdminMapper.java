@@ -29,9 +29,8 @@ public interface UserAdminMapper {
 	public UserAdmin getById(int id);
 
 	// inert user_admin
-	final String INSERT_USER_ADMIN = "INSERT INTO USER_ADMIN (USERNAME, PASSWORD, EMAIL) "
-			+ "VALUES (#{username}, #{password}, #{email})";
-
+	final String INSERT_USER_ADMIN = "INSERT INTO USER_ADMIN (USERNAME, PASSWORD, EMAIL,DATE_CREATED,DATE_EXPIRED) "
+			+ "VALUES (#{username}, #{password}, #{email},#{date_created},#{date_expired})";
 	@Insert(INSERT_USER_ADMIN)
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public void insert(UserAdmin userAdmin);
@@ -43,11 +42,11 @@ public interface UserAdminMapper {
 	// @Update(UPDATE_STUDENT)
 	// public void update(UserAdmin student);
 
-	// delete student by id
-	final String DELETE_USER_ADMIN_BY_ID = "DELETE from STUDENT WHERE ID = #{id}";
+	//delete student by id
+	final String DELETE_USER_ADMIN_BY_ID = "DELETE from USER_ADMIN WHERE ID = #{id}";
 
-	@Delete(DELETE_USER_ADMIN_BY_ID)
-	public void delete(int id);
+	 @Delete(DELETE_USER_ADMIN_BY_ID)
+	 public void delete(int id);
 
 	// search student
 	//final String SEARCH_STUDENT = "SELECT * FROM STUDENT WHERE NAME LIKE CONCAT('%', #{search}, '%') OR EMAIL LIKE CONCAT('%', #{search}, '%')";

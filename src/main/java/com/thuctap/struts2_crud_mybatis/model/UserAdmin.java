@@ -1,11 +1,31 @@
 package com.thuctap.struts2_crud_mybatis.model;
+import java.time.LocalDate;
+import java.sql.Date;
 
 public class UserAdmin {
     private int id;
     private String username;
     private String password;
     private String email;
+    private Date date_created;
+    private Date date_expired;
+    
+    
+   
 
+
+    public UserAdmin(String username, String password, String email, Date date_created, Date date_expired) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.date_created = date_created;
+        this.date_expired = date_expired;
+    }
+    @Override
+    public String toString() {
+        return "UserAdmin [date_created=" + date_created + ", date_expired=" + date_expired + ", email=" + email
+                + ", id=" + id + ", password=" + password + ", username=" + username + "]";
+    }
     public int getId() {
         return id;
     }
@@ -15,11 +35,7 @@ public class UserAdmin {
     public String getUsername() {
         return username;
     }
-    public UserAdmin(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -35,13 +51,6 @@ public class UserAdmin {
     public void setEmail(String email) {
         this.email = email;
     }
-    @Override
-    public String toString() {
-        return "UserAdmin [email=" + email + ", password=" + password + ", username=" + username + "]";
-    }
 
-    
-    
-    
     
 }
