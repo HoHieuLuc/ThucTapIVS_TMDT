@@ -29,7 +29,6 @@ import mybatis.mapper.StudentMapper;
         "namespace", "/",
         "actionName", "bad-request"
 })
-
 @Namespace("/api/v1/student")
 public class StudentAction extends ActionSupport {
 
