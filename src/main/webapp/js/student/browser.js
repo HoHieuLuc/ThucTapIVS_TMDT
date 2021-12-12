@@ -37,7 +37,7 @@ const showStudentList = async () => {
         // nếu không có encodeURIComponent thì khi nhập ký tự đặc biệt sẽ bị lỗi
         // Invalid character found in the request target. 
         // The valid characters are defined in RFC 7230 and RFC 3986
-        const { data: { students, pageCount } } = await axios.get(`../api/v1/student/list${queryString}`);
+        const { data: { students, pageCount } } = await axios.get(`../../api/v1/student/list${queryString}`);
         console.log(students);
         console.log(pageCount);
         const allStudents = students.map((student) => {
@@ -72,7 +72,7 @@ studentListDOM.addEventListener('click', async (event) => {
     if (eventTarget.classList.contains('delete-btn')) {
         const id = eventTarget.dataset.id;
         try {
-            await axios.post(`../api/v1/student/delete/${id}`);
+            await axios.post(`../../api/v1/student/delete/${id}`);
             showStudentList();
         } catch (error) {
             console.log(error);

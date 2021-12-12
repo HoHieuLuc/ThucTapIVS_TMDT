@@ -6,12 +6,9 @@ formDOM.addEventListener('submit', async (event) => {
     const formData = new FormData(formDOM);
     errorMsgDOM.textContent = '';
     try {
-        const { data } = await axios.post('../api/v1/student/create', formData);
-        window.location.href = './index';
-        console.log(data);
-        //console.log('adadad');
+        await axios.post('../../api/v1/student/create', formData);
+        window.location.href = './';
     } catch (error) {
         errorMsgDOM.textContent = error.response.data.message;
-        //console.log(error.response.data.message);
     }
 });

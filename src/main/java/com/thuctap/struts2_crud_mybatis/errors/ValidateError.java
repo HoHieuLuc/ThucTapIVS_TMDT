@@ -13,19 +13,6 @@ public class ValidateError {
     private ValidateError() {
     }
 
-    // public static String ValidateError(
-    //         String message,
-    //         int errorCode, 
-    //         HttpServletResponse response,
-    //         PrintWriter printWriter
-    //         ) throws IOException {
-    //     response.setStatus(errorCode);
-    //     printWriter.print("{\"message\":\"" + message + "\"}");
-    //     printWriter.flush();
-    //     printWriter.close();
-    //     return "success";
-    // }
-
     public static String push(
         ArrayList<String> message,
         int errorCode,

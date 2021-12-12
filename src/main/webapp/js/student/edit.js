@@ -1,6 +1,7 @@
 const formDOM = document.querySelector('#edit-student-form');
 const formAlertDOM = document.querySelector('#form-alert');
 const editBtnDOM = document.querySelector('.edit-btn');
+const backBtnDOM = document.querySelector('.back-btn');
 
 const params = window.location.pathname.split('/').slice(0);
 const id = params[params.length - 1];
@@ -8,7 +9,7 @@ console.log(params);
 
 const showStudent = async () => {
     try {
-        const { data: student } = await axios.get(`../../api/v1/student/${id}`);
+        const { data: { student } } = await axios.get(`../../../api/v1/student/${id}`);
         console.log(student);
         const { name, branch, percentage, phone, email } = student;
 
@@ -30,7 +31,7 @@ formDOM.addEventListener('submit', async (event) => {
     editBtnDOM.disabled = true;
     const formData = new FormData(formDOM);
     try {
-        const { data } = await axios.post(`../../api/v1/student/edit/${id}`, formData);
+        const { data } = await axios.post(`../../../api/v1/student/edit/${id}`, formData);
         console.log(data);
         formAlertDOM.style.display = 'block';
         formAlertDOM.textContent = `Cập nhật thông tin sinh viên thành công`;
@@ -46,4 +47,8 @@ formDOM.addEventListener('submit', async (event) => {
         formAlertDOM.style.display = 'none';
         formAlertDOM.classList.remove('text-success', 'text-danger');
     }, 3000);
+});
+
+backBtnDOM.addEventListener('click', () => {
+    window.history.back();
 });

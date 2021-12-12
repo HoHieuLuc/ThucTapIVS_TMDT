@@ -1,24 +1,25 @@
 package com.thuctap.struts2_crud_mybatis.action;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
-import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
 import com.thuctap.struts2_crud_mybatis.errors.CustomError;
 import com.thuctap.struts2_crud_mybatis.model.Student;
+import com.thuctap.struts2_crud_mybatis.utilities.JsonResponse;
 
 import mybatis.mapper.StudentMapper;
 
@@ -31,26 +32,18 @@ import mybatis.mapper.StudentMapper;
 })
 @Namespace("/api/v1/student")
 public class StudentAction extends ActionSupport {
-
+    HttpServletResponse response = ServletActionContext.getResponse();
     // Khởi tạo HttpSession
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
 
     private static final long serialVersionUID = 1L;
-    private List<Student> listStudents;
     private String search;
     private int page;
     private int rowsPerPage = 5;
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    public List<Student> getListStudents() {
-        return listStudents;
-    }
-
-    public void setListStudents(List<Student> listStudents) {
-        this.listStudents = listStudents;
-    }
-
+    // region Getter and Setter
     public String getSearch() {
         return search == null ? "" : search;
     }
@@ -66,11 +59,12 @@ public class StudentAction extends ActionSupport {
     public void setPage(int page) {
         this.page = page;
     }
+    // endregion
 
     @Actions({
-            @Action(value = "/student/index", results = { @Result(location = "/index.html") }),
-            @Action(value = "/student/create", results = { @Result(location = "/create.html") }),
-            @Action(value = "/student/edit/*", results = { @Result(location = "/edit.html") }),
+            @Action(value = "/admin/student/index", results = { @Result(location = "/WEB-INF/jsp/admin/student/index.jsp") }),
+            @Action(value = "/admin/student/create", results = { @Result(location = "/WEB-INF/jsp/admin/student/create.jsp") }),
+            @Action(value = "/admin/student/edit/*", results = { @Result(location = "/WEB-INF/jsp/admin/student/edit.jsp") }),
     })
     public String viewStudent() {
         return SUCCESS;
@@ -91,30 +85,15 @@ public class StudentAction extends ActionSupport {
         int offset = (getPage() - 1) * rowsPerPage;
         int countStudent = studentMapper.count(getSearch());
         int pageCount = (int) Math.ceil(countStudent / (double) rowsPerPage);
-        listStudents = studentMapper.getByPage(getSearch(), offset, rowsPerPage);
+        List<Student> listStudents = studentMapper.getByPage(getSearch(), offset, rowsPerPage);
 
-        // chuyển danh sách học sinh sang json
-        Gson gson = new Gson();
-        String studentJsonString = gson.toJson(listStudents);
-        String json = "{\"students\":" + studentJsonString +
-                ", \"pageCount\":\"" + pageCount +
-                "\"}";
-        System.out.println(json);
-
-        // trả về kết quả là json
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType("application/json;charset=utf-8");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter printWriter = response.getWriter();
-        printWriter.print(json);
-        printWriter.flush();
-        printWriter.close();
-
-        // System.out.println(json);
-        return SUCCESS;
+        Map<String, Object> jsonObject = new HashMap<String, Object>();
+        jsonObject.put("students", listStudents);
+        jsonObject.put("pageCount", pageCount);
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonObject, 200, response);
     }
 
-    /*  */
     // region getters setters
     private int id;
     private String name;
@@ -183,13 +162,8 @@ public class StudentAction extends ActionSupport {
             @Result(name = "success", location = "/index.html"),
     })
     public String createStudent() throws IOException {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType("application/json;charset=utf-8");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setStatus(201);
-        PrintWriter printWriter = response.getWriter();
         if (!isValid()) {
-            return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response, printWriter);
+            return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response);
         }
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -199,18 +173,14 @@ public class StudentAction extends ActionSupport {
 
         // insert student
         Student student = new Student(name, branch, percentage, phone, email);
-        Gson gson = new Gson();
-        String json = gson.toJson(student);
-
-        printWriter.print(json);
-        printWriter.flush();
-        printWriter.close();
-
         studentMapper.insert(student);
+
+        Map<String, Object> jsonObject = new HashMap<String, Object>();
+        jsonObject.put("student", student);
+
         sqlSession.commit();
         sqlSession.close();
-
-        return SUCCESS;
+        return JsonResponse.createJsonResponse(jsonObject, 201, response);
     }
 
     // get student by id
@@ -219,28 +189,20 @@ public class StudentAction extends ActionSupport {
             @Result(location = "/index.html"),
     })
     public String getStudent() throws IOException {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType("application/json;charset=utf-8");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter printWriter = response.getWriter();
-
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 
         Student student = studentMapper.getById(id);
+
         if (student == null) {
-            return CustomError.createCustomError("Không tồn tại sinh viên có ID " + id, 404, response, printWriter);
+            return CustomError.createCustomError("Không tồn tại sinh viên có ID " + id, 404, response);
         }
+        Map<String, Object> jsonObject = new HashMap<String, Object>();
+        jsonObject.put("student", student);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(student);
-
-        printWriter.print(json);
-        printWriter.flush();
-        printWriter.close();
-
-        return SUCCESS;
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonObject, 200, response);
     }
 
     // edit student
@@ -249,21 +211,16 @@ public class StudentAction extends ActionSupport {
             @Result(name = "success", location = "/index.html"),
     })
     public String editStudent() throws IOException {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType("application/json;charset=utf-8");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter printWriter = response.getWriter();
-
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 
         Student student = studentMapper.getById(id);
         if (student == null) {
-            return CustomError.createCustomError("Không tồn tại sinh viên có ID " + id, 404, response, printWriter);
+            return CustomError.createCustomError("Không tồn tại sinh viên có ID " + id, 404, response);
         }
         if (!isValid()) {
-            return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response, printWriter);
+            return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response);
         }
         student.setName(name);
         student.setBranch(branch);
@@ -271,31 +228,25 @@ public class StudentAction extends ActionSupport {
         student.setPhone(phone);
         student.setEmail(email);
         studentMapper.update(student);
-
-        Gson gson = new Gson();
-        String json = gson.toJson(student);
-
-        printWriter.print(json);
-        printWriter.flush();
-        printWriter.close();
+        Map<String, Object> jsonObject = new HashMap<String, Object>();
+        jsonObject.put("student", student);
 
         sqlSession.commit();
         sqlSession.close();
-
-        return SUCCESS;
+        return JsonResponse.createJsonResponse(jsonObject, 200, response);
     }
 
     // delete student
     @Action(value = "/api/v1/student/delete/*", params = { "id", "{1}" }, results = {
             @Result(location = "/index.html") })
-    public String deleteStudent() {
-        System.out.println("delete student: " + id);
+    public String deleteStudent() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
         studentMapper.delete(getId());
+        Map<String, Object> jsonObject = new HashMap<String, Object>();
+        jsonObject.put("message", "Xóa sinh viên " + getId() + " thành công");
         sqlSession.commit();
         sqlSession.close();
-        System.out.println("done");
-        return SUCCESS;
+        return JsonResponse.createJsonResponse(jsonObject, 200, response);
     }
 }

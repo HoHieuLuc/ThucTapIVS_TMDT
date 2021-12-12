@@ -1,10 +1,10 @@
 package com.thuctap.struts2_crud_mybatis.action;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +23,10 @@ import org.mindrot.jbcrypt.BCrypt;
 import mybatis.mapper.AccountMapper;
 
 import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
-import com.thuctap.struts2_crud_mybatis.errors.*;
 import com.thuctap.struts2_crud_mybatis.model.Account;
+import com.thuctap.struts2_crud_mybatis.utilities.JsonResponse;
 
 @InterceptorRef(value = "registerStack")
-@Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
-})
 public class RegisterAction extends ActionSupport {
     // Tạo SQL_SESSION_FACTORY để chuẩn bị cho kết nối database
     SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
@@ -46,7 +42,9 @@ public class RegisterAction extends ActionSupport {
     static final String USERNAME_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,14}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
 
-    private String username, password, email;
+    private String username;
+    private String password;
+    private String email;
 
     // region Getter and Setter
     public String getEmail() {
@@ -81,19 +79,16 @@ public class RegisterAction extends ActionSupport {
 
     // view register
     @Action(value = "/register", results = {
-            @Result(name = "success", location = "/register.html"),
+            @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
     public String viewRegister() {
         return SUCCESS;
     }
 
     @Action(value = "/registerAction", results = {
-            @Result(name = "success", location = "/register.html"),
+            @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
     public String register() throws IOException {
-        // PrintWriter dùng để in thông báo lỗi
-        PrintWriter printWriter = response.getWriter();
-        System.out.println(username + " " + password + " " + email);
         if (isValid()) {
             // Ở đây insert vô database sau khi validate form ok
             SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -126,33 +121,26 @@ public class RegisterAction extends ActionSupport {
                 return SUCCESS;
             } catch (PersistenceException e) {
                 // System.out.println(e.getMessage());
-                ArrayList<String> messages = new ArrayList<String>();
+                Map<String, Object> errors = new HashMap<String, Object>();
                 if (e.getMessage().contains("username_UNIQUE")) {
-                    messages.add("Ây da, username này đã có người dùng");
-                    messages.add("email sẽ được kiểm tra khi username không bị trùng");
+                    errors.put("username", "Tài khoản đã tồn tại");
                 }
                 if (e.getMessage().contains("email_UNIQUE")) {
-                    messages.add("Good job babe, username không bị trùng");
-                    messages.add("Oh nồ nô, email bị trùng rồi");
+                    errors.put("email", "Email đã tồn tại");
                 }
-                System.out.println(e.getMessage());
-                return ValidateError.push(messages, 400, response, printWriter);
+                return JsonResponse.createJsonResponse(errors, 409, response);
             }
         } else {
-            ArrayList<String> messages = new ArrayList<String>();
+            Map<String, Object> jsonObject = new HashMap<String, Object>();
             if (!Pattern.matches(USERNAME_REGEX, username)) {
-                messages.add(
-                        "Username Tối thiểu 6 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, không có kí tự khoảng trắng ");
-            } else {
-                messages.add("Username đúng quy tắc");
+                jsonObject.put("username",
+                        "Username có tối thiểu 6 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, không có kí tự khoảng trắng ");
             }
             if (!Pattern.matches(PASSWORD_REGEX, password)) {
-                messages.add(
-                        "Password Tối thiểu 8 và tối đa 14 ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt, không có khoảng trắng ");
-            } else {
-                messages.add("Password đúng quy tắc");
+                jsonObject.put("password",
+                        "Password có tối thiểu 8 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, một kí tự @ $ ! % * ? &");
             }
-            return ValidateError.push(messages, 400, response, printWriter);
+            return JsonResponse.createJsonResponse(jsonObject, 400, response);
         }
     }
 }
