@@ -32,7 +32,7 @@
   </filter-mapping>
 
   <welcome-file-list>
-    <welcome-file>start.html</welcome-file>
+    <welcome-file>/WEB-INF/jsp/index.jsp</welcome-file>
   </welcome-file-list>
 
 </web-app>
