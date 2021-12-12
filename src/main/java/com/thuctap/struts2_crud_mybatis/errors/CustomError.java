@@ -11,10 +11,10 @@ public class CustomError {
 
     public static String createCustomError(
             String message,
-            int errorCode, 
+            int errorCode,
             HttpServletResponse response,
-            PrintWriter printWriter
-            ) throws IOException {
+            PrintWriter printWriter) throws IOException {
+        System.out.println("bruh");
         response.setStatus(errorCode);
         printWriter.print("{\"message\":\"" + message + "\"}");
         printWriter.flush();

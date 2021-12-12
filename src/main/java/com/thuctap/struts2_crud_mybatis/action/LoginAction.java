@@ -2,7 +2,6 @@ package com.thuctap.struts2_crud_mybatis.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,15 +9,28 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
-import com.thuctap.struts2_crud_mybatis.errors.*;
+import org.mindrot.jbcrypt.BCrypt;
 
+import mybatis.mapper.AccountMapper;
+
+import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
+import com.thuctap.struts2_crud_mybatis.errors.*;
+import com.thuctap.struts2_crud_mybatis.model.Account;
+
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+        "namespace", "/",
+        "actionName", "bad-request"
+})
 public class LoginAction extends ActionSupport {
     // Respone hay dùng cho AJAX và JSON
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
+    SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
     private String username, password;
 
@@ -39,51 +51,50 @@ public class LoginAction extends ActionSupport {
     }
 
     @Action(value = "/login", results = {
-            @Result(name = "success", location = "/login.html"),
-            @Result(name = "loggedIn", type = "redirect", location = "/student/index"),
+            @Result(name = "notLoggedIn", location = "/login.html"),
+            @Result(name = "loggedIn", type = "redirect", location = "/welcome"),
     })
     public String viewLogin() {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        System.out.println("hmmmm");
         if (loggedIn == null || !loggedIn) {
-            return "success";
+            return "notLoggedIn";
         } else {
-            // nếu đã đăng nhập rồi thì sẽ tự chuyển sang trang student/index
-            // localhost:8080/.../login => student/index
+            // nếu đã đăng nhập rồi thì sẽ tự chuyển sang trang welcome
+            // localhost:8080/.../login => welcome
             return "loggedIn";
         }
     }
 
     @Action(value = "/loginAction", results = {
-            @Result(name = "success", type = "redirect", location = "/student/index"),
-            @Result(name = "input", location = "/login.html")
+            @Result(name = "loggedIn", type = "redirect", location = "/welcome"),
+            @Result(name = "success", location = "/login.html"),
     })
     public String login() throws IOException {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
-        // nếu đã đăng nhập rồi thì sẽ tự chuyển sang trang student/index
-        // localhost:8080/.../loginAction => student/index
+        // nếu đã đăng nhập rồi thì sẽ tự chuyển sang trang welcome
+        // localhost:8080/.../loginAction => welcome
         if (loggedIn != null && loggedIn) {
-            return SUCCESS;
+            return "loggedIn";
         }
 
-        // if no userName stored in the session,
-        // check the entered userName and password
-        if (username != null && username.equals("admin")
-                && password != null && password.equals("admin")) {
-            session.setAttribute("loggedIn", true);
-            // add userName to the session
-            session.setAttribute("userName", username);
-
-            return SUCCESS; // return welcome page
-        }
-        System.out.println("Login failed");
-
-        // in other cases, return login page
-        // Tạo một danh sách các lỗi bằng json thông qua Class ValidateError
-        ArrayList<String> messages = new ArrayList<String>();
-        messages.add("Username không hợp lệ" + username);
-        messages.add("Password không hợp lệ" + password);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
         PrintWriter printWriter = response.getWriter();
-        return ValidateError.push(messages, 400, response, printWriter);
+        AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
+        Account account = accountMapper.getByUsername(username);
+
+        //System.out.println("yes");
+        if (account != null) {
+            if (BCrypt.checkpw(password, account.getPassword())) {
+                System.out.println("Login success");
+                session.setAttribute("loggedIn", true);
+                session.setAttribute("username", username);
+                return "loggedIn";
+            }
+        }
+        sqlSession.close();
+
+        return CustomError.createCustomError("Sai tài khoản hoặc mật khẩu", 401, response, printWriter);
     }
 
     @Action(value = "/logout", results = {
