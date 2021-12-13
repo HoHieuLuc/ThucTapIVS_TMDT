@@ -73,7 +73,7 @@ const buildPagination = (page, totalPages, maxPages) => {
         }
     }
     
-    // trang hiện tại nhỏ hơn trang cuối thì mới hiện nút next
+    // trang hiện tại nhỏ hơn trang cuối thì mới bấm được nút next
     if (page < totalPages) {
         paginationHTML += `
             <li class="page-item">
