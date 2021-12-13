@@ -29,6 +29,8 @@
         </thead>
         <tbody id="student-list"></tbody>
     </table>
+    <div id="pagination" class="d-flex justify-content-center"></div>
 </div>
+<script src='<c:url value="/js/pagination.js"/>'></script>
 <script src='<c:url value="/js/student/browser.js"/>'></script>
 <jsp:include page="../footer.jsp" />

@@ -6,7 +6,7 @@ formDOM.addEventListener('submit', async (event) => {
     const formData = new FormData(formDOM);
     errorMsgDOM.textContent = '';
     try {
-        await axios.post('../../api/v1/student/create', formData);
+        await axios.post(`${baseURL}api/v1/student/create`, formData);
         window.location.href = './';
     } catch (error) {
         errorMsgDOM.textContent = error.response.data.message;
