@@ -9,7 +9,7 @@ console.log(params);
 
 const showStudent = async () => {
     try {
-        const { data: { student } } = await axios.get(`../../../api/v1/student/${id}`);
+        const { data: { student } } = await axios.get(`${baseURL}api/v1/student/${id}`);
         console.log(student);
         const { name, branch, percentage, phone, email } = student;
 
@@ -31,7 +31,7 @@ formDOM.addEventListener('submit', async (event) => {
     editBtnDOM.disabled = true;
     const formData = new FormData(formDOM);
     try {
-        const { data } = await axios.post(`../../../api/v1/student/edit/${id}`, formData);
+        const { data } = await axios.post(`${baseURL}api/v1/student/edit/${id}`, formData);
         console.log(data);
         formAlertDOM.style.display = 'block';
         formAlertDOM.textContent = `Cập nhật thông tin sinh viên thành công`;
