@@ -84,12 +84,12 @@ public class StudentAction extends ActionSupport {
         // System.out.println(search);
         int offset = (getPage() - 1) * rowsPerPage;
         int countStudent = studentMapper.count(getSearch());
-        int pageCount = (int) Math.ceil(countStudent / (double) rowsPerPage);
+        int totalPages = (int) Math.ceil(countStudent / (double) rowsPerPage);
         List<Student> listStudents = studentMapper.getByPage(getSearch(), offset, rowsPerPage);
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         jsonObject.put("students", listStudents);
-        jsonObject.put("pageCount", pageCount);
+        jsonObject.put("totalPages", totalPages);
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonObject, 200, response);
     }
