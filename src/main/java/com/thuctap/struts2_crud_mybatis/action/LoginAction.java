@@ -85,26 +85,22 @@ public class LoginAction extends ActionSupport {
 
         //Lấy ngày hiện tại
         Date today = Date.valueOf(LocalDate.now());
-       
-        //So sánh thời gian
-        // System.out.println(today.compareTo(expiredDate));
-        //System.out.println("yes");
+
         if (account != null) {
+            //Kiểm tra mật khẩu và thời hạn tài khoản
             if (BCrypt.checkpw(password, account.getPassword()) && today.compareTo(account.getDateExpired())<=0) {
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("username", username);
                 return "loggedIn";
             }
-        }
-        sqlSession.close();
 
-        //Tài khoản hợp lệ nhưng lại hết hạn  thì in thông báo cho người dùng biết
-        if (account != null) {
+            //Tài khoản hợp lệ nhưng lại hết hạn  thì in thông báo cho người dùng biết
             if (today.compareTo(account.getDateExpired())>0){
                 return CustomError.createCustomError("Tài khoản đã hết hạn", 401, response);
             } 
         }
-        
+        sqlSession.close();
+
         //Thông báo sai tài khoản
         return CustomError.createCustomError("Tài khoản sai tên đăng nhập hoặc mật khẩu", 401, response);
         
