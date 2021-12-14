@@ -9,13 +9,20 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 
 @Mapper
 public interface AccountMapper {
 	// get all user_admin
 	final String GET_ALL_ACCOUNTS = "SELECT * FROM USER_ADMIN";
-
 	@Select(GET_ALL_ACCOUNTS)
+	@Results(value = { @Result(property = "id", column = "ID"),
+			@Result(property = "username", column = "NAME"),
+			@Result(property = "password", column = "password"),
+			@Result(property = "email", column = "email"),
+			@Result(property = "dateCreated", column = "date_created"),
+			@Result(property = "dateExpired", column = "date_expired") })
 	public List<Account> getAll();
 
 	// get user by id

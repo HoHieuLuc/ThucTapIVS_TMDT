@@ -1,6 +1,8 @@
 package com.thuctap.struts2_crud_mybatis.action;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,16 +83,27 @@ public class LoginAction extends ActionSupport {
         AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
         Account account = accountMapper.getByUsername(username);
 
-        //System.out.println("yes");
+        //Lấy ngày hiện tại
+        Date today = Date.valueOf(LocalDate.now());
+
         if (account != null) {
-            if (BCrypt.checkpw(password, account.getPassword())) {
+            //Kiểm tra mật khẩu và thời hạn tài khoản
+            if (BCrypt.checkpw(password, account.getPassword()) && today.compareTo(account.getDateExpired())<=0) {
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("username", username);
                 return "loggedIn";
             }
+
+            //Tài khoản hợp lệ nhưng lại hết hạn  thì in thông báo cho người dùng biết
+            if (today.compareTo(account.getDateExpired())>0){
+                return CustomError.createCustomError("Tài khoản đã hết hạn", 401, response);
+            } 
         }
         sqlSession.close();
-        return CustomError.createCustomError("Sai tài khoản hoặc mật khẩu", 401, response);
+
+        //Thông báo sai tài khoản
+        return CustomError.createCustomError("Tài khoản sai tên đăng nhập hoặc mật khẩu", 401, response);
+        
     }
 
     @Action(value = "/logout", results = {
