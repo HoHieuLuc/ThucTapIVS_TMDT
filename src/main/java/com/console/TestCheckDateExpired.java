@@ -23,7 +23,13 @@ public class TestCheckDateExpired {
     SqlSession sqlSession = sqlSessionFactory.openSession();
     AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
     Account account = accountMapper.getByUsername("thienlam782");
-    System.out.println(account.toString());
+    //Lấy thời gian hiện tại
+    Date today = Date.valueOf(LocalDate.now());
+    //Lấy thời gian hết hạn tài khoảng
+    Date expiredDate = account.getDateExpired();
+   
+    //So sánh thời gian
+    System.out.println(today.compareTo(expiredDate));
 
     
    }
