@@ -14,6 +14,8 @@ import org.apache.ibatis.annotations.Results;
 
 @Mapper
 public interface AccountMapper {
+
+
 	// get all user_admin
 	final String GET_ALL_ACCOUNTS = "SELECT * FROM USER_ADMIN";
 	@Select(GET_ALL_ACCOUNTS)
