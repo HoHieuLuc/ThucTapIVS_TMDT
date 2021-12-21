@@ -14,7 +14,7 @@ import com.tmdt.khachhang.model.*;
 public interface TaiKhoanMapper {
 
     // Thêm tài khoản mới cho khách hàng
-    final String INSERT_TAI_KHOAN ="INSERT INTO `thuong_mai_dien_tu`.`tai_khoan` (`username`, `password`, `email`, `ngay_tao`, `so_dien_thoai`, `ngay_sinh`, `gioi_tinh`, `so_lan_canh_cao`, `status`, `ma_quyen`) VALUES (#{username}, #{password}, #{email}, #{ngay_tao}, #{so_dien_thoai}, #{ngay_sinh}, #{gioi_tinh},#{so_lan_canh_cao},#{status},#{ma_quyen});";
+    final String INSERT_TAI_KHOAN ="INSERT INTO `tai_khoan` (`username`, `password`, `email`, `ngay_tao`, `so_dien_thoai`, `ngay_sinh`, `gioi_tinh`, `so_lan_canh_cao`, `status`, `ma_quyen`) VALUES (#{username}, #{password}, #{email}, #{ngay_tao}, #{so_dien_thoai}, #{ngay_sinh}, #{gioi_tinh},#{so_lan_canh_cao},#{status},#{ma_quyen});";
     @Insert(INSERT_TAI_KHOAN)
     @Options(useGeneratedKeys = true,keyProperty ="id")
     public void insert(TaiKhoan taiKhoan);
@@ -24,5 +24,8 @@ public interface TaiKhoanMapper {
     @Select(MAX_INSERT_ID)
     public int getMax();
 
+    final String GET_ACCOUNT_BY_USERNAME = "SELECT * FROM `tai_khoan` WHERE USERNAME = #{username} LIMIT 1";
+    @Select(GET_ACCOUNT_BY_USERNAME)
+	public TaiKhoan getByUsername(String username);
     
 }

@@ -22,13 +22,13 @@
                 </div>
                 <div class="col-sm-12 form-group">
                     <input type="submit" class="btn btn-primary">Đăng nhập</button>
-                    
                 </div>
+                <p id="login_error"></p>
             </div>
         </form>
         <p id="login_error"></p>
     </div>
 </body>
-<script src='<c:url value="/js/khachHang/registerCustomer.js"/>'></script>
+<script src='<c:url value="/js/khachHang/loginCustomer.js"/>'></script>
 
 <jsp:include page="./footer.jsp" />
