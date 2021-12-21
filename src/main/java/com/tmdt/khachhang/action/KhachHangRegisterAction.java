@@ -26,7 +26,7 @@ import com.thuctap.struts2_crud_mybatis.utilities.JsonResponse;
 
 import mybatis.mapper.*;
 import com.tmdt.khachhang.model.*;
-public class KhachHangAction extends ActionSupport{
+public class KhachHangRegisterAction extends ActionSupport{
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
@@ -288,6 +288,14 @@ public class KhachHangAction extends ActionSupport{
             }
             return JsonResponse.createJsonResponse(jsonObject, 400, response);
         }
+    }
+
+    // trang đăng ký khách hàng
+        @Action(value = "/registerCustomer", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/registerCustomer.jsp"),
+    })
+    public String viewRegisterCustomer() {
+        return SUCCESS;
     }
     
 }

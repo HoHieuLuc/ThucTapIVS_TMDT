@@ -19,6 +19,12 @@
     <script>
         const baseURL = <c:url value="/"/>;
     </script>
+     <style>
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
     Đây là header
