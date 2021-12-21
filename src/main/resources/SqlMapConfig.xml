@@ -10,7 +10,7 @@
                 
                 <!-- Đặt url để kết nối đến database tên "details" trong localhost port "3306" -->
                 <!-- Thêm "?characterEncoding=latin1"  sau database có tên "details" để sửa lỗi "Unknown initial character set index '255' received from server" -->
-                <property name="url" value="jdbc:mysql://localhost:3306/details?characterEncoding=UTF-8" />
+                <property name="url" value="jdbc:mysql://localhost:3306/thuong_mai_dien_tu?characterEncoding=UTF-8" />
                 
                     <!-- Username và password phải là User Account mình vừa tạo trong MySQL Installer, chứ không phải Root Account -->
                 <property name="username" value="lamminhthien" />
