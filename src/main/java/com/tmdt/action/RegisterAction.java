@@ -205,7 +205,7 @@ public class RegisterAction extends ActionSupport{
         HttpServletRequest request = ServletActionContext.getRequest();
         HttpSession session = request.getSession();
 
-        @Action(value = "/khachhang/registerSubmit", results = {
+        @Action(value = "/registerSubmit", results = {
             @Result(name = "success", location = "index.html"),
     })
     public String registerSubmit() throws Exception {
@@ -241,9 +241,11 @@ public class RegisterAction extends ActionSupport{
                 // Flush database connection, batch script and close connection
                 sqlSession.commit();
                 sqlSession.close();
-                //
-                // session.setAttribute("loggedIn", true);
-                // session.setAttribute("username", username);
+
+                session.setAttribute("loggedIn", true);
+                session.setAttribute("username", username);
+                session.setAttribute("permission","KH");
+
                 return SUCCESS;
             } catch (PersistenceException e) {
                 // System.out.println(e.getMessage());

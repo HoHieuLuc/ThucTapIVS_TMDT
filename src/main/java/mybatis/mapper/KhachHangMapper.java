@@ -18,4 +18,9 @@ public interface KhachHangMapper {
     @Insert(INSERT_KHACH_HANG)
     @Options(useGeneratedKeys = true, keyProperty = "maKhachHang",keyColumn = "ma_khach_hang")
     public void insert(KhachHang khachHang);
+
+    //Lấy mã khách hàng dựa theo id của tài khoản (id sẽ được lưu trong session)
+    final String GET_MA_KHACH_HANG = "SELECT ma_khach_hang from `khach_hang` WHERE id_tai_khoan = #{id}";
+    @Select(GET_MA_KHACH_HANG)
+    public int getMaKh(int id);
 }

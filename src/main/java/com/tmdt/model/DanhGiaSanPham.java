@@ -49,6 +49,23 @@ public class DanhGiaSanPham {
         this.ngaySua = ngaySua;
     }
 
+    public DanhGiaSanPham() {
+    }
+    public DanhGiaSanPham(int maKhachHang, int soSao, String noiDung, String maSanPham, Date ngayTao, Date ngaySua) {
+        super();
+        this.maKhachHang = maKhachHang;
+        this.soSao = soSao;
+        this.noiDung = noiDung;
+        this.maSanPham = maSanPham;
+        this.ngayTao = ngayTao;
+        this.ngaySua = ngaySua;
+    }
+
+    
+
+    
+
+
 
   
 

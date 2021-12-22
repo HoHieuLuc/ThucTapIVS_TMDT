@@ -69,7 +69,10 @@ public class LoginAction extends ActionSupport{
        }
 
        SqlSession sqlSession = sqlSessionFactory.openSession();
+       //Mapper lấy tài khoản
        TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
+       //Mapper lấy thông tin khách Hàng
+       KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
        
        TaiKhoan account = taiKhoanMapper.getByUsername(username);
 
@@ -79,6 +82,8 @@ public class LoginAction extends ActionSupport{
                session.setAttribute("loggedIn", true);
                session.setAttribute("permission",account.getMaQuyen());
                session.setAttribute("username", username);
+               //lấy mã khách hàng bỏ vào trong session
+               session.setAttribute("maKhachHang",khachHangMapper.getMaKh(account.getId()));
                System.out.println("Bạn đã đăng nhập account với quyền là " + session.getAttribute("permission"));
                return "loggedIn";
            }

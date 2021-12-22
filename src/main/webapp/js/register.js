@@ -6,7 +6,7 @@ const validateRegisterForm = async () => {
     const formData = new FormData(formDOM);
     //Thực hiện request
     try {
-        await axios.post(`./khachhang/registerSubmit`, formData);
+        await axios.post(`./registerSubmit`, formData);
         window.location.href = "./";
     } catch (error) {
         const data = error.response.data;
