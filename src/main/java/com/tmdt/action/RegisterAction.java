@@ -1,4 +1,4 @@
-package com.tmdt.khachhang.action;
+package com.tmdt.action;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -21,12 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
-import com.thuctap.struts2_crud_mybatis.utilities.JsonResponse;
+import com.tmdt.db.ConnectDB;
+import com.tmdt.utilities.JsonResponse;
 
 import mybatis.mapper.*;
-import com.tmdt.khachhang.model.*;
-public class KhachHangRegisterAction extends ActionSupport{
+import com.tmdt.model.*;
+public class RegisterAction extends ActionSupport{
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
@@ -228,7 +228,7 @@ public class KhachHangRegisterAction extends ActionSupport{
 	        ZoneId defaultZoneId = ZoneId.systemDefault();
             // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
             Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
-            TaiKhoan taiKhoan = new TaiKhoan(gioi_tinh, so_lan_canh_cao, status, username, password, email, so_dien_thoai, "KH",ngay_tao, ngay_sinh);
+            TaiKhoan taiKhoan = new TaiKhoan(gioi_tinh, so_lan_canh_cao, status, username, password, email, so_dien_thoai, "KH", "null", ngay_tao, ngay_sinh);
             
 
             // Thêm dữ liệu vào database,

@@ -84,7 +84,7 @@
 
             </div>
         </form>
-        <script src='<c:url value="/js/khachHang/registerCustomer.js"/>'></script>
+        <script src='<c:url value="/js/register.js"/>'></script>
     </div>
    
 </body>

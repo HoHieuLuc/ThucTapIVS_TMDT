@@ -1,4 +1,4 @@
-package com.tmdt.khachhang.action;
+package com.tmdt.action;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
@@ -11,11 +11,11 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
-import com.thuctap.struts2_crud_mybatis.errors.CustomError;
+import com.tmdt.errors.CustomError;
 
 import mybatis.mapper.*;
-import com.tmdt.khachhang.model.*;
-public class KhachHangLoginAction extends ActionSupport{
+import com.tmdt.model.*;
+public class LoginAction extends ActionSupport{
    // Respone hay dùng cho AJAX và JSON
    HttpServletResponse response = ServletActionContext.getResponse();
    HttpServletRequest request = ServletActionContext.getRequest();
@@ -41,8 +41,8 @@ public class KhachHangLoginAction extends ActionSupport{
        this.password = password;
    }
 
-   @Action(value = "/loginCustomer", results = {
-           @Result(name = "notLoggedIn", location = "/WEB-INF/jsp/loginCustomer.jsp"),
+   @Action(value = "/login", results = {
+           @Result(name = "notLoggedIn", location = "/WEB-INF/jsp/login.jsp"),
            @Result(name = "loggedIn", type = "redirect", location = "/"),
    })
    public String viewLogin() {
@@ -56,7 +56,7 @@ public class KhachHangLoginAction extends ActionSupport{
        }
    }
 
-   @Action(value = "/loginCustomerAction", results = {
+   @Action(value = "/loginAction", results = {
            @Result(name = "loggedIn", type = "redirect", location = "/"),
            @Result(name = "success", location = "/WEB-INF/jsp/login.jsp"),
    })
@@ -77,7 +77,7 @@ public class KhachHangLoginAction extends ActionSupport{
            //Kiểm tra mật khẩu và thời hạn tài khoản
            if (BCrypt.checkpw(password, account.getPassword())) {
                session.setAttribute("loggedIn", true);
-               session.setAttribute("permission",account.getma_quyen());
+               session.setAttribute("permission",account.getMaQuyen());
                session.setAttribute("username", username);
                System.out.println("Bạn đã đăng nhập account với quyền là " + session.getAttribute("permission"));
                return "loggedIn";
@@ -89,7 +89,7 @@ public class KhachHangLoginAction extends ActionSupport{
        
    }
 
-   @Action(value = "/logoutCustomer", results = {
+   @Action(value = "/logout", results = {
            @Result(name = "success", location = "/", type = "redirect")
    })
    public String logout() {

@@ -1,4 +1,4 @@
-package com.tmdt.khachhang.model;
+package com.tmdt.model;
 
 public class ThongTinLienHe {
     public int maKhachHang;

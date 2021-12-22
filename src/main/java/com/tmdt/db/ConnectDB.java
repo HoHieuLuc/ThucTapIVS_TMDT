@@ -1,4 +1,4 @@
-package com.tmdt.khachhang.db;
+package com.tmdt.db;
 
 import java.io.Reader;
 
