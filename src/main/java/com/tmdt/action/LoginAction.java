@@ -1,20 +1,25 @@
 package com.tmdt.action;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
+
 import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.thuctap.struts2_crud_mybatis.db.ConnectDB;
+import com.tmdt.db.ConnectDB;
 import com.tmdt.errors.CustomError;
 
 import mybatis.mapper.*;
 import com.tmdt.model.*;
+
 public class LoginAction extends ActionSupport{
    // Respone hay dùng cho AJAX và JSON
    HttpServletResponse response = ServletActionContext.getResponse();
