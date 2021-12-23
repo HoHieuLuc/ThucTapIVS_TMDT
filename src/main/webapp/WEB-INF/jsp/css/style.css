@@ -1,0 +1,24 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    color: black;
+}
+.navbar-brand:hover {
+    color: rgb(253, 7, 7);
+}
+
+.nav-link {
+    margin-right: 10px;
+    margin-left: 10px;
+    color:10px;
+    text-transform:uppercase;
+}
+
+.nav-link:hover {
+    color: rgb(239 14 14 / 70%);
+}

@@ -1,0 +1,5 @@
+http://localhost:8080/TMDT-0.0.1-SNAPSHOT/login
+http://localhost:8080/TMDT-0.0.1-SNAPSHOT/register
+http://localhost:8080/TMDT-0.0.1-SNAPSHOT/viewDanhGiaSP
+
+Tui note lại mấy route cho ô test nhanh
