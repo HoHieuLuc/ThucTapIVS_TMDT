@@ -1,4 +1,4 @@
-package com.thuctap.struts2_crud_mybatis.action;
+package com.tmdt.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -16,7 +16,7 @@ public class GlobalAction extends ActionSupport {
 
     @Action(value = "/admin/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/admin/index.jsp")
-    }, interceptorRefs = { @InterceptorRef("loginStack") })
+    }, interceptorRefs = { @InterceptorRef("authStack") })
     public String adminPage() {
         return SUCCESS;
     }

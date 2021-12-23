@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Home</title>
     <!-- Bootstrap and Fontawesome css-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
@@ -75,7 +75,7 @@
                        <a class="nav-link" href="./login">Đăng nhập</a>
                    </li>
                     <li class="nav-item">
-                       <a class="nav-link" href="./registerCustomer">Đăng ký</a>
+                       <a class="nav-link" href="./register">Đăng ký</a>
                    </li>
                 </c:otherwise>
               </c:choose>

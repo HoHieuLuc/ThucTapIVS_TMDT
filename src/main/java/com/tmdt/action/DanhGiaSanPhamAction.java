@@ -105,7 +105,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     @Action(value = "/danhGiaSanPhamSubmit", results = {
         @Result(name = SUCCESS,location = "/index.html")
     })
-    public String danhGiaSanPhamSubmit() throws Exception {
+    public String danhGiaSanPhamSubmit() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);

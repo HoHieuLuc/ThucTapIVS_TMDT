@@ -1,4 +1,4 @@
-package com.thuctap.struts2_crud_mybatis.action;
+package com.tmdt.action;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
-import com.thuctap.struts2_crud_mybatis.errors.CustomError;
+import com.tmdt.errors.CustomError;
 
 public class ErrorAction {
     @Action(value = "/bad-request", results = { @Result(location = "/index.html") })

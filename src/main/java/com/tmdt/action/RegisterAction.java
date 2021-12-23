@@ -1,4 +1,5 @@
 package com.tmdt.action;
+
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -6,8 +7,8 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-
 import java.util.Date;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -24,43 +25,59 @@ import com.tmdt.utilities.JsonResponse;
 
 import mybatis.mapper.*;
 import com.tmdt.model.*;
-public class RegisterAction extends ActionSupport{
+
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
+@InterceptorRef("loggedInStack")
+public class RegisterAction extends ActionSupport {
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
-    static final String USERNAME_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,14}$";
+    static final String USERNAME_REGEX = "^[A-Za-z0-9]{6,14}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
     static final String PHONE_REGEX = "^[0-9]{9,12}";
-   
-    private Date ngay_sinh;
-    private String  ten, dia_chi,gioi_thieu;
+
+    private Date ngaySinh;
+    private String ten;
+    private String diaChi;
+    private String gioiThieu;
     private static final long serialVersionUID = 1L;
     private int id;
-    private int gioi_tinh,so_lan_canh_cao,status;
-    private String username, password, email, so_dien_thoai,facebook_link,twitter_link,trang_ca_nhan,ma_quyen,xac_nhan_password;
-     //region getter and setter
-    public String getXac_nhan_password() {
-        return xac_nhan_password;
+    private int gioiTinh;
+    private int soLanCanhCao;
+    private int status;
+    private String username;
+    private String password;
+    private String email;
+    private String soDienThoai;
+    private String facebookLink;
+    private String twitterLink;
+    private String trangCaNhan;
+    private String maQuyen;
+    private String xacNhanPassword;
+
+    // region getter and setter
+    public String getXacNhanPassword() {
+        return xacNhanPassword;
     }
 
-
-    public void setXac_nhan_password(String xac_nhan_password) {
-        this.xac_nhan_password = xac_nhan_password;
+    public void setXacNhanPassword(String xacNhanPassword) {
+        this.xacNhanPassword = xacNhanPassword;
     }
 
-
-    //Kiểm tra độ dài chuỗi có nằm trong khoảng từ min đến max
+    // Kiểm tra độ dài chuỗi có nằm trong khoảng từ min đến max
     public static boolean between(String variable, int minValueInclusive, int maxValueInclusive) {
-         return variable.length() >= minValueInclusive && variable.length() <= maxValueInclusive;
+        return variable.length() >= minValueInclusive && variable.length() <= maxValueInclusive;
     }
 
-
-    public Date getNgay_sinh() {
-        return ngay_sinh;
+    public Date getNgaySinh() {
+        return ngaySinh;
     }
 
-    public void setNgay_sinh(Date ngay_sinh) {
-        this.ngay_sinh = ngay_sinh;
+    public void setNgaySinh(Date ngaySinh) {
+        this.ngaySinh = ngaySinh;
     }
 
     public String getTen() {
@@ -71,20 +88,20 @@ public class RegisterAction extends ActionSupport{
         this.ten = ten;
     }
 
-    public String getDia_chi() {
-        return dia_chi;
+    public String getDiaChi() {
+        return diaChi;
     }
 
-    public void setDia_chi(String dia_chi) {
-        this.dia_chi = dia_chi;
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
     }
 
-    public String getGioi_thieu() {
-        return gioi_thieu;
+    public String getGioiThieu() {
+        return gioiThieu;
     }
 
-    public void setGioi_thieu(String gioi_thieu) {
-        this.gioi_thieu = gioi_thieu;
+    public void setGioiThieu(String gioiThieu) {
+        this.gioiThieu = gioiThieu;
     }
 
     public int getId() {
@@ -95,28 +112,28 @@ public class RegisterAction extends ActionSupport{
         this.id = id;
     }
 
-    public String getMa_quyen() {
-        return ma_quyen;
+    public String getMaQuyen() {
+        return maQuyen;
     }
 
-    public void setMa_quyen(String ma_quyen) {
-        this.ma_quyen = ma_quyen;
+    public void setMaQuyen(String maQuyen) {
+        this.maQuyen = maQuyen;
     }
 
-    public int getGioi_tinh() {
-        return gioi_tinh;
+    public int getGioiTinh() {
+        return gioiTinh;
     }
 
-    public void setGioi_tinh(int gioi_tinh) {
-        this.gioi_tinh = gioi_tinh;
+    public void setGioiTinh(int gioiTinh) {
+        this.gioiTinh = gioiTinh;
     }
 
-    public int getSo_lan_canh_cao() {
-        return so_lan_canh_cao;
+    public int getSoLanCanhCao() {
+        return soLanCanhCao;
     }
 
-    public void setSo_lan_canh_cao(int so_lan_canh_cao) {
-        this.so_lan_canh_cao = so_lan_canh_cao;
+    public void setSoLanCanhCao(int soLanCanhCao) {
+        this.soLanCanhCao = soLanCanhCao;
     }
 
     public int getStatus() {
@@ -151,69 +168,67 @@ public class RegisterAction extends ActionSupport{
         this.email = email;
     }
 
-    public String getSo_dien_thoai() {
-        return so_dien_thoai;
+    public String getSoDienThoai() {
+        return soDienThoai;
     }
 
-    public void setSo_dien_thoai(String so_dien_thoai) {
-        this.so_dien_thoai = so_dien_thoai;
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
     }
 
-    public String getFacebook_link() {
-        return facebook_link;
+    public String getFacebookLink() {
+        return facebookLink;
     }
 
-    public void setFacebook_link(String facebook_link) {
-        this.facebook_link = facebook_link;
+    public void setFacebookLink(String facebookLink) {
+        this.facebookLink = facebookLink;
     }
 
-    public String getTwitter_link() {
-        return twitter_link;
+    public String getTwitterLink() {
+        return twitterLink;
     }
 
-    public void setTwitter_link(String twitter_link) {
-        this.twitter_link = twitter_link;
+    public void setTwitterLink(String twitterLink) {
+        this.twitterLink = twitterLink;
     }
 
-    public String getTrang_ca_nhan() {
-        return trang_ca_nhan;
+    public String getTrangCaNhan() {
+        return trangCaNhan;
     }
 
-    public void setTrang_ca_nhan(String trang_ca_nhan) {
-        this.trang_ca_nhan = trang_ca_nhan;
+    public void setTrangCaNhan(String trangCaNhan) {
+        this.trangCaNhan = trangCaNhan;
     }
-    
 
-    //end region getter setter
+    // end region getter setter
 
-
-    //Validate All Field
+    // Validate All Field
     public boolean isValid() {
-        
-        return Pattern.matches(USERNAME_REGEX, username) && between(password,8,14)
-                && Pattern.matches(EMAIL_REGEX,  email) && between(ten,10,20) && Pattern.matches(PHONE_REGEX, so_dien_thoai)
-                 && between(facebook_link,0,30) && between(twitter_link,0,30) && (xac_nhan_password.equals(password));
+        return Pattern.matches(USERNAME_REGEX, username) && between(password, 8, 14)
+                && Pattern.matches(EMAIL_REGEX, email) && between(ten, 10, 20)
+                && between(facebookLink, 0, 30) && between(twitterLink, 0, 30)
+                && Pattern.matches(PHONE_REGEX, soDienThoai)
+                && (xacNhanPassword.equals(password));
     }
-    
-        // Tạo SQL_SESSION_FACTORY để chuẩn bị cho kết nối database
-        SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-        // Respone hay dùng cho AJAX và JSON
-        HttpServletResponse response = ServletActionContext.getResponse();
-        HttpServletRequest request = ServletActionContext.getRequest();
-        HttpSession session = request.getSession();
+    // Tạo SQL_SESSION_FACTORY để chuẩn bị cho kết nối database
+    SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-        @Action(value = "/registerSubmit", results = {
-            @Result(name = "success", location = "/index.html"),
+    // Respone hay dùng cho AJAX và JSON
+    HttpServletResponse response = ServletActionContext.getResponse();
+    HttpServletRequest request = ServletActionContext.getRequest();
+    HttpSession session = request.getSession();
+
+    @Action(value = "/registerSubmit", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
-    public String registerSubmit() throws Exception {
+    public String registerSubmit() throws IOException {
         if (isValid()) {
             // Ở đây insert vô database sau khi validate form ok
             SqlSession sqlSession = sqlSessionFactory.openSession();
             // Tạo KhachHangMapper và TaiKhoanMapper
             KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
             TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
-
 
             // String hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
             // Hash password sang BCrypt:
@@ -222,26 +237,30 @@ public class RegisterAction extends ActionSupport{
             // Tạo đối tượng lấy dữ liệu TaiKhoan từ constructor
             // Lấy ngày hiện tại:
             LocalDate today = LocalDate.now();
-            //Múi giờ mặc định
-	        ZoneId defaultZoneId = ZoneId.systemDefault();
+            // Múi giờ mặc định
+            ZoneId defaultZoneId = ZoneId.systemDefault();
             // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
             Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
-            TaiKhoan taiKhoan = new TaiKhoan(gioi_tinh, so_lan_canh_cao, status, username, password, email, so_dien_thoai, "KH", "null", ngay_tao, ngay_sinh);
-            
+            TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, soLanCanhCao, status, username, password, email,
+                    soDienThoai, "KH", "null", ngay_tao, ngaySinh);
 
             // Thêm dữ liệu vào database,
             // Kiểm tra tài khoản mới có trùng username,email với tài khoản cũ
             try {
                 taiKhoanMapper.insert(taiKhoan);
-                //Khi tạo tài khoản thành công thì mới tạo thông tin khách hàng
-                KhachHang khachHang = new KhachHang(taiKhoanMapper.getCurrentInsertId(username),0, ten, dia_chi, gioi_thieu);
+                // Khi tạo tài khoản thành công thì mới tạo thông tin khách hàng
+                KhachHang khachHang = new KhachHang(taiKhoanMapper.getCurrentInsertId(username), 0, ten, diaChi,
+                        gioiThieu);
                 khachHangMapper.insert(khachHang);
 
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("username", username);
-                session.setAttribute("permission","KH");
+                session.setAttribute("permission", "KH");
                 int maKhachHang = khachHangMapper.getMaKh(taiKhoanMapper.getCurrentInsertId(username));
-                session.setAttribute("maKhachHang",maKhachHang);
+                session.setAttribute("maKhachHang", maKhachHang);
+
+                // Flush database connection, batch script and close connection
+                sqlSession.commit();
                 return SUCCESS;
             } catch (PersistenceException e) {
                 // System.out.println(e.getMessage());
@@ -254,6 +273,8 @@ public class RegisterAction extends ActionSupport{
                 }
                 System.out.println(e.getMessage());
                 return JsonResponse.createJsonResponse(errors, 409, response);
+            } finally {
+                sqlSession.close();
             }
         } else {
             Map<String, Object> jsonObject = new HashMap<String, Object>();
@@ -261,40 +282,38 @@ public class RegisterAction extends ActionSupport{
                 jsonObject.put("username",
                         "Username có tối thiểu 6 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, không có kí tự khoảng trắng ");
             }
-            if (!between(password,8,14)) {
+            if (!between(password, 8, 14)) {
                 jsonObject.put("password",
                         "Password có tối thiểu 8 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, một kí tự @ $ ! % * ? &");
             }
-            if (!Pattern.matches(EMAIL_REGEX, email)){
-                jsonObject.put("email","email không đúng định dạng");
+            if (!Pattern.matches(EMAIL_REGEX, email)) {
+                jsonObject.put("email", "email không đúng định dạng");
             }
-            if (!between(ten,10,20)){
-                jsonObject.put("ten","Tên phải từ 10 đến 20 kí tự");
+            if (!between(ten, 10, 20)) {
+                jsonObject.put("ten", "Tên phải từ 10 đến 20 kí tự");
             }
-            if (!between(facebook_link,0,30)){
-                jsonObject.put("facebook_link","Facebook link không quá 30 kí tự");
+            if (!between(facebookLink, 0, 30)) {
+                jsonObject.put("facebookLink", "Facebook link không quá 30 kí tự");
             }
-            if (!between(twitter_link,0,30)){
-                jsonObject.put("twitter_link","Twitter link không quá 30 kí tự");
+            if (!between(twitterLink, 0, 30)) {
+                jsonObject.put("twitterLink", "Twitter link không quá 30 kí tự");
             }
-            if (xac_nhan_password.equals(password))
-            {
-                jsonObject.put("xac_nhan_password","Mật khẩu nhập lại không khớp");
+            if (xacNhanPassword.equals(password)) {
+                jsonObject.put("xac_nhan_password", "Mật khẩu nhập lại không khớp");
             }
-            if (!Pattern.matches(PHONE_REGEX,so_dien_thoai))
-            {
-                jsonObject.put("dien_thoai","Số điện thoại phải từ 9 đến 12 số");
+            if (!Pattern.matches(PHONE_REGEX, soDienThoai)) {
+                jsonObject.put("dien_thoai", "Số điện thoại phải từ 9 đến 12 số");
             }
             return JsonResponse.createJsonResponse(jsonObject, 400, response);
         }
     }
 
     // trang đăng ký khách hàng
-        @Action(value = "/registerCustomer", results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/registerCustomer.jsp"),
+    @Action(value = "/register", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
     public String viewRegisterCustomer() {
         return SUCCESS;
     }
-    
+
 }
