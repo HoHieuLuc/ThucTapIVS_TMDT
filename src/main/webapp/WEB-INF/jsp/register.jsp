@@ -15,32 +15,32 @@
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Địa chỉ</label>
-                    <input type="text" class="form-control" name="dia_chi"  placeholder="Nhập địa chỉ."
+                    <input type="text" class="form-control" name="diaChi"  placeholder="Nhập địa chỉ."
                         required>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Giới thiệu bản thân</label>
-                    <input type="text" class="form-control" name="gioi_thieu"  placeholder="Viết giới thiệu về bản thân (Tối đa 255 kí tự)"
-                        required>
+                    <textarea type="text" class="form-control" name="gioiThieu"  placeholder="Viết giới thiệu về bản thân (Tối đa 255 kí tự)"
+                        required></textarea>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Số điện thoại</label>
-                    <input type="text" class="form-control" name="so_dien_thoai"  placeholder="Số điện thoại"
+                    <input type="text" class="form-control" name="soDienThoai"  placeholder="Số điện thoại"
                         required>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Twitter</label>
-                    <input type="text" class="form-control" name="twitter_link" 
+                    <input type="text" class="form-control" name="twitterLink" 
                         placeholder="">
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Facebook</label>
-                    <input type="text" class="form-control" name="facebook_link" 
+                    <input type="text" class="form-control" name="facebookLink" 
                         placeholder="">
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Trang cá nhân</label>
-                    <input type="text" class="form-control" name="trang_ca_nhan"  placeholder="Số điện thoại"
+                    <input type="text" class="form-control" name="trangCaNhan"  placeholder="Số điện thoại"
                         required>
                 </div>
                 <div class="col-sm-6 form-group">
@@ -60,18 +60,18 @@
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Ngày sinh</label>
-                    <input type="Date" name="ngay_sinh" class="form-control"  placeholder="" required>
+                    <input type="Date" name="ngaySinh" class="form-control"  placeholder="" required>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Giới tính</label>
-                    <select  class="form-control browser-default custom-select">
-                        <option name="gioi_tinh" value="0">Nam</option>
-                        <option name="gioi_tinh" value="1">Nữ</option>
+                    <select name="gioiTinh" class="form-control browser-default custom-select">
+                        <option value="0">Nam</option>
+                        <option value="1">Nữ</option>
                     </select>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Xác nhận mật khẩu</label>
-                    <input type="password" name="xac_nhan_password" class="form-control" 
+                    <input type="password" name="xacNhanPassword" class="form-control" 
                         placeholder="Nhập lại mật khẩu" required>
                 </div>
                 <div class="col-sm-12">
