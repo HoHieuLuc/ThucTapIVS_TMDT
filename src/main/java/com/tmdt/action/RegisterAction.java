@@ -30,6 +30,7 @@ import com.tmdt.model.*;
     "namespace", "/",
     "actionName", "bad-request"
 })
+@InterceptorRef("loggedInStack")
 public class RegisterAction extends ActionSupport {
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
