@@ -21,8 +21,7 @@
                                 </c:otherwise>
                             </c:choose>
                             </div>
-                            <!--Mã sản phẩm là thuộc tính ẩn -->
-                            <div id="maSP_hiddenDom"></div>
+
 
                             <div class="form-group">
                                 <label>Nội dung</label>
