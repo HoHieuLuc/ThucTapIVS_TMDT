@@ -8,6 +8,7 @@ import org.apache.struts2.convention.annotation.*;
 
 import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,18 +72,36 @@ public class LoginAction extends ActionSupport {
         // Mapper lấy tài khoản
         TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
         // Mapper lấy thông tin khách Hàng
-        KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
 
         TaiKhoan account = taiKhoanMapper.getByUsername(username);
         if (account != null) {
             // Kiểm tra mật khẩu và thời hạn tài khoản
             if (BCrypt.checkpw(password, account.getPassword())) {
-                System.out.println("bababooey");
+                System.out.println("account: " + account.toString());
+                Map<String, Object> loginInfo;
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("permission", account.getMaQuyen());
                 session.setAttribute("username", username);
-                // lấy mã khách hàng bỏ vào trong session
-                session.setAttribute("maKhachHang", khachHangMapper.getMaKh(account.getId()));
+                if (account.getMaQuyen().equals("KH")) {
+                    loginInfo = taiKhoanMapper.getKhLoginInfoByUsername(username);
+                    int maNguoiDung = (int) loginInfo.get("maNguoiDung");
+                    session.setAttribute("maNguoiDung", maNguoiDung); // mã khách hàng
+                } else {
+                    loginInfo = taiKhoanMapper.getNvLoginInfoByUsername(username);
+                    String maNguoiDung = (String) loginInfo.get("maNguoiDung");
+                    session.setAttribute("maNguoiDung", maNguoiDung); // nhân viên
+                }
+                System.out.println("loginInfo: " + loginInfo.toString());
+                
+                String ten = (String) loginInfo.get("ten");
+                int level = (int) loginInfo.get("level");
+                String avatar = (String) loginInfo.get("avatar");
+
+                session.setAttribute("accountID", account.getId());
+                session.setAttribute("ten", ten);
+                session.setAttribute("level", level);
+                session.setAttribute("avatar", avatar);
+
                 System.out.println("Bạn đã đăng nhập account với quyền là " + session.getAttribute("permission"));
                 return "loggedIn";
             }
@@ -101,6 +120,12 @@ public class LoginAction extends ActionSupport {
     public String logout() {
         session.removeAttribute("loggedIn");
         session.removeAttribute("userName");
+        session.removeAttribute("permission");
+        session.removeAttribute("accountID");
+        session.removeAttribute("maNguoiDung");
+        session.removeAttribute("ten");
+        session.removeAttribute("level");
+        session.removeAttribute("avatar");
         return SUCCESS;
     }
 

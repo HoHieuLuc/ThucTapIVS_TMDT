@@ -32,10 +32,11 @@ import com.tmdt.model.*;
 })
 @InterceptorRef("loggedInStack")
 public class RegisterAction extends ActionSupport {
+    private static final long serialVersionUID = 1L;
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
-    static final String USERNAME_REGEX = "^[A-Za-z0-9]{6,14}$";
+    static final String USERNAME_REGEX = "^[A-Za-z0-9]{6,20}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
     static final String PHONE_REGEX = "^[0-9]{9,12}";
 
@@ -43,11 +44,7 @@ public class RegisterAction extends ActionSupport {
     private String ten;
     private String diaChi;
     private String gioiThieu;
-    private static final long serialVersionUID = 1L;
-    private int id;
     private int gioiTinh;
-    private int soLanCanhCao;
-    private int status;
     private String username;
     private String password;
     private String email;
@@ -55,7 +52,6 @@ public class RegisterAction extends ActionSupport {
     private String facebookLink;
     private String twitterLink;
     private String trangCaNhan;
-    private String maQuyen;
     private String xacNhanPassword;
 
     // region getter and setter
@@ -104,44 +100,12 @@ public class RegisterAction extends ActionSupport {
         this.gioiThieu = gioiThieu;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getMaQuyen() {
-        return maQuyen;
-    }
-
-    public void setMaQuyen(String maQuyen) {
-        this.maQuyen = maQuyen;
-    }
-
     public int getGioiTinh() {
         return gioiTinh;
     }
 
     public void setGioiTinh(int gioiTinh) {
         this.gioiTinh = gioiTinh;
-    }
-
-    public int getSoLanCanhCao() {
-        return soLanCanhCao;
-    }
-
-    public void setSoLanCanhCao(int soLanCanhCao) {
-        this.soLanCanhCao = soLanCanhCao;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getUsername() {
@@ -241,26 +205,37 @@ public class RegisterAction extends ActionSupport {
             ZoneId defaultZoneId = ZoneId.systemDefault();
             // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
             Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
-            TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, soLanCanhCao, status, username, password, email,
+            TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, 0, 1, username, password, email,
                     soDienThoai, "KH", "null", ngay_tao, ngaySinh);
 
             // Thêm dữ liệu vào database,
             // Kiểm tra tài khoản mới có trùng username,email với tài khoản cũ
             try {
                 taiKhoanMapper.insert(taiKhoan);
+                int accountID = taiKhoanMapper.getIdByUsername(username);
                 // Khi tạo tài khoản thành công thì mới tạo thông tin khách hàng
-                KhachHang khachHang = new KhachHang(taiKhoanMapper.getCurrentInsertId(username), 0, ten, diaChi,
+                KhachHang khachHang = new KhachHang(accountID, 0, ten, diaChi,
                         gioiThieu);
                 khachHangMapper.insert(khachHang);
+               
+                // Flush database connection, batch script and close connection
+                sqlSession.commit();
+
+                Map<String, Object> loginInfo = taiKhoanMapper.getKhLoginInfoByUsername(username);
+                System.out.println(loginInfo);
+
+                int maKhachHang = (int) loginInfo.get("maNguoiDung");
+                String avatar = (String) loginInfo.get("avatar");
 
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("username", username);
+                session.setAttribute("accountID", accountID);
+                session.setAttribute("maNguoiDung", maKhachHang);
+                session.setAttribute("ten", ten);
+                session.setAttribute("level", 0);
+                session.setAttribute("avatar", avatar);
                 session.setAttribute("permission", "KH");
-                int maKhachHang = khachHangMapper.getMaKh(taiKhoanMapper.getCurrentInsertId(username));
-                session.setAttribute("maKhachHang", maKhachHang);
 
-                // Flush database connection, batch script and close connection
-                sqlSession.commit();
                 return SUCCESS;
             } catch (PersistenceException e) {
                 // System.out.println(e.getMessage());
@@ -280,22 +255,22 @@ public class RegisterAction extends ActionSupport {
             Map<String, Object> jsonObject = new HashMap<String, Object>();
             if (!Pattern.matches(USERNAME_REGEX, username)) {
                 jsonObject.put("username",
-                        "Username có tối thiểu 6 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, không có kí tự khoảng trắng ");
+                        "Username có tối thiểu 6 ký tự và tối đa 20 kí tự gồm chữ thường, chữ hoa và số");
             }
-            if (!between(password, 8, 14)) {
+            if (!between(password, 8, 30)) {
                 jsonObject.put("password",
-                        "Password có tối thiểu 8 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, một kí tự @ $ ! % * ? &");
+                        "Password có tối thiểu 8 ký tự và tối đa 30 kí tự");
             }
             if (!Pattern.matches(EMAIL_REGEX, email)) {
                 jsonObject.put("email", "email không đúng định dạng");
             }
-            if (!between(ten, 10, 20)) {
-                jsonObject.put("ten", "Tên phải từ 10 đến 20 kí tự");
+            if (!between(ten, 2, 50)) {
+                jsonObject.put("ten", "Tên phải từ 2 đến 50 kí tự");
             }
-            if (!between(facebookLink, 0, 30)) {
+            if (!between(facebookLink, 0, 100)) {
                 jsonObject.put("facebookLink", "Facebook link không quá 30 kí tự");
             }
-            if (!between(twitterLink, 0, 30)) {
+            if (!between(twitterLink, 0, 100)) {
                 jsonObject.put("twitterLink", "Twitter link không quá 30 kí tự");
             }
             if (xacNhanPassword.equals(password)) {
