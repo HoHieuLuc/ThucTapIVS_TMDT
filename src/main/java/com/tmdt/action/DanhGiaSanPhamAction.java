@@ -85,7 +85,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     }
 
     // lấy dữ liệu đánh giá sản phẩm hiển thị lên web bằng ajax
-    @Action(value = "/viewDanhGiaSP", results = {
+    @Action(value = "/viewDanhGiaSP/*",params = { "maSanPham", "{1}" },results = {
             @Result(name = "success", location = "/WEB-INF/jsp/danhGiaSanPham.jsp")
     })
     public String viewDanhGiaSP() {
@@ -117,6 +117,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
         int maKhachHang =(int) session.getAttribute("maKhachHang");
         DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, maSanPham, ngayTao, ngayTao);
+        System.out.println("Debug:Mã khách hàng:" + maKhachHang + " Mã Sản phẩm:" + maSanPham + "Star:" + soSao + "Nội dung:" + noiDung);
         //DanhGiaSanPham dgsp = new DanhGiaSanPham(2, 5, "test cho khách hàng 2", "SP001", ngayTao, ngayTao);
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
@@ -128,6 +129,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
                 return JsonResponse.createJsonResponse(jsonObject, 404, response);
             } catch(BindingException e) {
                 danhGiaSanPhamMapper.themDGSP(dgsp);
+                
             }
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
