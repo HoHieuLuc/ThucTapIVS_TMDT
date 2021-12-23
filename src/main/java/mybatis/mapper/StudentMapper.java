@@ -2,8 +2,6 @@ package mybatis.mapper;
 
 import java.util.List;
 
-import com.thuctap.struts2_crud_mybatis.model.Student;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,13 +25,13 @@ public interface StudentMapper {
 			@Result(property = "percentage", column = "PERCENTAGE"),
 			@Result(property = "phone", column = "PHONE"),
 			@Result(property = "email", column = "EMAIL") })
-	public List<Student> getAll();
+	public List<Object> getAll();
 
 	// get student by id
 	final String GET_STUDENT_BY_ID = "SELECT * FROM STUDENT WHERE ID = #{id}";
 
 	@Select(GET_STUDENT_BY_ID)
-	public Student getById(int id);
+	public Object getById(int id);
 
 	// inert student
 	final String INSERT_STUDENT = "INSERT INTO STUDENT (NAME, BRANCH, PERCENTAGE, PHONE, EMAIL ) "
@@ -41,14 +39,14 @@ public interface StudentMapper {
 
 	@Insert(INSERT_STUDENT)
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public void insert(Student student);
+	public void insert(Object student);
 
 	// update student
 	final String UPDATE_STUDENT = "UPDATE STUDENT SET EMAIL = #{email}, NAME = #{name}, "
 			+ "BRANCH = #{branch}, PERCENTAGE = #{percentage}, PHONE = #{phone} WHERE ID = #{id}";
 
 	@Update(UPDATE_STUDENT)
-	public void update(Student student);
+	public void update(Object student);
 
 	// delete student by id
 	final String DELETE_STUDENT_BY_ID = "DELETE from STUDENT WHERE ID = #{id}";
@@ -60,7 +58,7 @@ public interface StudentMapper {
 	final String SEARCH_STUDENT = "SELECT * FROM STUDENT WHERE NAME LIKE CONCAT('%', #{search}, '%') OR EMAIL LIKE CONCAT('%', #{search}, '%')";
 
 	@Select(SEARCH_STUDENT)
-	public List<Student> search(String search);
+	public List<Object> search(String search);
 
 	// đếm số lượng với điều kiện để phân trang
 	final String COUNT_STUDENT = "SELECT COUNT(*) FROM STUDENT WHERE NAME LIKE CONCAT('%', #{search}, '%') OR EMAIL LIKE CONCAT('%', #{search}, '%')";
@@ -70,5 +68,5 @@ public interface StudentMapper {
 	// get student by page
 	final String GET_STUDENT_BY_PAGE = "SELECT * FROM STUDENT WHERE NAME LIKE CONCAT('%', #{search}, '%') OR EMAIL LIKE CONCAT('%', #{search}, '%') LIMIT #{offset}, #{rowsPerPage}";
 	@Select(GET_STUDENT_BY_PAGE)
-	public List<Student> getByPage(@Param("search") String search, @Param("offset") int offset, @Param("rowsPerPage") int rowsPerPage);
+	public List<Object> getByPage(@Param("search") String search, @Param("offset") int offset, @Param("rowsPerPage") int rowsPerPage);
 }
