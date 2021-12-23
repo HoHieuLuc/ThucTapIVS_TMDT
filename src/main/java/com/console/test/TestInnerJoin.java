@@ -22,7 +22,19 @@ import mybatis.mapper.KhachHangMapper;
 
 public class TestInnerJoin {
 static SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
-   
+
+        //Hàm kiểm tra null 
+        public boolean isNullOrZero(final Number number){
+            return number == null ||
+                    (
+                    number instanceof Integer ? number.intValue() == 0 : 
+                        number instanceof Long    ? number.longValue() == 0 :
+                    number instanceof Double  ? number.doubleValue() == 0 :
+                    number instanceof Short   ? number.shortValue() == 0 :
+                        number.floatValue() == 0
+                    );
+        }
+
    public static void main(String[] args) {
       SqlSession sqlSession = sqlSessionFactory.openSession();
 
@@ -37,11 +49,10 @@ static SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
       // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
       Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
       DanhGiaSanPham dgsp = new DanhGiaSanPham(2, 5, "test cho khách hàng 2", "SP001", ngayTao, ngayTao);
-      try {
-          danhGiaSanPhamMapper.themDGSP(dgsp);
-      } catch (PersistenceException e) {
-          System.out.println(e.getMessage());
-      }
+        int commented = danhGiaSanPhamMapper.checkCusCommented("SP002",1);
+        
+        
+        
       sqlSession.commit();
       sqlSession.close();
    }

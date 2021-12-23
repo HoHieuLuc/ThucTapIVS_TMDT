@@ -35,4 +35,10 @@ public interface DanhGiaSanPhamMapper {
     @Insert(THEM_DANH_GIA_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maDanhGia",keyColumn = "ma_danh_gia")
     public void themDGSP(DanhGiaSanPham dgsp);
+
+
+	//Lấy id tài khoản vừa tạo
+	final String CHECK_CUSTOMER_COMMENTED_PRODUCE = "select ma_khach_hang from danh_gia_san_pham where ma_san_pham = #{maSanPham} and ma_khach_hang = #{maKhachHang} limit 1";
+	@Select(CHECK_CUSTOMER_COMMENTED_PRODUCE)
+	public int checkCusCommented(@Param("maSanPham") String maSanPham, @Param("maKhachHang") int maKhachHang);
 }

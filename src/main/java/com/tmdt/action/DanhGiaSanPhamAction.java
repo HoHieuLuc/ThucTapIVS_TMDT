@@ -7,6 +7,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
+import org.apache.ibatis.binding.BindingException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -118,10 +119,21 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         int maKhachHang =(int) session.getAttribute("maKhachHang");
         DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, "SP001", ngayTao, ngayTao);
         //DanhGiaSanPham dgsp = new DanhGiaSanPham(2, 5, "test cho khách hàng 2", "SP001", ngayTao, ngayTao);
+
+        Map<String, Object> jsonObject = new HashMap<String, Object>();
         try {
-            danhGiaSanPhamMapper.themDGSP(dgsp);
+            try {
+                danhGiaSanPhamMapper.checkCusCommented("SP001", maKhachHang);
+                jsonObject.put("error","Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
+                System.out.println("Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
+                return JsonResponse.createJsonResponse(jsonObject, 404, response);
+            } catch(BindingException e) {
+                danhGiaSanPhamMapper.themDGSP(dgsp);
+            }
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
+            jsonObject.put("lỗi", "Thêm bình luận không được, vui lòng kiểm tra bạn");
+            return JsonResponse.createJsonResponse(jsonObject, 404, response);
         }
         sqlSession.commit();
         sqlSession.close();
