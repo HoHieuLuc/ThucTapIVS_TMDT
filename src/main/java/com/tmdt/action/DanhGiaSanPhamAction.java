@@ -5,7 +5,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
-import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
 import org.apache.ibatis.binding.BindingException;
 import java.time.LocalDate;
@@ -117,13 +116,13 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
         Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
         int maKhachHang =(int) session.getAttribute("maKhachHang");
-        DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, "SP001", ngayTao, ngayTao);
+        DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, maSanPham, ngayTao, ngayTao);
         //DanhGiaSanPham dgsp = new DanhGiaSanPham(2, 5, "test cho khách hàng 2", "SP001", ngayTao, ngayTao);
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         try {
             try {
-                danhGiaSanPhamMapper.checkCusCommented("SP001", maKhachHang);
+                danhGiaSanPhamMapper.checkCusCommented(maSanPham, maKhachHang);
                 jsonObject.put("error","Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
                 System.out.println("Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
                 return JsonResponse.createJsonResponse(jsonObject, 404, response);
@@ -133,7 +132,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
             jsonObject.put("lỗi", "Thêm bình luận không được, vui lòng kiểm tra bạn");
-            return JsonResponse.createJsonResponse(jsonObject, 404, response);
+            return JsonResponse.createJsonResponse(jsonObject, 404, response);  
         }
         sqlSession.commit();
         sqlSession.close();
