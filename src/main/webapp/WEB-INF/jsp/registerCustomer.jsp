@@ -51,10 +51,12 @@
                 <div class="col-sm-3 form-group">
                     <label>Username</label>
                     <input type="text" class="form-control" name="username"  placeholder="Username" required>
+                    <p id="username_error"></p>
                 </div>
                 <div class="col-sm-3 form-group">
                     <label>Password</label>
                     <input type="password" class="form-control" name="password"  placeholder="Password" required>
+                    <p id="password_error"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Ngày sinh</label>
