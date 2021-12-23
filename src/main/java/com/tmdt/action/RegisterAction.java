@@ -6,9 +6,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -205,7 +203,7 @@ public class RegisterAction extends ActionSupport{
         HttpSession session = request.getSession();
 
         @Action(value = "/registerSubmit", results = {
-            @Result(name = "success", location = "index.html"),
+            @Result(name = "success", location = "/index.html"),
     })
     public String registerSubmit() throws Exception {
         if (isValid()) {
@@ -237,15 +235,16 @@ public class RegisterAction extends ActionSupport{
                 //Khi tạo tài khoản thành công thì mới tạo thông tin khách hàng
                 KhachHang khachHang = new KhachHang(taiKhoanMapper.getCurrentInsertId(username),0, ten, dia_chi, gioi_thieu);
                 khachHangMapper.insert(khachHang);
-                // Flush database connection, batch script and close connection
-                sqlSession.commit();
-                sqlSession.close();
 
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("username", username);
                 session.setAttribute("permission","KH");
-                session.setAttribute("maKhachHang",khachHangMapper.getMaKh(id));
+                int maKhachHang = khachHangMapper.getMaKh(taiKhoanMapper.getCurrentInsertId(username));
+                session.setAttribute("maKhachHang",maKhachHang);
 
+               // Flush database connection, batch script and close connection
+               sqlSession.commit();
+               sqlSession.close();
                 return SUCCESS;
             } catch (PersistenceException e) {
                 // System.out.println(e.getMessage());

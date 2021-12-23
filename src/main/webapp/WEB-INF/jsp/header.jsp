@@ -75,7 +75,7 @@
                        <a class="nav-link" href="./login">Đăng nhập</a>
                    </li>
                     <li class="nav-item">
-                       <a class="nav-link" href="./register">Đăng ký</a>
+                       <a class="nav-link" href="./registerCustomer">Đăng ký</a>
                    </li>
                 </c:otherwise>
               </c:choose>
