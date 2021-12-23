@@ -3,9 +3,18 @@ package com.tmdt.model;
 import java.util.Date;
 
 public class TaiKhoan {
-    private int id,gioiTinh,soLanCanhCao,status;
-    private String userName,password,email,soDienThoai,maQuyen,avatar;
-    private Date ngayTao,ngaySinh;
+    private int id;
+    private int gioiTinh;
+    private int soLanCanhCao;
+    private int status;
+    private String userName;
+    private String password;
+    private String email;
+    private String soDienThoai; 
+    private String maQuyen;
+    private String avatar;
+    private Date ngayTao;
+    private Date ngaySinh;
     
     public int getId() {
         return id;
@@ -97,7 +106,4 @@ public class TaiKhoan {
         this.ngayTao = ngayTao;
         this.ngaySinh = ngaySinh;
     }
-    
-
-   
 }
