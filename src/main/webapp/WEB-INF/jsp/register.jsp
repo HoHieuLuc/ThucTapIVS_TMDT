@@ -25,6 +25,7 @@
                 <div class="col-sm-6 form-group">
                     <label>Số điện thoại</label>
                     <input type="text" class="form-control" name="soDienThoai"  placeholder="Số điện thoại">
+                    <p id="phone_error"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Twitter</label>
@@ -73,6 +74,7 @@
                     <label>Xác nhận mật khẩu</label>
                     <input type="password" name="xacNhanPassword" class="form-control" 
                         placeholder="Nhập lại mật khẩu">
+                    <p id="retype_password"></p>
                 </div>
                 <div class="col-sm-12">
                     <input type="checkbox" class="form-check d-inline"  ><label 
