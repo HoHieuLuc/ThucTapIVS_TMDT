@@ -26,6 +26,10 @@ import com.tmdt.utilities.JsonResponse;
 import mybatis.mapper.*;
 import com.tmdt.model.*;
 
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
 public class RegisterAction extends ActionSupport {
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
