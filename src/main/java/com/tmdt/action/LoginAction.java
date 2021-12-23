@@ -20,6 +20,7 @@ import com.tmdt.errors.CustomError;
 import mybatis.mapper.*;
 import com.tmdt.model.*;
 
+@InterceptorRef("loggedInStack")
 public class LoginAction extends ActionSupport{
    // Respone hay dùng cho AJAX và JSON
    HttpServletResponse response = ServletActionContext.getResponse();
