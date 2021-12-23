@@ -28,7 +28,7 @@ import com.tmdt.model.*;
 
 public class DanhGiaSanPhamAction extends ActionSupport {
     private String maSanPham, noiDung;
-    private int soSao, maKhachHang;
+    private int soSao;
 
     public String getNoiDung() {
         return noiDung;
@@ -54,13 +54,6 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         this.maSanPham = maSanPham;
     }
 
-    public int getMaKhachHang() {
-        return maKhachHang;
-    }
-
-    public void setMaKhachHang(int maKhachHang) {
-        this.maKhachHang = maKhachHang;
-    }
 
     HttpServletResponse response = ServletActionContext.getResponse();
     // Khởi tạo HttpSession
@@ -116,7 +109,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
 
-        System.out.println(noiDung + "--" + soSao + "----" + maSanPham + "----" + maKhachHang);
+        System.out.println(noiDung + "--" + soSao + "----" + maSanPham + "----" + session.getAttribute("maKhachHang").toString());
 
         // Lấy ngày hiện tại:
         LocalDate today = LocalDate.now();
@@ -124,9 +117,9 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         ZoneId defaultZoneId = ZoneId.systemDefault();
         // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
         Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
-        DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, maSanPham, ngayTao, ngayTao);
+        DanhGiaSanPham dgsp = new DanhGiaSanPham((int) session.getAttribute("maKhachHang"), soSao, noiDung, "SP001", ngayTao, ngayTao);
         try {
-            danhGiaSanPhamMapper.insert(dgsp);
+            danhGiaSanPhamMapper.themDGSP(dgsp);
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
         }

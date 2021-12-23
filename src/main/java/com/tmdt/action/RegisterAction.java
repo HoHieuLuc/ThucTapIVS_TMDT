@@ -30,7 +30,6 @@ public class RegisterAction extends ActionSupport{
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
-    static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,14}$";
     static final String USERNAME_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,14}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
     // static final String PHONE_REGEX = "/((09|03|07|08|05)+([0-9]{8})\b)/g";
@@ -192,7 +191,7 @@ public class RegisterAction extends ActionSupport{
 
     //Validate All Field
     public boolean isValid() {
-        return Pattern.matches(USERNAME_REGEX, username) && Pattern.matches(PASSWORD_REGEX, password)
+        return Pattern.matches(USERNAME_REGEX, username) && between(password,8,14)
                 && Pattern.matches(EMAIL_REGEX, email) && between(ten,10,20) 
                  && between(facebook_link,0,30) && between(twitter_link,0,30) && (xac_nhan_password.equals(password));
     }
@@ -236,7 +235,7 @@ public class RegisterAction extends ActionSupport{
             try {
                 taiKhoanMapper.insert(taiKhoan);
                 //Khi tạo tài khoản thành công thì mới tạo thông tin khách hàng
-                KhachHang khachHang = new KhachHang(taiKhoanMapper.getMax(),0, ten, dia_chi, gioi_thieu);
+                KhachHang khachHang = new KhachHang(taiKhoanMapper.getCurrentInsertId(username),0, ten, dia_chi, gioi_thieu);
                 khachHangMapper.insert(khachHang);
                 // Flush database connection, batch script and close connection
                 sqlSession.commit();
@@ -265,7 +264,7 @@ public class RegisterAction extends ActionSupport{
                 jsonObject.put("username",
                         "Username có tối thiểu 6 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, không có kí tự khoảng trắng ");
             }
-            if (!Pattern.matches(PASSWORD_REGEX, password)) {
+            if (!between(password,8,14)) {
                 jsonObject.put("password",
                         "Password có tối thiểu 8 ký tự và tối đa 14 kí tự, ít nhất một chữ cái và một số, một kí tự @ $ ! % * ? &");
             }

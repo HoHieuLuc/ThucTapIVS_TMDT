@@ -20,9 +20,11 @@ public interface TaiKhoanMapper {
     public void insert(TaiKhoan taiKhoan);
 
     //Lấy id tài khoản vừa tạo
-    final String MAX_INSERT_ID = "SELECT MAX(id) FROM `tai_khoan`;";
-    @Select(MAX_INSERT_ID)
-    public int getMax();
+    final String NEW_ID = "SELECT id FROM `tai_khoan` WHERE username=#{username};";
+    @Select(NEW_ID)
+    public int getCurrentInsertId(String username);
+
+
 
     final String GET_ACCOUNT_BY_USERNAME = "SELECT * FROM `tai_khoan` WHERE USERNAME = #{username} LIMIT 1";
     @Select(GET_ACCOUNT_BY_USERNAME)

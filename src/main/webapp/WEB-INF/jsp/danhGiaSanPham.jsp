@@ -15,9 +15,6 @@
                             <c:choose>
                                 <c:when test="${sessionScope.loggedIn != null && sessionScope.loggedIn == true}">
                                    Xin chào ${sessionScope.username}
-                                   Test mã khách hàng ${sessionScope.maKhachHang}
-                                   <!-- Mã khách hàng là div ẩn -->
-                                   <input type="text" style="display: none"  name="maKhachHang" value="${sessionScope.maKhachHang}"/>
                                 </c:when>
                                 <c:otherwise>
                                            Bạn phải đăng nhập thì mới đánh giá sản phẩm
@@ -66,9 +63,6 @@
                                 vero sequi velit molestias doloremque molestiae dicta?</p>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </body>
