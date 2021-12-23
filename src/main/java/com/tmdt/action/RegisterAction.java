@@ -30,7 +30,7 @@ public class RegisterAction extends ActionSupport{
     // thể cho phía Client
     static final String USERNAME_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,14}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
-    // static final String PHONE_REGEX = "/((09|03|07|08|05)+([0-9]{8})\b)/g";
+    static final String PHONE_REGEX = "^[0-9]{9,12}";
    
     private Date ngay_sinh;
     private String  ten, dia_chi,gioi_thieu;
@@ -189,8 +189,9 @@ public class RegisterAction extends ActionSupport{
 
     //Validate All Field
     public boolean isValid() {
+        
         return Pattern.matches(USERNAME_REGEX, username) && between(password,8,14)
-                && Pattern.matches(EMAIL_REGEX, email) && between(ten,10,20) 
+                && Pattern.matches(EMAIL_REGEX,  email) && between(ten,10,20) && Pattern.matches(PHONE_REGEX, so_dien_thoai)
                  && between(facebook_link,0,30) && between(twitter_link,0,30) && (xac_nhan_password.equals(password));
     }
     
@@ -241,10 +242,6 @@ public class RegisterAction extends ActionSupport{
                 session.setAttribute("permission","KH");
                 int maKhachHang = khachHangMapper.getMaKh(taiKhoanMapper.getCurrentInsertId(username));
                 session.setAttribute("maKhachHang",maKhachHang);
-
-               // Flush database connection, batch script and close connection
-               sqlSession.commit();
-               sqlSession.close();
                 return SUCCESS;
             } catch (PersistenceException e) {
                 // System.out.println(e.getMessage());
@@ -274,9 +271,6 @@ public class RegisterAction extends ActionSupport{
             if (!between(ten,10,20)){
                 jsonObject.put("ten","Tên phải từ 10 đến 20 kí tự");
             }
-            // if (!Pattern.matches(PHONE_REGEX,so_dien_thoai)){
-            //     jsonObject.put("so_dien_thoai","Điện thoại phải là số điện thoại của các nhà mạng, có 10 chữ số");
-            // }
             if (!between(facebook_link,0,30)){
                 jsonObject.put("facebook_link","Facebook link không quá 30 kí tự");
             }
@@ -286,6 +280,10 @@ public class RegisterAction extends ActionSupport{
             if (xac_nhan_password.equals(password))
             {
                 jsonObject.put("xac_nhan_password","Mật khẩu nhập lại không khớp");
+            }
+            if (!Pattern.matches(PHONE_REGEX,so_dien_thoai))
+            {
+                jsonObject.put("dien_thoai","Số điện thoại phải từ 9 đến 12 số");
             }
             return JsonResponse.createJsonResponse(jsonObject, 400, response);
         }
