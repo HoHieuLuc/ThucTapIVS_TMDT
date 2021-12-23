@@ -17,6 +17,4 @@ public interface KhachHangMapper {
     final String GET_MA_KHACH_HANG = "SELECT ma_khach_hang from `khach_hang` WHERE id_tai_khoan = #{id}";
     @Select(GET_MA_KHACH_HANG)
     public int getMaKh(int id);
-
-
 }
