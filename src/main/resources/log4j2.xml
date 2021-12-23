@@ -7,10 +7,10 @@
     </Appenders>
     <Loggers>
         <Logger name="com.opensymphony.xwork2" level="info"/>
-        <Logger name="com.opensymphony.xwork2" level="info"/>
         <Logger name="org.apache.struts2" level="info"/>
         <Logger name="com.thuctap" level="debug"/>
         <Logger name="com.tmdt" level="debug"/> 
+        <Logger name="com.console" level="debug"/> 
         <Logger name="mybatis.mapper" level="debug"/> 
         <Root level="warn">
             <AppenderRef ref="STDOUT"/>

@@ -244,6 +244,7 @@ public class RegisterAction extends ActionSupport{
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("username", username);
                 session.setAttribute("permission","KH");
+                session.setAttribute("maKhachHang",khachHangMapper.getMaKh(id));
 
                 return SUCCESS;
             } catch (PersistenceException e) {

@@ -35,8 +35,8 @@ static SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
       //Múi giờ mặc định
       ZoneId defaultZoneId = ZoneId.systemDefault();
       // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
-      java.util.Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
-      DanhGiaSanPham dgsp = new DanhGiaSanPham(1, 5, "dasdsads", "SP001", ngayTao, ngayTao);
+      Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
+      DanhGiaSanPham dgsp = new DanhGiaSanPham(2, 5, "test cho khách hàng 2", "SP001", ngayTao, ngayTao);
       try {
           danhGiaSanPhamMapper.themDGSP(dgsp);
       } catch (PersistenceException e) {

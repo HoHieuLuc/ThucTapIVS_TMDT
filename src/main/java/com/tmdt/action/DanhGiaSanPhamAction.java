@@ -64,7 +64,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
 
     // get đánh giá sản phẩm bởi id sản phẩm
     @Action(value = "/danhGiaSanPham/*", params = { "maSanPham", "{1}" }, results = {
-            @Result(location = "/index.html"),
+            @Result(name=SUCCESS,location = "/index.html"),
     })
     public String getStudent() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -79,6 +79,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         }
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         jsonObject.put("danhSachDanhGia", danhSachDanhGia);
+        sqlSession.commit();
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonObject, 200, response);
     }
@@ -108,23 +109,23 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
-
-        System.out.println(noiDung + "--" + soSao + "----" + maSanPham + "----" + session.getAttribute("maKhachHang").toString());
-
         // Lấy ngày hiện tại:
         LocalDate today = LocalDate.now();
         //Múi giờ mặc định
         ZoneId defaultZoneId = ZoneId.systemDefault();
         // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
         Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
-        DanhGiaSanPham dgsp = new DanhGiaSanPham((int) session.getAttribute("maKhachHang"), soSao, noiDung, "SP001", ngayTao, ngayTao);
-      // DanhGiaSanPham dgsp = new DanhGiaSanPham(1, 5, "dasdsads", "SP001", ngayTao, ngayTao);
+        int maKhachHang =(int) session.getAttribute("maKhachHang");
+        DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, "SP001", ngayTao, ngayTao);
+        //DanhGiaSanPham dgsp = new DanhGiaSanPham(2, 5, "test cho khách hàng 2", "SP001", ngayTao, ngayTao);
         try {
             danhGiaSanPhamMapper.themDGSP(dgsp);
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
         }
-         
+        sqlSession.commit();
+        sqlSession.close();
+         System.out.println("Insert Completly");
         return SUCCESS;
     }
 }
