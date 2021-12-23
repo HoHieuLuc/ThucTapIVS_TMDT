@@ -26,7 +26,6 @@
                 <p id="login_error"></p>
             </div>
         </form>
-        <p id="login_error"></p>
     </div>
 </body>
 <script src='<c:url value="/js/login.js"/>'></script>
