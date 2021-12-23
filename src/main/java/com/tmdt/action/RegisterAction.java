@@ -32,7 +32,7 @@ public class RegisterAction extends ActionSupport {
     // thể cho phía Client
     static final String USERNAME_REGEX = "^[A-Za-z0-9]{6,14}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
-    // static final String PHONE_REGEX = "/((09|03|07|08|05)+([0-9]{8})\b)/g";
+    static final String PHONE_REGEX = "^[0-9]{9,12}";
 
     private Date ngaySinh;
     private String ten;
@@ -202,6 +202,7 @@ public class RegisterAction extends ActionSupport {
         return Pattern.matches(USERNAME_REGEX, username) && between(password, 8, 14)
                 && Pattern.matches(EMAIL_REGEX, email) && between(ten, 10, 20)
                 && between(facebookLink, 0, 30) && between(twitterLink, 0, 30)
+                && Pattern.matches(PHONE_REGEX, soDienThoai)
                 && (xacNhanPassword.equals(password));
     }
 
@@ -267,8 +268,7 @@ public class RegisterAction extends ActionSupport {
                 }
                 System.out.println(e.getMessage());
                 return JsonResponse.createJsonResponse(errors, 409, response);
-            }
-            finally{
+            } finally {
                 sqlSession.close();
             }
         } else {
@@ -287,10 +287,6 @@ public class RegisterAction extends ActionSupport {
             if (!between(ten, 10, 20)) {
                 jsonObject.put("ten", "Tên phải từ 10 đến 20 kí tự");
             }
-            // if (!Pattern.matches(PHONE_REGEX,soDienThoai)){
-            // jsonObject.put("soDienThoai","Điện thoại phải là số điện thoại của các nhà
-            // mạng, có 10 chữ số");
-            // }
             if (!between(facebookLink, 0, 30)) {
                 jsonObject.put("facebookLink", "Facebook link không quá 30 kí tự");
             }
@@ -299,6 +295,9 @@ public class RegisterAction extends ActionSupport {
             }
             if (xacNhanPassword.equals(password)) {
                 jsonObject.put("xacNhanPassword", "Mật khẩu nhập lại không khớp");
+            }
+            if (!Pattern.matches(PHONE_REGEX, soDienThoai)) {
+                jsonObject.put("dien_thoai", "Số điện thoại phải từ 9 đến 12 số");
             }
             return JsonResponse.createJsonResponse(jsonObject, 400, response);
         }
