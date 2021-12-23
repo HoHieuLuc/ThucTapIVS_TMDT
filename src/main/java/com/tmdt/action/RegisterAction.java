@@ -299,7 +299,7 @@ public class RegisterAction extends ActionSupport {
                 jsonObject.put("twitterLink", "Twitter link không quá 30 kí tự");
             }
             if (xacNhanPassword.equals(password)) {
-                jsonObject.put("xacNhanPassword", "Mật khẩu nhập lại không khớp");
+                jsonObject.put("xac_nhan_password", "Mật khẩu nhập lại không khớp");
             }
             if (!Pattern.matches(PHONE_REGEX, soDienThoai)) {
                 jsonObject.put("dien_thoai", "Số điện thoại phải từ 9 đến 12 số");
