@@ -118,6 +118,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
         Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
         DanhGiaSanPham dgsp = new DanhGiaSanPham((int) session.getAttribute("maKhachHang"), soSao, noiDung, "SP001", ngayTao, ngayTao);
+      // DanhGiaSanPham dgsp = new DanhGiaSanPham(1, 5, "dasdsads", "SP001", ngayTao, ngayTao);
         try {
             danhGiaSanPhamMapper.themDGSP(dgsp);
         } catch (PersistenceException e) {

@@ -1,5 +1,4 @@
 /target
 *.bak
 src/main/resources/SqlMapConfig.xml
-src/main/resources/SqlMapConfig.xml
-src/main/resources/SqlMapConfig.xml
+

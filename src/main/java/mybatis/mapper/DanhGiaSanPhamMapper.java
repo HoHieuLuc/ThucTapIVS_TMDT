@@ -30,10 +30,9 @@ public interface DanhGiaSanPhamMapper {
 	public List<Map<String,Object>> getAll(String maSanPham);
 
 	//Thêm đánh giá sản phẩm 
-	final String THEM_DANH_GIA_SAN_PHAM = "INSERT INTO danh_gia_san_pham (`ma_danh_gia`,`ma_khach_hang`, `so_sao`, `noi_dung`, `ma_san_pham`, `ngay_tao`, `ngay_sua`)" 
-	+ "VALUES (NULL,#{maKhachHang}, #{soSao}, #{noiDung}, #{maSanPham}, #{ngayTao}, #{ngaySua});";
-
-    @Update(THEM_DANH_GIA_SAN_PHAM)
+	final String THEM_DANH_GIA_SAN_PHAM = "INSERT INTO danh_gia_san_pham (`ma_khach_hang`, `so_sao`, `noi_dung`, `ma_san_pham`, `ngay_tao`, `ngay_sua`)" 
+	+ "VALUES (#{maKhachHang}, #{soSao}, #{noiDung}, #{maSanPham}, #{ngayTao}, #{ngaySua});";
+    @Insert(THEM_DANH_GIA_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maDanhGia",keyColumn = "ma_danh_gia")
     public void themDGSP(DanhGiaSanPham dgsp);
 }
