@@ -7,17 +7,12 @@
 
     <package name="default" extends="struts-default">
         <interceptors>    
-            <interceptor name="LoginInterceptor" class="com.thuctap.struts2_crud_mybatis.interceptor.LoginInterceptor" />  
-            <interceptor-stack name="loginStack">
-                <interceptor-ref name="LoginInterceptor" />
+            <interceptor name="AuthInterceptor" class="com.tmdt.interceptor.AuthInterceptor" />  
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="AuthInterceptor" />
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>  
-
-            <interceptor name="RegisterInterceptor" class="com.thuctap.struts2_crud_mybatis.interceptor.RegisterInterceptor" />  
-            <interceptor-stack name="registerStack">
-                <interceptor-ref name="RegisterInterceptor" />
-                <interceptor-ref name="defaultStack" />
-            </interceptor-stack>  
+ 
         </interceptors>  
 
         <global-results>
