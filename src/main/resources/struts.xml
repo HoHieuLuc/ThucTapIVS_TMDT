@@ -13,10 +13,16 @@
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>  
  
+            <interceptor name="LoggedInInterceptor" class="com.tmdt.interceptor.LoggedInInterceptor" />  
+            <interceptor-stack name="loggedInStack">
+                <interceptor-ref name="LoggedInInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack> 
         </interceptors>  
 
         <global-results>
             <result name="login" type="redirect">/login</result>
+            <result name="home" type="redirect">/</result>
         </global-results>
     </package>
 </struts>
