@@ -271,9 +271,6 @@ public class RegisterAction extends ActionSupport{
             if (!between(ten,10,20)){
                 jsonObject.put("ten","Tên phải từ 10 đến 20 kí tự");
             }
-            // if (!Pattern.matches(PHONE_REGEX,so_dien_thoai)){
-            //     jsonObject.put("so_dien_thoai","Điện thoại phải là số điện thoại của các nhà mạng, có 10 chữ số");
-            // }
             if (!between(facebook_link,0,30)){
                 jsonObject.put("facebook_link","Facebook link không quá 30 kí tự");
             }
