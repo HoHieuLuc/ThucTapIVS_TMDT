@@ -1,4 +1,4 @@
-package fi.foo.filters;
+package com.tmdt.filters;
 
 import javax.servlet.*;
 import java.io.IOException;
