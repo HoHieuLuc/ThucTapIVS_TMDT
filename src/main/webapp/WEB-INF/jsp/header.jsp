@@ -25,6 +25,9 @@
             color: #555;
         }
     </style>
+    <!--  CSS của trang chủ và trang chi tiết sản phẩm-->
+    <link href='<c:url value="/css/style.css"/>' rel="stylesheet" type="text/css">
+
 </head>
 <body>
     Đây là header

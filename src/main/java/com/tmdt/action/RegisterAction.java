@@ -1,12 +1,13 @@
 package com.tmdt.action;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
-
+import java.io.File;
 import java.util.Date;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -27,8 +28,8 @@ import mybatis.mapper.*;
 import com.tmdt.model.*;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
+        "namespace", "/",
+        "actionName", "bad-request"
 })
 @InterceptorRef("loggedInStack")
 public class RegisterAction extends ActionSupport {
@@ -53,6 +54,47 @@ public class RegisterAction extends ActionSupport {
     private String twitterLink;
     private String trangCaNhan;
     private String xacNhanPassword;
+
+    /*
+     * Nó tự động thêm 3 tham số trong request, đó là:
+     * Ví dụ (1)
+     * File file biểu diễn file. Bạn có thể áp dụng các phương thức trên đối tượng
+     * này.
+     * String filename biểu diễn tên file.
+     * String contentType xác định kiểu nội dung của file.
+     */
+    // Chức năng upload ảnh, đừng đổi tên 3 cái này nhan, đổi nó lỗi :((
+    private File userImage;
+    private String userImageContentType;
+    private String userImageFileName;
+
+    public File getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(File userImage) {
+        this.userImage = userImage;
+    }
+
+    public String getUserImageContentType() {
+        return userImageContentType;
+    }
+
+    public void setUserImageContentType(String userImageContentType) {
+        this.userImageContentType = userImageContentType;
+    }
+
+    public String getUserImageFileName() {
+        return userImageFileName;
+    }
+
+    public void setUserImageFileName(String userImageFileName) {
+        this.userImageFileName = userImageFileName;
+    }
+
+    public void setServletRequest(HttpServletRequest servletRequest) {
+        this.request = servletRequest;
+    }
 
     // region getter and setter
     public String getXacNhanPassword() {
@@ -187,6 +229,26 @@ public class RegisterAction extends ActionSupport {
             @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
     public String registerSubmit() throws IOException {
+        // Test upload ảnh trước khi vô luông isValid
+        // String filePath =
+        // request.getSession().getServletContext().getRealPath("/").concat("userimages");
+
+        // Tạm thời up ảnh vào đây
+        // Vì code mình chạy nó build war file vô ổ C workspace, nên tui không biết lấy
+        // đường dẫn của thư mục project của mình
+        String filePath = "D:/ImageUpload/avatar";
+        System.out.println("Image Location:" + filePath);// quan sat server console de thay vi tri thuc su
+
+        // Kiểm tra file có null hay ko, kiểm tra có đúng định dạng ảnh hay không
+        if (this.userImage != null && this.userImageContentType.contains("image/")) {
+            File fileToCreate = new File(filePath, this.userImageFileName);
+            FileUtils.copyFile(this.userImage, fileToCreate);// sao chep hinh anh trong file moi
+            System.out.println("Original File name " + userImageFileName);
+            System.out.println("Content Type " + userImageContentType);
+        } else {
+            System.out.println("File không hợp lệ");
+        }
+
         if (isValid()) {
             // Ở đây insert vô database sau khi validate form ok
             SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -205,8 +267,17 @@ public class RegisterAction extends ActionSupport {
             ZoneId defaultZoneId = ZoneId.systemDefault();
             // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
             Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
+
+            // Thêm biến lưu avatar
+            String avatarFileName = "null";
+            // Kiểm tra lại, nếu có ảnh và ảnh hợp lệ thì lưu ảnh, không thì lưu tên ảnh là
+            // "null"
+            if (this.userImage != null && this.userImageContentType.contains("image/")) {
+                avatarFileName = this.userImageFileName;
+            }
+
             TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, 0, 1, username, password, email,
-                    soDienThoai, "KH", "null", ngay_tao, ngaySinh);
+                    soDienThoai, "KH", avatarFileName, ngay_tao, ngaySinh);
 
             // Thêm dữ liệu vào database,
             // Kiểm tra tài khoản mới có trùng username,email với tài khoản cũ
@@ -217,7 +288,7 @@ public class RegisterAction extends ActionSupport {
                 KhachHang khachHang = new KhachHang(accountID, 0, ten, diaChi,
                         gioiThieu);
                 khachHangMapper.insert(khachHang);
-               
+
                 // Flush database connection, batch script and close connection
                 sqlSession.commit();
 
