@@ -270,6 +270,7 @@ public class RegisterAction extends ActionSupport  {
         //String filePath = request.getSession().getServletContext().getRealPath("/").concat("userimages");
 
         //Tạm thời up ảnh vào đây
+        //Vì code mình chạy nó build war file vô ổ C workspace, nên tui không biết lấy đường dẫn của thư mục project của mình
         String filePath = "D:/ImageUpload/avatar";
         System.out.println("Image Location:" + filePath);//quan sat server console de thay vi tri thuc su
         
