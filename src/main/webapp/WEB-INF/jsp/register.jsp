@@ -73,7 +73,7 @@
                 </div>
                 <!-- Upload ảnh, đừng đổi tên userImage nhan, đổi nó lỗi  -->
                 <div class="col-sm-6 form-group">
-                    <input type="file" id="userImage" name="userImage">
+                    <input type="file" id="userImage" name="userImage" type="image">
                 </div>
                 <!-- Upload ảnh -->
                 <div class="col-sm-6 form-group">
