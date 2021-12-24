@@ -61,7 +61,7 @@
               <c:choose>
                 <c:when test="${sessionScope.loggedIn != null && sessionScope.loggedIn == true}">
                     <li class="nav-item">
-                       <a class="nav-link disabled">Xin chào ${sessionScope.username}</a>
+                       <a class="nav-link disabled">Xin chào ${sessionScope.ten}</a>
                    </li>
                     <li class="nav-item">
                        <a class="nav-link" href="./admin">Trang quản lý</a>

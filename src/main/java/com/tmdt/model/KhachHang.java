@@ -1,9 +1,12 @@
 package com.tmdt.model;
 
 public class KhachHang {
-    private int maKhachHang, idTaiKhoan;
+    private int maKhachHang;
+    private int idTaiKhoan;
     private double tienNo;
-    private String ten, diaChi, gioiThieu;
+    private String ten;
+    private String diaChi;
+    private String gioiThieu;
 
     public int getMaKhachHang() {
         return maKhachHang;

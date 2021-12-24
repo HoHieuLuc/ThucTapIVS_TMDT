@@ -85,7 +85,7 @@
           <img src="https://via.placeholder.com/30" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">${sessionScope.username}</a>
+          <a href="#" class="d-block">${sessionScope.ten}</a>
         </div>
       </div>
 
