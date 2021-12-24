@@ -8,26 +8,15 @@ import org.apache.struts2.convention.annotation.*;
 import org.apache.commons.io.FileUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.util.Date;
-import java.util.Enumeration;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -71,33 +60,41 @@ public class RegisterAction extends ActionSupport  {
     private String maQuyen;
     private String xacNhanPassword;
 
-    // Chức năng upload ảnh
-    private File avatar;
-    private String avatarContentType;
-    private String avatarFileName;
+    
+    /* 
+        Nó tự động thêm 3 tham số trong request, đó là:
+        Ví dụ (1)
+            File file biểu diễn file. Bạn có thể áp dụng các phương thức trên đối tượng này.
+            String filename biểu diễn tên file.
+            String contentType xác định kiểu nội dung của file.
+    */
+    // Chức năng upload ảnh, đừng đổi tên 3 cái này nhan, đổi nó lỗi :((
+    private File userImage;
+    private String userImageContentType;
+    private String userImageFileName;
 
-    public File getavatar() {
-        return avatar;
+    public File getUserImage() {
+        return userImage;
     }
 
-    public void setavatar(File avatar) {
-        this.avatar = avatar;
+    public void setUserImage(File userImage) {
+        this.userImage = userImage;
     }
 
-    public String getavatarContentType() {
-        return avatarContentType;
+    public String getUserImageContentType() {
+        return userImageContentType;
     }
 
-    public void setavatarContentType(String avatarContentType) {
-        this.avatarContentType = avatarContentType;
+    public void setUserImageContentType(String userImageContentType) {
+        this.userImageContentType = userImageContentType;
     }
 
-    public String getavatarFileName() {
-        return avatarFileName;
+    public String getUserImageFileName() {
+        return userImageFileName;
     }
 
-    public void setavatarFileName(String avatarFileName) {
-        this.avatarFileName = avatarFileName;
+    public void setUserImageFileName(String userImageFileName) {
+        this.userImageFileName = userImageFileName;
     }
 
     public void setServletRequest(HttpServletRequest servletRequest) {
@@ -270,15 +267,25 @@ public class RegisterAction extends ActionSupport  {
     })
     public String registerSubmit() throws IOException {
         //Test upload ảnh trước khi vô luông isValid
-        String filePath = request.getSession().getServletContext().getRealPath("/").concat("avatars");
+        //String filePath = request.getSession().getServletContext().getRealPath("/").concat("userimages");
 
+        //Tạm thời up ảnh vào đây
+        String filePath = "D:/ImageUpload/avatar";
         System.out.println("Image Location:" + filePath);//quan sat server console de thay vi tri thuc su
-        File fileToCreate = new File(filePath, this.avatarFileName);
-        FileUtils.copyFile(this.avatar, fileToCreate);//sao chep hinh anh trong file moi
+        
 
-
-
-
+        //Kiểm tra file có null hay ko, kiểm tra có đúng định dạng ảnh hay không
+        if (this.userImage != null && this.userImageContentType.contains("image/"))
+        {
+            File fileToCreate = new File(filePath, this.userImageFileName);
+            FileUtils.copyFile(this.userImage, fileToCreate);//sao chep hinh anh trong file moi
+            System.out.println("Original File name " + userImageFileName);
+            System.out.println("Content Type " + userImageContentType); 
+        }
+        else{
+            System.out.println("File không hợp lệ");
+        }
+    
 
         if (isValid()) {
             // Ở đây insert vô database sau khi validate form ok

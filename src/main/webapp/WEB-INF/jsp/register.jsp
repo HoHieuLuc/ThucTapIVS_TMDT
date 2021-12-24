@@ -71,9 +71,9 @@
                         <option value="1">Nữ</option>
                     </select>
                 </div>
-                <!-- Upload ảnh -->
+                <!-- Upload ảnh, đừng đổi tên userImage nhan, đổi nó lỗi  -->
                 <div class="col-sm-6 form-group">
-                    <input type="file" id="avatar" name="avatar">
+                    <input type="file" id="userImage" name="userImage">
                 </div>
                 <!-- Upload ảnh -->
                 <div class="col-sm-6 form-group">
