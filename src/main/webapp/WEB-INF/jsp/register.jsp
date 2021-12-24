@@ -12,7 +12,7 @@
                 <div class="col-sm-6 form-group">
                     <label>Họ và tên</label>
                     <input type="text" class="form-control" name="ten" 
-                        placeholder="Nhập họ và tên">
+                        placeholder="Nhập họ và tên (Bắt buộc)">
                     <p id="ten_error"></p>
                 </div>
                 <div class="col-sm-6 form-group">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Số điện thoại</label>
-                    <input type="text" class="form-control" name="soDienThoai"  placeholder="Số điện thoại">
+                    <input type="text" class="form-control" name="soDienThoai"  placeholder="Số điện thoại (Bắt buộc)">
                     <p id="phone_error"></p>
                 </div>
                 <div class="col-sm-6 form-group">
@@ -42,27 +42,27 @@
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Trang cá nhân</label>
-                    <input type="text" class="form-control" name="trangCaNhan"  placeholder="Số điện thoại">
+                    <input type="text" class="form-control" name="trangCaNhan"  placeholder="Có thể là tiktok, zalo, kênh youtube, web cá nhân">
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Email</label>
                     <input type="email" class="form-control" name="email" 
-                        placeholder="Nhập lại địa chỉ email" >
+                        placeholder="Nhập địa chỉ email (Bắt buộc)" >
                         <p id="email_error"></p>
                 </div>
                 <div class="col-sm-3 form-group">
                     <label>Username</label>
-                    <input type="text" class="form-control" name="username"  placeholder="Username" >
+                    <input type="text" class="form-control" name="username"  placeholder="Username (Bắt buộc)" >
                     <p id="username_error"></p>
                 </div>
                 <div class="col-sm-3 form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="password"  placeholder="Password" >
+                    <input type="password" class="form-control" name="password"  placeholder="Password (Bắt buộc)" >
                     <p id="password_error"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Ngày sinh</label>
-                    <input type="Date" name="ngaySinh" class="form-control"  placeholder="" required>
+                    <input type="Date" name="ngaySinh" class="form-control" required>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Giới tính</label>
