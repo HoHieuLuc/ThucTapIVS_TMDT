@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import com.tmdt.utilities.JsonResponse;
+import com.tmdt.utilities.ProjectPath;
 
 import mybatis.mapper.*;
 import com.tmdt.model.*;
@@ -68,6 +69,7 @@ public class RegisterAction extends ActionSupport {
     private String userImageContentType;
     private String userImageFileName;
 
+    //region getter and setter
     public File getUserImage() {
         return userImage;
     }
@@ -96,7 +98,6 @@ public class RegisterAction extends ActionSupport {
         this.request = servletRequest;
     }
 
-    // region getter and setter
     public String getXacNhanPassword() {
         return xacNhanPassword;
     }
@@ -206,7 +207,7 @@ public class RegisterAction extends ActionSupport {
         this.trangCaNhan = trangCaNhan;
     }
 
-    // end region getter setter
+    //endregion getter setter
 
     // Validate All Field
     public boolean isValid() {
@@ -214,7 +215,9 @@ public class RegisterAction extends ActionSupport {
                 && Pattern.matches(EMAIL_REGEX, email) && between(ten, 10, 20)
                 && between(facebookLink, 0, 30) && between(twitterLink, 0, 30)
                 && Pattern.matches(PHONE_REGEX, soDienThoai)
-                && (xacNhanPassword.equals(password));
+                && (xacNhanPassword.equals(password))
+                && userImage != null 
+                && userImageContentType.contains("image/");
     }
 
     // Tạo SQL_SESSION_FACTORY để chuẩn bị cho kết nối database
@@ -229,38 +232,14 @@ public class RegisterAction extends ActionSupport {
             @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
     public String registerSubmit() throws IOException {
-        // Test upload ảnh trước khi vô luông isValid
-        // String filePath =
-        // request.getSession().getServletContext().getRealPath("/").concat("userimages");
-
-        // Tạm thời up ảnh vào đây
-        // Vì code mình chạy nó build war file vô ổ C workspace, nên tui không biết lấy
-        // đường dẫn của thư mục project của mình
-        String filePath = "D:/ImageUpload/avatar";
-        System.out.println("Image Location:" + filePath);// quan sat server console de thay vi tri thuc su
-
-        // Kiểm tra file có null hay ko, kiểm tra có đúng định dạng ảnh hay không
-        if (this.userImage != null && this.userImageContentType.contains("image/")) {
-            File fileToCreate = new File(filePath, this.userImageFileName);
-            FileUtils.copyFile(this.userImage, fileToCreate);// sao chep hinh anh trong file moi
-            System.out.println("Original File name " + userImageFileName);
-            System.out.println("Content Type " + userImageContentType);
-        } else {
-            System.out.println("File không hợp lệ");
-        }
-
         if (isValid()) {
-            // Ở đây insert vô database sau khi validate form ok
             SqlSession sqlSession = sqlSessionFactory.openSession();
-            // Tạo KhachHangMapper và TaiKhoanMapper
+
             KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
             TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
 
-            // String hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
-            // Hash password sang BCrypt:
             password = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
-            // Tạo đối tượng lấy dữ liệu TaiKhoan từ constructor
             // Lấy ngày hiện tại:
             LocalDate today = LocalDate.now();
             // Múi giờ mặc định
@@ -268,13 +247,18 @@ public class RegisterAction extends ActionSupport {
             // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
             Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
 
-            // Thêm biến lưu avatar
-            String avatarFileName = "null";
-            // Kiểm tra lại, nếu có ảnh và ảnh hợp lệ thì lưu ảnh, không thì lưu tên ảnh là
-            // "null"
-            if (this.userImage != null && this.userImageContentType.contains("image/")) {
-                avatarFileName = this.userImageFileName;
-            }
+            // tránh trùng tên file
+            String avatarFileName =  System.currentTimeMillis() + "_" + userImageFileName;
+
+            //
+            String filePath = session.getServletContext().getRealPath("/") + "images\\user\\";
+            File fileToCreate = new File(filePath, avatarFileName);
+            FileUtils.copyFile(this.userImage, fileToCreate);
+
+            // lưu file vào thư mục project để khỏi mất khi compile lại
+            String LocalPath = ProjectPath.getPath() + "\\images\\user\\";
+            File test = new File(LocalPath, avatarFileName);
+            FileUtils.copyFile(this.userImage, test);
 
             TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, 0, 1, username, password, email,
                     soDienThoai, "KH", avatarFileName, ngay_tao, ngaySinh);
@@ -344,11 +328,14 @@ public class RegisterAction extends ActionSupport {
             if (!between(twitterLink, 0, 100)) {
                 jsonObject.put("twitterLink", "Twitter link không quá 30 kí tự");
             }
-            if (xacNhanPassword.equals(password)) {
+            if (!xacNhanPassword.equals(password)) {
                 jsonObject.put("xac_nhan_password", "Mật khẩu nhập lại không khớp");
             }
             if (!Pattern.matches(PHONE_REGEX, soDienThoai)) {
                 jsonObject.put("dien_thoai", "Số điện thoại phải từ 9 đến 12 số");
+            }
+            if (userImage == null || !userImageContentType.contains("image/")) {
+                jsonObject.put("avatar", "Ảnh không hợp lệ");
             }
             return JsonResponse.createJsonResponse(jsonObject, 400, response);
         }
@@ -358,7 +345,7 @@ public class RegisterAction extends ActionSupport {
     @Action(value = "/register", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
-    public String viewRegisterCustomer() {
+    public String viewRegister() {
         return SUCCESS;
     }
 
