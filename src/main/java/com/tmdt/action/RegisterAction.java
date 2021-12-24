@@ -72,32 +72,32 @@ public class RegisterAction extends ActionSupport  {
     private String xacNhanPassword;
 
     // Chức năng upload ảnh
-    private File userImage;
-    private String userImageContentType;
-    private String userImageFileName;
+    private File avatar;
+    private String avatarContentType;
+    private String avatarFileName;
 
-    public File getUserImage() {
-        return userImage;
+    public File getavatar() {
+        return avatar;
     }
 
-    public void setUserImage(File userImage) {
-        this.userImage = userImage;
+    public void setavatar(File avatar) {
+        this.avatar = avatar;
     }
 
-    public String getUserImageContentType() {
-        return userImageContentType;
+    public String getavatarContentType() {
+        return avatarContentType;
     }
 
-    public void setUserImageContentType(String userImageContentType) {
-        this.userImageContentType = userImageContentType;
+    public void setavatarContentType(String avatarContentType) {
+        this.avatarContentType = avatarContentType;
     }
 
-    public String getUserImageFileName() {
-        return userImageFileName;
+    public String getavatarFileName() {
+        return avatarFileName;
     }
 
-    public void setUserImageFileName(String userImageFileName) {
-        this.userImageFileName = userImageFileName;
+    public void setavatarFileName(String avatarFileName) {
+        this.avatarFileName = avatarFileName;
     }
 
     public void setServletRequest(HttpServletRequest servletRequest) {
@@ -270,11 +270,11 @@ public class RegisterAction extends ActionSupport  {
     })
     public String registerSubmit() throws IOException {
         //Test upload ảnh trước khi vô luông isValid
-        String filePath = request.getSession().getServletContext().getRealPath("/").concat("userimages");
+        String filePath = request.getSession().getServletContext().getRealPath("/").concat("avatars");
 
         System.out.println("Image Location:" + filePath);//quan sat server console de thay vi tri thuc su
-        File fileToCreate = new File(filePath, this.userImageFileName);
-        FileUtils.copyFile(this.userImage, fileToCreate);//sao chep hinh anh trong file moi
+        File fileToCreate = new File(filePath, this.avatarFileName);
+        FileUtils.copyFile(this.avatar, fileToCreate);//sao chep hinh anh trong file moi
 
 
 
