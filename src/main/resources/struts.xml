@@ -3,7 +3,9 @@
 <struts>
     <constant name="struts.devMode" value="true" />
     <constant name="struts.convention.default.parent.package" value="default"/>
+    <!--Đừng xóa maxSize và saveDir nhan -->
     <constant name="struts.multipart.saveDir" value="/tmp/struts.multipart.save" />
+    <constant name="struts.multipart.maxSize" value="20971520" />
 
     <package name="default" extends="struts-default">
         <interceptors>    

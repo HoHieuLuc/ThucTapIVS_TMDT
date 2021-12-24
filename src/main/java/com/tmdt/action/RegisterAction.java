@@ -306,8 +306,17 @@ public class RegisterAction extends ActionSupport  {
             ZoneId defaultZoneId = ZoneId.systemDefault();
             // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
             Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
+
+            //Thêm biến lưu avatar
+            String avatar = "Null";
+            //Kiểm tra lại, nếu có ảnh và ảnh hợp lệ thì lưu ảnh, không thì lưu tên ảnh là "null"
+            if (this.userImage != null && this.userImageContentType.contains("image/"))
+            {
+                avatar = this.userImageFileName;
+            }
+
             TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, soLanCanhCao, status, username, password, email,
-                    soDienThoai, "KH", "null", ngay_tao, ngaySinh);
+                    soDienThoai, "KH", avatar, ngay_tao, ngaySinh);
 
             // Thêm dữ liệu vào database,
             // Kiểm tra tài khoản mới có trùng username,email với tài khoản cũ
