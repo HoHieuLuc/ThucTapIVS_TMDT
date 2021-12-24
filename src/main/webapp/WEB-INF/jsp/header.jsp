@@ -12,7 +12,6 @@
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
-
       <%-- js Axios,JQuery,Popper,Bootstrap js--%>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -21,103 +20,6 @@
         <script>
           const baseURL = <c:url value="/" />;
         </script>
-        <style>
-          /* Remove the navbar's default margin-bottom and rounded borders */
-          .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-          }
-
-          /* Add a gray background color and some padding to the footer */
-          footer {
-            background-color: #f2f2f2;
-            padding: 25px;
-          }
-
-          body {
-            font-family: Arial, Helvetica, sans-serif;
-            overflow-x: hidden;
-          }
-
-          img {
-            max-width: 100%;
-          }
-
-          .preview-thumbnail.nav-tabs {
-            border: none;
-            margin-top: 15px;
-          }
-
-          .preview-thumbnail.nav-tabs li {
-            width: 18%;
-            margin-right: 2.5%;
-          }
-
-          .preview-thumbnail.nav-tabs li img {
-            max-width: 100%;
-            display: block;
-          }
-
-          .preview-thumbnail.nav-tabs li a {
-            padding: 0;
-            margin: 0;
-            cursor: pointer;
-          }
-
-          .preview-thumbnail.nav-tabs li:last-of-type {
-            margin-right: 0;
-          }
-
-          .tab-content {
-            overflow: hidden;
-          }
-
-
-          .card {
-            margin-top: 0px;
-            background: #eee;
-            padding: 3em;
-            line-height: 1.5em;
-          }
-
-          @media screen and (min-width: 997px) {
-            .wrapper {
-              display: -webkit-box;
-              display: -webkit-flex;
-              display: -ms-flexbox;
-              display: flex;
-            }
-          }
-
-
-          .product-title,
-          .price,
-          .sizes,
-          .colors {
-            text-transform: UPPERCASE;
-            font-weight: bold;
-          }
-
-          .checked,
-          .price span {
-            color: #ff9f1a;
-          }
-
-          .product-title,
-          .rating,
-          .product-description,
-          .price,
-          .vote,
-          .sizes {
-            margin-bottom: 15px;
-          }
-
-          label {
-            font-weight: 600;
-            color: #555;
-          }
-        </style>
-
     </head>
 
     <body>
@@ -158,18 +60,18 @@
                     <a class="nav-link disabled">Xin chào ${sessionScope.ten}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="./admin">Trang quản lý</a>
+                    <a class="nav-link" href='<c:url value="/admin"/>'>Trang quản lý</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="./logout">Đăng xuất</a>
+                    <a class="nav-link" href='<c:url value="/logout"/>'>Đăng xuất</a>
                   </li>
                 </c:when>
                 <c:otherwise>
                   <li class="nav-item">
-                    <a class="nav-link" href="./login">Đăng nhập</a>
+                    <a class="nav-link" href='<c:url value="/login"/>'>Đăng nhập</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="./register">Đăng ký</a>
+                    <a class="nav-link" href='<c:url value="/register"/>'>Đăng ký</a>
                   </li>
                 </c:otherwise>
               </c:choose>
