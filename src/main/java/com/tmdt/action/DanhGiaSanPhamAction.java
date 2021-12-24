@@ -84,13 +84,13 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonObject, 200, response);
     }
 
-    // lấy dữ liệu đánh giá sản phẩm hiển thị lên web bằng ajax
-    @Action(value = "/viewDanhGiaSP/*",params = { "maSanPham", "{1}" },results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/danhGiaSanPham.jsp")
-    })
-    public String viewDanhGiaSP() {
-        return SUCCESS;
-    }
+    // // lấy dữ liệu đánh giá sản phẩm hiển thị lên web bằng ajax
+    // @Action(value = "/viewDanhGiaSP/*",params = { "maSanPham", "{1}" },results = {
+    //         @Result(name = "success", location = "/WEB-INF/jsp/chiTietSanPham.jsp")
+    // })
+    // public String viewDanhGiaSP() {
+    //     return SUCCESS;
+    // }
 
     // Kiểm tra độ dài chuỗi có nằm trong khoảng từ min đến max
     public static boolean between(String variable, int minValueInclusive, int maxValueInclusive) {
