@@ -7,16 +7,20 @@ const showSanPhamList = async () => {
         const { data: { sanphams } } = await axios.get(`./api/v1/sanpham/getall`);
         console.log(sanphams);
         const allSanPhams = sanphams.map((sanpham) => {
-            const { tenSanPham, gia, anhSanPham } = sanpham;
+            const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
             return `
                 <div class="col-sm-3">
-                <img src="./images/${anhSanPham}" class="img-responsive" style="width: 300px; height: 300px;" alt="${tenSanPham}">
+                <img src="${anhSanPham}" class="img-responsive" style="width: 300px; height: 300px;" alt="${tenSanPham}">
                 <p style="color:red;font-size:25px;font-family:poroto">${gia} VNĐ</p>
                 <p>${tenSanPham}</p>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-success"href="chitiet.html">Xem chi tiết</button>
-                    <button type="button" class="btn btn-success float-right">Mua ngay</button>
-                </div>
+                <a href="./chiTietSanPham/${maSanPham}" target="_blank">
+                  <button type="button" class="btn btn-success">Xem chi tiết</button>
+                </a>
+                <a href="" target="_blank">
+                  <button type="button" class="btn btn-success float-right">Mua ngay</button>
+                </a>
+              </div>
                 </div>`;
         }).join('');
         sanPhamListDOM.innerHTML = allSanPhams;
