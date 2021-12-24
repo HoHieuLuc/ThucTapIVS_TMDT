@@ -66,7 +66,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     @Action(value = "/danhGiaSanPham/*", params = { "maSanPham", "{1}" }, results = {
             @Result(name=SUCCESS,location = "/index.html"),
     })
-    public String getStudent() throws IOException {
+    public String getDanhGiaSP() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);

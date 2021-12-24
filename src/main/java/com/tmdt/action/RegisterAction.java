@@ -5,16 +5,29 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
+import org.apache.commons.io.FileUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.util.Date;
+import java.util.Enumeration;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.DispatcherType;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,11 +40,11 @@ import mybatis.mapper.*;
 import com.tmdt.model.*;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
+        "namespace", "/",
+        "actionName", "bad-request"
 })
 @InterceptorRef("loggedInStack")
-public class RegisterAction extends ActionSupport {
+public class RegisterAction extends ActionSupport  {
 
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
@@ -57,6 +70,39 @@ public class RegisterAction extends ActionSupport {
     private String trangCaNhan;
     private String maQuyen;
     private String xacNhanPassword;
+
+    // Chức năng upload ảnh
+    private File userImage;
+    private String userImageContentType;
+    private String userImageFileName;
+
+    public File getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(File userImage) {
+        this.userImage = userImage;
+    }
+
+    public String getUserImageContentType() {
+        return userImageContentType;
+    }
+
+    public void setUserImageContentType(String userImageContentType) {
+        this.userImageContentType = userImageContentType;
+    }
+
+    public String getUserImageFileName() {
+        return userImageFileName;
+    }
+
+    public void setUserImageFileName(String userImageFileName) {
+        this.userImageFileName = userImageFileName;
+    }
+
+    public void setServletRequest(HttpServletRequest servletRequest) {
+        this.request = servletRequest;
+    }
 
     // region getter and setter
     public String getXacNhanPassword() {
@@ -223,6 +269,17 @@ public class RegisterAction extends ActionSupport {
             @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })
     public String registerSubmit() throws IOException {
+        //Test upload ảnh trước khi vô luông isValid
+        String filePath = request.getSession().getServletContext().getRealPath("/").concat("userimages");
+
+        System.out.println("Image Location:" + filePath);//quan sat server console de thay vi tri thuc su
+        File fileToCreate = new File(filePath, this.userImageFileName);
+        FileUtils.copyFile(this.userImage, fileToCreate);//sao chep hinh anh trong file moi
+
+
+
+
+
         if (isValid()) {
             // Ở đây insert vô database sau khi validate form ok
             SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -308,7 +365,7 @@ public class RegisterAction extends ActionSupport {
         }
     }
 
-    // trang đăng ký khách hàng
+    //hiển thị trang đăng ký khách hàng
     @Action(value = "/register", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
     })

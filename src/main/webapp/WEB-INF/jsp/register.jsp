@@ -4,7 +4,8 @@
 
 <body>
     <div class="container">
-        <form id="registerForm"> 
+    <!--  -->
+        <form id="registerForm" enctype="multipart/form-data"> 
             
             <div class="row jumbotron">
                 <h2 class="col-sm-6 form-title">Đăng ký làm thành viên của sàn thương mại điện tử TLT</h2>
@@ -70,6 +71,11 @@
                         <option value="1">Nữ</option>
                     </select>
                 </div>
+                <!-- Upload ảnh -->
+                <div class="col-sm-6 form-group">
+                    <input type="file" id="userImage" name="userImage">
+                </div>
+                <!-- Upload ảnh -->
                 <div class="col-sm-6 form-group">
                     <label>Xác nhận mật khẩu</label>
                     <input type="password" name="xacNhanPassword" class="form-control" 
