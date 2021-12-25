@@ -19,7 +19,7 @@ const errorMsg = document.querySelector('#errorMsg');
 const showSanPhamDetail = async () => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
-        const { tenSanPham,nguoiDangSP, moTa, gia, anhSanPham, xepHang,maKhachHang } = sanpham;
+        const { tenSanPham, nguoiDangSP, moTa, gia, anhSanPham, xepHang, maKhachHang } = sanpham;
         tenSanPhamDOM.innerHTML = tenSanPham;
         danhGiaDOM.innerHTML = xepHang ?? "Chưa có đánh giá";
         moTaSanPhamDOM.innerHTML = moTa;
@@ -70,27 +70,55 @@ showDanhGiaSPList();
 const formDOM = document.querySelector('#formDanhGiaSanPham');
 //const noiDungErrorMessage = document.querySelector('#username_error');
 
-const submitDanhGiaSP = async () => {
+
+//http://localhost:8080/TMDT-0.0.1-SNAPSHOT/updateDanhGiaSanPham/35a99f29-64da-11ec-bb14-8378cfa7d63d
+const noiDungDanhGiaSP = document.querySelector('#noiDungDanhGiaSP > textarea');
+const soSaoDanhGiaSP = document.querySelector('#soSao');
+const updateOrSubmit = document.querySelector('#updateOrSubmit');
+const submit_updateDanhGiaSP = async () => {
     const formData = new FormData(formDOM);
     formData.append("maSanPham", maSanPham);
-    //Thực hiện request
+    //Nếu đã bình luận sản phẩm này
     try {
-        await axios.post(`${baseURL}danhGiaSanPhamSubmit`, formData);
-        showDanhGiaSPList();
-        showSanPhamDetail();
-    } catch (error) {
-        const data = error.response.data;
-        console.log(data);
-        errorMsg.textContent = data.error ?? "";
+        const { data : {danhGiaSPHienTai} } = await axios.post(`${baseURL}updateDanhGiaSanPham/${maSanPham}`);
+        //Thay đổi nút thêm bình luận thành nút cập nhật bình luận
+        updateOrSubmit.innerHTML = "Cập nhật bình luận";
+        console.log("Đây là nội dung, số sao khách hàng đã bình luận từ trước");
+        console.log(danhGiaSPHienTai[0].noi_dung);
+        console.log("<! --Đây là nội dung, số sao khách hàng đã bình luận từ trước -->");
+
+        
+        //Chạy await ok thì mình hiển thị nội dung và số sao đã có lên form
+        noiDungDanhGiaSP.value = danhGiaSPHienTai[0].noi_dung;
+        soSaoDanhGiaSP.value = danhGiaSPHienTai[0].so_sao;
+        //Update đánh giá sản phẩm chỗ này, viết 1 hàm submit sang action update đánh giá là xong
+
+
+    } catch (e) {
+        console.log(e);
+        //cho phép submit bình luận mới
+        try {
+            await axios.post(`${baseURL}danhGiaSanPhamSubmit`, formData);
+            showDanhGiaSPList();
+            showSanPhamDetail();
+        } catch (error) {
+            const data = error.response.data;
+            console.log(data);
+            errorMsg.textContent = data.error ?? "";
+        }
     }
+
+
 }
 
 if (formDOM) {
     formDOM.addEventListener('submit', (event) => {
         event.preventDefault();
-        submitDanhGiaSP();
+        submit_updateDanhGiaSP();
     });
 }
+
+submit_updateDanhGiaSP();
 
 
 
