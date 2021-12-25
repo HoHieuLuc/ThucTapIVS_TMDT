@@ -108,7 +108,7 @@ public class LoginAction extends ActionSupport {
         }
         sqlSession.close();
         // Thông báo sai tài khoản
-        return CustomError.createCustomError("Tài khoản sai tên đăng nhập hoặc mật khẩu", 401, response);
+        return CustomError.createCustomError("Sai tài khoản hoặc mật khẩu", 401, response);
 
     }
 
