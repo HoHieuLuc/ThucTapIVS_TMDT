@@ -36,4 +36,14 @@ public interface DanhGiaSanPhamMapper {
 	final String CHECK_CUSTOMER_COMMENTED_PRODUCE = "select ma_khach_hang from danh_gia_san_pham where ma_san_pham = #{maSanPham} and ma_khach_hang = #{maKhachHang} limit 1";
 	@Select(CHECK_CUSTOMER_COMMENTED_PRODUCE)
 	public int checkCusCommented(@Param("maSanPham") String maSanPham, @Param("maKhachHang") int maKhachHang);
+
+	/* 
+		SQL Test: SELECT * from danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = 1;
+	*/
+	//Lấy lại nội dung bình luận của khách hàng ?
+	final String GET_DANH_GIA_SP_CURRENT = "SELECT * from danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = #{maKhachHang}; ";
+	@Select(GET_DANH_GIA_SP_CURRENT)
+	public List<Map<String, Object>> getCurrentDGSP(int maKhachHang);
+
+
 }

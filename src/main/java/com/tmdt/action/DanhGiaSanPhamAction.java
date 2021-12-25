@@ -141,4 +141,31 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         System.out.println("Insert Completly");
         return SUCCESS;
     }
+
+    @Action(value = "/updateDanhGiaSanPham/*",results = {
+        @Result(name = SUCCESS, location = "/index.html")
+    },interceptorRefs = {
+        @InterceptorRef(value = "khachHangStack"),
+    })
+    public String updateDanhGiaSanPham() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
+
+        //Nếu khách hàng đã bình luận sản phẩm này, đổi giao diện sang update sản phẩm
+        //Hiển thị bình luận khách hàng đã nhập lên input, hiển thị số sao đã chọn từ trước
+        try {
+            //Lẫy mã người dùng check, lấy mã sản phẩm dựa vào param url check
+            int maKhachHang = (int) session.getAttribute("maNguoiDung");
+            danhGiaSanPhamMapper.checkCusCommented(maSanPham, maKhachHang);
+            //Lấy thông tin đánh giá theo mã khách hàng trên
+            
+            
+        } catch (BindingException e) {
+            
+        }
+        return SUCCESS;
+    }
+
+
 }
