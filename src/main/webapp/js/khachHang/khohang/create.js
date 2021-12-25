@@ -17,6 +17,7 @@ const upload = async () => {
     const formData = new FormData(formDOM);
     try {
         await axios.post(`${baseURL}api/v1/user/sanpham/create`, formData);
+        alert('Thêm sản phẩm thành công');
     } catch (error) {
         console.log(error);
     }
