@@ -141,6 +141,9 @@ public class DanhGiaSanPhamAction extends ActionSupport {
                 jsonObject.put("error", "Bạn đã bình luận sản phẩm này, đang tiến hành update");
                 danhGiaSanPhamMapper.updateDanhGiaSp(noiDung, soSao, maDanhGia, maKhachHang, maSanPham);
 
+                //Ngắt kết nối sql, tránh quá tải
+                sqlSession.commit();
+                sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonObject, 404, response);
             } catch (BindingException e) {
                 danhGiaSanPhamMapper.themDGSP(dgsp);
