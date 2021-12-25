@@ -10,17 +10,17 @@ const showSanPhamList = async () => {
             const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
             return `
                 <div class="col-sm-3">
-                <img src="${anhSanPham}" class="img-responsive" style="width: 300px; height: 300px;" alt="${tenSanPham}">
-                <p style="color:red;font-size:25px;font-family:poroto">${gia} VNĐ</p>
-                <p>${tenSanPham}</p>
-                <div class="card-footer">
-                <a href="./chiTietSanPham/${maSanPham}" target="_blank">
-                  <button type="button" class="btn btn-success">Xem chi tiết</button>
-                </a>
-                <a href="" target="_blank">
-                  <button type="button" class="btn btn-success float-right">Mua ngay</button>
-                </a>
-              </div>
+                  <img src="${baseURL}images/product/${anhSanPham}" class="img-responsive" style="width: 200px; height: 200px;" alt="${tenSanPham}">
+                  <p style="color:red;font-size:25px;font-family:poroto">${gia} VNĐ</p>
+                  <p>${tenSanPham}</p>
+                  <div class="card-footer">
+                    <a href="${baseURL}sanpham/${maSanPham}">
+                      <button type="button" class="btn btn-success">Xem chi tiết</button>
+                    </a>
+                    <a href="#">
+                      <button type="button" class="btn btn-success float-right">Mua ngay</button>
+                    </a>
+                  </div>
                 </div>`;
         }).join('');
         sanPhamListDOM.innerHTML = allSanPhams;
