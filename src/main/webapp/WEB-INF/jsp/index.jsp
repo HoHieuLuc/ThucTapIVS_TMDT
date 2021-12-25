@@ -7,7 +7,7 @@
   <div class="row" id="listSanPham">
 
   </div>
-  <script src='js/khachHang/index.js'></script>
+  <script src='js/product/sanpham-browser.js'></script>
 </div>
 </body>
 
