@@ -49,14 +49,14 @@
                             <c:when test="${sessionScope.level == 0}">    
                                 <form id="formDanhGiaSanPham">
                                     <div class="text-danger" id="errorMsg"></div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="noiDungDanhGiaSP">
                                         <label>Nội dung</label>
                                         <textarea name="noiDung" id="" cols="30" rows="5" class="form-control"></textarea>
                                     </div>
 
                                     <div class="form-inline">
                                         <label>Số sao</label>
-                                        <select name="soSao">
+                                        <select name="soSao" id="soSao">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -66,7 +66,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" id="post" class="btn btn-success">Đăng bình luận</button>
+                                        <button type="submit" id="updateOrSubmit" class="btn btn-success">Đăng bình luận</button>
                                     </div>
                                 </form>
                             </c:when>

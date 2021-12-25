@@ -29,6 +29,18 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     private String maSanPham;
     private String noiDung;
     private int soSao;
+    private int maDanhGia;
+
+
+    
+
+    public int getMaDanhGia() {
+        return maDanhGia;
+    }
+
+    public void setMaDanhGia(int maDanhGia) {
+        this.maDanhGia = maDanhGia;
+    }
 
     public String getNoiDung() {
         return noiDung;
@@ -97,12 +109,12 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         return true;
     }
 
-    @Action(value = "/danhGiaSanPhamSubmit", results = {
+    @Action(value = "/danhGiaSP_Submit_Or_Update", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
-        @InterceptorRef(value = "khachHangStack"),
+            @InterceptorRef(value = "khachHangStack"),
     })
-    public String danhGiaSanPhamSubmit() throws IOException {
+    public String danhGiaSP_Submit_Or_Update() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
@@ -124,8 +136,14 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         try {
             try {
                 danhGiaSanPhamMapper.checkCusCommented(maSanPham, maKhachHang);
-                jsonObject.put("error", "Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
-                System.out.println("Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
+                //Hàm trên mà failed chứng tỏ khách hàng chưa bình luận, nó sẽ break chỗ này
+                //Ngược lại hàm checkCusCommented chạy ok thì chuyển sang hàm update
+                jsonObject.put("error", "Bạn đã bình luận sản phẩm này, đang tiến hành update");
+                danhGiaSanPhamMapper.updateDanhGiaSp(noiDung, soSao, maDanhGia, maKhachHang, maSanPham);
+
+                //Ngắt kết nối sql, tránh quá tải
+                sqlSession.commit();
+                sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonObject, 404, response);
             } catch (BindingException e) {
                 danhGiaSanPhamMapper.themDGSP(dgsp);
@@ -141,4 +159,38 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         System.out.println("Insert Completly");
         return SUCCESS;
     }
+
+    @Action(value = "/viewCurrentDanhGiaSanPham/*",params = { "maSanPham", "{1}" }, results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+    public String viewCurrentDanhGiaSanPham() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
+
+        // Nếu khách hàng đã bình luận sản phẩm này, đổi giao diện sang update sản phẩm
+        // Hiển thị bình luận khách hàng đã nhập lên input, hiển thị số sao đã chọn từ
+        // trước
+        try {
+            // Lẫy mã người dùng check, lấy mã sản phẩm dựa vào param url check
+            int maKhachHang = (int) session.getAttribute("maNguoiDung");
+            danhGiaSanPhamMapper.checkCusCommented(maSanPham, maKhachHang);
+
+            List<Map<String, Object>> dgspHienTai = danhGiaSanPhamMapper.getCurrentDGSP(maKhachHang,maSanPham);
+
+            Map<String, Object> jsonObject = new HashMap<String, Object>();
+            jsonObject.put("danhGiaSPHienTai", dgspHienTai);
+            sqlSession.close();
+            return JsonResponse.createJsonResponse(jsonObject, 200, response);
+
+            // Lấy thông tin đánh giá theo mã khách hàng trên
+
+        } catch (BindingException e) {
+            
+        }
+        return SUCCESS;
+    }
+
 }
