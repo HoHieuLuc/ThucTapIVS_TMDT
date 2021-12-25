@@ -77,6 +77,8 @@ const soSaoDanhGiaSP = document.querySelector('#soSao');
 const updateOrSubmit = document.querySelector('#updateOrSubmit');
 const formData = new FormData(formDOM);
 
+//Lấy mã đánh giá mà khách hàng đã bình luận từ trước
+var maDanhGia_commented = null;
 
 const check_HanhViDanhGiaSP = async () => {
     
@@ -95,8 +97,9 @@ const check_HanhViDanhGiaSP = async () => {
         noiDungDanhGiaSP.value = danhGiaSPHienTai[0].noi_dung;
         soSaoDanhGiaSP.value = danhGiaSPHienTai[0].so_sao;
         //Update đánh giá sản phẩm chỗ này, viết 1 hàm submit sang action update đánh giá là xong
-        //Lấy mã đánh giá đưa vào formDOM
-        formData.append('maDanhGia',danhGiaSPHienTai[0].ma_danh_gia);
+        //Lưu mã đánh giá commented vào biến
+        //formData.append('maDanhGia',danhGiaSPHienTai[0].ma_danh_gia);
+        maDanhGia_commented = danhGiaSPHienTai[0].ma_danh_gia;
 
     } catch (e) {
         console.log(e);
@@ -109,7 +112,9 @@ const Submit_Or_Update = async () =>{
     const formData = new FormData(formDOM);
     try {
         formData.append("maSanPham", maSanPham);
-        console.log(formData);
+        console.log(maDanhGia_commented);
+        if (maDanhGia_commented != null) formData.append("maDanhGia",maDanhGia_commented);
+       // console.log(formData);
         await axios.post(`${baseURL}danhGiaSP_Submit_Or_Update`, formData);
         showDanhGiaSPList();
         showSanPhamDetail();
