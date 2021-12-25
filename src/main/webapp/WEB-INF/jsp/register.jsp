@@ -53,7 +53,7 @@
                 <div class="col-sm-3 form-group">
                     <label>Username</label>
                     <input type="text" class="form-control" name="username"  placeholder="Username (Bắt buộc)" >
-                    <p id="username_error"></p>
+                    <p id="username_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-3 form-group">
                     <label>Password</label>
@@ -66,14 +66,15 @@
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Giới tính</label>
-                    <select name="gioiTinh" class="form-control browser-default custom-select">
+                    <select name="gioiTinh" class="form-control">
                         <option value="0">Nam</option>
                         <option value="1">Nữ</option>
                     </select>
                 </div>
                 <!-- Upload ảnh, đừng đổi tên userImage nhan, đổi nó lỗi  -->
                 <div class="col-sm-6 form-group">
-                    <input type="file" id="userImage" name="userImage">
+                    <label>Chọn ảnh đại diện</label>
+                    <input type="file" id="userImage" class="form-control" name="userImage">
                 </div>
                 <!-- Upload ảnh -->
                 <div class="col-sm-6 form-group">
@@ -83,8 +84,9 @@
                     <p id="retype_password" class="text-danger"></p>
                 </div>
                 <div class="col-sm-12">
-                    <input type="checkbox" class="form-check d-inline"  ><label 
-                        class="form-check-label">&nbsp;Tôi đồng ý với tất cả điều khoản.
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check d-inline">
+                        &nbsp;Tôi đồng ý với tất cả điều khoản.
                     </label>
                 </div>
 
