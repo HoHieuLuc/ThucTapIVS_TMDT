@@ -100,7 +100,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     @Action(value = "/danhGiaSanPhamSubmit", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
-        @InterceptorRef(value = "khachHangStack"),
+            @InterceptorRef(value = "khachHangStack"),
     })
     public String danhGiaSanPhamSubmit() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -142,30 +142,37 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         return SUCCESS;
     }
 
-    @Action(value = "/updateDanhGiaSanPham/*",results = {
-        @Result(name = SUCCESS, location = "/index.html")
-    },interceptorRefs = {
-        @InterceptorRef(value = "khachHangStack"),
+    @Action(value = "/updateDanhGiaSanPham/*",params = { "maSanPham", "{1}" }, results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
     })
     public String updateDanhGiaSanPham() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
 
-        //Nếu khách hàng đã bình luận sản phẩm này, đổi giao diện sang update sản phẩm
-        //Hiển thị bình luận khách hàng đã nhập lên input, hiển thị số sao đã chọn từ trước
+        // Nếu khách hàng đã bình luận sản phẩm này, đổi giao diện sang update sản phẩm
+        // Hiển thị bình luận khách hàng đã nhập lên input, hiển thị số sao đã chọn từ
+        // trước
         try {
-            //Lẫy mã người dùng check, lấy mã sản phẩm dựa vào param url check
+            // Lẫy mã người dùng check, lấy mã sản phẩm dựa vào param url check
             int maKhachHang = (int) session.getAttribute("maNguoiDung");
             danhGiaSanPhamMapper.checkCusCommented(maSanPham, maKhachHang);
-            //Lấy thông tin đánh giá theo mã khách hàng trên
-            
-            
+
+            List<Map<String, Object>> dgspHienTai = danhGiaSanPhamMapper.getCurrentDGSP(maKhachHang,maSanPham);
+
+            Map<String, Object> jsonObject = new HashMap<String, Object>();
+            jsonObject.put("danhGiaSPHienTai", dgspHienTai);
+            sqlSession.close();
+            return JsonResponse.createJsonResponse(jsonObject, 200, response);
+
+            // Lấy thông tin đánh giá theo mã khách hàng trên
+
         } catch (BindingException e) {
             
         }
         return SUCCESS;
     }
-
 
 }
