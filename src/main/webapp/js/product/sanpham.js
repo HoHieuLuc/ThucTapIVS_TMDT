@@ -119,6 +119,7 @@ const Submit_Or_Update = async () =>{
         showDanhGiaSPList();
         showSanPhamDetail();
     } catch (error) {
+        showDanhGiaSPList();
         const data = error.response.data;
         console.log(data);
         errorMsg.textContent = data.error ?? "";
