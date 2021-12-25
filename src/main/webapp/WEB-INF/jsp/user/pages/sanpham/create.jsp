@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="../../header.jsp" />
+<jsp:include page="/WEB-INF/jsp/user/header.jsp" />
 <div class="container">
     <form id="them-san-pham-form" enctype="multipart/form-data">      
         <div class="row">
@@ -23,7 +23,7 @@
                 </select>
             </div>
             <div class="mb-1">
-                <label class="">Số lương</label>
+                <label class="">Số lượng</label>
                 <input type="text" class="form-control rounded" name="soLuong">
             </div>
             <div class="mb-1">
@@ -49,4 +49,4 @@
     document.getElementById('aside-them-san-pham').classList.add('active');
     document.getElementById('aside-kho-hang').classList.add('menu-is-opening', 'menu-open');
 </script>
-<jsp:include page="../../footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/user/footer.jsp" />
