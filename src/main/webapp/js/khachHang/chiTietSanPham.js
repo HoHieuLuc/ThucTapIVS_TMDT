@@ -75,12 +75,12 @@ formDOM.addEventListener('submit', (event) => {
 
 const showSanPhamDetail = async () => {
     try {
-        const { data: sanpham} = await axios.get(`${baseURL}api/v1/sanpham/details/${maSanPham}`);
-        console.log(sanpham);
-        tenSanPham.innerHTML = sanpham.tenSanPham;
-        danhGia.innerHTML = sanpham.xepHang;
-        moTaSanPham.innerHTML = sanpham.moTa;
-        gia.innerHTML = sanpham.gia;
+        const { data} = await axios.get(`${baseURL}api/v1/sanpham/details/${maSanPham}`);
+        console.log(data.sanpham[0].tenSanPham);
+        tenSanPham.innerHTML = data.sanpham[0].tenSanPham;
+        danhGia.innerHTML = data.sanpham[0].xepHang;
+        moTaSanPham.innerHTML = data.sanpham[0].moTa;
+        gia.innerHTML = data.sanpham[0].gia;
     } catch (error) {
         console.log(error);
     }
