@@ -1,0 +1,5 @@
+Chỗ này tui note lại mấy route của api, ... , để copy pass test nhanh hơn
+Ô bấm ctrl + shift + p (Xóa dấu <, tìm file này tiện hơn)
+
+http://localhost:8080/TMDT-0.0.1-SNAPSHOT/
+

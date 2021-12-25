@@ -89,19 +89,3 @@ if (formDOM) {
 
 
 
-//Alo tui commented để tạo pull fix chiTietSanPham nhan
-const showSanPhamDetail = async () => {
-    try {
-        const { data} = await axios.get(`${baseURL}api/v1/sanpham/details/${maSanPham}`);
-        console.log(data.sanpham[0].tenSanPham);
-        tenSanPham.innerHTML = data.sanpham[0].tenSanPham;
-        danhGia.innerHTML = data.sanpham[0].xepHang;
-        moTaSanPham.innerHTML = data.sanpham[0].moTa;
-        gia.innerHTML = data.sanpham[0].gia;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-showSanPhamDetail();
-
