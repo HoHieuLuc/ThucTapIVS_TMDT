@@ -7,7 +7,8 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
-/** Kiểm tra xem người dùng đã đăng nhập hay chưa, nếu đã đăng nhập thì ko thể vào action login và register
+/** *NotLoggedInInterceptor, 
+ * Kiểm tra xem người dùng đã đăng nhập hay chưa, nếu đã đăng nhập thì ko thể vào action login và register
 */
 public class LoggedInInterceptor implements Interceptor {
     @Override
