@@ -13,7 +13,7 @@
                     <label>Họ và tên</label>
                     <input type="text" class="form-control" name="ten" 
                         placeholder="Nhập họ và tên (Bắt buộc)">
-                    <p id="ten_error"></p>
+                    <p id="ten_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Địa chỉ</label>
@@ -26,19 +26,19 @@
                 <div class="col-sm-6 form-group">
                     <label>Số điện thoại</label>
                     <input type="text" class="form-control" name="soDienThoai"  placeholder="Số điện thoại (Bắt buộc)">
-                    <p id="phone_error"></p>
+                    <p id="phone_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Twitter</label>
                     <input type="text" class="form-control" name="twitterLink" 
                         placeholder="">
-                    <p id="twitter_error"></p>
+                    <p id="twitter_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Facebook</label>
                     <input type="text" class="form-control" name="facebookLink" 
                         placeholder="">
-                    <p id="facebook_error"></p>
+                    <p id="facebook_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Trang cá nhân</label>
@@ -48,7 +48,7 @@
                     <label>Email</label>
                     <input type="email" class="form-control" name="email" 
                         placeholder="Nhập địa chỉ email (Bắt buộc)" >
-                        <p id="email_error"></p>
+                    <p id="email_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-3 form-group">
                     <label>Username</label>
@@ -58,7 +58,7 @@
                 <div class="col-sm-3 form-group">
                     <label>Password</label>
                     <input type="password" class="form-control" name="password"  placeholder="Password (Bắt buộc)" >
-                    <p id="password_error"></p>
+                    <p id="password_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Ngày sinh</label>
@@ -73,14 +73,14 @@
                 </div>
                 <!-- Upload ảnh, đừng đổi tên userImage nhan, đổi nó lỗi  -->
                 <div class="col-sm-6 form-group">
-                    <input type="file" id="userImage" name="userImage" type="image">
+                    <input type="file" id="userImage" name="userImage">
                 </div>
                 <!-- Upload ảnh -->
                 <div class="col-sm-6 form-group">
                     <label>Xác nhận mật khẩu</label>
                     <input type="password" name="xacNhanPassword" class="form-control" 
                         placeholder="Nhập lại mật khẩu">
-                    <p id="retype_password"></p>
+                    <p id="retype_password" class="text-danger"></p>
                 </div>
                 <div class="col-sm-12">
                     <input type="checkbox" class="form-check d-inline"  ><label 
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="col-sm-12 form-group mb-0">
-                    <input type="submit" class="btn btn-primary float-right">Đăng ký</button>
+                    <input type="submit" class="btn btn-primary float-right" value="Đăng ký">
                 </div>
 
             </div>

@@ -20,6 +20,18 @@
                 <interceptor-ref name="LoggedInInterceptor" />
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack> 
+
+            <interceptor name="NhanVienInterceptor" class="com.tmdt.interceptor.NhanVienInterceptor" />  
+            <interceptor-stack name="nhanVienStack">
+                <interceptor-ref name="NhanVienInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack> 
+
+            <interceptor name="KhachHangInterceptor" class="com.tmdt.interceptor.KhachHangInterceptor" />  
+            <interceptor-stack name="khachHangStack">
+                <interceptor-ref name="KhachHangInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack> 
         </interceptors>  
 
         <global-results>

@@ -69,7 +69,7 @@ public class RegisterAction extends ActionSupport {
     private String userImageContentType;
     private String userImageFileName;
 
-    //region getter and setter
+    // region getter and setter
     public File getUserImage() {
         return userImage;
     }
@@ -207,7 +207,7 @@ public class RegisterAction extends ActionSupport {
         this.trangCaNhan = trangCaNhan;
     }
 
-    //endregion getter setter
+    // endregion getter setter
 
     // Validate All Field
     public boolean isValid() {
@@ -216,7 +216,7 @@ public class RegisterAction extends ActionSupport {
                 && between(facebookLink, 0, 30) && between(twitterLink, 0, 30)
                 && Pattern.matches(PHONE_REGEX, soDienThoai)
                 && (xacNhanPassword.equals(password))
-                && userImage != null 
+                && userImage != null
                 && userImageContentType.contains("image/");
     }
 
@@ -248,17 +248,7 @@ public class RegisterAction extends ActionSupport {
             Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
 
             // tránh trùng tên file
-            String avatarFileName =  System.currentTimeMillis() + "_" + userImageFileName;
-
-            //
-            String filePath = session.getServletContext().getRealPath("/") + "images\\user\\";
-            File fileToCreate = new File(filePath, avatarFileName);
-            FileUtils.copyFile(this.userImage, fileToCreate);
-
-            // lưu file vào thư mục project để khỏi mất khi compile lại
-            String LocalPath = ProjectPath.getPath() + "\\images\\user\\";
-            File test = new File(LocalPath, avatarFileName);
-            FileUtils.copyFile(this.userImage, test);
+            String avatarFileName = System.currentTimeMillis() + "_" + userImageFileName;
 
             TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, 0, 1, username, password, email,
                     soDienThoai, "KH", avatarFileName, ngay_tao, ngaySinh);
@@ -281,6 +271,15 @@ public class RegisterAction extends ActionSupport {
 
                 int maKhachHang = (int) loginInfo.get("maNguoiDung");
                 String avatar = (String) loginInfo.get("avatar");
+                //
+                String filePath = session.getServletContext().getRealPath("/") + "images\\user\\";
+                File fileToCreate = new File(filePath, avatarFileName);
+                FileUtils.copyFile(this.userImage, fileToCreate);
+
+                // lưu file vào thư mục project để khỏi mất khi compile lại
+                String LocalPath = ProjectPath.getPath() + "\\images\\user\\";
+                File test = new File(LocalPath, avatarFileName);
+                FileUtils.copyFile(this.userImage, test);
 
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("username", username);
