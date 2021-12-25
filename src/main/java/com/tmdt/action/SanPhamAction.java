@@ -185,7 +185,7 @@ public class SanPhamAction extends ActionSupport {
 
     // Hiển thị giao diện xem chi tiết sản phẩm
     @Action(value = "/sanpham/*", results = {
-            @Result(name = SUCCESS, location = "/WEB-INF/jsp/chiTietSanPham.jsp")
+            @Result(name = SUCCESS, location = "/WEB-INF/jsp/product/index.jsp")
     })
     public String viewChiTietSanPham() {
         return SUCCESS;

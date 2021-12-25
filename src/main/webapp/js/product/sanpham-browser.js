@@ -4,7 +4,7 @@ const showSanPhamList = async () => {
     sanPhamListDOM.textContent = 'Loading...';
 
     try {
-        const { data: { sanphams } } = await axios.get(`./api/v1/sanpham/getall`);
+        const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/sanpham/getall`);
         console.log(sanphams);
         const allSanPhams = sanphams.map((sanpham) => {
             const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;

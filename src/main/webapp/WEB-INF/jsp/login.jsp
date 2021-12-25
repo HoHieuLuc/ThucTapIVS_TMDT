@@ -18,12 +18,11 @@
                 </div>
                 <div class="col-sm-12 form-group">
                     <button class="btn btn-danger">Quên mật khẩu</button>
-                    
                 </div>
                 <div class="col-sm-12 form-group">
                     <input type="submit" class="btn btn-primary" value="Đăng nhập">
                 </div>
-                <p id="login_error"></p>
+                <p id="login_error" class="text-danger"></p>
             </div>
         </form>
     </div>

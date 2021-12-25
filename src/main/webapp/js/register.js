@@ -9,6 +9,14 @@ const retypePasswordErrorMessage = document.querySelector('#retype_password')
 const phoneErrorMessage = document.querySelector('#phone_error')
 
 const validateRegisterForm = async () => {
+    userNameErrorMessage.textContent = "";
+    passwordErrorMessage.textContent = "";
+    emailErrorMessage.textContent = "";
+    tenErrorMessage.textContent = "";
+    facebookErrorMessage.textContent = "";
+    twitterErrorMessage.textContent = "";
+    retypePasswordErrorMessage.textContent = "";
+    phoneErrorMessage.textContent = "";
     const formData = new FormData(formDOM);
     //Thực hiện request
     try {

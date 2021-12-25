@@ -20,14 +20,14 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
-import com.tmdt.errors.CustomError;
 import com.tmdt.utilities.JsonResponse;
 
 import mybatis.mapper.*;
 import com.tmdt.model.*;
 
 public class DanhGiaSanPhamAction extends ActionSupport {
-    private String maSanPham, noiDung;
+    private String maSanPham;
+    private String noiDung;
     private int soSao;
 
     public String getNoiDung() {
@@ -72,10 +72,6 @@ public class DanhGiaSanPhamAction extends ActionSupport {
 
         List<Map<String, Object>> danhSachDanhGia = danhGiaSanPhamMapper.getAll(maSanPham);
 
-        if (danhSachDanhGia.isEmpty()) {
-            return CustomError.createCustomError("Sản phầm này chưa có đánh giá Mã sản phẩm là " + maSanPham, 404,
-                    response);
-        }
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         jsonObject.put("danhGiaSPs", danhSachDanhGia);
         sqlSession.close();
@@ -103,6 +99,8 @@ public class DanhGiaSanPhamAction extends ActionSupport {
 
     @Action(value = "/danhGiaSanPhamSubmit", results = {
             @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+        @InterceptorRef(value = "khachHangStack"),
     })
     public String danhGiaSanPhamSubmit() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -115,13 +113,14 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
         Date ngayTao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
-        DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, maSanPham, ngayTao, ngayTao);
+        DanhGiaSanPham dgsp = new DanhGiaSanPham(maKhachHang, soSao, noiDung, maSanPham, ngayTao, null);
         System.out.println("Debug:Mã khách hàng:" + maKhachHang + " Mã Sản phẩm:" + maSanPham + "Star:" + soSao
                 + "Nội dung:" + noiDung);
         // DanhGiaSanPham dgsp = new DanhGiaSanPham(2, 5, "test cho khách hàng 2",
         // "SP001", ngayTao, ngayTao);
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
+        /* TODO: sửa đoạn này */
         try {
             try {
                 danhGiaSanPhamMapper.checkCusCommented(maSanPham, maKhachHang);
@@ -134,7 +133,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
             }
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
-            jsonObject.put("lỗi", "Thêm bình luận không được, vui lòng kiểm tra bạn");
+            jsonObject.put("lỗi", "Thêm bình luận không được, vui lòng kiểm tra lại");
             return JsonResponse.createJsonResponse(jsonObject, 404, response);
         }
         sqlSession.commit();
