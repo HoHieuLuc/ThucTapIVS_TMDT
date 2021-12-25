@@ -174,6 +174,14 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a href='<c:url value="/"/>' class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Trang chủ
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
               <a href='<c:url value="/logout"/>' class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
