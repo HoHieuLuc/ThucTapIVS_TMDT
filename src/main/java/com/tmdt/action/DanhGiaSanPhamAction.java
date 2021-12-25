@@ -142,12 +142,12 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         return SUCCESS;
     }
 
-    @Action(value = "/updateDanhGiaSanPham/*",params = { "maSanPham", "{1}" }, results = {
+    @Action(value = "/viewCurrentDanhGiaSanPham/*",params = { "maSanPham", "{1}" }, results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
-    public String updateDanhGiaSanPham() throws IOException {
+    public String viewCurrentDanhGiaSanPham() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);

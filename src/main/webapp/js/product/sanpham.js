@@ -71,7 +71,7 @@ const formDOM = document.querySelector('#formDanhGiaSanPham');
 //const noiDungErrorMessage = document.querySelector('#username_error');
 
 
-//http://localhost:8080/TMDT-0.0.1-SNAPSHOT/updateDanhGiaSanPham/35a99f29-64da-11ec-bb14-8378cfa7d63d
+//http://localhost:8080/TMDT-0.0.1-SNAPSHOT/viewCurrentDanhGiaSanPham/35a99f29-64da-11ec-bb14-8378cfa7d63d
 const noiDungDanhGiaSP = document.querySelector('#noiDungDanhGiaSP > textarea');
 const soSaoDanhGiaSP = document.querySelector('#soSao');
 const updateOrSubmit = document.querySelector('#updateOrSubmit');
@@ -80,7 +80,7 @@ const submit_updateDanhGiaSP = async () => {
     formData.append("maSanPham", maSanPham);
     //Nếu đã bình luận sản phẩm này
     try {
-        const { data : {danhGiaSPHienTai} } = await axios.post(`${baseURL}updateDanhGiaSanPham/${maSanPham}`);
+        const { data : {danhGiaSPHienTai} } = await axios.post(`${baseURL}viewCurrentDanhGiaSanPham/${maSanPham}`);
         //Thay đổi nút thêm bình luận thành nút cập nhật bình luận
         updateOrSubmit.innerHTML = "Cập nhật bình luận";
         console.log("Đây là nội dung, số sao khách hàng đã bình luận từ trước");
