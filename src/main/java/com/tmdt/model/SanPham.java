@@ -4,20 +4,19 @@ import java.util.Date;
 
 public class SanPham {
     private String maSanPham;
+    private int maKhachHang;
     private String tenSanPham;
     private String moTa;
-    private String gia;
+    private int gia;
     private int status;
-    private String maLoaiSanPham;
+    private int maLoaiSanPham;
     private int soLuong;
     private Date ngayDang;
     private int soLuongDaBan;
 
-    public SanPham() {
-    }
-
-    public SanPham(String tenSanPham, String moTa, String gia, int status, String maLoaiSanPham, int soLuong, Date ngayDang, int soLuongDaBan) {
+    public SanPham(String tenSanPham, int maKhachHang, String moTa, int gia, int status, int maLoaiSanPham, int soLuong, Date ngayDang, int soLuongDaBan) {
         this.tenSanPham = tenSanPham;
+        this.maKhachHang = maKhachHang;
         this.moTa = moTa;
         this.gia = gia;
         this.status = status;
@@ -33,6 +32,14 @@ public class SanPham {
 
     public void setMaSanPham(String maSanPham) {
         this.maSanPham = maSanPham;
+    }
+
+    public int getMaKhachHang() {
+        return maKhachHang;
+    }
+
+    public void setMaKhachHang(int maKhachHang) {
+        this.maKhachHang = maKhachHang;
     }
 
     public String getTenSanPham() {
@@ -51,11 +58,11 @@ public class SanPham {
         this.moTa = moTa;
     }
 
-    public String getGia() {
+    public int getGia() {
         return gia;
     }
 
-    public void setGia(String gia) {
+    public void setGia(int gia) {
         this.gia = gia;
     }
 
@@ -67,11 +74,11 @@ public class SanPham {
         this.status = status;
     }
 
-    public String getMaLoaiSanPham() {
+    public int getMaLoaiSanPham() {
         return maLoaiSanPham;
     }
 
-    public void setMaLoaiSanPham(String maLoaiSanPham) {
+    public void setMaLoaiSanPham(int maLoaiSanPham) {
         this.maLoaiSanPham = maLoaiSanPham;
     }
 
