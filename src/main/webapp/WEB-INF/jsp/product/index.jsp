@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-        <jsp:include page="./header.jsp" />
+        <jsp:include page="/WEB-INF/jsp/header.jsp" />
         <body>
             <div class="container">
                 <!-- Chi tiết sản phẩm -->
@@ -17,10 +17,10 @@
                             <div class="details col-md-6">
                                 <h3 class="product-title" id="tenSanPham"></h3>
                                 <div class="rating">
-                                    <div class="stars"> <span class="fa fa-star checked"></span> <span
-                                            class="fa fa-star checked"></span> <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star"></span> <span class="fa fa-star"></span>
-                                    </div> <span class="review-no" id="danhGia"></span>
+                                    <%-- <div class="stars"> <span class="fas fa-star checked"></span> <span
+                                            class="fas fa-star checked"></span> <span class="fa fa-star checked"></span>
+                                        <span class="fas fa-star"></span> <span class="fa fa-star"></span> --%>
+                                    </div>Đánh giá của người dùng: <span class="review-no" id="danhGia"></span>
                                 </div>
                                 <p class="product-description" id="moTaSanPham"></p>
                                 <h4 class="price" id="gia"></h4>
@@ -44,6 +44,7 @@
                         <c:choose>
                             <c:when test="${sessionScope.level == 0}">    
                                 <form id="formDanhGiaSanPham">
+                                    <div class="text-danger" id="errorMsg"></div>
                                     <div class="form-group">
                                         <label>Nội dung</label>
                                         <textarea name="noiDung" id="" cols="30" rows="5" class="form-control"></textarea>
@@ -69,7 +70,7 @@
                                 Bạn không phải là khách hàng
                             </c:when>
                             <c:otherwise>
-                                Bạn phải đăng nhập thì mới đánh giá sản phẩm
+                                Bạn phải <a href='<c:url value="/login"/>'>Đăng nhập</a> thì mới được đánh giá sản phẩm
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -82,5 +83,5 @@
             </div>
         </body>
 
-        <script src='<c:url value="/js/khachHang/chiTietSanPham.js"/>'></script>
-        <jsp:include page="./footer.jsp" />
+        <script src='<c:url value="/js/product/sanpham.js"/>'></script>
+        <jsp:include page="/WEB-INF/jsp/footer.jsp" />
