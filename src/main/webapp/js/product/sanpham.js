@@ -75,8 +75,11 @@ const formDOM = document.querySelector('#formDanhGiaSanPham');
 const noiDungDanhGiaSP = document.querySelector('#noiDungDanhGiaSP > textarea');
 const soSaoDanhGiaSP = document.querySelector('#soSao');
 const updateOrSubmit = document.querySelector('#updateOrSubmit');
-const submit_updateDanhGiaSP = async () => {
-    const formData = new FormData(formDOM);
+const formData = new FormData(formDOM);
+
+
+const check_HanhViDanhGiaSP = async () => {
+    
     formData.append("maSanPham", maSanPham);
     //Nếu đã bình luận sản phẩm này
     try {
@@ -92,33 +95,39 @@ const submit_updateDanhGiaSP = async () => {
         noiDungDanhGiaSP.value = danhGiaSPHienTai[0].noi_dung;
         soSaoDanhGiaSP.value = danhGiaSPHienTai[0].so_sao;
         //Update đánh giá sản phẩm chỗ này, viết 1 hàm submit sang action update đánh giá là xong
-
+        //Lấy mã đánh giá đưa vào formDOM
+        formData.append('maDanhGia',danhGiaSPHienTai[0].ma_danh_gia);
 
     } catch (e) {
         console.log(e);
-        //cho phép submit bình luận mới
-        try {
-            await axios.post(`${baseURL}danhGiaSanPhamSubmit`, formData);
-            showDanhGiaSPList();
-            showSanPhamDetail();
-        } catch (error) {
-            const data = error.response.data;
-            console.log(data);
-            errorMsg.textContent = data.error ?? "";
-        }
     }
-
-
 }
+
+
+//Form này vừa có chức năng update, vừa có chức năng submit đánh giá mới của khách hàng
+const Submit_Or_Update = async () =>{
+    const formData = new FormData(formDOM);
+    try {
+        formData.append("maSanPham", maSanPham);
+        console.log(formData);
+        await axios.post(`${baseURL}danhGiaSP_Submit_Or_Update`, formData);
+        showDanhGiaSPList();
+        showSanPhamDetail();
+    } catch (error) {
+        const data = error.response.data;
+        console.log(data);
+        errorMsg.textContent = data.error ?? "";
+    }
+}
+
+check_HanhViDanhGiaSP();
 
 if (formDOM) {
     formDOM.addEventListener('submit', (event) => {
         event.preventDefault();
-        submit_updateDanhGiaSP();
+        Submit_Or_Update();
     });
 }
-
-submit_updateDanhGiaSP();
 
 
 

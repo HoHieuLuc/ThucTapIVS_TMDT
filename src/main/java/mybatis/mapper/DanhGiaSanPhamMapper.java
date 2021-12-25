@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,8 @@ public interface DanhGiaSanPhamMapper {
     @Options(useGeneratedKeys = true, keyProperty = "maDanhGia",keyColumn = "ma_danh_gia")
     public void themDGSP(DanhGiaSanPham dgsp);
 
+
+	
 	//Kiểm tra xem khách hàng này đã bình luận hay chưa?
 	final String CHECK_CUSTOMER_COMMENTED_PRODUCE = "select ma_khach_hang from danh_gia_san_pham where ma_san_pham = #{maSanPham} and ma_khach_hang = #{maKhachHang} limit 1";
 	@Select(CHECK_CUSTOMER_COMMENTED_PRODUCE)
@@ -41,10 +44,24 @@ public interface DanhGiaSanPhamMapper {
 		SQL Test: SELECT * from danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = 1;
 	*/
 	//Lấy lại nội dung bình luận của khách hàng ?
-	final String GET_DANH_GIA_SP_CURRENT = "SELECT * from danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = dgsp.ma_khach_hang WHERE dgsp.ma_san_pham = #{maSanPham} "
-	+ " AND dgsp.ma_khach_hang = #{maKhachHang}";
+	final String GET_DANH_GIA_SP_CURRENT = " SELECT * from danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = dgsp.ma_khach_hang " + 
+	" WHERE dgsp.ma_san_pham = #{maSanPham} "
+	+ " AND dgsp.ma_khach_hang = #{maKhachHang} ";
 	@Select(GET_DANH_GIA_SP_CURRENT)
 	public List<Map<String, Object>> getCurrentDGSP(@Param("maKhachHang") int maKhachHang, @Param("maSanPham") String maSanPham);
+
+
+	/* 
+		SQL Test: UPDATE `danh_gia_san_pham` SET `so_sao` = '3', `noi_dung` = 'Tessting 2' WHERE `danh_gia_san_pham`.`ma_danh_gia` = 10 AND `danh_gia_san_pham`.`ma_khach_hang` = 1 AND `danh_gia_san_pham`.`ma_san_pham` = '35a99f29-64da-11ec-bb14-8378cfa7d63d';
+
+	*/
+	final String UPDATE_DANH_GIA_SP = "UPDATE `danh_gia_san_pham` SET `so_sao` = #{soSao}, `noi_dung` = #{noiDung} "
+	 + " WHERE `danh_gia_san_pham`.`ma_danh_gia` = #{maDanhGia} AND `danh_gia_san_pham`.`ma_khach_hang` = #{maKhachHang} "
+	  + " AND `danh_gia_san_pham`.`ma_san_pham` = #{maSanPham};";
+	@Update(UPDATE_DANH_GIA_SP)
+	public void updateDanhGiaSp(@Param("noiDung") String noiDung, @Param("soSao") int soSao, @Param("maDanhGia") int maDanhGia, @Param("maKhachHang") int maKhachHang,@Param("maSanPham") String maSanPham);
+
+
 
 
 }

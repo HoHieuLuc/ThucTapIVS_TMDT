@@ -29,6 +29,18 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     private String maSanPham;
     private String noiDung;
     private int soSao;
+    private int maDanhGia;
+
+
+    
+
+    public int getMaDanhGia() {
+        return maDanhGia;
+    }
+
+    public void setMaDanhGia(int maDanhGia) {
+        this.maDanhGia = maDanhGia;
+    }
 
     public String getNoiDung() {
         return noiDung;
@@ -97,12 +109,12 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         return true;
     }
 
-    @Action(value = "/danhGiaSanPhamSubmit", results = {
+    @Action(value = "/danhGiaSP_Submit_Or_Update", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
-    public String danhGiaSanPhamSubmit() throws IOException {
+    public String danhGiaSP_Submit_Or_Update() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
@@ -124,8 +136,11 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         try {
             try {
                 danhGiaSanPhamMapper.checkCusCommented(maSanPham, maKhachHang);
-                jsonObject.put("error", "Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
-                System.out.println("Bạn đã bình luận sản phẩm này, chức năng sửa bình luận đang update");
+                //Hàm trên mà failed chứng tỏ khách hàng chưa bình luận, nó sẽ break chỗ này
+                //Ngược lại hàm checkCusCommented chạy ok thì chuyển sang hàm update
+                jsonObject.put("error", "Bạn đã bình luận sản phẩm này, đang tiến hành update");
+                danhGiaSanPhamMapper.updateDanhGiaSp(noiDung, soSao, maDanhGia, maKhachHang, maSanPham);
+
                 return JsonResponse.createJsonResponse(jsonObject, 404, response);
             } catch (BindingException e) {
                 danhGiaSanPhamMapper.themDGSP(dgsp);
