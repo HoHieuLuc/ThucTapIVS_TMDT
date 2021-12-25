@@ -16,11 +16,15 @@
                             </div>
                             <div class="details col-md-6">
                                 <h3 class="product-title" id="tenSanPham"></h3>
+                                <h2 class="product-title" id="nguoiDangSanPham"></h3>
+                                  <a href="" target="_blank" id="pageNguoiDangSP">
+                                        <button type="button" class="btn btn-success float-right">Xem trang người đăng</button>
+                                    </a>
                                 <div class="rating">
                                     <%-- <div class="stars"> <span class="fas fa-star checked"></span> <span
                                             class="fas fa-star checked"></span> <span class="fa fa-star checked"></span>
                                         <span class="fas fa-star"></span> <span class="fa fa-star"></span> --%>
-                                    </div>Đánh giá của người dùng: <span class="review-no" id="danhGia"></span>
+                                    </div>Mức Đánh giá  trung bình của người dùng: <span class="review-no" id="danhGia"></span>
                                 </div>
                                 <p class="product-description" id="moTaSanPham"></p>
                                 <h4 class="price" id="gia"></h4>

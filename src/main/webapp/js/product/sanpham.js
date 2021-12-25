@@ -3,11 +3,13 @@ const params = window.location.pathname.split('/').slice(0);
 const maSanPham = params[params.length - 1];
 
 //Các biến của chi tiết sản phẩm
+const nguoiDangSanPham = document.querySelector('#nguoiDangSanPham');
 const tenSanPhamDOM = document.querySelector('#tenSanPham');
 const danhGiaDOM = document.querySelector('#danhGia');
 const moTaSanPhamDOM = document.querySelector('#moTaSanPham');
 const giaDOM = document.querySelector('#gia');
 const anhChinhDOM = document.querySelector('#anhChinh');
+const pageNguoiDangSP = document.querySelector('#pageNguoiDangSP');
 
 
 //Các biến của đánh giá sản phẩm
@@ -17,11 +19,14 @@ const errorMsg = document.querySelector('#errorMsg');
 const showSanPhamDetail = async () => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
-        const { tenSanPham, moTa, gia, anhSanPham, xepHang } = sanpham;
+        const { tenSanPham,nguoiDangSP, moTa, gia, anhSanPham, xepHang,maKhachHang } = sanpham;
         tenSanPhamDOM.innerHTML = tenSanPham;
         danhGiaDOM.innerHTML = xepHang ?? "Chưa có đánh giá";
         moTaSanPhamDOM.innerHTML = moTa;
         giaDOM.innerHTML = gia;
+        nguoiDangSanPham.innerHTML = nguoiDangSP;
+        //Chưa nghĩ ra cái tên nên để tạm customer
+        pageNguoiDangSP.href = `${baseURL}customer/${maKhachHang}`;
         anhChinhDOM.src = `${baseURL}images/product/${anhSanPham}`;
     } catch (error) {
         console.log(error);
@@ -86,4 +91,6 @@ if (formDOM) {
         submitDanhGiaSP();
     });
 }
+
+
 
