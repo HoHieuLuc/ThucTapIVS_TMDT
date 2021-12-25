@@ -18,11 +18,12 @@ const errorMsg = document.querySelector('#errorMsg');
 const showSanPhamDetail = async () => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
-        const { tenSanPham, moTa, gia, anhSanPham, xepHang } = sanpham;
+        const { tenSanPham,nguoiDangSP, moTa, gia, anhSanPham, xepHang } = sanpham;
         tenSanPhamDOM.innerHTML = tenSanPham;
         danhGiaDOM.innerHTML = xepHang ?? "Chưa có đánh giá";
         moTaSanPhamDOM.innerHTML = moTa;
         giaDOM.innerHTML = gia;
+        nguoiDangSanPham.innerHTML = nguoiDangSP;
         anhChinhDOM.src = `${baseURL}images/product/${anhSanPham}`;
     } catch (error) {
         console.log(error);
