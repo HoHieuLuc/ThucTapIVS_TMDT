@@ -21,7 +21,7 @@
                     
                 </div>
                 <div class="col-sm-12 form-group">
-                    <input type="submit" class="btn btn-primary">Đăng nhập</button>
+                    <input type="submit" class="btn btn-primary" value="Đăng nhập">
                 </div>
                 <p id="login_error"></p>
             </div>

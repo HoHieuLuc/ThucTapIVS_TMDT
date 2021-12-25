@@ -14,10 +14,46 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    /* route cho nhân viên */
     @Action(value = "/admin/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/admin/index.jsp")
-    }, interceptorRefs = { @InterceptorRef("authStack") })
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
     public String adminPage() {
+        return SUCCESS;
+    }
+
+    /* route cho khách hàng */
+    // dashboard
+    @Action(value = "/user/index", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack") })
+    public String userPage() {
+        return SUCCESS;
+    }
+
+    // danh sách sản phẩm
+    @Action(value = "/user/sanpham", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/sanpham/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack") })
+    public String userKhoHangPage() {
+        return SUCCESS;
+    }
+
+    // chi tiết 1 sản phẩm
+    @Action(value = "/user/sanpham/*", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/sanpham/detail.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack")
+    })
+    public String userSanPham() {
+        return SUCCESS;
+    }
+
+    // thêm sản phẩm
+    @Action(value = "/user/sanpham/them", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/sanpham/create.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack")
+    })
+    public String userSanPhamAdd() {
         return SUCCESS;
     }
 }

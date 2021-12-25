@@ -35,7 +35,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href='<c:url value="/" />'>Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
@@ -59,9 +59,18 @@
                   <li class="nav-item">
                     <a class="nav-link disabled">Xin chào ${sessionScope.ten}</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href='<c:url value="/admin"/>'>Trang quản lý</a>
-                  </li>
+                  <c:choose>
+                    <c:when test="${sessionScope.level > 0}">
+                      <li class="nav-item">
+                        <a class="nav-link" href='<c:url value="/admin"/>'>Trang quản lý</a>
+                      </li>
+                    </c:when>
+                    <c:otherwise>
+                      <li class="nav-item">
+                        <a class="nav-link" href='<c:url value="/user"/>'>Trang cá nhân</a>
+                      </li>
+                    </c:otherwise>
+                  </c:choose>
                   <li class="nav-item">
                     <a class="nav-link" href='<c:url value="/logout"/>'>Đăng xuất</a>
                   </li>
