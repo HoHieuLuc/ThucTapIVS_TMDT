@@ -17,6 +17,9 @@
                             <div class="details col-md-6">
                                 <h3 class="product-title" id="tenSanPham"></h3>
                                 <h2 class="product-title" id="nguoiDangSanPham"></h3>
+                                  <a href="" target="_blank" id="pageNguoiDangSP">
+                                        <button type="button" class="btn btn-success float-right">Xem trang người đăng</button>
+                                    </a>
                                 <div class="rating">
                                     <%-- <div class="stars"> <span class="fas fa-star checked"></span> <span
                                             class="fas fa-star checked"></span> <span class="fa fa-star checked"></span>
