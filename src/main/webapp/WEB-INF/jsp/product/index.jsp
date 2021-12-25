@@ -16,7 +16,7 @@
                             </div>
                             <div class="details col-md-6">
                                 <h3 class="product-title" id="tenSanPham"></h3>
-                                <h2 class="product-title" id="tenSanPham"></h3>
+                                <h2 class="product-title" id="nguoiDangSanPham"></h3>
                                 <div class="rating">
                                     <%-- <div class="stars"> <span class="fas fa-star checked"></span> <span
                                             class="fas fa-star checked"></span> <span class="fa fa-star checked"></span>

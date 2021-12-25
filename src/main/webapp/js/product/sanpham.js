@@ -3,6 +3,7 @@ const params = window.location.pathname.split('/').slice(0);
 const maSanPham = params[params.length - 1];
 
 //Các biến của chi tiết sản phẩm
+const nguoiDangSanPham = document.querySelector('#nguoiDangSanPham');
 const tenSanPhamDOM = document.querySelector('#tenSanPham');
 const danhGiaDOM = document.querySelector('#danhGia');
 const moTaSanPhamDOM = document.querySelector('#moTaSanPham');
