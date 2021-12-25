@@ -212,8 +212,8 @@ public class RegisterAction extends ActionSupport {
     // Validate All Field
     public boolean isValid() {
         return Pattern.matches(USERNAME_REGEX, username) && between(password, 8, 14)
-                && Pattern.matches(EMAIL_REGEX, email) && between(ten, 10, 20)
-                && between(facebookLink, 0, 30) && between(twitterLink, 0, 30)
+                && Pattern.matches(EMAIL_REGEX, email) && between(ten, 2, 50)
+                && between(facebookLink, 0, 100) && between(twitterLink, 0, 100)
                 && Pattern.matches(PHONE_REGEX, soDienThoai)
                 && (xacNhanPassword.equals(password))
                 && userImage != null
@@ -306,6 +306,7 @@ public class RegisterAction extends ActionSupport {
                 sqlSession.close();
             }
         } else {
+            System.out.println("here 1232332");
             Map<String, Object> jsonObject = new HashMap<String, Object>();
             if (!Pattern.matches(USERNAME_REGEX, username)) {
                 jsonObject.put("username",
