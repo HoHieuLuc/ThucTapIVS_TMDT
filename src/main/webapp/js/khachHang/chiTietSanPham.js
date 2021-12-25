@@ -87,7 +87,7 @@ formDOM.addEventListener('submit', (event) => {
 
 
 
-
+//Alo tui commented để tạo pull fix chiTietSanPham nhan
 const showSanPhamDetail = async () => {
     try {
         const { data} = await axios.get(`${baseURL}api/v1/sanpham/details/${maSanPham}`);
