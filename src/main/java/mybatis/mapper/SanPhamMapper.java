@@ -36,7 +36,7 @@ public interface SanPhamMapper {
     public List<Map<String, Object>> getAllSanPham();
 
     // Xem chi tiết sản phẩm
-    final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
+    final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham,sp.ma_khach_hang, sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
             +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
