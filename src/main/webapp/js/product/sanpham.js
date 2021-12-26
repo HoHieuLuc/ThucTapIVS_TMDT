@@ -87,7 +87,7 @@ const check_HanhViDanhGiaSP = async () => {
     try {
         const { data : {danhGiaSPHienTai} } = await axios.post(`${baseURL}viewCurrentDanhGiaSanPham/${maSanPham}`);
         //Thay đổi nút thêm bình luận thành nút cập nhật bình luận
-        updateOrSubmit.innerHTML = "Cập nhật bình luận";
+        updateOrSubmit.innerHTML = "Cập nhật đánh giá sản phẩm";
         console.log("Đây là nội dung, số sao khách hàng đã bình luận từ trước");
         console.log(danhGiaSPHienTai[0].noi_dung);
         console.log("<! --Đây là nội dung, số sao khách hàng đã bình luận từ trước -->");
@@ -102,6 +102,7 @@ const check_HanhViDanhGiaSP = async () => {
         maDanhGia_commented = danhGiaSPHienTai[0].ma_danh_gia;
 
     } catch (e) {
+        updateOrSubmit.innerHTML = "Đánh giá sản phẩm";
         console.log(e);
     }
 }
@@ -117,6 +118,7 @@ const Submit_Or_Update = async () =>{
        // console.log(formData);
         await axios.post(`${baseURL}danhGiaSP_Submit_Or_Update`, formData);
         showDanhGiaSPList();
+        check_HanhViDanhGiaSP();
         showSanPhamDetail();
     } catch (error) {
         showDanhGiaSPList();
