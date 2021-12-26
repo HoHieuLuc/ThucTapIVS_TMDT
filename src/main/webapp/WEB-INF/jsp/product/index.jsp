@@ -72,7 +72,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button id="huyDanhGiaBtn" style="display: none;"
+                                    <button type="button" id="huyDanhGiaBtn" style="display: none;"
                                         class="btn btn-danger">Hủy</button>
                                     <input type="submit" id="danhGiaBtn" class="btn btn-success" value="Đánh giá">
                                 </div>
