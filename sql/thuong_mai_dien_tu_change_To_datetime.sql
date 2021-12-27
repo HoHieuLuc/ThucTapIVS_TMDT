@@ -375,7 +375,7 @@ CREATE TABLE `tai_khoan` (
   `username` varchar(30) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `ngay_tao` date NOT NULL,
+  `ngay_tao` datetime NOT NULL,
   `so_dien_thoai` varchar(20) NOT NULL,
   `ngay_sinh` date NOT NULL,
   `gioi_tinh` tinyint(1) NOT NULL,
