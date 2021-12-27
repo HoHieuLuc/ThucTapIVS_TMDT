@@ -13,7 +13,6 @@ public class TaiKhoan {
     private String soDienThoai; 
     private String maQuyen;
     private String avatar;
-    private Date ngayTao;
     private Date ngaySinh;
     
     public int getId() {
@@ -70,12 +69,7 @@ public class TaiKhoan {
     public void setMaQuyen(String maQuyen) {
         this.maQuyen = maQuyen;
     }
-    public Date getNgayTao() {
-        return ngayTao;
-    }
-    public void setNgayTao(Date ngayTao) {
-        this.ngayTao = ngayTao;
-    }
+
     public Date getNgaySinh() {
         return ngaySinh;
     }
@@ -93,7 +87,7 @@ public class TaiKhoan {
     public TaiKhoan() {
     }
     public TaiKhoan(int gioiTinh, int soLanCanhCao, int status, String userName, String password, String email,
-            String soDienThoai, String maQuyen, String avatar, Date ngayTao, Date ngaySinh) {
+            String soDienThoai, String maQuyen, String avatar,  Date ngaySinh) {
         this.gioiTinh = gioiTinh;
         this.soLanCanhCao = soLanCanhCao;
         this.status = status;
@@ -103,7 +97,6 @@ public class TaiKhoan {
         this.soDienThoai = soDienThoai;
         this.maQuyen = maQuyen;
         this.avatar = avatar;
-        this.ngayTao = ngayTao;
         this.ngaySinh = ngaySinh;
     }
 }

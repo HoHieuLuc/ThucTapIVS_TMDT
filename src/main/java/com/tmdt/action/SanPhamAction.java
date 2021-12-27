@@ -2,10 +2,7 @@ package com.tmdt.action;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -247,16 +244,12 @@ public class SanPhamAction extends ActionSupport {
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
         AnhSanPhamMapper anhSanPhamMapper = sqlSession.getMapper(AnhSanPhamMapper.class);
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
-        // Lấy ngày hiện tại:
-        LocalDate today = LocalDate.now();
-        // Múi giờ mặc định
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
-        Date ngayDang = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
+  
+
         String filePath = session.getServletContext().getRealPath("/") + "images\\product\\";
         String LocalPath = ProjectPath.getPath() + "\\images\\product\\";
 
-        SanPham sanPham = new SanPham(tenSanPham, maKhachHang, moTa, gia, 0, maLoaiSanPham, soLuong, ngayDang, 0);
+        SanPham sanPham = new SanPham(tenSanPham, maKhachHang, moTa, gia, 0, maLoaiSanPham, soLuong, 0);
         try {
             sanPhamMapper.insert(sanPham);
             sqlSession.commit();

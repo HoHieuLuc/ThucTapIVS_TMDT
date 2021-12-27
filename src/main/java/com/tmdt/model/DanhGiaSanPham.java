@@ -1,5 +1,4 @@
 package com.tmdt.model;
-import java.util.Date;
 
 public class DanhGiaSanPham {
 
@@ -8,19 +7,15 @@ public class DanhGiaSanPham {
     private int soSao;
     private String noiDung;
     private String maSanPham;
-    private Date ngayTao; 
-    private Date ngaySua;
 
     public DanhGiaSanPham() {
     }
     
-    public DanhGiaSanPham(String maSanPham, int maKhachHang,  String noiDung, int soSao, Date ngayTao, Date ngaySua) {
+    public DanhGiaSanPham(String maSanPham, int maKhachHang,  String noiDung, int soSao) {
         this.maSanPham = maSanPham;
         this.maKhachHang = maKhachHang;
         this.noiDung = noiDung;
         this.soSao = soSao;
-        this.ngayTao = ngayTao;
-        this.ngaySua = ngaySua;
     }
 
 
@@ -53,17 +48,5 @@ public class DanhGiaSanPham {
     }
     public void setMaSanPham(String maSanPham) {
         this.maSanPham = maSanPham;
-    }
-    public Date getNgayTao() {
-        return ngayTao;
-    }
-    public void setNgayTao(Date ngayTao) {
-        this.ngayTao = ngayTao;
-    }
-    public Date getNgaySua() {
-        return ngaySua;
-    }
-    public void setNgaySua(Date ngaySua) {
-        this.ngaySua = ngaySua;
     }
 }

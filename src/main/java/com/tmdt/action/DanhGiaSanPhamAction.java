@@ -5,10 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,19 +151,14 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
-        // Lấy ngày hiện tại:
-        LocalDate today = LocalDate.now();
-        // Múi giờ mặc định
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
-        Date homNay = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
+
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         Map<String, Object> danhGiaSanPham = danhGiaSanPhamMapper.getByMaKHandMaSP(maKhachHang, maSanPham);
         if (danhGiaSanPham == null) {
             System.out.println("insert");
-            DanhGiaSanPham dgsp = new DanhGiaSanPham(maSanPham, maKhachHang, noiDung, soSao, homNay, null);
+            DanhGiaSanPham dgsp = new DanhGiaSanPham(maSanPham, maKhachHang, noiDung, soSao);
             danhGiaSanPhamMapper.themDGSP(dgsp);
             sqlSession.commit();
             sqlSession.close();
@@ -174,7 +166,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
             return JsonResponse.createJsonResponse(jsonObject, 201, response);
         } else {
             System.out.println("update");
-            danhGiaSanPhamMapper.updateDanhGiaSp(maSanPham, maKhachHang, noiDung, soSao, homNay);
+            danhGiaSanPhamMapper.updateDanhGiaSp(maSanPham, maKhachHang, noiDung, soSao);
             sqlSession.commit();
             sqlSession.close();
             jsonObject.put("message", "Cập nhật đánh giá sản phẩm thành công");

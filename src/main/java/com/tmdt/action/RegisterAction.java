@@ -241,18 +241,11 @@ public class RegisterAction extends ActionSupport {
 
             password = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
-            // Lấy ngày hiện tại:
-            LocalDate today = LocalDate.now();
-            // Múi giờ mặc định
-            ZoneId defaultZoneId = ZoneId.systemDefault();
-            // Đổi ngày tạo tài khoản và ngày hết hạn sang SQL Date
-            Date ngay_tao = Date.from(today.atStartOfDay(defaultZoneId).toInstant());
-
             // tránh trùng tên file
             String avatarFileName = System.currentTimeMillis() + "_" + userImageFileName;
 
             TaiKhoan taiKhoan = new TaiKhoan(gioiTinh, 0, 1, username, password, email,
-                    soDienThoai, "KH", avatarFileName, ngay_tao, ngaySinh);
+                    soDienThoai, "KH", avatarFileName, ngaySinh);
 
             // Thêm dữ liệu vào database,
             // Kiểm tra tài khoản mới có trùng username,email với tài khoản cũ
