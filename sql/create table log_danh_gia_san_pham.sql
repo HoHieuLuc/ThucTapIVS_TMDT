@@ -1,9 +1,0 @@
-CREATE TABLE `danh_gia_san_pham_backup` (
-  `ma_danh_gia` int(11) NOT NULL,
-  `ma_khach_hang` int(11) NOT NULL,
-  `so_sao` smallint(6) NOT NULL,
-  `noi_dung` varchar(255) NOT NULL,
-  `ma_san_pham` varchar(36) NOT NULL,
-  `ngay_tao` datetime NOT NULL,
-  `ngay_sua` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
