@@ -50,7 +50,7 @@
                 <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
                     <c:choose>
                         <c:when test="${sessionScope.level == 0}">
-                            <form id="formDanhGiaSanPham" style="display: none;">
+                            <form id="formDanhGiaSanPham">
                                 <div class="text-danger" id="errorMsg"></div>
                                 <div class="form-group">
                                     <label>Nội dung</label>
