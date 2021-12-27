@@ -27,6 +27,7 @@ public interface SanPhamMapper {
             @Result(property = "tenKhachHang", column = "ten"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
+            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
@@ -53,6 +54,7 @@ public interface SanPhamMapper {
             @Result(property = "status", column = "status"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
+            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
@@ -80,6 +82,7 @@ public interface SanPhamMapper {
             @Result(property = "tenKhachHang", column = "ten"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
+            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
@@ -108,6 +111,7 @@ public interface SanPhamMapper {
             @Result(property = "tenKhachHang", column = "ten"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
+            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
