@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2021 at 01:06 AM
+-- Generation Time: Dec 27, 2021 at 08:07 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -38,39 +38,40 @@ CREATE TABLE `anh_san_pham` (
 --
 
 INSERT INTO `anh_san_pham` (`ma_anh`, `ma_san_pham`, `anh`) VALUES
-(1, 'SP001', 'test.jpg'),
-(2, 'SP001', '131.jpg'),
-(3, 'test', 'gsgsgs.jpg'),
-(4, 'test', 'aaa.jpg'),
-(5, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '1640363365336_keqcall.png'),
-(6, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '1640363365359_keqpain.png'),
-(7, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '1640363365376_keqparty.png'),
-(8, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '1640363365390_keqPat.png'),
-(9, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '1640364890769_goodjob.png'),
-(10, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '1640364890789_love.png'),
-(11, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '1640364890798_meplease.png'),
-(12, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '1640364890808_myKeqing.png'),
-(13, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '1640364890817_notlikekeq.png'),
-(14, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '1640394593687_keqdesk.png'),
-(15, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '1640394593698_love.png'),
-(16, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '1640394593710_meplease.png'),
-(17, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '1640394593723_myKeqing.png'),
-(18, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '1640394593738_notlikekeq.png'),
-(19, '130ea67a-6528-11ec-b702-7845f2f0d96e', '1640398333455_1anemo.png'),
-(20, '130ea67a-6528-11ec-b702-7845f2f0d96e', '1640398333469_1dendro.png'),
-(21, '130ea67a-6528-11ec-b702-7845f2f0d96e', '1640398333481_1electro.png'),
-(22, '130ea67a-6528-11ec-b702-7845f2f0d96e', '1640398333489_1geo.png'),
-(23, 'bc49e268-6528-11ec-b702-7845f2f0d96e', '1640398617375_ảnh s22.png'),
-(24, 'bc49e268-6528-11ec-b702-7845f2f0d96e', '1640398617390_hình 1.jfif'),
-(25, 'bc49e268-6528-11ec-b702-7845f2f0d96e', '1640398617403_hình 2.jpg'),
-(26, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '1640399974096_adminabooz.png'),
-(27, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '1640399974109_adminabooz.png'),
-(28, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '1640399974117_banhammer.png'),
-(29, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '1640399974131_blacksword.png'),
-(30, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '1640399974143_chadoug.png'),
-(31, '1e717293-652c-11ec-b702-7845f2f0d96e', '1640400070538_crown_of_insight.png'),
-(32, '1e717293-652c-11ec-b702-7845f2f0d96e', '1640400070550_crystal.png'),
-(33, '1e717293-652c-11ec-b702-7845f2f0d96e', '1640400070561_deletethat.png');
+(1, 'SP001', '1.png'),
+(2, 'SP001', '2.png'),
+(3, 'test', '3.png'),
+(4, 'test', '4.png'),
+(5, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '5.png'),
+(6, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '6.png'),
+(7, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '7.png'),
+(8, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '8.png'),
+(9, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '1.jfif'),
+(10, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2.jfif'),
+(11, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '3.jfif'),
+(12, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '9.png'),
+(13, '35a99f29-64da-11ec-bb14-8378cfa7d63d', '10.png'),
+(14, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '11.png'),
+(15, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '12.png'),
+(16, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '13.png'),
+(17, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '14.png'),
+(18, '5dfb7106-651f-11ec-b702-7845f2f0d96e', '15.png'),
+(19, '130ea67a-6528-11ec-b702-7845f2f0d96e', '16.png'),
+(20, '130ea67a-6528-11ec-b702-7845f2f0d96e', '17.png'),
+(21, '130ea67a-6528-11ec-b702-7845f2f0d96e', '18.png'),
+(22, '130ea67a-6528-11ec-b702-7845f2f0d96e', '19.png'),
+(23, 'bc49e268-6528-11ec-b702-7845f2f0d96e', '20.png'),
+(24, 'bc49e268-6528-11ec-b702-7845f2f0d96e', '21.png'),
+(25, 'bc49e268-6528-11ec-b702-7845f2f0d96e', '22.png'),
+(26, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '30.png'),
+(27, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '29.png'),
+(28, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '28.png'),
+(29, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '27.png'),
+(30, 'e4f55954-652b-11ec-b702-7845f2f0d96e', '31.jfif'),
+(31, '1e717293-652c-11ec-b702-7845f2f0d96e', '26.png'),
+(32, '1e717293-652c-11ec-b702-7845f2f0d96e', '25.png'),
+(33, '1e717293-652c-11ec-b702-7845f2f0d96e', '24.png'),
+(34, '1e717293-652c-11ec-b702-7845f2f0d96e', '23.png');
 
 -- --------------------------------------------------------
 
@@ -153,23 +154,25 @@ CREATE TABLE `danh_gia_san_pham` (
 --
 
 INSERT INTO `danh_gia_san_pham` (`ma_danh_gia`, `ma_khach_hang`, `so_sao`, `noi_dung`, `ma_san_pham`, `ngay_tao`, `ngay_sua`) VALUES
-(1, 1, 5, 'Oh My God, That is so cold', 'SP001', '2021-12-22 00:00:00', '2021-12-22 00:00:00'),
-(5, 3, 3, 'gsgsg', 'SP001', '2021-12-23 00:00:00', '2021-12-23 00:00:00'),
-(6, 3, 3, 'gagag6262', 'test', '2021-12-23 00:00:00', '2021-12-23 00:00:00'),
-(7, 2, 1, 'gagag', 'SP001', '2021-12-23 00:00:00', '2021-12-23 00:00:00'),
-(8, 2, 1, 'f', 'SP001', '2021-12-23 00:00:00', '2021-12-23 00:00:00'),
-(9, 15, 1, 'fafaf', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-25 00:00:00', '2021-12-25 00:00:00'),
-(10, 6, 3, 'ok', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-25 00:00:00', NULL),
-(11, 6, 5, 'fafafaf', 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '2021-12-25 00:00:00', NULL),
-(12, 6, 4, 'rất ok', '5dfb7106-651f-11ec-b702-7845f2f0d96e', '2021-12-25 00:00:00', NULL),
-(13, 15, 1, 'adad', '5dfb7106-651f-11ec-b702-7845f2f0d96e', '2021-12-25 00:00:00', NULL),
-(14, 15, 1, 'alo thiện ơi', 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '2021-12-25 00:00:00', NULL),
-(15, 17, 4, 'ồ năm nay tai thỏ ngắn hơn rồi', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-25 00:00:00', NULL),
-(16, 15, 4, 'hello', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-25 00:00:00', NULL),
-(17, 6, 5, 'ủng hộ', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-25 00:00:00', NULL),
-(18, 17, 5, 'Màn hình to thật, xem phim giải trí thật thích', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-25 00:00:00', NULL),
-(19, 6, 1, 'jgkhgkshggag', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-25 00:00:00', NULL),
-(20, 19, 4, 'gsgsgdadfafaf', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-26 00:00:00', '2021-12-26 00:00:00');
+(1, 1, 5, 'Oh My God, That is so cold 421222222222222222222222', 'SP001', '2021-12-22 07:13:15', '2021-12-27 09:47:32'),
+(5, 3, 3, 'gsgsg', 'SP001', '2021-12-23 12:09:00', '2021-12-23 18:13:00'),
+(6, 3, 3, 'gagag6262', 'test', '2021-12-23 14:12:18', '2021-12-23 06:15:31'),
+(7, 2, 1, 'gagag', 'SP001', '2021-12-23 05:27:46', '2021-12-23 20:08:34'),
+(8, 2, 1, 'f', 'SP001', '2021-12-23 08:20:48', '2021-12-27 09:46:16'),
+(9, 15, 1, 'fafaf', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-25 14:38:19', '2021-12-25 08:44:26'),
+(10, 6, 3, 'ok', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-25 10:22:48', '2021-12-27 06:23:47'),
+(11, 6, 5, 'fafafaf', 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '2021-12-25 07:41:22', '2021-12-27 11:16:47'),
+(12, 6, 4, 'rất ok', '5dfb7106-651f-11ec-b702-7845f2f0d96e', '2021-12-25 08:39:13', '2021-12-26 11:36:47'),
+(13, 15, 1, 'adad', '5dfb7106-651f-11ec-b702-7845f2f0d96e', '2021-12-25 08:13:00', '2021-12-27 07:30:47'),
+(14, 15, 1, 'alo thiện ơi', 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', '2021-12-25 12:00:00', '2021-12-27 11:24:47'),
+(15, 17, 4, 'ồ năm nay tai thỏ ngắn hơn rồi', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-25 05:08:00', '2021-12-27 11:18:47'),
+(16, 15, 4, 'hello', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-25 06:11:14', '2021-12-27 11:20:47'),
+(17, 6, 5, 'ủng hộ', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-25 05:14:00', '2021-12-27 06:16:47'),
+(18, 17, 5, 'Màn hình to thật, xem phim giải trí thật thích', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-25 10:23:17', '2021-12-27 06:12:47'),
+(19, 6, 1, 'jgkhgkshggag', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-25 06:26:37', '2021-12-27 11:22:47'),
+(20, 19, 4, 'gsgsgdadfafaf', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-26 10:10:29', '2021-12-26 06:28:30'),
+(21, 18, 5, '4214', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-27 03:08:41', '2021-12-27 03:08:41'),
+(22, 1, 5, 'nice', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-27 06:16:39', '2021-12-27 10:14:00');
 
 -- --------------------------------------------------------
 
@@ -229,7 +232,8 @@ INSERT INTO `khach_hang` (`ma_khach_hang`, `ten`, `dia_chi`, `id_tai_khoan`, `ti
 (16, 'Khách Hàng', 'asd', 24, 0, 'gg'),
 (17, 'Lâm Minh Thiện', 'Ninh Hòa, Khánh Hòa, Việt Nam', 25, 0, 'Tui làm người đam mê công nghệ, vọc vạch'),
 (18, 'fafa', '', 26, 0, ''),
-(19, 'John', 'a', 27, 0, 'a');
+(19, 'John', 'a', 27, 0, 'a'),
+(20, 'Lâm Chấn Khang', '', 29, 0, '');
 
 -- --------------------------------------------------------
 
@@ -342,7 +346,7 @@ CREATE TABLE `san_pham` (
 --
 
 INSERT INTO `san_pham` (`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) VALUES
-('130ea67a-6528-11ec-b702-7845f2f0d96e', 15, 'Alo alo alo', 'fffffffffffffffffffff', 252525, 0, 1, 62, '2021-12-25 00:00:00', 0),
+('130ea67a-6528-11ec-b702-7845f2f0d96e', 15, 'Alo alo alo', 'fffffffffffffffffffff', 252525, 0, 1, 62, '2021-12-25 04:19:00', 0),
 ('1e717293-652c-11ec-b702-7845f2f0d96e', 6, 'new', 'new', 1111, 0, 1, 11111, '2021-12-25 00:00:00', 0),
 ('35a99f29-64da-11ec-bb14-8378cfa7d63d', 15, 'Iphone 13', 'Iphone 13 rất xịn rất ngon rất mạnh\r\nok?', 150000, 0, 1, 20, '2021-12-24 00:00:00', 0),
 ('5dfb7106-651f-11ec-b702-7845f2f0d96e', 16, 'TV Samsung', 'gshsshwt wjtklw jkwjgklwjgkwg', 63636363, 0, 1, 15, '2021-12-25 00:00:00', 0),
@@ -390,20 +394,21 @@ CREATE TABLE `tai_khoan` (
 --
 
 INSERT INTO `tai_khoan` (`id`, `username`, `password`, `email`, `ngay_tao`, `so_dien_thoai`, `ngay_sinh`, `gioi_tinh`, `so_lan_canh_cao`, `status`, `ma_quyen`, `avatar`) VALUES
-(4, 'thienlam782', '$2a$12$0ytCrPt6M1p42IqBuqQii.kQqAmboSY7.QuuoJLQLTSxNOVH.Dq3O', 'thien@gmail.com', '2021-12-21', '0828504336', '2021-12-09', 0, 0, 0, 'KH', ''),
-(5, 'provjpzz123', '$2a$12$pcX7tMe.BwfyWz2vNIdyf.ngTQ.wqqnNoC4O675i51Dv8SCfV4jVO', 'fafa.gagag@gmail.com', '2021-12-22', '62626262', '2021-12-21', 0, 0, 0, 'KH', 'null'),
-(7, 'provjpzz', '$2a$12$9qyfq7hBPbEa3YfPdsllCe61oYhON.PzOtn3KIOVyhRpP3A0psmaa', 'kingofika123@gmail.com', '2021-12-23', '5226262626', '2021-12-15', 0, 0, 0, 'admin', 'null'),
-(10, 'trantest', '$2a$12$4/poxN.Ahd5CFQeSS7x2b.Khl0ejAtoqBuMczDO59KHYKI4dkIpKu', 'x@x.x', '2021-12-23', '0987654321', '2021-12-23', 1, 0, 0, 'KH', 'null'),
-(12, 'testtest', '$2a$12$O4zi/e0dJbCJjiNZdkQDJuAkhQp/81WufqKJn1ZRo6Ul1XWPt4BHK', 'ffff@fff.ff', '2021-12-23', '515152525', '1245-11-11', 1, 0, 0, 'KH', 'null'),
-(13, 'hohieuluc', '$2a$12$C4x/jGEWoAXEdQxdqMRwj.dG0nn5Dhz0Lc6frI1GOt8lRSXEPotYe', '525ffa@ga.q', '2021-12-23', '636372726', '2021-12-08', 0, 0, 0, 'KH', 'null'),
-(16, 'testtran', '$2a$12$nhPsO973ByyDXC0e.eG3oeiRotUEpP5.dbekeFVVTXodG2OoQO3J6', 'ggggg@ggg.ggg', '2021-12-23', '6374848363', '2021-12-15', 1, 0, 1, 'KH', 'null'),
-(18, 'test1234', '$2a$12$LWYhyR2dOJkU6IsmNhCpOu0Fp83shjJb9mzKKKxTBzW83Qp1D7dIa', '52ddad5ffa@ga.q', '2021-12-24', '5252626262', '2021-12-15', 1, 0, 1, 'KH', 'keqcopium.png'),
-(19, 'testtest123', '$2a$12$1jXwSOWpuWe8EDYpU..v.eHnCU2YuCZyrybF3.NT6xIVGNG/OjCmy', '5hfhfha@ghaaf.fafaf', '2021-12-24', '526377262', '2021-12-08', 1, 0, 1, 'KH', 'keqhmm.png'),
-(23, 'nguyenthitest', '$2a$12$NBx/wl9nSHDnjZsmmIbAHeawvhPheebQRYv9nQNPb8W0Q5OIy7q0G', 'gakgag@gahgag.agag', '2021-12-24', '526372626', '2021-12-01', 0, 0, 1, 'KH', '1640340243592_keqBorgar.png'),
-(24, 'khtest123', '$2a$12$XPUUHOwCscgVCm.pp.a/y.RFL5FdzpGeNjKC5bkGxtFndyXr3e4iK', 'khtest@ktktkkttk.ttqjtkqkt', '2021-12-25', '74736373737', '2021-12-16', 0, 0, 1, 'KH', '1640394521424_keqingSmug.jpg'),
-(25, 'minhthienmap', '$2a$12$3u/NmSw0RJPRSei42MSGse5BlysA3QheQO5g2u0yyy5tjBuxSobdS', 'lamminhthien02012000@gmail.com', '2021-12-25', '08285043336', '2006-02-14', 0, 0, 1, 'KH', '1640398277859_ganyu-voi-keqing-genshin-impact-tro-choi-dien-tu-anime-hinh-nen-2800x2100_28.jpg'),
-(26, 'fafafafafaffa', '$2a$12$6yYDlJwABf06FuvuOYGDfeKId8mWPCtwHvUVKTs7H2to.nKDyhvf2', 'gagaggg@gg.a.gag', '2021-12-25', '525252525', '2021-12-10', 0, 0, 1, 'KH', '1640401090469_crystal.png'),
-(27, 'johntest', '$2a$12$0BzcLjSzSy3D0I21rpJsJ.nrV7oaEG52UiMfVRRKfThuXVvRxaADC', 'johntest2252@s.g.s.g.s', '2021-12-26', '5555252525', '2021-12-15', 0, 0, 1, 'KH', '1640505602458_FNA6INk.png');
+(4, 'thienlam782', '$2a$12$0ytCrPt6M1p42IqBuqQii.kQqAmboSY7.QuuoJLQLTSxNOVH.Dq3O', 'thien@gmail.com', '2021-12-21 00:00:00', '0828504336', '2021-12-09', 0, 0, 0, 'KH', '1.png'),
+(5, 'provjpzz123', '$2a$12$pcX7tMe.BwfyWz2vNIdyf.ngTQ.wqqnNoC4O675i51Dv8SCfV4jVO', 'fafa.gagag@gmail.com', '2021-12-22 00:00:00', '62626262', '2021-12-21', 0, 0, 0, 'KH', '2.png'),
+(7, 'provjpzz', '$2a$12$9qyfq7hBPbEa3YfPdsllCe61oYhON.PzOtn3KIOVyhRpP3A0psmaa', 'kingofika123@gmail.com', '2021-12-23 00:00:00', '5226262626', '2021-12-15', 0, 0, 0, 'admin', '3.png'),
+(10, 'trantest', '$2a$12$4/poxN.Ahd5CFQeSS7x2b.Khl0ejAtoqBuMczDO59KHYKI4dkIpKu', 'x@x.x', '2021-12-23 00:00:00', '0987654321', '2021-12-23', 1, 0, 0, 'KH', '4.png'),
+(12, 'testtest', '$2a$12$O4zi/e0dJbCJjiNZdkQDJuAkhQp/81WufqKJn1ZRo6Ul1XWPt4BHK', 'ffff@fff.ff', '2021-12-23 00:00:00', '515152525', '1245-11-11', 1, 0, 0, 'KH', '5.png'),
+(13, 'hohieuluc', '$2a$12$C4x/jGEWoAXEdQxdqMRwj.dG0nn5Dhz0Lc6frI1GOt8lRSXEPotYe', '525ffa@ga.q', '2021-12-23 00:00:00', '636372726', '2021-12-08', 0, 0, 0, 'KH', '6.png'),
+(16, 'testtran', '$2a$12$nhPsO973ByyDXC0e.eG3oeiRotUEpP5.dbekeFVVTXodG2OoQO3J6', 'ggggg@ggg.ggg', '2021-12-23 00:00:00', '6374848363', '2021-12-15', 1, 0, 1, 'KH', '7.png'),
+(18, 'test1234', '$2a$12$LWYhyR2dOJkU6IsmNhCpOu0Fp83shjJb9mzKKKxTBzW83Qp1D7dIa', '52ddad5ffa@ga.q', '2021-12-24 00:00:00', '5252626262', '2021-12-15', 1, 0, 1, 'KH', '9.png'),
+(19, 'testtest123', '$2a$12$1jXwSOWpuWe8EDYpU..v.eHnCU2YuCZyrybF3.NT6xIVGNG/OjCmy', '5hfhfha@ghaaf.fafaf', '2021-12-24 00:00:00', '526377262', '2021-12-08', 1, 0, 1, 'KH', '8.png'),
+(23, 'nguyenthitest', '$2a$12$NBx/wl9nSHDnjZsmmIbAHeawvhPheebQRYv9nQNPb8W0Q5OIy7q0G', 'gakgag@gahgag.agag', '2021-12-24 00:00:00', '526372626', '2021-12-01', 0, 0, 1, 'KH', '10.png'),
+(24, 'khtest123', '$2a$12$XPUUHOwCscgVCm.pp.a/y.RFL5FdzpGeNjKC5bkGxtFndyXr3e4iK', 'khtest@ktktkkttk.ttqjtkqkt', '2021-12-25 00:00:00', '74736373737', '2021-12-16', 0, 0, 1, 'KH', '11.png'),
+(25, 'minhthienmap', '$2a$12$3u/NmSw0RJPRSei42MSGse5BlysA3QheQO5g2u0yyy5tjBuxSobdS', 'lamminhthien02012000@gmail.com', '2021-12-25 00:00:00', '08285043336', '2006-02-14', 0, 0, 1, 'KH', 'kequing.png'),
+(26, 'fafafafafaffa', '$2a$12$6yYDlJwABf06FuvuOYGDfeKId8mWPCtwHvUVKTs7H2to.nKDyhvf2', 'gagaggg@gg.a.gag', '2021-12-25 00:00:00', '525252525', '2021-12-10', 0, 0, 1, 'KH', '12.png'),
+(27, 'johntest', '$2a$12$0BzcLjSzSy3D0I21rpJsJ.nrV7oaEG52UiMfVRRKfThuXVvRxaADC', 'johntest2252@s.g.s.g.s', '2021-12-26 00:00:00', '5555252525', '2021-12-15', 0, 0, 1, 'KH', '13.png'),
+(29, 'thienlam1100', '$2a$12$5fHgrx2sMGH3Pd8slw54v.3p0syEfAKWa6QX6rXIPofVr0rDWxhMi', 'thien1100@gmail.com', '2021-12-27 11:36:24', '08285043336', '2021-11-30', 0, 0, 1, 'KH', '1640579784993_Screenshot (57).png');
 
 -- --------------------------------------------------------
 
@@ -605,7 +610,7 @@ ALTER TABLE `thu_phi`
 -- AUTO_INCREMENT for table `anh_san_pham`
 --
 ALTER TABLE `anh_san_pham`
-  MODIFY `ma_anh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `ma_anh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `bao_cao_nguoi_dung`
@@ -623,7 +628,7 @@ ALTER TABLE `danh_gia_khach_hang`
 -- AUTO_INCREMENT for table `danh_gia_san_pham`
 --
 ALTER TABLE `danh_gia_san_pham`
-  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `dat_hang`
@@ -635,7 +640,7 @@ ALTER TABLE `dat_hang`
 -- AUTO_INCREMENT for table `khach_hang`
 --
 ALTER TABLE `khach_hang`
-  MODIFY `ma_khach_hang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `ma_khach_hang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `loai_san_pham`
@@ -653,7 +658,7 @@ ALTER TABLE `log`
 -- AUTO_INCREMENT for table `tai_khoan`
 --
 ALTER TABLE `tai_khoan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `thong_bao`
