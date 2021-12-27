@@ -27,7 +27,6 @@ public interface SanPhamMapper {
             @Result(property = "tenKhachHang", column = "ten"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
-            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
@@ -54,7 +53,6 @@ public interface SanPhamMapper {
             @Result(property = "status", column = "status"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
-            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
@@ -82,7 +80,6 @@ public interface SanPhamMapper {
             @Result(property = "tenKhachHang", column = "ten"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
-            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
@@ -111,7 +108,6 @@ public interface SanPhamMapper {
             @Result(property = "tenKhachHang", column = "ten"),
             @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
             @Result(property = "soLuong", column = "so_luong"),
-            @Result(property = "ngayDang", column = "ngay_dang"),
             @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
             @Result(property = "anhSanPham", column = "anh"),
             @Result(property = "xepHang", column = "xep_hang")
@@ -123,7 +119,7 @@ public interface SanPhamMapper {
 
     // Thêm sản phẩm
     final String ADD_SAN_PHAM = "INSERT INTO `san_pham`(`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) " +
-    "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, #{maLoaiSanPham}, #{soLuong}, #{ngayDang}, #{soLuongDaBan})";
+    "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, #{maLoaiSanPham}, #{soLuong}, now(), #{soLuongDaBan})";
     @Insert(ADD_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maSanPham")
     public void insert(SanPham sanPham);
@@ -132,7 +128,7 @@ public interface SanPhamMapper {
     final String GET_ID_SAN_PHAM = "SELECT ma_san_pham FROM san_pham " + 
     "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham} AND mo_ta = #{moTa} " + 
     "AND gia = #{gia} AND status = 0 AND ma_loai_san_pham = #{maLoaiSanPham} AND so_luong = #{soLuong} " + 
-    "AND ngay_dang = #{ngayDang} AND so_luong_da_ban = 0 LIMIT 1";
+    " AND so_luong_da_ban = 0 LIMIT 1";
     @Select(GET_ID_SAN_PHAM)
     public String getIdSanPham(SanPham sanPham);
 }

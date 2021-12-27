@@ -12,7 +12,7 @@ import com.tmdt.model.*;
 
 public interface TaiKhoanMapper {
     // Thêm tài khoản mới cho khách hàng
-    final String INSERT_TAI_KHOAN = "INSERT INTO `tai_khoan` (`username`, `password`, `email`, `ngay_tao`, `so_dien_thoai`, `ngay_sinh`, `gioi_tinh`, `so_lan_canh_cao`, `status`, `ma_quyen`,`avatar`) VALUES (#{userName}, #{password}, #{email}, #{ngayTao}, #{soDienThoai}, #{ngaySinh}, #{gioiTinh},#{soLanCanhCao},#{status},#{maQuyen},#{avatar});";
+    final String INSERT_TAI_KHOAN = "INSERT INTO `tai_khoan` (`username`, `password`, `email`, `ngay_tao`, `so_dien_thoai`, `ngay_sinh`, `gioi_tinh`, `so_lan_canh_cao`, `status`, `ma_quyen`,`avatar`) VALUES (#{userName}, #{password}, #{email}, now(), #{soDienThoai}, #{ngaySinh}, #{gioiTinh},#{soLanCanhCao},#{status},#{maQuyen},#{avatar});";
 
     @Insert(INSERT_TAI_KHOAN)
     @Options(useGeneratedKeys = true, keyProperty = "id")

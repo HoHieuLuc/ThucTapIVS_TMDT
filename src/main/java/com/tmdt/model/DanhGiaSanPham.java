@@ -1,5 +1,4 @@
 package com.tmdt.model;
-import java.util.Date;
 
 public class DanhGiaSanPham {
 
