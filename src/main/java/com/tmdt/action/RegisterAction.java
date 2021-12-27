@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
+import com.tmdt.errors.CustomError;
 import com.tmdt.utilities.JsonResponse;
 import com.tmdt.utilities.ProjectPath;
 
@@ -211,7 +212,7 @@ public class RegisterAction extends ActionSupport {
 
     // Validate All Field
     public boolean isValid() {
-        return Pattern.matches(USERNAME_REGEX, username) && between(password, 8, 14)
+        return Pattern.matches(USERNAME_REGEX, username) && between(password, 8, 30)
                 && Pattern.matches(EMAIL_REGEX, email) && between(ten, 2, 50)
                 && between(facebookLink, 0, 100) && between(twitterLink, 0, 100)
                 && Pattern.matches(PHONE_REGEX, soDienThoai)
@@ -229,7 +230,7 @@ public class RegisterAction extends ActionSupport {
     HttpSession session = request.getSession();
 
     @Action(value = "/registerSubmit", results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/register.jsp"),
+            @Result(name = "success", location = "/index.html"),
     })
     public String registerSubmit() throws IOException {
         if (isValid()) {
@@ -289,8 +290,8 @@ public class RegisterAction extends ActionSupport {
                 session.setAttribute("level", 0);
                 session.setAttribute("avatar", avatar);
                 session.setAttribute("permission", "KH");
-
-                return SUCCESS;
+                // không phải lỗi nhưng xài luôn cho tiện
+                return CustomError.createCustomError("Đăng ký thành công", 201, response);
             } catch (PersistenceException e) {
                 // System.out.println(e.getMessage());
                 Map<String, Object> errors = new HashMap<String, Object>();
@@ -306,7 +307,6 @@ public class RegisterAction extends ActionSupport {
                 sqlSession.close();
             }
         } else {
-            System.out.println("here 1232332");
             Map<String, Object> jsonObject = new HashMap<String, Object>();
             if (!Pattern.matches(USERNAME_REGEX, username)) {
                 jsonObject.put("username",

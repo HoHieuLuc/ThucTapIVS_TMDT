@@ -3,18 +3,22 @@ import java.util.Date;
 
 public class DanhGiaSanPham {
 
-    private int maDanhGia,maKhachHang,soSao;
-    private String noiDung, maSanPham;
-    Date ngayTao,ngaySua;
+    private int maDanhGia;
+    private int maKhachHang;
+    private int soSao;
+    private String noiDung;
+    private String maSanPham;
+    private Date ngayTao; 
+    private Date ngaySua;
 
     public DanhGiaSanPham() {
     }
     
-    public DanhGiaSanPham(int maKhachHang, int soSao, String noiDung, String maSanPham, Date ngayTao, Date ngaySua) {
-        this.maKhachHang = maKhachHang;
-        this.soSao = soSao;
-        this.noiDung = noiDung;
+    public DanhGiaSanPham(String maSanPham, int maKhachHang,  String noiDung, int soSao, Date ngayTao, Date ngaySua) {
         this.maSanPham = maSanPham;
+        this.maKhachHang = maKhachHang;
+        this.noiDung = noiDung;
+        this.soSao = soSao;
         this.ngayTao = ngayTao;
         this.ngaySua = ngaySua;
     }
@@ -62,16 +66,4 @@ public class DanhGiaSanPham {
     public void setNgaySua(Date ngaySua) {
         this.ngaySua = ngaySua;
     }
-
-
-
-    
-
-    
-
-
-
-  
-
-
 }

@@ -1,3 +1,6 @@
+const formDOM = document.querySelector('#formDanhGiaSanPham');
+const huyDanhGiaBtnDOM = document.querySelector('#huyDanhGiaBtn');
+const danhGiaBtnDOM = document.querySelector('#danhGiaBtn');
 //Lấy mã sản phẩm trên đường dẫn
 const params = window.location.pathname.split('/').slice(0);
 const maSanPham = params[params.length - 1];
@@ -25,8 +28,7 @@ const showSanPhamDetail = async () => {
         moTaSanPhamDOM.innerHTML = moTa;
         giaDOM.innerHTML = gia;
         nguoiDangSanPham.innerHTML = nguoiDangSP;
-        //Chưa nghĩ ra cái tên nên để tạm customer
-        pageNguoiDangSP.href = `${baseURL}customer/${maKhachHang}`;
+        pageNguoiDangSP.href = `${baseURL}store/${maKhachHang}`;
         anhChinhDOM.src = `${baseURL}images/product/${anhSanPham}`;
     } catch (error) {
         console.log(error);
@@ -35,107 +37,119 @@ const showSanPhamDetail = async () => {
 
 showSanPhamDetail();
 
-const showDanhGiaSPList = async () => {
+/* hiện danh sách đánh giá */
+const showDanhGiaSPs = async () => {
     try {
-        const { data: { danhGiaSPs } } = await axios.get(`${baseURL}danhGiaSanPham/${maSanPham}`);
+        const { data: { danhGiaSPs } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/${maSanPham}`);
+        const danhGiaSPCuaBan = await getDanhGiaSanPham();
         console.log(danhGiaSPs);
-        if (danhGiaSPs.length > 0) {
+        console.log(danhGiaSPCuaBan);
+        // chưa đánh giá và đã đăng nhập thì hiện form đánh giá
+        if (danhGiaSPCuaBan.status !== 1 && formDOM !== null) {
+            formDOM.style.display = 'block';
+        }
+        if (danhGiaSPs.length > 0 || danhGiaSPCuaBan.status === 1) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
                 const { ngay_tao, ngay_sua, noi_dung, so_sao, ten } = danhGiaSP;
                 //in ra icon ngôi sao đánh giá
-                var so_sao_html = ` `;
+                let so_sao_html = '';
                 for (let i = 0; i < so_sao; i++) {
-                    so_sao_html = `<span>&#9733;</span>` + so_sao_html;
+                    so_sao_html += '<span>&#9733;</span>';
                 }
+                const lanSuaCuoi = ngay_sua ? `<span class="text-muted">(Lần sửa cuối: ${ngay_sua})</span>` : ``;
                 return `
                     <div class="comment mt-4 text-justify float-left"> <img src="https://i.imgur.com/yTFUilP.jpg"
                             alt="avatar" class="rounded-circle" width="40" height="40">
-                        <h4>${ten}</h4> <span>${ngay_tao}</span><br>
-                            ${so_sao_html}
+                        <h4>${ten}</h4> <span>${ngay_tao}</span>${lanSuaCuoi}
+                        <br>
+                        ${so_sao_html}
                         <p>${noi_dung}</p>
                     </div>
                 `;
-            }).join(' ');
-            danhGiaSPListDom.innerHTML = allDanhGiaSPs;
-
-        } else {
+            }).join('');
+            danhGiaSPListDom.innerHTML = danhGiaSPCuaBan.text + allDanhGiaSPs;
+        } 
+        else {
             danhGiaSPListDom.innerHTML = `<h4>Sản phẩm này chưa có đánh giá</h4>`;
         }
     } catch (error) {
         console.log(error);
     }
 }
-showDanhGiaSPList();
 
-const formDOM = document.querySelector('#formDanhGiaSanPham');
-//const noiDungErrorMessage = document.querySelector('#username_error');
-
-
-//http://localhost:8080/TMDT-0.0.1-SNAPSHOT/viewCurrentDanhGiaSanPham/35a99f29-64da-11ec-bb14-8378cfa7d63d
-const noiDungDanhGiaSP = document.querySelector('#noiDungDanhGiaSP > textarea');
-const soSaoDanhGiaSP = document.querySelector('#soSao');
-const updateOrSubmit = document.querySelector('#updateOrSubmit');
-const formData = new FormData(formDOM);
-
-//Lấy mã đánh giá mà khách hàng đã bình luận từ trước
-var maDanhGia_commented = null;
-
-const check_HanhViDanhGiaSP = async () => {
-    
-    formData.append("maSanPham", maSanPham);
-    //Nếu đã bình luận sản phẩm này
+// lấy đánh giá sản phẩm của khách hàng hiện tại
+const getDanhGiaSanPham = async () => {
     try {
-        const { data : {danhGiaSPHienTai} } = await axios.post(`${baseURL}viewCurrentDanhGiaSanPham/${maSanPham}`);
-        //Thay đổi nút thêm bình luận thành nút cập nhật bình luận
-        updateOrSubmit.innerHTML = "Cập nhật đánh giá sản phẩm";
-        console.log("Đây là nội dung, số sao khách hàng đã bình luận từ trước");
-        console.log(danhGiaSPHienTai[0].noi_dung);
-        console.log("<! --Đây là nội dung, số sao khách hàng đã bình luận từ trước -->");
-
-        
-        //Chạy await ok thì mình hiển thị nội dung và số sao đã có lên form
-        noiDungDanhGiaSP.value = danhGiaSPHienTai[0].noi_dung;
-        soSaoDanhGiaSP.value = danhGiaSPHienTai[0].so_sao;
-        //Update đánh giá sản phẩm chỗ này, viết 1 hàm submit sang action update đánh giá là xong
-        //Lưu mã đánh giá commented vào biến
-        //formData.append('maDanhGia',danhGiaSPHienTai[0].ma_danh_gia);
-        maDanhGia_commented = danhGiaSPHienTai[0].ma_danh_gia;
-
-    } catch (e) {
-        updateOrSubmit.innerHTML = "Đánh giá sản phẩm";
-        console.log(e);
+        const { data: { danhGiaSP } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/get`, { params: { maSanPham: maSanPham } });
+        // đã đánh giá
+        if (danhGiaSP !== undefined) {
+            const { ngay_tao, ngay_sua, noi_dung, so_sao, ten } = danhGiaSP;
+            document.querySelector('#noiDung').value = noi_dung;
+            document.querySelector('#soSao').value = so_sao;
+            //in ra icon ngôi sao đánh giá
+            let so_sao_html = '';
+            for (let i = 0; i < so_sao; i++) {
+                so_sao_html += '<span>&#9733;</span>';
+            }
+            const lanSuaCuoi = ngay_sua ? `<span class="text-muted">(Lần sửa cuối: ${ngay_sua})</span>` : '';
+            return {
+                text: `
+                    <div class="comment mt-4 text-justify float-left" id="danhGiaCuaToi"> 
+                        <img src="https://i.imgur.com/yTFUilP.jpg" alt="avatar" class="rounded-circle" width="40" height="40">
+                        <h4>${ten}</h4> <span>${ngay_tao}</span>${lanSuaCuoi}
+                        <br>
+                        ${so_sao_html}
+                        <p>${noi_dung}</p>
+                        <button class="btn btn-link" onclick="suaDanhGiaSP()">Sửa</button>
+                    </div>`,
+                status: 1
+            }
+        }
+        // chưa đánh giá
+        return {
+            text: '',
+            status: 0
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            text: '',
+            status: -1
+        }
     }
 }
 
+showDanhGiaSPs();
 
-//Form này vừa có chức năng update, vừa có chức năng submit đánh giá mới của khách hàng
-const Submit_Or_Update = async () =>{
+// sửa đánh giá
+const suaDanhGiaSP = () => {
+    document.querySelector('#danhGiaCuaToi').style.display = 'none';
+    formDOM.style.display = 'block';
+    huyDanhGiaBtnDOM.style.display = 'block';
+    document.querySelector('#noiDung').focus();
+    danhGiaBtnDOM.value = "Cập nhật";
+}
+
+const submitDanhGiaSP = async () => {
     const formData = new FormData(formDOM);
     try {
-        formData.append("maSanPham", maSanPham);
-        console.log(maDanhGia_commented);
-        if (maDanhGia_commented != null) formData.append("maDanhGia",maDanhGia_commented);
-       // console.log(formData);
-        await axios.post(`${baseURL}danhGiaSP_Submit_Or_Update`, formData);
-        showDanhGiaSPList();
-        check_HanhViDanhGiaSP();
+        await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
+        formDOM.style.display = 'none';
         showSanPhamDetail();
+        showDanhGiaSPs();
+        thongBao("Gửi đánh giá thành công");
     } catch (error) {
-        showDanhGiaSPList();
-        const data = error.response.data;
-        console.log(data);
-        errorMsg.textContent = data.error ?? "";
+        console.log(error);
     }
 }
-
-check_HanhViDanhGiaSP();
 
 if (formDOM) {
     formDOM.addEventListener('submit', (event) => {
         event.preventDefault();
-        Submit_Or_Update();
+        submitDanhGiaSP();
+    });
+    huyDanhGiaBtnDOM.addEventListener('click', () => {
+        formDOM.style.display = 'none';
+        danhGiaCuaToi.style.display = 'block';
     });
 }
-
-
-

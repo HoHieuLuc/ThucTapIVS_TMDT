@@ -23,7 +23,17 @@
     </head>
 
     <body>
-      Đây là header
+      <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 99999">
+        <div id="toastThongBao" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header bg-primary text-white">
+            <strong class="me-auto">Thông báo</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toastNoiDung">
+
+          </div>
+        </div>
+      </div>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Navbar</a>
