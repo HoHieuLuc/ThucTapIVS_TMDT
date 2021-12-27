@@ -5,8 +5,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -80,53 +80,34 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     public String getDanhGiaSP() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
-        List<Map<String, Object>> danhSachDanhGia = new ArrayList<Map<String, Object>>();
+        // danh sách đánh giá
+        List<Map<String, Object>> danhSachDanhGia = new LinkedList<Map<String, Object>>();
+        // đánh giá của khách hàng hiện tại
+        Map<String, Object> danhGiaCuaKhachHang = new HashMap<String, Object>();
 
-        /*
-         * Kiểm tra nếu người dùng đăng nhập hay chưa
-         * Nếu người dùng chưa đăng nhập thì hiển thị tất cả đánh giá
-         * Nếu người dùng đăng nhập rồi thì trừ cái đánh giá của người dùng đó ra
-         * Vì mình sẽ dùng getDanhGiaSanPhamByMaKHandMaSP() tên dài vl
-         * để ưu tiên hiển thị đánh giá của người dùng đó lên đầu
-         * Nếu mà getAll luôn thì sẽ bị trùng
-         */
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
-        if (loggedIn == null || !loggedIn) {
+        // level xài Integer thay vì int vì int nó ko nhận null
+        // nên là nếu chưa đăng nhập thì tới đoạn này nó crash luôn
+        Integer level = (Integer) session.getAttribute("level");
+        // khi chưa đăng nhập hoặc không phải là khách hàng thì lấy hết tất cả đánh giá
+        if (loggedIn == null || !loggedIn || level > 0) {
             danhSachDanhGia = danhGiaSanPhamMapper.getAll(maSanPham);
         } else {
             int maKhachHang = (int) session.getAttribute("maNguoiDung");
+            danhGiaCuaKhachHang = danhGiaSanPhamMapper.getByMaKHandMaSP(maKhachHang, maSanPham);
             danhSachDanhGia = danhGiaSanPhamMapper.getAllExceptOwn(maSanPham, maKhachHang);
         }
-        Map<String, Object> jsonObject = new HashMap<String, Object>();
-        jsonObject.put("danhGiaSPs", danhSachDanhGia);
+        // nếu tìm thấy đánh giá của khách thì trả về thêm đánh giá đó
+        // như vậy không cần cái api kia nữa, mặc dù code bên js nhìn khá rác
+        if (danhGiaCuaKhachHang != null && !danhGiaCuaKhachHang.isEmpty()) {
+            jsonRes.put("danhGiaCuaBan", danhGiaCuaKhachHang);
+        }
+
+        jsonRes.put("danhGiaSPs", danhSachDanhGia);
         sqlSession.close();
-        return JsonResponse.createJsonResponse(jsonObject, 200, response);
-    }
-
-    // lấy đánh giá 1 sản phẩm của người dùng hiện tại
-    @Action(value = "/api/v1/danhgia/sanpham/get", params = { "maSanPham", "{1}" }, results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "khachHangStack"),
-    })
-    public String getDanhGiaSanPhamByMaKHandMaSP() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-
-        DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
-
-        // Nếu khách hàng đã bình luận sản phẩm này, đổi giao diện sang update sản phẩm
-        // Hiển thị bình luận khách hàng đã nhập lên input, hiển thị số sao đã chọn từ
-        // trước
-
-        // Lẫy mã người dùng check, lấy mã sản phẩm dựa vào param url check
-        int maKhachHang = (int) session.getAttribute("maNguoiDung");
-        Map<String, Object> dgspHienTai = danhGiaSanPhamMapper.getByMaKHandMaSP(maKhachHang, maSanPham);
-
-        System.out.println("dgspHienTai: " + dgspHienTai);
-        Map<String, Object> jsonObject = new HashMap<String, Object>();
-        jsonObject.put("danhGiaSP", dgspHienTai);
-        sqlSession.close();
-        return JsonResponse.createJsonResponse(jsonObject, 200, response);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
     // Kiểm tra độ dài chuỗi có nằm trong khoảng từ min đến max
@@ -145,7 +126,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
             @InterceptorRef(value = "khachHangStack"),
     })
     public String danhGiaSPSubmit() throws IOException {
-        if(!isValid()) {
+        if (!isValid()) {
             return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response);
         }
         SqlSession sqlSession = sqlSessionFactory.openSession();
