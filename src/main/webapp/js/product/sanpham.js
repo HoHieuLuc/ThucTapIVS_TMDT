@@ -120,7 +120,7 @@ const showDanhGiaSPs = async () => {
                         
                         <form style="display: none;" id="mdg_${ma_danh_gia}">
                             <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
-                            <button type="button" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia})">Gửi</button>
+                            <input type="submit" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia})">Gửi</button>
                             <button type="button" class="btn btn-success float-right"
                             onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Huy </button>
                         </form>
