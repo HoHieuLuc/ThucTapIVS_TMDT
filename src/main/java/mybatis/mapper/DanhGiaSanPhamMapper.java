@@ -17,6 +17,7 @@ public interface DanhGiaSanPhamMapper {
 			+
 			"FROM khach_hang kh INNER JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
 			"WHERE dgsp.ma_san_pham = #{maSanPham} ORDER BY dgsp.ngay_tao DESC";
+
 	@Select(GET_ALL_DANH_GIA_SAN_PHAM)
 	public List<Map<String, Object>> getAll(String maSanPham);
 
@@ -26,14 +27,15 @@ public interface DanhGiaSanPhamMapper {
 			"FROM khach_hang kh INNER JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
 			"WHERE dgsp.ma_san_pham = #{maSanPham} AND dgsp.ma_khach_hang != #{maKhachHang} " +
 			"ORDER BY dgsp.ngay_tao DESC";
+
 	@Select(GET_ALL_DGSP_EXCEPT_OWN)
 	public List<Map<String, Object>> getAllExceptOwn(@Param("maSanPham") String maSanPham,
 			@Param("maKhachHang") int maKhachHang);
 
-	// Lấy lại đánh giá của khách hàng cho sản phẩm tương ứng
-	final String GET_BY_MAKH_AND_MASP = " SELECT * from danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = dgsp.ma_khach_hang "
-			+
-			"WHERE dgsp.ma_san_pham = #{maSanPham} " +	
+	// Lấy đánh giá của khách hàng cho sản phẩm tương ứng
+	final String GET_BY_MAKH_AND_MASP = " SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham " +
+			"FROM danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
+			"WHERE dgsp.ma_san_pham = #{maSanPham} " +
 			"AND dgsp.ma_khach_hang = #{maKhachHang}";
 
 	@Select(GET_BY_MAKH_AND_MASP)
@@ -54,6 +56,7 @@ public interface DanhGiaSanPhamMapper {
 			"WHERE `ma_khach_hang` = #{maKhachHang} "
 			+
 			"AND `ma_san_pham` = #{maSanPham};";
+
 	@Update(UPDATE_DANH_GIA_SP)
 	public void updateDanhGiaSp(@Param("maSanPham") String maSanPham, @Param("maKhachHang") int maKhachHang,
 			@Param("noiDung") String noiDung, @Param("soSao") int soSao);
