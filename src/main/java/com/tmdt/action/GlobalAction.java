@@ -14,6 +14,14 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    /* route cho store */
+    @Action(value = "/store/*", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/store/index.jsp")
+    })
+    public String storePage() {
+        return SUCCESS;
+    }
+
     /* route cho nhân viên */
     @Action(value = "/admin/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/admin/index.jsp")
