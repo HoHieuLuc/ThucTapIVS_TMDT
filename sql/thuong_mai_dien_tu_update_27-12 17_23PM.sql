@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2021 at 08:07 AM
+-- Generation Time: Dec 27, 2021 at 11:22 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -172,7 +172,8 @@ INSERT INTO `danh_gia_san_pham` (`ma_danh_gia`, `ma_khach_hang`, `so_sao`, `noi_
 (19, 6, 1, 'jgkhgkshggag', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-25 06:26:37', '2021-12-27 11:22:47'),
 (20, 19, 4, 'gsgsgdadfafaf', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-26 10:10:29', '2021-12-26 06:28:30'),
 (21, 18, 5, '4214', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-27 03:08:41', '2021-12-27 03:08:41'),
-(22, 1, 5, 'nice', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-27 06:16:39', '2021-12-27 10:14:00');
+(22, 1, 5, 'nice214412412412412412', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-27 06:16:39', '2021-12-27 14:39:31'),
+(23, 1, 1, '9999999999999', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-27 14:32:18', '2021-12-27 14:33:16');
 
 -- --------------------------------------------------------
 
@@ -291,16 +292,30 @@ INSERT INTO `nhan_vien` (`ma_nhan_vien`, `ten_nhan_vien`, `ma_chuc_vu`, `id_tai_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `phan_hoi_danh_gia`
+-- Table structure for table `phan_hoi_danh_gia_kh`
 --
 
-CREATE TABLE `phan_hoi_danh_gia` (
+CREATE TABLE `phan_hoi_danh_gia_kh` (
+  `ma_danh_gia` int(11) NOT NULL,
+  `noi_dung` varchar(255) NOT NULL,
+  `ma_khach_hang` int(11) NOT NULL,
+  `ngay_tao` datetime NOT NULL,
+  `ngay_sua` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `phan_hoi_danh_gia_sp`
+--
+
+CREATE TABLE `phan_hoi_danh_gia_sp` (
   `ma_danh_gia` int(11) NOT NULL,
   `noi_dung` varchar(255) NOT NULL,
   `ma_khach_hang` int(11) NOT NULL,
   `ngay_tao` datetime NOT NULL,
   `ngay_sua` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Phản hồi đánh giá sản phẩm';
 
 -- --------------------------------------------------------
 
@@ -544,9 +559,16 @@ ALTER TABLE `nhan_vien`
   ADD KEY `nv_ibfk_2_idx` (`id_tai_khoan`);
 
 --
--- Indexes for table `phan_hoi_danh_gia`
+-- Indexes for table `phan_hoi_danh_gia_kh`
 --
-ALTER TABLE `phan_hoi_danh_gia`
+ALTER TABLE `phan_hoi_danh_gia_kh`
+  ADD PRIMARY KEY (`ma_danh_gia`),
+  ADD KEY `phdgkh_fk_1` (`ma_khach_hang`);
+
+--
+-- Indexes for table `phan_hoi_danh_gia_sp`
+--
+ALTER TABLE `phan_hoi_danh_gia_sp`
   ADD PRIMARY KEY (`ma_danh_gia`),
   ADD KEY `phdg_fk_1_idx` (`ma_khach_hang`);
 
@@ -628,7 +650,7 @@ ALTER TABLE `danh_gia_khach_hang`
 -- AUTO_INCREMENT for table `danh_gia_san_pham`
 --
 ALTER TABLE `danh_gia_san_pham`
-  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `dat_hang`
@@ -737,12 +759,18 @@ ALTER TABLE `nhan_vien`
   ADD CONSTRAINT `nv_ibfk_2` FOREIGN KEY (`id_tai_khoan`) REFERENCES `tai_khoan` (`id`);
 
 --
--- Constraints for table `phan_hoi_danh_gia`
+-- Constraints for table `phan_hoi_danh_gia_kh`
 --
-ALTER TABLE `phan_hoi_danh_gia`
+ALTER TABLE `phan_hoi_danh_gia_kh`
+  ADD CONSTRAINT `phdgkh_fk_1` FOREIGN KEY (`ma_khach_hang`) REFERENCES `khach_hang` (`ma_khach_hang`),
+  ADD CONSTRAINT `phdgkh_fk_2` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_khach_hang` (`ma_danh_gia`);
+
+--
+-- Constraints for table `phan_hoi_danh_gia_sp`
+--
+ALTER TABLE `phan_hoi_danh_gia_sp`
   ADD CONSTRAINT `phdg_fk_1` FOREIGN KEY (`ma_khach_hang`) REFERENCES `khach_hang` (`ma_khach_hang`),
-  ADD CONSTRAINT `phdg_fk_2` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_khach_hang` (`ma_danh_gia`) ON DELETE CASCADE,
-  ADD CONSTRAINT `phdg_fk_3` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_san_pham` (`ma_danh_gia`) ON DELETE CASCADE;
+  ADD CONSTRAINT `phdg_fk_3` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_san_pham` (`ma_danh_gia`);
 
 --
 -- Constraints for table `san_pham`
