@@ -98,7 +98,7 @@ const showDanhGiaSPs = async () => {
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
-                const { ma_danh_gia,ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
+                const { ma_danh_gia, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
                 //in ra icon ngôi sao đánh giá
                 let so_sao_html = '';
                 for (let i = 0; i < so_sao; i++) {
@@ -120,9 +120,9 @@ const showDanhGiaSPs = async () => {
                         
                         <form style="display: none;" id="mdg_${ma_danh_gia}">
                             <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
-                            <input type="submit" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia})">Gửi</button>
+                            <input type="submit" class="btn btn-success float-right" onsubmit="phanHoiDanhGiaSP(${ma_danh_gia});" value="Gửi"></button>
                             <button type="button" class="btn btn-success float-right"
-                            onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Huy </button>
+                            onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Hủy </button>
                         </form>
                     </div>
                 `;
@@ -174,10 +174,18 @@ if (formDOM) {
 }
 
 const phanHoiDanhGiaSP = async (ma_danh_gia) => {
+    //Chặn sự kiện submit chuyển trang
+    document.querySelector(`#mdg_${ma_danh_gia}`).addEventListener('submit', (event) => {
+        event.preventDefault();
+    })
+
+
     //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
     //Form đó đã có noiDung
     const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
-    formDanhGiaSanPham.append("maDanhGia",ma_danh_gia);
+    formDanhGiaSanPham.append("maDanhGia", ma_danh_gia);
+
+
 
     //Gửi dữ liệu vào request
     try {
