@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Map;
+
 import com.tmdt.model.*;
 
 
@@ -17,4 +19,10 @@ public interface KhachHangMapper {
     final String GET_MA_KHACH_HANG = "SELECT ma_khach_hang from `khach_hang` WHERE id_tai_khoan = #{id}";
     @Select(GET_MA_KHACH_HANG)
     public int getMaKh(int id);
+
+    // lấy thông tin khách hàng dựa vào username
+    final String GET_STORE_INFO = "SELECT * FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id " + 
+    "WHERE tk.username = #{username}";
+    @Select(GET_STORE_INFO)
+    public Map<String, Object> getStoreInfoByUsername(String username);
 }

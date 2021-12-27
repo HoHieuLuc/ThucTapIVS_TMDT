@@ -16,6 +16,7 @@ public interface SanPhamMapper {
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "GROUP BY sp.ma_san_pham";
+
     @Select(GET_ALL_SANPHAM)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -35,20 +36,22 @@ public interface SanPhamMapper {
     public List<Map<String, Object>> getAllSanPham();
 
     // Xem chi tiết sản phẩm
-    final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham,kh.ten, kh.ma_khach_hang, sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
-            +
+    final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham, kh.ten, " +
+            "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, " +
+            "tk.username, tk.avatar, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
-             " RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " + 
-            " WHERE sp.ma_san_pham = #{maSanPham}  " + 
-            " GROUP BY sp.ma_san_pham ";
+            "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " + 
+            "WHERE sp.ma_san_pham = #{maSanPham} " +
+            "GROUP BY sp.ma_san_pham ";
+
     @Select(SAN_PHAM_DETAIL)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
             @Result(property = "tenSanPham", column = "ten_san_pham"),
-            @Result(property = "maKhachHang", column = "ma_khach_hang"),
-            @Result(property = "nguoiDangSP", column = "ten"),
+            @Result(property = "tenKhachHang", column = "ten"),
             @Result(property = "moTa", column = "mo_ta"),
             @Result(property = "gia", column = "gia"),
             @Result(property = "status", column = "status"),
@@ -120,19 +123,21 @@ public interface SanPhamMapper {
             @Param("maKhachHang") int maKhachHang,
             @Param("maSanPham") String maSanPham);
 
-
     // Thêm sản phẩm
-    final String ADD_SAN_PHAM = "INSERT INTO `san_pham`(`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) " +
-    "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, #{maLoaiSanPham}, #{soLuong}, now(), #{soLuongDaBan})";
+    final String ADD_SAN_PHAM = "INSERT INTO `san_pham`(`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) "
+            +
+            "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, #{maLoaiSanPham}, #{soLuong}, now(), #{soLuongDaBan})";
+
     @Insert(ADD_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maSanPham")
     public void insert(SanPham sanPham);
-    
+
     // lấy id từ sản phẩm vừa tạo
-    final String GET_ID_SAN_PHAM = "SELECT ma_san_pham FROM san_pham " + 
-    "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham} AND mo_ta = #{moTa} " + 
-    "AND gia = #{gia} AND status = 0 AND ma_loai_san_pham = #{maLoaiSanPham} AND so_luong = #{soLuong} " + 
-    " AND so_luong_da_ban = 0 LIMIT 1";
+    final String GET_ID_SAN_PHAM = "SELECT ma_san_pham FROM san_pham " +
+            "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham} AND mo_ta = #{moTa} " +
+            "AND gia = #{gia} AND status = 0 AND ma_loai_san_pham = #{maLoaiSanPham} AND so_luong = #{soLuong} " +
+            " AND so_luong_da_ban = 0 LIMIT 1";
+
     @Select(GET_ID_SAN_PHAM)
     public String getIdSanPham(SanPham sanPham);
 }

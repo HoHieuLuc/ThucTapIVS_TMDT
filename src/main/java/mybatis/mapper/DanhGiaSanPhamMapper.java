@@ -13,18 +13,20 @@ import com.tmdt.model.DanhGiaSanPham;
 
 public interface DanhGiaSanPhamMapper {
 	// Lấy tất cả đánh giá của sản phẩm, khi khách hàng chưa đăng nhập
-	final String GET_ALL_DANH_GIA_SAN_PHAM = "SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham "
-			+
+	final String GET_ALL_DANH_GIA_SAN_PHAM = "SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham, "
+			+ "tk.username, tk.avatar " +
 			"FROM khach_hang kh INNER JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
+			"JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
 			"WHERE dgsp.ma_san_pham = #{maSanPham} ORDER BY dgsp.ngay_tao DESC";
 
 	@Select(GET_ALL_DANH_GIA_SAN_PHAM)
 	public List<Map<String, Object>> getAll(String maSanPham);
 
 	// Lấy tất cả đánh giá sản phẩm ngoại trừ đánh giá của người dùng
-	final String GET_ALL_DGSP_EXCEPT_OWN = "SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham "
-			+
+	final String GET_ALL_DGSP_EXCEPT_OWN = "SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham, "
+			+ "tk.username, tk.avatar " +
 			"FROM khach_hang kh INNER JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
+			"JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
 			"WHERE dgsp.ma_san_pham = #{maSanPham} AND dgsp.ma_khach_hang != #{maKhachHang} " +
 			"ORDER BY dgsp.ngay_tao DESC";
 
@@ -33,8 +35,10 @@ public interface DanhGiaSanPhamMapper {
 			@Param("maKhachHang") int maKhachHang);
 
 	// Lấy đánh giá của khách hàng cho sản phẩm tương ứng
-	final String GET_BY_MAKH_AND_MASP = " SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham " +
+	final String GET_BY_MAKH_AND_MASP = " SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham, "
+			+ "tk.username, tk.avatar " +
 			"FROM danh_gia_san_pham dgsp LEFT JOIN khach_hang kh ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
+			"JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
 			"WHERE dgsp.ma_san_pham = #{maSanPham} " +
 			"AND dgsp.ma_khach_hang = #{maKhachHang}";
 
