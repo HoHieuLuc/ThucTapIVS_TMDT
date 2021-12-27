@@ -162,7 +162,6 @@ public class SanPhamAction extends ActionSupport {
         List<Map<String, Object>> listSanPham = sanPhamMapper.getAllSanPham();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sanphams", listSanPham);
-        System.out.println(listSanPham);
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
@@ -173,11 +172,22 @@ public class SanPhamAction extends ActionSupport {
     public String chiTietSanPhams() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        Map<String, Object> listSanPham = sanPhamMapper.getDetailSanPham(maSanPham);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sanpham", listSanPham);
-        System.out.println(listSanPham);
-        return JsonResponse.createJsonResponse(map, 200, response);
+        AnhSanPhamMapper anhSanPhamMapper = sqlSession.getMapper(AnhSanPhamMapper.class);
+
+        Map<String, Object> sanPham = sanPhamMapper.getDetailSanPham(maSanPham);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+
+        if (sanPham == null) {
+            jsonRes.put("message", "Không tìm thấy sản phẩm");
+            return JsonResponse.createJsonResponse(jsonRes, 404, response);
+        }
+
+        List<String> listAnhSanPham = anhSanPhamMapper.getAnhSanPham(maSanPham);
+        sanPham.put("anhSanPhams", listAnhSanPham);
+
+        jsonRes.put("sanpham", sanPham);
+        System.out.println(sanPham);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
     // Hiển thị giao diện xem chi tiết sản phẩm
