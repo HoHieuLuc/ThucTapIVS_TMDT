@@ -32,7 +32,6 @@ public interface TaiKhoanMapper {
             @Result(property = "userName", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "email", column = "email"),
-            @Result(property = "ngayTao", column = "ngay_tao"),
             @Result(property = "soDienThoai", column = "so_dien_thoai"),
             @Result(property = "ngaySinh", column = "ngay_sinh"),
             @Result(property = "gioiTinh", column = "gioi_tinh"),
