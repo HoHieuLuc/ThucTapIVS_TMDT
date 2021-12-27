@@ -40,52 +40,13 @@ showSanPhamDetail();
 /* hiện danh sách đánh giá */
 const showDanhGiaSPs = async () => {
     try {
-        const { data: { danhGiaSPs } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/${maSanPham}`);
-        const danhGiaSPCuaBan = await getDanhGiaSanPham();
-        console.log(danhGiaSPs);
-        console.log(danhGiaSPCuaBan);
-        // chưa đánh giá và đã đăng nhập thì hiện form đánh giá
-        if (danhGiaSPCuaBan.status !== 1 && formDOM !== null) {
-            formDOM.style.display = 'block';
-        }
-        if (danhGiaSPs.length > 0 || danhGiaSPCuaBan.status === 1) {
-            const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
-                const { ngay_tao, ngay_sua, noi_dung, so_sao, ten } = danhGiaSP;
-                //in ra icon ngôi sao đánh giá
-                let so_sao_html = '';
-                for (let i = 0; i < so_sao; i++) {
-                    so_sao_html += '<span>&#9733;</span>';
-                }
-                const lanSuaCuoi = ngay_sua ? `<span class="text-muted">(Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}:${ngay_sua.time.minute})</span>` : ``;
-                return `
-                    <div class="comment mt-4 text-justify float-left"> <img src="https://i.imgur.com/yTFUilP.jpg"
-                            alt="avatar" class="rounded-circle" width="40" height="40">
-                        <h4>${ten}</h4> <span>
-                        ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}  lúc ${ngay_tao.time.hour}:${ngay_tao.time.minute}
-                        </span>${lanSuaCuoi}
-                        <br>
-                        ${so_sao_html}
-                        <p>${noi_dung}</p>
-                    </div>
-                `;
-            }).join('');
-            danhGiaSPListDom.innerHTML = danhGiaSPCuaBan.text + allDanhGiaSPs;
-        } 
-        else {
-            danhGiaSPListDom.innerHTML = `<h4>Sản phẩm này chưa có đánh giá</h4>`;
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-// lấy đánh giá sản phẩm của khách hàng hiện tại
-const getDanhGiaSanPham = async () => {
-    try {
-        const { data: { danhGiaSP } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/get`, { params: { maSanPham: maSanPham } });
-        // đã đánh giá
-        if (danhGiaSP !== undefined) {
-            const { ngay_tao, ngay_sua, noi_dung, so_sao, ten } = danhGiaSP;
+        const { data: { danhGiaSPs, danhGiaCuaBan } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/${maSanPham}`);
+        
+        let danhGiaCuaBanHTML = '';
+        let danhGiaSPsHTML = '';
+        if (danhGiaCuaBan !== undefined) {
+            formDOM.style.display = 'none';
+            const { ngay_tao, ngay_sua, noi_dung, so_sao, ten } = danhGiaCuaBan;
             document.querySelector('#noiDung').value = noi_dung;
             document.querySelector('#soSao').value = so_sao;
             //in ra icon ngôi sao đánh giá
@@ -93,31 +54,46 @@ const getDanhGiaSanPham = async () => {
             for (let i = 0; i < so_sao; i++) {
                 so_sao_html += '<span>&#9733;</span>';
             }
-            const lanSuaCuoi = ngay_sua ? `<span class="text-muted">(Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}:${ngay_sua.time.minute})</span>` : '';
-            return {
-                text: `
-                    <div class="comment mt-4 text-justify float-left" id="danhGiaCuaToi"> 
-                        <img src="https://i.imgur.com/yTFUilP.jpg" alt="avatar" class="rounded-circle" width="40" height="40">
-                        <h4>${ten}</h4> <span>${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}  lúc ${ngay_tao.time.hour}:${ngay_tao.time.minute}</span>${lanSuaCuoi}
+            const lanSuaCuoi = ngay_sua ? `<span class="text-muted">(Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : '';
+            danhGiaCuaBanHTML = `
+                <div class="comment mt-4 text-justify float-left" id="danhGiaCuaToi"> 
+                    <img src="https://i.imgur.com/yTFUilP.jpg" alt="avatar" class="rounded-circle" width="40" height="40">
+                    <h4>${ten}</h4> <span>${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}  lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p</span>${lanSuaCuoi}
+                    <br>
+                    ${so_sao_html}
+                    <p>${noi_dung}</p>
+                    <button class="btn btn-link" onclick="suaDanhGiaSP()">Sửa</button>
+                </div>`;
+        }
+        if (danhGiaSPs.length > 0) {
+            const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
+                const { ngay_tao, ngay_sua, noi_dung, so_sao, ten } = danhGiaSP;
+                //in ra icon ngôi sao đánh giá
+                let so_sao_html = '';
+                for (let i = 0; i < so_sao; i++) {
+                    so_sao_html += '<span>&#9733;</span>';
+                }
+                const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
+                return `
+                    <div class="comment mt-4 text-justify float-left"> <img src="https://i.imgur.com/yTFUilP.jpg"
+                            alt="avatar" class="rounded-circle" width="40" height="40">
+                        <h4>${ten}</h4> <span>
+                        ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+                        </span>${lanSuaCuoi}
                         <br>
                         ${so_sao_html}
                         <p>${noi_dung}</p>
-                        <button class="btn btn-link" onclick="suaDanhGiaSP()">Sửa</button>
-                    </div>`,
-                status: 1
-            }
+                    </div>
+                `;
+            }).join('');
+            danhGiaSPsHTML = allDanhGiaSPs;
         }
-        // chưa đánh giá
-        return {
-            text: '',
-            status: 0
+        danhGiaSPListDom.innerHTML = danhGiaCuaBanHTML + danhGiaSPsHTML;
+        if (danhGiaSPs.length === 0 && danhGiaCuaBan === undefined) {
+            danhGiaSPListDom.innerHTML = `<h4>Sản phẩm này chưa có đánh giá</h4>`;
         }
     } catch (error) {
         console.log(error);
-        return {
-            text: '',
-            status: -1
-        }
     }
 }
 
