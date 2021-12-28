@@ -190,14 +190,6 @@ public class SanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // Hiển thị giao diện xem chi tiết sản phẩm
-    @Action(value = "/sanpham/*", results = {
-            @Result(name = SUCCESS, location = "/WEB-INF/jsp/product/index.jsp")
-    })
-    public String viewChiTietSanPham() {
-        return SUCCESS;
-    }
-
     /* Các action cho khách hàng */
     // action lấy danh sách sản phẩm
     @Action(value = "/api/v1/user/sanpham", results = {
