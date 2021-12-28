@@ -1,5 +1,4 @@
 package com.tmdt.action;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
@@ -48,6 +47,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     public void setNoiDung(String noiDung) {
         this.noiDung = noiDung;
     }
+    
 
     public int getSoSao() {
         return soSao;
