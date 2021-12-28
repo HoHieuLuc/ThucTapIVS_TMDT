@@ -246,7 +246,12 @@ public class SanPhamAction extends ActionSupport {
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
         AnhSanPhamMapper anhSanPhamMapper = sqlSession.getMapper(AnhSanPhamMapper.class);
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
-  
+
+        // kiểm tra xem tên sản phẩm có bị trùng không
+        // chỉ kiểm tra sản phẩm mà khách hàng sở hữu
+        if (sanPhamMapper.countSanPhamByMaKHAndTenSP(maKhachHang, tenSanPham) > 0) {
+            return CustomError.createCustomError("Tên sản phẩm đã tồn tại", 409, response);
+        }
 
         String filePath = session.getServletContext().getRealPath("/") + "images\\product\\";
         String LocalPath = ProjectPath.getPath() + "\\images\\product\\";
@@ -256,7 +261,7 @@ public class SanPhamAction extends ActionSupport {
             sanPhamMapper.insert(sanPham);
             sqlSession.commit();
             // khi thêm sản phẩm thành công thì mới bắt đầu thêm ảnh
-            String insertedId = sanPhamMapper.getIdSanPham(sanPham);
+            String insertedId = sanPhamMapper.getIdSanPhamByMaKHAndTenSP(maKhachHang, tenSanPham);
             for (int i = 0; i < anhSanPhams.size(); i++) {
                 String fileNameNew = System.currentTimeMillis() + "_" + anhSanPhamsFileName.get(i);
                 File fileTmp = new File(filePath + fileNameNew); // file ảnh được lưu tạm
@@ -272,10 +277,8 @@ public class SanPhamAction extends ActionSupport {
         } finally {
             sqlSession.close();
         }
-
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("message", "Thêm sản phẩm thành công");
         return JsonResponse.createJsonResponse(map, 201, response);
     }
-
 }
