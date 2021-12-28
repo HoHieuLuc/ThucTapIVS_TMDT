@@ -82,7 +82,6 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         sqlSession.commit();
         sqlSession.close();
         return SUCCESS;
-
     }
 
     //Get phản hồi đánh giá sản phẩm
