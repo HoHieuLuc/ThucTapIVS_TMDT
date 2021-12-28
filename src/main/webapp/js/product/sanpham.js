@@ -119,7 +119,7 @@ const showDanhGiaSPs = async () => {
                         <button class="btn btn-link" onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'block';">Phản hồi</button>
                         
                         <form style="display: none;" id="mdg_${ma_danh_gia}">
-                            <input type="text" class="form-control" placeholder="Nhập nội dung phản hồi">
+                            <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
                             <button type="button" class="btn btn-success float-right">Phan hoi</button>
                             <button type="button" class="btn btn-success float-right"
                             onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Huy </button>
