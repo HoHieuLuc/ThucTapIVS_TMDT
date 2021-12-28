@@ -152,18 +152,20 @@ const phanHoiDanhGiaSP = () => {
 
 const submitDanhGiaSP = async () => {
     const formData = new FormData(formDOM);
-    if (danhGiaBtnDOM.value != "Phản hồi") {
-        try {
-            await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
-            formDOM.style.display = 'none';
-            showSanPhamDetail();
-            showDanhGiaSPs();
-            thongBao("Gửi đánh giá thành công");
-        } catch (error) {
-            thongBao(error.response.data.message, true);
-        }
+    // Phân biệt request link giữa đánh giá sản phẩm và phản hồi đánh giá sản phẩm
+    var requestLink = null;
+    if (danhGiaBtnDOM.value != "Phản hồi")  requestLink = `${baseURL}api/v1/danhgia/sanpham/submit`;
+        else requestLink = `${baseURL}api/v1/phanhoi/sanpham/submit`;
+    
+    try {
+        await axios.post(requestLink, formData, { params: { maSanPham: maSanPham } });
+        formDOM.style.display = 'none';
+        showSanPhamDetail();
+        showDanhGiaSPs();
+        thongBao("Gửi đánh giá thành công");
+    } catch (error) {
+        thongBao(error.response.data.message, true);
     }
-
 }
 
 if (formDOM) {
