@@ -114,6 +114,7 @@ const showDanhGiaSPs = async () => {
                         <br>
                         ${so_sao_html}
                         <p>${noi_dung}</p>
+                        <button class="btn btn-link" onclick="phanHoiDanhGiaSP()">Phản hồi</button>
                     </div>
                 `;
             }).join('');
@@ -139,17 +140,30 @@ const suaDanhGiaSP = () => {
     danhGiaBtnDOM.value = "Cập nhật";
 }
 
+// Phản hồi đánh giá sản phẩm
+const phanHoiDanhGiaSP = () => {
+    document.querySelector('#danhGiaCuaToi').style.display = 'none';
+    formDOM.style.display = 'block';
+    huyDanhGiaBtnDOM.style.display = 'block';
+    document.querySelector('#noiDung').focus();
+    danhGiaBtnDOM.value = "Phản hồi";
+}
+
+
 const submitDanhGiaSP = async () => {
     const formData = new FormData(formDOM);
-    try {
-        await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
-        formDOM.style.display = 'none';
-        showSanPhamDetail();
-        showDanhGiaSPs();
-        thongBao("Gửi đánh giá thành công");
-    } catch (error) {
-        thongBao(error.response.data.message, true);
+    if (danhGiaBtnDOM.value != "Phản hồi") {
+        try {
+            await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
+            formDOM.style.display = 'none';
+            showSanPhamDetail();
+            showDanhGiaSPs();
+            thongBao("Gửi đánh giá thành công");
+        } catch (error) {
+            thongBao(error.response.data.message, true);
+        }
     }
+
 }
 
 if (formDOM) {
