@@ -225,15 +225,15 @@ public class SanPhamAction extends ActionSupport {
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        Map<String, Object> listSanPham = sanPhamMapper.getSanPhamByMaKHAndMaSP(maKhachHang, maSanPham);
-        if (listSanPham.isEmpty()) {
+        Map<String, Object> sanPham = sanPhamMapper.getSanPhamByMaKHAndMaSP(maKhachHang, maSanPham);
+        if (sanPham.isEmpty()) {
             return CustomError.createCustomError("Không tìm thấy sản phẩm", 404, response);
         }
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sanpham", listSanPham);
-        map.put("status", 200);
-        System.out.println(map);
-        return JsonResponse.createJsonResponse(map, 200, response);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("sanpham", sanPham);
+        jsonRes.put("status", 200);
+        System.out.println(jsonRes);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
     // action thêm sản phẩm
