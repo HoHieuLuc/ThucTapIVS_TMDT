@@ -120,7 +120,7 @@ const showDanhGiaSPs = async () => {
                         
                         <form style="display: none;" id="mdg_${ma_danh_gia}">
                             <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
-                            <input type="submit" class="btn btn-success float-right" onsubmit="phanHoiDanhGiaSP(${ma_danh_gia});" value="Gửi"></button>
+                            <button type="button" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia});" value="Gửi"></button>
                             <button type="button" class="btn btn-success float-right"
                             onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Hủy </button>
                         </form>
@@ -174,22 +174,13 @@ if (formDOM) {
 }
 
 const phanHoiDanhGiaSP = async (ma_danh_gia) => {
-    //Chặn sự kiện submit chuyển trang
-    document.querySelector(`#mdg_${ma_danh_gia}`).addEventListener('submit', (event) => {
-        event.preventDefault();
-    })
-
-
     //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
     //Form đó đã có noiDung
     const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
-    formDanhGiaSanPham.append("maDanhGia", ma_danh_gia);
-
-
 
     //Gửi dữ liệu vào request
     try {
-        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`, formDanhGiaSanPham, { params: { maSanPham: maSanPham } });
+        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit?maDanhGia=${ma_danh_gia}&maSanPham=${maSanPham}`);
         formDOM.style.display = 'none';
         thongBao(`Gửi phản hồi cho đánh giá số  ${ma_danh_gia} thành công`);
     } catch (error) {

@@ -71,7 +71,7 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         return between(noiDung,2,255);
     }
 
-    @Action(value = "/api/v1/phanhoi/sanpham/submit/*", params = { "maSanPham", "{1}" }, results = {
+    @Action(value = "/api/v1/phanhoi/sanpham/submit", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
@@ -79,6 +79,9 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
 
     //Action thêm đánh giá sản phẩm
     public String danhGiaSPSubmit() throws IOException {
+        System.out.println("Mã Đánh Giá" + maDanhGia);
+        System.out.println("Mã Sản Phẩm " + maSanPham);
+        System.out.println("Nội dung" + noiDung);
         if (!isValid()) {
             return CustomError.createCustomError("Nội dung phải từ 2 đến 255 kí tự", 400, response);
         }
