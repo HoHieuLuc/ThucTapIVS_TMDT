@@ -180,14 +180,10 @@ const phanHoiDanhGiaSP = async (ma_danh_gia) => {
     const noiDung = formDanhGiaSanPham.get("noiDung");
 
     //Gửi dữ liệu vào request
-    var params = new URLSearchParams();
-    params.append("noiDung", noiDung);
-    params.append("maDanhGia", ma_danh_gia);
-    var request = {
-        params: params
-    };
     try {
-        await axios.get(`${baseURL}api/v1/phanhoi/sanpham/submit`,request);
+        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`,null,{
+            params: {noiDung: noiDung,maDanhGia:ma_danh_gia}
+        });
         formDOM.style.display = 'none';
         thongBao(`Gửi phản hồi cho đánh giá số  ${ma_danh_gia} thành công`);
     } catch (error) {
