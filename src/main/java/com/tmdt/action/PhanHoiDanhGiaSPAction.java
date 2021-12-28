@@ -20,18 +20,10 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.PhanHoiDanhGiaSPMapper;
 
 public class PhanHoiDanhGiaSPAction extends ActionSupport {
-    private String maSanPham;
     private int maDanhGia;
     private String noiDung;
 
     // Begin region setter getttẻr
-    public String getMaSanPham() {
-        return maSanPham;
-    }
-
-    public void setMaSanPham(String maSanPham) {
-        this.maSanPham = maSanPham;
-    }
 
     public int getMaDanhGia() {
         return maDanhGia;
@@ -80,7 +72,6 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
     //Action thêm đánh giá sản phẩm
     public String danhGiaSPSubmit() throws IOException {
         System.out.println("Mã Đánh Giá" + maDanhGia);
-        System.out.println("Mã Sản Phẩm " + maSanPham);
         System.out.println("Nội dung" + noiDung);
         if (!isValid()) {
             return CustomError.createCustomError("Nội dung phải từ 2 đến 255 kí tự", 400, response);
