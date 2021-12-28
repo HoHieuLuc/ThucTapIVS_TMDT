@@ -115,15 +115,9 @@ const showDanhGiaSPs = async () => {
                         ${so_sao_html}
                         <p>${noi_dung}</p>
 
+                       
+                        ${buildFormPhanHoi(ma_danh_gia)}
 
-                        <button class="btn btn-link" onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'block';">Phản hồi</button>
-                        
-                        <form style="display: none;" id="mdg_${ma_danh_gia}">
-                            <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
-                            <button type="button" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia});" value="Gửi"></button>
-                            <button type="button" class="btn btn-success float-right"
-                            onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Hủy </button>
-                        </form>
                     </div>
                 `;
             }).join('');
@@ -172,7 +166,23 @@ if (formDOM) {
         danhGiaCuaToi.style.display = 'block';
     });
 }
+//Button phản hồi và form phản hồi đánh gias ph
+const buildFormPhanHoi = (ma_danh_gia) => {
+    return `
+    <button class="btn btn-link" onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'block';">Phản hồi</button>
+                        
+    <form style="display: none;" id="mdg_${ma_danh_gia}">
+        <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
+        <button type="button" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia});" value="Gửi"></button>
+        <button type="button" class="btn btn-success float-right"
+        onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Hủy </button>
+    </form>
+    `
+}
 
+
+
+//Gửi phản hồi đánh giá sp
 const phanHoiDanhGiaSP = async (ma_danh_gia) => {
     //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
     //Form đó đã có noiDung
@@ -181,8 +191,8 @@ const phanHoiDanhGiaSP = async (ma_danh_gia) => {
 
     //Gửi dữ liệu vào request
     try {
-        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`,formDanhGiaSanPham,{
-            params: {maDanhGia:ma_danh_gia}
+        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`, formDanhGiaSanPham, {
+            params: { maDanhGia: ma_danh_gia }
         });
         formDOM.style.display = 'none';
         thongBao(`Gửi phản hồi cho đánh giá số  ${ma_danh_gia} thành công`);
