@@ -173,14 +173,21 @@ if (formDOM) {
     });
 }
 
-const phanHoiDanhGiaSP = (ma_danh_gia) => {
+const phanHoiDanhGiaSP = async (ma_danh_gia) => {
     //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
     //Form đó đã có noiDung
     const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
     formDanhGiaSanPham.append("maDanhGia",ma_danh_gia);
-    //Test lấy dữ liệu form này thử
-    for (var value of formDanhGiaSanPham.values()) {
-        console.log(value);
-     }
-    console.log(ma_danh_gia);
+
+    //Gửi dữ liệu vào request
+    try {
+        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`, formDanhGiaSanPham, { params: { maSanPham: maSanPham } });
+        formDOM.style.display = 'none';
+        thongBao(`Gửi phản hồi cho đánh giá số  ${ma_danh_gia} thành công`);
+    } catch (error) {
+        thongBao(error.response.data.message, true);
+    }
+
+
+
 }
