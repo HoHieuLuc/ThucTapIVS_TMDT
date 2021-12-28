@@ -98,7 +98,7 @@ const showDanhGiaSPs = async () => {
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
-                const { ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
+                const { ma_danh_gia, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
                 //in ra icon ngôi sao đánh giá
                 let so_sao_html = '';
                 for (let i = 0; i < so_sao; i++) {
@@ -114,6 +114,16 @@ const showDanhGiaSPs = async () => {
                         <br>
                         ${so_sao_html}
                         <p>${noi_dung}</p>
+
+
+                        <button class="btn btn-link" onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'block';">Phản hồi</button>
+                        
+                        <form style="display: none;" id="mdg_${ma_danh_gia}">
+                            <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
+                            <button type="button" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia});" value="Gửi"></button>
+                            <button type="button" class="btn btn-success float-right"
+                            onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Hủy </button>
+                        </form>
                     </div>
                 `;
             }).join('');
@@ -161,4 +171,25 @@ if (formDOM) {
         formDOM.style.display = 'none';
         danhGiaCuaToi.style.display = 'block';
     });
+}
+
+const phanHoiDanhGiaSP = async (ma_danh_gia) => {
+    //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
+    //Form đó đã có noiDung
+    const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
+    const noiDung = formDanhGiaSanPham.get("noiDung");
+
+    //Gửi dữ liệu vào request
+    try {
+        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`,formDanhGiaSanPham,{
+            params: {maDanhGia:ma_danh_gia}
+        });
+        formDOM.style.display = 'none';
+        thongBao(`Gửi phản hồi cho đánh giá số  ${ma_danh_gia} thành công`);
+    } catch (error) {
+        thongBao(error.response.data.message, true);
+    }
+
+
+
 }
