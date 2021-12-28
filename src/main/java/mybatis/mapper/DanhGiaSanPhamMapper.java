@@ -23,7 +23,7 @@ public interface DanhGiaSanPhamMapper {
 	public List<Map<String, Object>> getAll(String maSanPham);
 
 	// Lấy tất cả đánh giá sản phẩm ngoại trừ đánh giá của người dùng
-	final String GET_ALL_DGSP_EXCEPT_OWN = "SELECT kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham, "
+	final String GET_ALL_DGSP_EXCEPT_OWN = "SELECT kh.ten, dgsp.ma_danh_gia ,dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham, "
 			+ "tk.username, tk.avatar " +
 			"FROM khach_hang kh INNER JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
 			"JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
