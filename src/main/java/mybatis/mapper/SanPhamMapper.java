@@ -16,7 +16,6 @@ public interface SanPhamMapper {
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "GROUP BY sp.ma_san_pham";
-
     @Select(GET_ALL_SANPHAM)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -43,10 +42,9 @@ public interface SanPhamMapper {
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
-            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " + 
+            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "WHERE sp.ma_san_pham = #{maSanPham} " +
             "GROUP BY sp.ma_san_pham ";
-
     @Select(SAN_PHAM_DETAIL)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -73,7 +71,6 @@ public interface SanPhamMapper {
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "WHERE sp.ma_khach_hang = #{maKhachHang} " +
             "GROUP BY sp.ma_san_pham";
-
     @Select(GET_SAN_PHAM_BY_MA_KH)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -102,7 +99,6 @@ public interface SanPhamMapper {
             "WHERE sp.ma_khach_hang = #{maKhachHang} " +
             "AND sp.ma_san_pham = #{maSanPham} " +
             "GROUP BY sp.ma_san_pham";
-
     @Select(GET_SAN_PHAM_BY_MA_KH_AND_MA_SP)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -127,17 +123,21 @@ public interface SanPhamMapper {
     final String ADD_SAN_PHAM = "INSERT INTO `san_pham`(`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) "
             +
             "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, #{maLoaiSanPham}, #{soLuong}, now(), #{soLuongDaBan})";
-
     @Insert(ADD_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maSanPham")
     public void insert(SanPham sanPham);
 
     // lấy id từ sản phẩm vừa tạo
-    final String GET_ID_SAN_PHAM = "SELECT ma_san_pham FROM san_pham " +
-            "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham} AND mo_ta = #{moTa} " +
-            "AND gia = #{gia} AND status = 0 AND ma_loai_san_pham = #{maLoaiSanPham} AND so_luong = #{soLuong} " +
-            " AND so_luong_da_ban = 0 LIMIT 1";
+    final String GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT ma_san_pham FROM san_pham " +
+            "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham}" +
+            "LIMIT 1";
+    @Select(GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
+    public String getIdSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang, @Param("tenSanPham") String tenSanPham);
 
-    @Select(GET_ID_SAN_PHAM)
-    public String getIdSanPham(SanPham sanPham);
+    // đếm sản phẩm từ mã khách hàng và tên sản phẩm
+    final String COUNT_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT COUNT(*) FROM san_pham " +
+            "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham}";
+    @Select(COUNT_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
+    public int countSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang, @Param("tenSanPham") String tenSanPham);
+    
 }

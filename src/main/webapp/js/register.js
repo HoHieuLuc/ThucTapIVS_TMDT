@@ -12,19 +12,11 @@ const retypePasswordErrorMessage = document.querySelector('#retype_password')
 const phoneErrorMessage = document.querySelector('#phone_error')
 
 const validateRegisterForm = async () => {
-    userNameErrorMessage.textContent = "";
-    passwordErrorMessage.textContent = "";
-    emailErrorMessage.textContent = "";
-    tenErrorMessage.textContent = "";
-    facebookErrorMessage.textContent = "";
-    twitterErrorMessage.textContent = "";
-    retypePasswordErrorMessage.textContent = "";
-    phoneErrorMessage.textContent = "";
     const formData = new FormData(formDOM);
     //Thực hiện request
     try {
         await axios.post(`./registerSubmit`, formData);
-        window.location.href = redirect;
+        window.location.href = decodeURIComponent(redirect);
     } catch (error) {
         const data = error.response.data;
         console.log(data);
