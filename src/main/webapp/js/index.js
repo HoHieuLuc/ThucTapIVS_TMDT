@@ -5,12 +5,13 @@ const currentURL = new URL(window.location);
 currentURL.searchParams.delete('redirect');
 
 if (loginLinkDOM) {
-    loginLinkDOM.href = `${baseURL}login?redirect=${currentURL}`;
-    registerLinkDOM.href = `${baseURL}register?redirect=${currentURL}`;
+    loginLinkDOM.href = `${baseURL}login?redirect=${encodeURIComponent(currentURL)}`;
+    registerLinkDOM.href = `${baseURL}register?redirect=${encodeURIComponent(currentURL)}`;
 }
 
 if(logOutLinkDOM){
-    logOutLinkDOM.addEventListener('click', async () => {
+    logOutLinkDOM.addEventListener('click', async (event) => {
+        event.preventDefault();
         await axios.post(`${baseURL}logout`);
         location.reload();
     })
