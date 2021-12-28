@@ -2,3 +2,4 @@
 *.bak
 src/main/resources/SqlMapConfig.xml
 src/main/java/com/tmdt/utilities/ProjectPath.java
+src/main/webapp/images/*

@@ -1,4 +1,7 @@
 const formDOM = document.querySelector('#registerForm');
+const url = new URL(window.location);
+const redirect = url.searchParams.get('redirect');
+
 const userNameErrorMessage = document.querySelector('#username_error');
 const passwordErrorMessage = document.querySelector('#password_error');
 const emailErrorMessage = document.querySelector('#email_error');
@@ -21,7 +24,7 @@ const validateRegisterForm = async () => {
     //Thực hiện request
     try {
         await axios.post(`./registerSubmit`, formData);
-        window.location.href = "./";
+        window.location.href = redirect;
     } catch (error) {
         const data = error.response.data;
         console.log(data);

@@ -82,15 +82,15 @@
                     </c:otherwise>
                   </c:choose>
                   <li class="nav-item">
-                    <a class="nav-link" href='<c:url value="/logout"/>'>Đăng xuất</a>
+                    <a class="nav-link" id="logout" href=''>Đăng xuất</a>
                   </li>
                 </c:when>
                 <c:otherwise>
                   <li class="nav-item">
-                    <a class="nav-link" href='<c:url value="/login"/>'>Đăng nhập</a>
+                    <a class="nav-link" id="login" href=''>Đăng nhập</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href='<c:url value="/register"/>'>Đăng ký</a>
+                    <a class="nav-link" id="register" href=''>Đăng ký</a>
                   </li>
                 </c:otherwise>
               </c:choose>
