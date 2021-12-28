@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 27, 2021 at 12:10 PM
+-- Host: localhost
+-- Generation Time: Dec 28, 2021 at 09:22 AM
 -- Server version: 10.4.22-MariaDB
--- PHP Version: 8.0.13
+-- PHP Version: 8.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -172,8 +172,12 @@ INSERT INTO `danh_gia_san_pham` (`ma_danh_gia`, `ma_khach_hang`, `so_sao`, `noi_
 (19, 6, 1, 'jgkhgkshggag', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-25 06:26:37', '2021-12-27 11:22:47'),
 (20, 19, 4, 'gsgsgdadfafaf', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-26 10:10:29', '2021-12-26 06:28:30'),
 (21, 18, 5, '4214', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-27 03:08:41', '2021-12-27 03:08:41'),
-(22, 1, 5, 'nice214412412412412412', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-27 06:16:39', '2021-12-27 14:39:31'),
-(23, 1, 1, '9999999999999', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-27 14:32:18', '2021-12-27 14:33:16');
+(22, 1, 5, '1234', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-27 06:16:39', '2021-12-28 08:26:34'),
+(23, 1, 1, '9999999999999', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-27 14:32:18', '2021-12-27 14:33:16'),
+(24, 1, 1, '41242w112212', 'test', '2021-12-28 08:05:52', '2021-12-28 08:05:52'),
+(25, 1, 5, 'aa', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-28 08:13:54', '2021-12-28 08:14:04'),
+(26, 1, 1, '412412', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-28 09:53:24', '2021-12-28 10:53:13'),
+(27, 1, 1, '4214', 'e4f55954-652b-11ec-b702-7845f2f0d96e', '2021-12-28 12:11:30', '2021-12-28 12:11:30');
 
 -- --------------------------------------------------------
 
@@ -296,6 +300,7 @@ INSERT INTO `nhan_vien` (`ma_nhan_vien`, `ten_nhan_vien`, `ma_chuc_vu`, `id_tai_
 --
 
 CREATE TABLE `phan_hoi_danh_gia_kh` (
+  `ma_phan_hoi` int(11) NOT NULL,
   `ma_danh_gia` int(11) NOT NULL,
   `noi_dung` varchar(255) NOT NULL,
   `ma_khach_hang` int(11) NOT NULL,
@@ -310,12 +315,21 @@ CREATE TABLE `phan_hoi_danh_gia_kh` (
 --
 
 CREATE TABLE `phan_hoi_danh_gia_sp` (
+  `ma_phan_hoi` int(11) NOT NULL,
   `ma_danh_gia` int(11) NOT NULL,
   `noi_dung` varchar(255) NOT NULL,
   `ma_khach_hang` int(11) NOT NULL,
   `ngay_tao` datetime NOT NULL,
   `ngay_sua` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Phản hồi đánh giá sản phẩm';
+
+--
+-- Dumping data for table `phan_hoi_danh_gia_sp`
+--
+
+INSERT INTO `phan_hoi_danh_gia_sp` (`ma_phan_hoi`, `ma_danh_gia`, `noi_dung`, `ma_khach_hang`, `ngay_tao`, `ngay_sua`) VALUES
+(1, 16, '9999999999999999', 1, '2021-12-28 15:20:22', NULL),
+(2, 16, '11111111111111111111111', 1, '2021-12-28 15:20:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -562,15 +576,17 @@ ALTER TABLE `nhan_vien`
 -- Indexes for table `phan_hoi_danh_gia_kh`
 --
 ALTER TABLE `phan_hoi_danh_gia_kh`
-  ADD PRIMARY KEY (`ma_danh_gia`),
-  ADD KEY `phdgkh_fk_1` (`ma_khach_hang`);
+  ADD PRIMARY KEY (`ma_phan_hoi`),
+  ADD KEY `phdgkh_fk_1` (`ma_khach_hang`),
+  ADD KEY `phdgkh_fk_3` (`ma_danh_gia`);
 
 --
 -- Indexes for table `phan_hoi_danh_gia_sp`
 --
 ALTER TABLE `phan_hoi_danh_gia_sp`
-  ADD PRIMARY KEY (`ma_danh_gia`),
-  ADD KEY `phdg_fk_1_idx` (`ma_khach_hang`);
+  ADD PRIMARY KEY (`ma_phan_hoi`),
+  ADD KEY `phdg_fk_1_idx` (`ma_khach_hang`),
+  ADD KEY `phdg_fk_2` (`ma_danh_gia`);
 
 --
 -- Indexes for table `quyen`
@@ -650,7 +666,7 @@ ALTER TABLE `danh_gia_khach_hang`
 -- AUTO_INCREMENT for table `danh_gia_san_pham`
 --
 ALTER TABLE `danh_gia_san_pham`
-  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `dat_hang`
@@ -675,6 +691,18 @@ ALTER TABLE `loai_san_pham`
 --
 ALTER TABLE `log`
   MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `phan_hoi_danh_gia_kh`
+--
+ALTER TABLE `phan_hoi_danh_gia_kh`
+  MODIFY `ma_phan_hoi` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `phan_hoi_danh_gia_sp`
+--
+ALTER TABLE `phan_hoi_danh_gia_sp`
+  MODIFY `ma_phan_hoi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tai_khoan`
@@ -763,13 +791,15 @@ ALTER TABLE `nhan_vien`
 --
 ALTER TABLE `phan_hoi_danh_gia_kh`
   ADD CONSTRAINT `phdgkh_fk_1` FOREIGN KEY (`ma_khach_hang`) REFERENCES `khach_hang` (`ma_khach_hang`) ON DELETE CASCADE,
-  ADD CONSTRAINT `phdgkh_fk_2` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_khach_hang` (`ma_danh_gia`) ON DELETE CASCADE;
+  ADD CONSTRAINT `phdgkh_fk_2` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_khach_hang` (`ma_danh_gia`) ON DELETE CASCADE,
+  ADD CONSTRAINT `phdgkh_fk_3` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_khach_hang` (`ma_danh_gia`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `phan_hoi_danh_gia_sp`
 --
 ALTER TABLE `phan_hoi_danh_gia_sp`
   ADD CONSTRAINT `phdg_fk_1` FOREIGN KEY (`ma_khach_hang`) REFERENCES `khach_hang` (`ma_khach_hang`) ON DELETE CASCADE,
+  ADD CONSTRAINT `phdg_fk_2` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_san_pham` (`ma_danh_gia`) ON DELETE CASCADE,
   ADD CONSTRAINT `phdg_fk_3` FOREIGN KEY (`ma_danh_gia`) REFERENCES `danh_gia_san_pham` (`ma_danh_gia`) ON DELETE CASCADE;
 
 --

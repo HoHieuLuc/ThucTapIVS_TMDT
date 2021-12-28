@@ -181,8 +181,8 @@ const phanHoiDanhGiaSP = async (ma_danh_gia) => {
 
     //Gửi dữ liệu vào request
     try {
-        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`,null,{
-            params: {noiDung: noiDung,maDanhGia:ma_danh_gia}
+        await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`,formDanhGiaSanPham,{
+            params: {maDanhGia:ma_danh_gia}
         });
         formDOM.style.display = 'none';
         thongBao(`Gửi phản hồi cho đánh giá số  ${ma_danh_gia} thành công`);

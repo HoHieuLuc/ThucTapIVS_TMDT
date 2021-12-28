@@ -80,7 +80,11 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         PhanHoiDanhGiaSPMapper phanHoiDanhGiaSanPham = sqlSession.getMapper(PhanHoiDanhGiaSPMapper.class);
 
         phanHoiDanhGiaSanPham.themPhanHoiDanhGiaSP(maDanhGia, noiDung, maKhachHang);
+        sqlSession.commit();
+        sqlSession.close();
         return SUCCESS;
+    
+        
 
     }
 }
