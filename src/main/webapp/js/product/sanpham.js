@@ -98,7 +98,7 @@ const showDanhGiaSPs = async () => {
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
-                const { ngay_tao, ngay_sua, ma_danh_gia, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
+                const { ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
                 //in ra icon ngôi sao đánh giá
                 let so_sao_html = '';
                 for (let i = 0; i < so_sao; i++) {
@@ -114,7 +114,6 @@ const showDanhGiaSPs = async () => {
                         <br>
                         ${so_sao_html}
                         <p>${noi_dung}</p>
-                        <button class="btn btn-link" onclick="phanHoiDanhGiaSP(${ma_danh_gia})">Phản hồi</button>
                     </div>
                 `;
             }).join('');
@@ -140,29 +139,10 @@ const suaDanhGiaSP = () => {
     danhGiaBtnDOM.value = "Cập nhật";
 }
 
-// Phản hồi đánh giá sản phẩm
-const phanHoiDanhGiaSP = () => {
-    document.querySelector('#danhGiaCuaToi').style.display = 'none';
-    formDOM.style.display = 'block';
-    // formDOM.setAttribute('maDanhGia', ma_danh_gia);
-    huyDanhGiaBtnDOM.style.display = 'block';
-    document.querySelector('#noiDung').focus();
-    danhGiaBtnDOM.value = "Phản hồi";
-}
-
-
 const submitDanhGiaSP = async () => {
     const formData = new FormData(formDOM);
-    // Phân biệt request link giữa đánh giá sản phẩm và phản hồi đánh giá sản phẩm
-    var requestLink = null;
-    if (danhGiaBtnDOM.value != "Phản hồi")  requestLink = `${baseURL}api/v1/danhgia/sanpham/submit`;
-        else {
-            formData.delete("soSao");
-            requestLink = `${baseURL}api/v1/phanhoi/sanpham/submit`;
-        }
-    
     try {
-        await axios.post(requestLink, formData, { params: { maSanPham: maSanPham } });
+        await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
         formDOM.style.display = 'none';
         showSanPhamDetail();
         showDanhGiaSPs();
