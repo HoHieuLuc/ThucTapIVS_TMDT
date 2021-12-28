@@ -44,12 +44,15 @@ const buildInlineGallery = (images) => lightGallery($anhSanPhamDOM, {
     download: false,
 });
 
-const showSanPhamDetail = async () => {
+const showSanPhamDetail = async (skip) => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         const { tenSanPham, tenKhachHang, moTa, gia, anhSanPhams, xepHang, avatar, username } = sanpham;
-        tenSanPhamDOM.innerHTML = tenSanPham;
         danhGiaDOM.innerHTML = xepHang ?? "Chưa có đánh giá";
+        if(skip){
+            return;
+        }
+        tenSanPhamDOM.innerHTML = tenSanPham;
         moTaSanPhamDOM.innerHTML = moTa;
         giaDOM.innerHTML = gia;
         nguoiDangSanPham.innerHTML = tenKhachHang;
@@ -148,7 +151,7 @@ const submitDanhGiaSP = async () => {
     try {
         await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
         formDOM.style.display = 'none';
-        showSanPhamDetail();
+        showSanPhamDetail(true);
         showDanhGiaSPs();
         thongBao("Gửi đánh giá thành công");
     } catch (error) {
@@ -187,7 +190,6 @@ const phanHoiDanhGiaSP = async (ma_danh_gia) => {
     //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
     //Form đó đã có noiDung
     const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
-    const noiDung = formDanhGiaSanPham.get("noiDung");
 
     //Gửi dữ liệu vào request
     try {
@@ -195,11 +197,8 @@ const phanHoiDanhGiaSP = async (ma_danh_gia) => {
             params: { maDanhGia: ma_danh_gia }
         });
         formDOM.style.display = 'none';
-        thongBao(`Gửi phản hồi cho đánh giá số  ${ma_danh_gia} thành công`);
+        thongBao(`Gửi phản hồi cho đánh giá số ${ma_danh_gia} thành công`);
     } catch (error) {
         thongBao(error.response.data.message, true);
     }
-
-
-
 }
