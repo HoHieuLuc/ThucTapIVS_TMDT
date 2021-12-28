@@ -1,6 +1,7 @@
 package com.tmdt.action;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,7 +83,6 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         sqlSession.commit();
         sqlSession.close();
         return SUCCESS;
-
     }
 
     //Get phản hồi đánh giá sản phẩm
