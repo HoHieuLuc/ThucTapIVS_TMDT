@@ -98,7 +98,7 @@ const showDanhGiaSPs = async () => {
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
-                const { ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
+                const { ngay_tao, ngay_sua, ma_danh_gia, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
                 //in ra icon ngôi sao đánh giá
                 let so_sao_html = '';
                 for (let i = 0; i < so_sao; i++) {
@@ -114,7 +114,7 @@ const showDanhGiaSPs = async () => {
                         <br>
                         ${so_sao_html}
                         <p>${noi_dung}</p>
-                        <button class="btn btn-link" onclick="phanHoiDanhGiaSP()">Phản hồi</button>
+                        <button class="btn btn-link" onclick="phanHoiDanhGiaSP(${ma_danh_gia})">Phản hồi</button>
                     </div>
                 `;
             }).join('');
@@ -144,6 +144,7 @@ const suaDanhGiaSP = () => {
 const phanHoiDanhGiaSP = () => {
     document.querySelector('#danhGiaCuaToi').style.display = 'none';
     formDOM.style.display = 'block';
+    // formDOM.setAttribute('maDanhGia', ma_danh_gia);
     huyDanhGiaBtnDOM.style.display = 'block';
     document.querySelector('#noiDung').focus();
     danhGiaBtnDOM.value = "Phản hồi";
