@@ -174,7 +174,13 @@ if (formDOM) {
 }
 
 const phanHoiDanhGiaSP = (ma_danh_gia) => {
-    console.log("Gủi đánh giá sản phẩm");
+    //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
+    //Form đó đã có noiDung
+    const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
+    formDanhGiaSanPham.append("maDanhGia",ma_danh_gia);
+    //Test lấy dữ liệu form này thử
+    for (var value of formDanhGiaSanPham.values()) {
+        console.log(value);
+     }
     console.log(ma_danh_gia);
-
 }
