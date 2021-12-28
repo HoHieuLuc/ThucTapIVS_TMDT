@@ -155,7 +155,10 @@ const submitDanhGiaSP = async () => {
     // Phân biệt request link giữa đánh giá sản phẩm và phản hồi đánh giá sản phẩm
     var requestLink = null;
     if (danhGiaBtnDOM.value != "Phản hồi")  requestLink = `${baseURL}api/v1/danhgia/sanpham/submit`;
-        else requestLink = `${baseURL}api/v1/phanhoi/sanpham/submit`;
+        else {
+            formData.delete("soSao");
+            requestLink = `${baseURL}api/v1/phanhoi/sanpham/submit`;
+        }
     
     try {
         await axios.post(requestLink, formData, { params: { maSanPham: maSanPham } });
