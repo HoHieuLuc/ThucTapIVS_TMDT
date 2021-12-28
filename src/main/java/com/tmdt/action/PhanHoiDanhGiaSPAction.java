@@ -68,17 +68,19 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
 
     // Kiểm tra hợp lệ các trường nhập liệu
     public boolean isValid() {
-        return true;
+        return between(noiDung,2,255);
     }
 
-    @Action(value = "/api/v1/phanhoi/sanpham/submit", params = { "maSanPham", "{1}" }, results = {
+    @Action(value = "/api/v1/phanhoi/sanpham/submit/*", params = { "maSanPham", "{1}" }, results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
+
+    //Action thêm đánh giá sản phẩm
     public String danhGiaSPSubmit() throws IOException {
         if (!isValid()) {
-            return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response);
+            return CustomError.createCustomError("Nội dung phải từ 2 đến 255 kí tự", 400, response);
         }
         SqlSession sqlSession = sqlSessionFactory.openSession();
         PhanHoiDanhGiaSPMapper phanHoiDanhGiaSanPham = sqlSession.getMapper(PhanHoiDanhGiaSPMapper.class);
