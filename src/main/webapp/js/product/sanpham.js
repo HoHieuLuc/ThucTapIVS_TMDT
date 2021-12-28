@@ -117,10 +117,7 @@ const showDanhGiaSPs = async () => {
                         <br>
                         ${so_sao_html}
                         <p>${noi_dung}</p>
-
-                       
                         ${buildFormPhanHoi(ma_danh_gia)}
-
                     </div>
                 `;
             }).join('');

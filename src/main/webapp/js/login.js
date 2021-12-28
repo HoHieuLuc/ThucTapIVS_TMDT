@@ -1,4 +1,6 @@
 const formDOM = document.querySelector('#loginForm');
+const url = new URL(window.location);
+const redirect = url.searchParams.get('redirect');
 
 const loginErrorMessage = document.querySelector('#login_error');
 
@@ -7,7 +9,7 @@ const login = async () => {
     try {
         await axios.post(`./loginAction`, formData);
         console.log("Bạn đã đăng nhập thành công");
-        window.location.href = "./";
+        window.location.href = redirect;
     } catch (error) {
         loginErrorMessage.textContent = error.response.data.message;
     }

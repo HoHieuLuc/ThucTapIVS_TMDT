@@ -14,6 +14,14 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // route giao diện xem chi tiết sản phẩm
+    @Action(value = "/sanpham/*", results = {
+            @Result(name = SUCCESS, location = "/WEB-INF/jsp/product/index.jsp")
+    })
+    public String viewChiTietSanPham() {
+        return SUCCESS;
+    }
+
     /* route cho store */
     @Action(value = "/store/*", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/store/index.jsp")

@@ -58,7 +58,6 @@ public class LoginAction extends ActionSupport {
     })
     public String viewLogin() {
         return "success";
-
     }
 
     @Action(value = "/loginAction", results = {
