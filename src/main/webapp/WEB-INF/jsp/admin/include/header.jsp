@@ -48,7 +48,7 @@
 	  <li class="nav-item dropdown me-2">
           <a class="nav-link dropdown position-relative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="far fa-bell"></i> 
-			<span class="badge position-absolute top-20 start-100 translate-middle  rounded-pill bg-danger">
+			<span class="badge position-absolute top-20 start-100 translate-middle rounded-pill bg-danger">
 				10
 			</span>
           </a>
