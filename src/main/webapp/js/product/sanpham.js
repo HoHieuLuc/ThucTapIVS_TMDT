@@ -98,7 +98,7 @@ const showDanhGiaSPs = async () => {
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
-                const { ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
+                const { ma_danh_gia,ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaSP;
                 //in ra icon ngôi sao đánh giá
                 let so_sao_html = '';
                 for (let i = 0; i < so_sao; i++) {
@@ -114,6 +114,16 @@ const showDanhGiaSPs = async () => {
                         <br>
                         ${so_sao_html}
                         <p>${noi_dung}</p>
+
+
+                        <button class="btn btn-link" onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'block';">Phản hồi</button>
+                        
+                        <form style="display: none;" id="mdg_${ma_danh_gia}">
+                            <input type="text" class="form-control" placeholder="Nhập nội dung phản hồi">
+                            <button type="button" class="btn btn-success float-right">Phan hoi</button>
+                            <button type="button" class="btn btn-success float-right"
+                            onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Huy </button>
+                        </form>
                     </div>
                 `;
             }).join('');
