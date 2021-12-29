@@ -1,7 +1,6 @@
 package com.tmdt.action;
 
 import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,12 +83,11 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         return SUCCESS;
     }
 
-    //Get phản hồi đánh giá sản phẩm
-    
-    @Action(value = "/api/v1/phanhoi/{maDanhGia}",   
-         results = { 
-            @Result(name = SUCCESS, location = "/index.html")  
-        })
+    // Get phản hồi đánh giá sản phẩm
+
+    @Action(value = "/api/v1/phanhoi/{maDanhGia}", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
     public String getPhanHoiDGSP() throws IOException {
         System.out.println("maDanhGia la " + maDanhGia);
         SqlSession sqlSession = sqlSessionFactory.openSession();

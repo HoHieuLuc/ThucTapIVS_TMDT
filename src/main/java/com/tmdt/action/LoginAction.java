@@ -74,7 +74,7 @@ public class LoginAction extends ActionSupport {
 
         TaiKhoan account = taiKhoanMapper.getByUsername(username);
         if (account != null) {
-            // Kiểm tra mật khẩu và thời hạn tài khoản
+            // Kiểm tra mật khẩu
             if (BCrypt.checkpw(password, account.getPassword())) {
                 System.out.println("account: " + account.toString());
                 Map<String, Object> loginInfo;
@@ -91,7 +91,7 @@ public class LoginAction extends ActionSupport {
                     session.setAttribute("maNguoiDung", maNguoiDung); // nhân viên
                 }
                 System.out.println("loginInfo: " + loginInfo.toString());
-                
+
                 String ten = (String) loginInfo.get("ten");
                 int level = (int) loginInfo.get("level");
                 String avatar = (String) loginInfo.get("avatar");
@@ -126,6 +126,23 @@ public class LoginAction extends ActionSupport {
         session.removeAttribute("level");
         session.removeAttribute("avatar");
         return SUCCESS;
+    }
+
+    @Action(value = "/checkCustomer", results = {
+            @Result(name = "success", location = "/index.html")
+    })
+    public String checkCustomer() throws IOException {
+
+        // level xài Integer thay vì int vì int nó ko nhận null
+        // nên là nếu chưa đăng nhập thì tới đoạn này nó crash luôn
+        Integer level = (Integer) session.getAttribute("level");
+        System.out.println(level);
+        if (level != null && level == 0) {
+
+            return CustomError.createCustomError("", 200, response);
+        }
+        // Thông báo tài khoản không phải khách hàng
+        return CustomError.createCustomError("", 403, response);
     }
 
 }
