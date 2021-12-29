@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="/WEB-INF/jsp/user/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/user/include/header.jsp" />
 <div class="container">
     <div>
         <form id="search-form">
@@ -33,4 +33,4 @@
     document.getElementById('aside-san-pham').classList.add('active');
     document.getElementById('aside-kho-hang').classList.add('menu-is-opening', 'menu-open');
 </script>
-<jsp:include page="/WEB-INF/jsp/user/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/user/include/footer.jsp" />
