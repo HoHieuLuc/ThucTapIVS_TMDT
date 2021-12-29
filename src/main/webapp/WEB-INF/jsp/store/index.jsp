@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 
 
 
@@ -9,4 +9,4 @@ Nothing
 
 
 
-<jsp:include page="/WEB-INF/jsp/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/include/footer.jsp" />

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="./header.jsp" />
+<jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 
 <body>
     <div class="container">
@@ -98,6 +98,5 @@
         </form>
         <script src='<c:url value="/js/register.js"/>'></script>
     </div>
-   
 </body>
-<jsp:include page="./footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/include/footer.jsp" />
