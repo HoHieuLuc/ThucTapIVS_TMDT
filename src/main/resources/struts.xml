@@ -7,6 +7,9 @@
     <constant name="struts.multipart.saveDir" value="/tmp/struts.multipart.save" />
     <constant name="struts.multipart.maxSize" value="20971520" />
 
+    <constant name="struts.patternMatcher" value="regex" />
+    <constant name="struts.matcher.appendNamedParameters" value="true"/>   <!-- Required from 2.5.25+ -->
+
     <package name="default" extends="struts-default">
         <interceptors>    
             <interceptor name="AuthInterceptor" class="com.tmdt.interceptor.AuthInterceptor" />  

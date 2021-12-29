@@ -11,7 +11,7 @@ const twitterErrorMessage = document.querySelector('#twitter_error');
 const retypePasswordErrorMessage = document.querySelector('#retype_password')
 const phoneErrorMessage = document.querySelector('#phone_error')
 
-const validateRegisterForm = async () => {
+const register = async () => {
     const formData = new FormData(formDOM);
     //Thực hiện request
     try {
@@ -34,7 +34,7 @@ const validateRegisterForm = async () => {
 
 formDOM.addEventListener('submit', (event) => {
     event.preventDefault();
-    validateRegisterForm();
+    register();
 });
 
 

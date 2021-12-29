@@ -6,6 +6,15 @@ import org.apache.struts2.convention.annotation.*;
 
 public class GlobalAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
+    private String params;
+
+    public String getParams() {
+        return params;
+    }
+
+    public void setParams(String params) {
+        this.params = params;
+    }
 
     @Action(value = "/", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/index.jsp")
@@ -15,7 +24,7 @@ public class GlobalAction extends ActionSupport {
     }
 
     // route giao diện xem chi tiết sản phẩm
-    @Action(value = "/sanpham/*", results = {
+    @Action(value = "/sanpham/{params}", results = {
             @Result(name = SUCCESS, location = "/WEB-INF/jsp/product/index.jsp")
     })
     public String viewChiTietSanPham() {
@@ -23,7 +32,9 @@ public class GlobalAction extends ActionSupport {
     }
 
     /* route cho store */
-    @Action(value = "/store/*", results = {
+    // nếu để /store/{.*} hay /store/{[a-zA-Z0-9]+} hay đủ thứ loại regex
+    // thì nó vẫn báo cái warning khá là khó chịu, nên tạo 1 biến params nhét vô luôn
+    @Action(value = "/store/{params}", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/store/index.jsp")
     })
     public String storePage() {
@@ -56,7 +67,7 @@ public class GlobalAction extends ActionSupport {
     }
 
     // chi tiết 1 sản phẩm
-    @Action(value = "/user/sanpham/*", results = {
+    @Action(value = "/user/sanpham/{params}", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/user/pages/sanpham/detail.jsp")
     }, interceptorRefs = { @InterceptorRef("khachHangStack")
     })

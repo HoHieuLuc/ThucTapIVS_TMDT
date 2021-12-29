@@ -74,7 +74,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
     // get tất cả đánh giá sản phẩm bởi id sản phẩm
-    @Action(value = "/api/v1/danhgia/sanpham/*", params = { "maSanPham", "{1}" }, results = {
+    @Action(value = "/api/v1/danhgia/sanpham/{maSanPham}", results = {
             @Result(name = SUCCESS, location = "/index.html"),
     })
     public String getDanhGiaSP() throws IOException {
@@ -120,7 +120,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         return between(noiDung, 2, 1000) && soSao >= 1 && soSao <= 5;
     }
 
-    @Action(value = "/api/v1/danhgia/sanpham/submit", params = { "maSanPham", "{1}" }, results = {
+    @Action(value = "/api/v1/danhgia/sanpham/submit", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
