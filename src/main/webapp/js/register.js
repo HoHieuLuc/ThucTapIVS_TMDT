@@ -16,7 +16,7 @@ const validateRegisterForm = async () => {
     //Thực hiện request
     try {
         await axios.post(`./registerSubmit`, formData);
-        window.location.href = decodeURIComponent(redirect);
+        window.location.href = redirect !== null ? decodeURIComponent(redirect) : baseURL;
     } catch (error) {
         const data = error.response.data;
         console.log(data);

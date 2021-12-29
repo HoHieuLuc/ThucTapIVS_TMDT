@@ -9,7 +9,7 @@ const login = async () => {
     try {
         await axios.post(`./loginAction`, formData);
         console.log("Bạn đã đăng nhập thành công");
-        window.location.href = decodeURIComponent(redirect);
+        window.location.href = redirect !== null ? decodeURIComponent(redirect) : baseURL;
     } catch (error) {
         loginErrorMessage.textContent = error.response.data.message;
     }
