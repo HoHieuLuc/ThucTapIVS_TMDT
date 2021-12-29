@@ -49,7 +49,7 @@ const showSanPhamDetail = async (skip) => {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         const { tenSanPham, tenKhachHang, moTa, gia, anhSanPhams, xepHang, avatar, username } = sanpham;
         danhGiaDOM.innerHTML = xepHang ?? "Chưa có đánh giá";
-        if(skip){
+        if (skip) {
             return;
         }
         tenSanPhamDOM.innerHTML = tenSanPham;
@@ -80,7 +80,7 @@ const showDanhGiaSPs = async () => {
         let danhGiaSPsHTML = '';
         if (danhGiaCuaBan !== undefined) {
             formDOM.style.display = 'none';
-            const { so_phan_hoi,ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaCuaBan;
+            const { so_phan_hoi, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaCuaBan;
             document.querySelector('#noiDung').value = noi_dung;
             document.querySelector('#soSao').value = so_sao;
             //in ra icon ngôi sao đánh giá
@@ -88,6 +88,10 @@ const showDanhGiaSPs = async () => {
             for (let i = 0; i < so_sao; i++) {
                 so_sao_html += '<span>&#9733;</span>';
             }
+            //Nếu số phản hồi 0 thì không in ra
+            let phanHoiElement = '';
+            if (so_phan_hoi > 0) phanHoiElement = `<button class="btn btn-link" onclick="xemPhanHoi()">Xem ${so_phan_hoi} phản hồi </button>`;
+
             const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : '';
             danhGiaCuaBanHTML = `
                 <div class="comment mt-4 text-justify float-left" id="danhGiaCuaToi"> 
@@ -97,18 +101,20 @@ const showDanhGiaSPs = async () => {
                     ${so_sao_html}
                     <p>${noi_dung}</p>
                     <button class="btn btn-link" onclick="suaDanhGiaSP()">Sửa</button>
-                    <button class="btn btn-link" onclick="xemPhanHoi()">Xem ${so_phan_hoi} phản hồi </button>
+                    ${phanHoiElement}
                 </div>`;
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
-                const { ma_danh_gia, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar,so_phan_hoi } = danhGiaSP;
+                const { ma_danh_gia, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar, so_phan_hoi } = danhGiaSP;
                 //in ra icon ngôi sao đánh giá
                 let so_sao_html = '';
                 for (let i = 0; i < so_sao; i++) {
                     so_sao_html += '<span>&#9733;</span>';
                 }
-                
+                //Nếu số phản hồi 0 thì không in ra
+                let phanHoiElement = '';
+                if (so_phan_hoi > 0) phanHoiElement = `<button class="btn btn-link" onclick="xemPhanHoi()">Xem ${so_phan_hoi} phản hồi </button>`;
                 const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
                 return `
                     <div class="comment mt-4 text-justify float-left"> 
@@ -121,7 +127,7 @@ const showDanhGiaSPs = async () => {
                         <p>${noi_dung}</p>
 
                         ${buildFormPhanHoi(ma_danh_gia)}
-                        <button class="btn btn-link" onclick="xemPhanHoi()">Xem ${so_phan_hoi} phản hồi </button>
+                        ${phanHoiElement}
                     </div>
                 `;
             }).join('');
