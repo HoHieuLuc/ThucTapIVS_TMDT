@@ -80,7 +80,7 @@ const showDanhGiaSPs = async () => {
         let danhGiaSPsHTML = '';
         if (danhGiaCuaBan !== undefined) {
             formDOM.style.display = 'none';
-            const { ma_danh_gia, so_phan_hoi, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaCuaBan;
+            const { so_phan_hoi, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaCuaBan;
             document.querySelector('#noiDung').value = noi_dung;
             document.querySelector('#soSao').value = so_sao;
             //in ra icon ngôi sao đánh giá
@@ -112,13 +112,21 @@ const showDanhGiaSPs = async () => {
                 for (let i = 0; i < so_sao; i++) {
                     so_sao_html += '<span>&#9733;</span>';
                 }
-                //Nếu số phản hồi 0 thì không in ra
-                let phanHoiElement = '';
-                if (so_phan_hoi > 0) phanHoiElement = `<button class="btn btn-link" onclick="xemPhanHoi()">Xem ${so_phan_hoi} phản hồi </button>`;
+
 
                 // Kiểm tra nếu chưa đăng nhập, không hiện nút phản hồi
                 let formPhanHoiElement = ``;
-                if (ma_danh_gia != undefined) formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
+                let onClickElement =``;
+                if (ma_danh_gia != undefined){
+                    console.log("ở chỗ đánh giá của bạn có mã đánh giá là ",ma_danh_gia);
+                    formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
+                     onClickElement = `onclick="{()=>xemPhanHoi(${ma_danh_gia})}"`;
+                } 
+
+                //Nếu số phản hồi 0 thì không in ra
+                let phanHoiElement = '';
+                
+                if (so_phan_hoi > 0 && onClickElement != ``) phanHoiElement = `<button class="btn btn-link" ${onClickElement}>Xem ${so_phan_hoi} phản hồi </button>`;
 
                 const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
                 return `
