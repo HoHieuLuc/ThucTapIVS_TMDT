@@ -46,7 +46,9 @@ public class StoreAction extends ActionSupport {
     public String getStoreInfo() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
+        // lấy thông tin khách hàng
         Map<String, Object> storeInfo = khachHangMapper.getStoreInfoByUsername(username);
+        // lấy số lượng theo từng số sao trong đánh giá sản phẩm
         List<Map<Integer, Integer>> phanLoaiDanhGia = khachHangMapper.getProductRating(username);
         if (storeInfo.get("ten") == null) {
             return CustomError.createCustomError("Người bán hàng không tồn tại", 404, response);
