@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
 import java.util.Map;
 
 import com.tmdt.model.*;
@@ -21,9 +22,13 @@ public interface KhachHangMapper {
     @Select(GET_MA_KHACH_HANG)
     public int getMaKh(int id);
 
+    /* ============================ */
+    /* store */
+    /* ============================ */
     // lấy thông tin khách hàng cho trang store dựa vào username
     final String GET_STORE_INFO = "SELECT kh.ten, kh.dia_chi, kh.gioi_thieu, tk.email, tk.so_dien_thoai, " +
-            "tk.avatar, ttlh.twitter_link, ttlh.facebook_link, ttlh.personal_link, AVG(dgkh.so_sao) AS rating " +
+            "tk.avatar, ttlh.twitter_link, ttlh.facebook_link, ttlh.personal_link, " +
+            "COUNT(dgkh.ma_danh_gia) AS so_danh_gia, AVG(dgkh.so_sao) AS rating " +
             "FROM khach_hang kh " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "LEFT JOIN thong_tin_lien_he ttlh ON ttlh.ma_khach_hang = kh.ma_khach_hang " +
@@ -32,4 +37,16 @@ public interface KhachHangMapper {
 
     @Select(GET_STORE_INFO)
     public Map<String, Object> getStoreInfoByUsername(String username);
+
+    // lấy số sao đánh giá sản phẩm ứng với từng số sao
+    final String GET_PRODUCT_RATING = "SELECT dgsp.so_sao, COUNT(*) as so_luong " +
+            "FROM danh_gia_san_pham dgsp JOIN san_pham sp ON sp.ma_san_pham = dgsp.ma_san_pham " +
+            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
+            "WHERE tk.username = #{username} " +
+            "GROUP BY dgsp.so_sao " +
+            "ORDER BY dgsp.so_sao DESC";
+
+    @Select(GET_PRODUCT_RATING)
+    public List<Map<Integer, Integer>> getProductRating(String username);
 }
