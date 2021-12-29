@@ -62,6 +62,9 @@ public interface SanPhamMapper {
     })
     public Map<String, Object> getDetailSanPham(String maSanPham);
 
+    /* ===================================== */
+    /* dành cho trang cá nhân của khách hàng */
+    /* ===================================== */
     // Lấy danh sách sản phẩm theo mã khách hàng
     final String GET_SAN_PHAM_BY_MA_KH = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, sp.gia, sp.status, kh.ma_khach_hang, kh.ten, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
             +
@@ -127,14 +130,14 @@ public interface SanPhamMapper {
     @Options(useGeneratedKeys = true, keyProperty = "maSanPham")
     public void insert(SanPham sanPham);
 
-    // lấy id từ sản phẩm vừa tạo
+    // lấy id từ sản phẩm vừa tạo để insert ảnh sản phẩm
     final String GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT ma_san_pham FROM san_pham " +
             "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham}" +
             "LIMIT 1";
     @Select(GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
     public String getIdSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang, @Param("tenSanPham") String tenSanPham);
 
-    // đếm sản phẩm từ mã khách hàng và tên sản phẩm
+    // đếm sản phẩm từ mã khách hàng và tên sản phẩm để kiểm tra trùng
     final String COUNT_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT COUNT(*) FROM san_pham " +
             "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham}";
     @Select(COUNT_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
