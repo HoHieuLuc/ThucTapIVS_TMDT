@@ -166,7 +166,7 @@ public class SanPhamAction extends ActionSupport {
     }
 
     // Chi tiết sản phẩm
-    @Action(value = "/api/v1/sanpham/*", params = { "maSanPham", "{1}" }, results = {
+    @Action(value = "/api/v1/sanpham/{maSanPham}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String chiTietSanPhams() throws IOException {
@@ -190,7 +190,9 @@ public class SanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    /* ========================= */
     /* Các action cho khách hàng */
+    /* ========================= */
     // action lấy danh sách sản phẩm
     @Action(value = "/api/v1/user/sanpham", results = {
             @Result(name = SUCCESS, location = "/index.html")
@@ -208,7 +210,7 @@ public class SanPhamAction extends ActionSupport {
     }
 
     // action lấy chi tiết sản phẩm
-    @Action(value = "/api/v1/user/sanpham/*", params = { "maSanPham", "{1}" }, results = {
+    @Action(value = "/api/v1/user/sanpham/{maSanPham}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef("khachHangStack")
@@ -235,7 +237,6 @@ public class SanPhamAction extends ActionSupport {
             @InterceptorRef("khachHangStack")
     })
     public String createSanPham() throws IOException {
-        System.out.println("here");
         if (!isValid()) {
             return CustomError.createCustomError("Dữ liệu không hợp lệ", 400, response);
         }
