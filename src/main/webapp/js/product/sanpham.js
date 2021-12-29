@@ -90,7 +90,7 @@ const showDanhGiaSPs = async () => {
             }
             //Nếu số phản hồi 0 thì không in ra
             let phanHoiElement = '';
-            if (so_phan_hoi > 0) phanHoiElement = `<button class="btn btn-link" onclick="{xemPhanHoi(${ma_danh_gia})}>Xem ${so_phan_hoi} phản hồi </button>`;
+            if (so_phan_hoi > 0) phanHoiElement = `<button class="btn btn-link" onclick="{buildListPhanHoi(${ma_danh_gia})}>Xem ${so_phan_hoi} phản hồi </button>`;
 
             const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : '';
             danhGiaCuaBanHTML = `
@@ -120,7 +120,7 @@ const showDanhGiaSPs = async () => {
                 if (ma_danh_gia != undefined){
                     console.log("ở chỗ đánh giá của bạn có mã đánh giá là ",ma_danh_gia);
                     formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
-                     onClickElement = `onclick="{xemPhanHoi(${ma_danh_gia})}"`;
+                     onClickElement = `onclick="{buildListPhanHoi(${ma_danh_gia})}"`;
                 } 
 
                 //Nếu số phản hồi 0 thì không in ra
@@ -225,12 +225,22 @@ const phanHoiDanhGiaSP = async (ma_danh_gia) => {
 
 
 //Xem phản hồi theo mã đánh giá 
-const xemPhanHoi = async (ma_danh_gia) => {
+const buildListPhanHoi = async (ma_danh_gia) => {
     try {
         const { data: { phanHoiDGSPs } } = await axios.get(`${baseURL}api/v1/phanhoi/${ma_danh_gia}`);
         console.log(phanHoiDGSPs); 
+        //SELECT tk.avatar,tk.username,kh.ten, phdgsp.noi_dung, phdgsp.ngay_tao, phdgsp.ngay_sua
+        return `
+    <div class="comment mt-4 text-justify float-left"> 
+        <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
+        <h4>${ten}</h4><span>
+             ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+        </span>${lanSuaCuoi}
+        <br>
+        <p>${noi_dung}</p>
+    </div>
+    `
     }
     catch{
-
     }
 }
