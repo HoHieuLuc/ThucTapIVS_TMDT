@@ -71,16 +71,18 @@ const showSanPhamDetail = async (skip) => {
     }
 }
 //Check đã đăng nhập hay chưa 
-const loginCheck = async () => {
+var isLogin = false;
+const loginCheckFunction = async () => {
     try {
         await axios.get(`${baseURL}loginAction`);
-        return true;
+        isLogin = true;
     }
     catch (error){
         console.log(error.response.data.message);
-        return false;
+        isLogin = false;
     }
 }
+loginCheckFunction();
 
 
 
@@ -130,7 +132,7 @@ const showDanhGiaSPs = async () => {
                 let formPhanHoiElement = ``;
                 let onClickElement = ``;
                
-                if (loginCheck == true) {
+                if (ma_danh_gia != undefined && isLogin == true) {
                     console.log("ở chỗ đánh giá của bạn có mã đánh giá là ", ma_danh_gia);
                     formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
                     onClickElement = `onclick="{buildListPhanHoi(${ma_danh_gia})}"`;
