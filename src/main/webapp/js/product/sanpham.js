@@ -90,7 +90,7 @@ const showDanhGiaSPs = async () => {
             }
             //Nếu số phản hồi 0 thì không in ra
             let phanHoiElement = '';
-            if (so_phan_hoi > 0) phanHoiElement = `<button class="btn btn-link" onclick="xemPhanHoi()">Xem ${so_phan_hoi} phản hồi </button>`;
+            if (so_phan_hoi > 0) phanHoiElement = `<button class="btn btn-link" onclick="{()=>xemPhanHoi(${ma_danh_gia})}>Xem ${so_phan_hoi} phản hồi </button>`;
 
             const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : '';
             danhGiaCuaBanHTML = `
