@@ -74,7 +74,7 @@ public class LoginAction extends ActionSupport {
 
         TaiKhoan account = taiKhoanMapper.getByUsername(username);
         if (account != null) {
-            // Kiểm tra mật khẩu và thời hạn tài khoản
+            // Kiểm tra mật khẩu 
             if (BCrypt.checkpw(password, account.getPassword())) {
                 System.out.println("account: " + account.toString());
                 Map<String, Object> loginInfo;

@@ -116,6 +116,7 @@ const showDanhGiaSPs = async () => {
                 // Kiểm tra nếu chưa đăng nhập, không hiện nút phản hồi
                 let formPhanHoiElement = ``;
                 let onClickElement = ``;
+               
                 if (ma_danh_gia != undefined) {
                     console.log("ở chỗ đánh giá của bạn có mã đánh giá là ", ma_danh_gia);
                     formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
@@ -243,23 +244,27 @@ const buildListPhanHoi = async (ma_danh_gia) => {
             </div>
             `
         } )
-        
-
         document.querySelector(`#dsph${ma_danh_gia}`).innerHTML = allPhanHoiDGSPs;
-        // document.querySelector(`#dsph${ma_danh_gia}`).innerHTML = `
-        // <div class="comment mt-4 text-justify float-left"> 
-        //     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
-        //     <h4>${ten}</h4><span>
-        //         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
-        //     </span> ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p
-        //     <br>
-        //     <p>${noi_dung}</p>
-        // </div>
-        // `
     }
     catch (error) {
         console.log(error);
     }
    
+//Check đã đăng nhập hay chưa 
+const loginCheck = async () => {
+    try {
+        await axios.get(`${baseURL}loginAction`);
+        return true;
+    }
+    catch (error){
+        return false;
+    }
+}
+
+if (loginCheck == true) console.log("Đúng zồi, bạn có thể đánh giá và phản hồi");
+    else console.log("Bạn chưa đăng nhập");
+
+
+
 }
 

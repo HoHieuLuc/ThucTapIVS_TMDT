@@ -12,6 +12,7 @@ import java.util.Map;
 import com.tmdt.model.DanhGiaSanPham;
 
 public interface DanhGiaSanPhamMapper {
+
 	// Lấy tất cả đánh giá của sản phẩm, khi khách hàng chưa đăng nhập
 	final String GET_ALL_DANH_GIA_SAN_PHAM = "SELECT COUNT(phdgsp.ma_phan_hoi) as so_phan_hoi, kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, "
 	 + " dgsp.ngay_sua, dgsp.ma_san_pham, tk.username, tk.avatar " 
