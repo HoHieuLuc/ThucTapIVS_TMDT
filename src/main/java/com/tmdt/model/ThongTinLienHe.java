@@ -3,6 +3,14 @@ package com.tmdt.model;
 public class ThongTinLienHe {
     public int maKhachHang;
     public String twitterLink,facebookLink,personalLink;
+
+
+    public ThongTinLienHe(int maKhachHang, String twitterLink, String facebookLink, String personalLink) {
+        this.maKhachHang = maKhachHang;
+        this.twitterLink = twitterLink;
+        this.facebookLink = facebookLink;
+        this.personalLink = personalLink;
+    }
     public int getMaKhachHang() {
         return maKhachHang;
     }
