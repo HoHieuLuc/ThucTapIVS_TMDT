@@ -3,7 +3,6 @@ package com.tmdt.action;
 import java.io.IOException;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +86,7 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
 
     //Get phản hồi đánh giá sản phẩm
     
-    @Action(value = "/api/v1/phanhoi/*", params = { "maDanhGia", "{1}" },   
+    @Action(value = "/api/v1/phanhoi/{maDanhGia}",   
          results = { 
             @Result(name = SUCCESS, location = "/index.html")  
         })
