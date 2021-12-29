@@ -113,20 +113,21 @@ const showDanhGiaSPs = async () => {
                     so_sao_html += '<span>&#9733;</span>';
                 }
 
-
                 // Kiểm tra nếu chưa đăng nhập, không hiện nút phản hồi
                 let formPhanHoiElement = ``;
-                let onClickElement =``;
-                if (ma_danh_gia != undefined){
-                    console.log("ở chỗ đánh giá của bạn có mã đánh giá là ",ma_danh_gia);
+                let onClickElement = ``;
+                if (ma_danh_gia != undefined) {
+                    console.log("ở chỗ đánh giá của bạn có mã đánh giá là ", ma_danh_gia);
                     formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
-                     onClickElement = `onclick="{buildListPhanHoi(${ma_danh_gia})}"`;
-                } 
+                    onClickElement = `onclick="{buildListPhanHoi(${ma_danh_gia})}"`;
+                }
 
                 //Nếu số phản hồi 0 thì không in ra
                 let phanHoiElement = '';
-                
-                if (so_phan_hoi > 0 && onClickElement != ``) phanHoiElement = `<button class="btn btn-link" ${onClickElement}>Xem ${so_phan_hoi} phản hồi </button>`;
+
+
+
+                if (so_phan_hoi > 0 && onClickElement != ``) phanHoiElement = `<div class="btn btn-link" ${onClickElement}  id="dsph${ma_danh_gia}" >Xem ${so_phan_hoi} phản hồi </div>`;
 
                 const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
                 return `
@@ -223,24 +224,42 @@ const phanHoiDanhGiaSP = async (ma_danh_gia) => {
     }
 }
 
-
 //Xem phản hồi theo mã đánh giá 
 const buildListPhanHoi = async (ma_danh_gia) => {
     try {
         const { data: { phanHoiDGSPs } } = await axios.get(`${baseURL}api/v1/phanhoi/${ma_danh_gia}`);
-        console.log(phanHoiDGSPs); 
+        console.log(phanHoiDGSPs);
         //SELECT tk.avatar,tk.username,kh.ten, phdgsp.noi_dung, phdgsp.ngay_tao, phdgsp.ngay_sua
-        return `
-    <div class="comment mt-4 text-justify float-left"> 
-        <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
-        <h4>${ten}</h4><span>
-             ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
-        </span>${lanSuaCuoi}
-        <br>
-        <p>${noi_dung}</p>
-    </div>
-    `
+        const allPhanHoiDGSPs = phanHoiDGSPs.map((phanHoiDGSP) => {
+            const {avatar,ten,ngay_tao,ngay_sua,noi_dung} = phanHoiDGSP;
+            return `
+            <div class="comment mt-4 text-justify float-left"> 
+                <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
+                <h4>${ten}</h4><span>
+                    ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+                </span> ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p
+                <br>
+                <p>${noi_dung}</p>
+            </div>
+            `
+        } )
+        
+
+        document.querySelector(`#dsph${ma_danh_gia}`).innerHTML = allPhanHoiDGSPs;
+        // document.querySelector(`#dsph${ma_danh_gia}`).innerHTML = `
+        // <div class="comment mt-4 text-justify float-left"> 
+        //     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
+        //     <h4>${ten}</h4><span>
+        //         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+        //     </span> ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p
+        //     <br>
+        //     <p>${noi_dung}</p>
+        // </div>
+        // `
     }
-    catch{
+    catch (error) {
+        console.log(error);
     }
+   
 }
+
