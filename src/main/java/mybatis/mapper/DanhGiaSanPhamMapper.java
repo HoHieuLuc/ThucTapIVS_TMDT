@@ -14,7 +14,7 @@ import com.tmdt.model.DanhGiaSanPham;
 public interface DanhGiaSanPhamMapper {
 
 	// Lấy tất cả đánh giá của sản phẩm, khi khách hàng chưa đăng nhập
-	final String GET_ALL_DANH_GIA_SAN_PHAM = "SELECT COUNT(phdgsp.ma_phan_hoi) as so_phan_hoi, kh.ten, dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, "
+	final String GET_ALL_DANH_GIA_SAN_PHAM = "SELECT COUNT(phdgsp.ma_phan_hoi) as so_phan_hoi, kh.ten, dgsp.so_sao,dgsp.ma_danh_gia, dgsp.noi_dung, dgsp.ngay_tao, "
 	 + " dgsp.ngay_sua, dgsp.ma_san_pham, tk.username, tk.avatar " 
 	 +"FROM khach_hang kh LEFT JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan "
 	 + "LEFT JOIN phan_hoi_danh_gia_sp phdgsp ON phdgsp.ma_danh_gia = dgsp.ma_danh_gia WHERE dgsp.ma_san_pham = #{maSanPham} "
@@ -67,6 +67,8 @@ public interface DanhGiaSanPhamMapper {
 	public void updateDanhGiaSp(@Param("maSanPham") String maSanPham, @Param("maKhachHang") int maKhachHang,
 			@Param("noiDung") String noiDung, @Param("soSao") int soSao);
 
+		
+	//Khi chưa đăng nhập, ta lấy mã đánh giá 
 	
 
 }

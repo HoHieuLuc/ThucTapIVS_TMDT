@@ -70,6 +70,19 @@ const showSanPhamDetail = async (skip) => {
         thongBao(error.response.data.message, true);
     }
 }
+//Check đã đăng nhập hay chưa 
+const loginCheck = async () => {
+    try {
+        await axios.get(`${baseURL}loginAction`);
+        return true;
+    }
+    catch (error){
+        console.log(error.response.data.message);
+        return false;
+    }
+}
+
+
 
 /* hiện danh sách đánh giá */
 const showDanhGiaSPs = async () => {
@@ -117,7 +130,7 @@ const showDanhGiaSPs = async () => {
                 let formPhanHoiElement = ``;
                 let onClickElement = ``;
                
-                if (ma_danh_gia != undefined) {
+                if (loginCheck == true) {
                     console.log("ở chỗ đánh giá của bạn có mã đánh giá là ", ma_danh_gia);
                     formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
                     onClickElement = `onclick="{buildListPhanHoi(${ma_danh_gia})}"`;
@@ -250,19 +263,7 @@ const buildListPhanHoi = async (ma_danh_gia) => {
         console.log(error);
     }
    
-//Check đã đăng nhập hay chưa 
-const loginCheck = async () => {
-    try {
-        await axios.get(`${baseURL}loginAction`);
-        return true;
-    }
-    catch (error){
-        return false;
-    }
-}
 
-if (loginCheck == true) console.log("Đúng zồi, bạn có thể đánh giá và phản hồi");
-    else console.log("Bạn chưa đăng nhập");
 
 
 
