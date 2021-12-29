@@ -1,16 +1,25 @@
 package com.tmdt.action;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
+import com.tmdt.errors.CustomError;
+import com.tmdt.utilities.JsonResponse;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
+
+import mybatis.mapper.KhachHangMapper;
 
 public class StoreAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
@@ -30,13 +39,23 @@ public class StoreAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
+    // lấy thông tin store
     @Action(value = "/api/v1/store/{username}/info", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
-    public String storeInfo() {
-        System.out.println("here");
+    public String getStoreInfo() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        System.out.println("username: " + username);
-        return SUCCESS;
+        KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
+        // lấy thông tin khách hàng
+        Map<String, Object> storeInfo = khachHangMapper.getStoreInfoByUsername(username);
+        // lấy số lượng theo từng số sao trong đánh giá sản phẩm
+        List<Map<Integer, Integer>> phanLoaiDanhGia = khachHangMapper.getProductRating(username);
+        if (storeInfo.get("ten") == null) {
+            return CustomError.createCustomError("Người bán hàng không tồn tại", 404, response);
+        }
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("store_info", storeInfo);
+        jsonRes.put("product_rating", phanLoaiDanhGia);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }

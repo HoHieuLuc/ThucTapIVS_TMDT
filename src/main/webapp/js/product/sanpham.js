@@ -11,15 +11,15 @@ const tenSanPhamDOM = document.querySelector('#tenSanPham');
 const danhGiaDOM = document.querySelector('#danhGia');
 const moTaSanPhamDOM = document.querySelector('#moTaSanPham');
 const giaDOM = document.querySelector('#gia');
-const $anhSanPhamDOM = document.querySelector('#anhSanPham');
+const anhSanPhamDOM = document.querySelector('#anhSanPham');
 
 //Các biến của đánh giá sản phẩm
 const danhGiaSPListDom = document.querySelector('#danhGiaSPListDom');
 const errorMsg = document.querySelector('#errorMsg');
 
 // inline gallery
-const buildInlineGallery = (images) => lightGallery($anhSanPhamDOM, {
-    container: $anhSanPhamDOM,
+const buildInlineGallery = (images) => lightGallery(anhSanPhamDOM, {
+    container: anhSanPhamDOM,
     dynamic: true,
     // Turn off hash plugin in case if you are using it
     // as we don't want to change the url on slide change
