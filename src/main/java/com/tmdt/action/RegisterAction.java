@@ -255,13 +255,22 @@ public class RegisterAction extends ActionSupport {
                         gioiThieu);
                 khachHangMapper.insert(khachHang);
 
-                // Flush database connection, batch script and close connection
-                sqlSession.commit();
+            
 
                 Map<String, Object> loginInfo = taiKhoanMapper.getKhLoginInfoByUsername(username);
                 System.out.println(loginInfo);
 
                 int maKhachHang = (int) loginInfo.get("maNguoiDung");
+
+                //Có mã khách hàng, tiến hành tạo thông tin liên hệ
+                ThongTinLienHeMapper thongTinLienHeMapper =sqlSession.getMapper(ThongTinLienHeMapper.class);
+                ThongTinLienHe thongTinLienHe = new ThongTinLienHe(maKhachHang,trangCaNhan,twitterLink,facebookLink);
+                thongTinLienHeMapper.insert(thongTinLienHe);
+
+                    // Flush database connection, batch script and close connection
+                    sqlSession.commit();
+
+
                 String avatar = (String) loginInfo.get("avatar");
                 //
                 String filePath = session.getServletContext().getRealPath("/") + "images\\user\\";
