@@ -30,13 +30,13 @@ public class StoreAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
+    // lấy thông tin store
     @Action(value = "/api/v1/store/{username}/info", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
-    public String storeInfo() {
-        System.out.println("here");
+    public String getStoreInfo() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        System.out.println("username: " + username);
+        
         return SUCCESS;
     }
 }
