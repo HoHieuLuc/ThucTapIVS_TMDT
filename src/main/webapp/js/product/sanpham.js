@@ -132,15 +132,17 @@ const showDanhGiaSPs = async () => {
                 let formPhanHoiElement = ``;
                 let onClickElement = ``;
                
+                //Chỉ khi đăng  nhập rồi thì mới hiện for
                 if (ma_danh_gia != undefined && isLogin == true) {
                     console.log("ở chỗ đánh giá của bạn có mã đánh giá là ", ma_danh_gia);
                     formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
-                    onClickElement = `onclick="{buildListPhanHoi(${ma_danh_gia})}"`;
+                   
                 }
 
                 //Nếu số phản hồi 0 thì không in ra
                 let phanHoiElement = '';
-
+                //Tạo nút xem danh sách phản hồi
+                onClickElement = `onclick="{buildListPhanHoi(${ma_danh_gia})}"`;
 
 
                 if (so_phan_hoi > 0 && onClickElement != ``) phanHoiElement = `<div class="btn btn-link" ${onClickElement}  id="dsph${ma_danh_gia}" >Xem ${so_phan_hoi} phản hồi </div>`;
