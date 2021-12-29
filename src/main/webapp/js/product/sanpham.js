@@ -278,6 +278,4 @@ const buildListPhanHoi = async (ma_danh_gia) => {
     catch (error) {
         console.log(error);
     }
-
-
 }
