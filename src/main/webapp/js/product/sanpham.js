@@ -71,31 +71,33 @@ const showSanPhamDetail = async (skip) => {
     }
 }
 //Check đã đăng nhập hay chưa 
-var isLogin = false;
 const loginCheckFunction = async () => {
     try {
-        await axios.get(`${baseURL}loginAction`);
-        isLogin = true;
+        await axios.get(`${baseURL}checkCustomer`);
+        return true;
     }
     catch (error){
         console.log(error.response.data.message);
-        isLogin = false;
+        return false;
     }
 }
-loginCheckFunction();
+  
+
 
 
 
 /* hiện danh sách đánh giá */
 const showDanhGiaSPs = async () => {
     try {
+        //Bieens isLogin
+        const isLogin = await loginCheckFunction();
         const { data: { danhGiaSPs, danhGiaCuaBan } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/${maSanPham}`);
 
         let danhGiaCuaBanHTML = '';
         let danhGiaSPsHTML = '';
         if (danhGiaCuaBan !== undefined) {
             formDOM.style.display = 'none';
-            const { so_phan_hoi, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaCuaBan;
+            const { ma_danh_gia,so_phan_hoi, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaCuaBan;
             document.querySelector('#noiDung').value = noi_dung;
             document.querySelector('#soSao').value = so_sao;
             //in ra icon ngôi sao đánh giá
@@ -131,13 +133,17 @@ const showDanhGiaSPs = async () => {
                 // Kiểm tra nếu chưa đăng nhập, không hiện nút phản hồi
                 let formPhanHoiElement = ``;
                 let onClickElement = ``;
-               
+
+              
+
                 //Chỉ khi đăng  nhập rồi thì mới hiện for
-                if (ma_danh_gia != undefined && isLogin == true) {
+                if (ma_danh_gia != undefined) {
                     console.log("ở chỗ đánh giá của bạn có mã đánh giá là ", ma_danh_gia);
-                    formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia)}`;
+                    
+                    formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia,isLogin)}`;
                    
                 }
+                
 
                 //Nếu số phản hồi 0 thì không in ra
                 let phanHoiElement = '';
@@ -170,6 +176,7 @@ const showDanhGiaSPs = async () => {
             danhGiaSPListDom.innerHTML = `<h4>Sản phẩm này chưa có đánh giá</h4>`;
         }
     } catch (error) {
+        console.log(error);
         thongBao(error.response.data.message, true);
     }
 }
@@ -209,17 +216,22 @@ if (formDOM) {
     });
 }
 //Button phản hồi và form phản hồi đánh gias ph
-const buildFormPhanHoi = (ma_danh_gia) => {
-    return `
-    <button class="btn btn-link" onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'block';">Phản hồi</button>
-                        
-    <form style="display: none;" id="mdg_${ma_danh_gia}">
-        <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
-        <button type="button" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia});" value="Gửi"></button>
-        <button type="button" class="btn btn-success float-right"
-        onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Hủy </button>
-    </form>
-    `
+const buildFormPhanHoi = (ma_danh_gia,isLogin) => {
+   
+    if (isLogin == true)
+        return `
+        <button class="btn btn-link" onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'block';">Phản hồi</button>
+                            
+        <form style="display: none;" id="mdg_${ma_danh_gia}">
+            <input type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi">
+            <button type="button" class="btn btn-success float-right" onclick="phanHoiDanhGiaSP(${ma_danh_gia});" >Gửi phản hồi</button>
+            <button type="button" class="btn btn-success float-right"
+            onclick="document.querySelector('#mdg_${ma_danh_gia}').style.display = 'none';"> Hủy </button>
+        </form>
+        `
+    else {
+        return ``
+    }
 }
 
 
@@ -228,7 +240,7 @@ const buildFormPhanHoi = (ma_danh_gia) => {
 const phanHoiDanhGiaSP = async (ma_danh_gia) => {
     //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
     //Form đó đã có noiDung
-    const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
+     const formDanhGiaSanPham = new FormData(document.querySelector(`#mdg_${ma_danh_gia}`));
 
     //Gửi dữ liệu vào request
     try {
@@ -266,10 +278,6 @@ const buildListPhanHoi = async (ma_danh_gia) => {
     catch (error) {
         console.log(error);
     }
-   
-
-
 
 
 }
-
