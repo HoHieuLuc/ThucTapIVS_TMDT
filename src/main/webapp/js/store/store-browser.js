@@ -1,10 +1,10 @@
-const StoreListDOM = document.querySelector('#store');
-		StoreListDOM.textContent = "Loading..."
-const showStoreListDom = async () => {
+const storeListDOM = document.querySelector('#storeList');
+		storeListDOM.textContent = "Loading..."
+const showstoreListDOM = async () => {
 
     try {
         const { data: { listStores } } = await axios.get(`${baseURL}/api/v1/loaisanpham`);
-        console.log(listStores);
+        
 	// 	const allLoaiSanPhams = loaiSanPhams.map((loaiSanPham) => {
     //         const { maLoaiSanPham,tenLoaiSanPham } = loaiSanPham;
     //         return `
@@ -12,10 +12,10 @@ const showStoreListDom = async () => {
 	// 		   `;
     //     }).join('');
 		
-	 	StoreListDOM.innerHTML = allLoaiSanPhams;
+	 	storeListDOM.innerHTML = console.log(listStores);
     } catch (error) {
         console.log(error);
     }
 }
 
-showStoreListDom();
+showstoreListDOM();
