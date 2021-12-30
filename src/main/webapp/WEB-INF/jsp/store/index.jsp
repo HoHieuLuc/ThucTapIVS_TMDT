@@ -2,6 +2,14 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 <style>
+	.store-product-img {
+		object-fit: cover;
+		height: 10rem;
+		width: 100%;
+	}
+	.store-product-img-link:hover {
+		border: solid 1px gray;
+	}
 	#avatar{
 		width: 15rem;
 		height: 15rem;
@@ -10,8 +18,13 @@
 <div class="container"> 
 	<div class="row mb-5 bg-light rounded">
 		<div class="col-md-3">
-			<div class="text-center">
-				<img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" alt="avatar" id="avatar" class="my-auto border border-3 border-white rounded-circle">
+			<div>
+				<img 
+					src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" 
+					alt="avatar" 
+					id="avatar" 
+					class="d-block img-fluid border border-3 border-white rounded-circle"
+				>
 			</div>
 		</div>
 		<div class="col-md-9">
@@ -43,26 +56,40 @@
 			bộ lọc
 		</div>
 		<div class="col-md-9">
-			<div class="input-group mb-3">
-				<input type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
-				<select class="form-select">
-					<option>Sắp xếp</option>
-					<option>aaaaaaaaaaa</option>
-					<option>bbbbbbbbbbb</option>
-					<option>ccccccccccc</option>
+			<form class="searchForm input-group mb-3">
+				<input id="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
+				<select id="orderBy" class="form-select">
+					<option value="date">Ngày đăng</option>
+					<option value="price">Giá</option>
+					<option value="rating">Xếp hạng</option>
 				</select>
-				<button class="btn btn-outline-secondary" type="button">Tìm kiếm</button>
+				<select id="order" class="form-select">
+					<option value="desc">Giảm dần</option>
+					<option value="asc">Tăng dần</option>
+				</select>
+				<input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
+			</form>
+			<div class="mb-2">
+				Số mặt hàng mỗi trang: 
+				<select class="rowsPerPage rounded">
+					<option value="10" selected>10</option>
+					<option value="20">20</option>
+					<option value="30">30</option>
+				</select>
 			</div>
-			<div>
-				các mặt hàng
-			
+			<div class="productList container border border-1 rounded">
+				
+			</div>
+			<div class="phanTrangProduct d-flex justify-content-center">
+
 			</div>
 		</div>
 	</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<script src='<c:url value="/js/function.js"/>'></script>
+<script src='<c:url value="/js/pagination.js"/>'></script>
 <script src='<c:url value="/js/store/store.js"/>'></script>
 
 
