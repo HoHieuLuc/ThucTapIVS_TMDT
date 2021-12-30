@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Dec 28, 2021 at 09:22 AM
+-- Host: 127.0.0.1
+-- Generation Time: Dec 30, 2021 at 07:51 AM
 -- Server version: 10.4.22-MariaDB
--- PHP Version: 8.0.14
+-- PHP Version: 8.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -256,6 +256,12 @@ CREATE TABLE `loai_san_pham` (
 --
 
 INSERT INTO `loai_san_pham` (`ma_loai_sp`, `ten_loai_sp`) VALUES
+(6, 'Ẩm Thực'),
+(3, 'Nội Thất'),
+(7, 'Sách'),
+(2, 'Thời Trang'),
+(5, 'Thức Uống'),
+(4, 'Xe Cộ'),
 (1, 'Điện thoại');
 
 -- --------------------------------------------------------
@@ -684,7 +690,7 @@ ALTER TABLE `khach_hang`
 -- AUTO_INCREMENT for table `loai_san_pham`
 --
 ALTER TABLE `loai_san_pham`
-  MODIFY `ma_loai_sp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ma_loai_sp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `log`
