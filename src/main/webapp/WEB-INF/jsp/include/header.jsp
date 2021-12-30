@@ -47,8 +47,11 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href='<c:url value="/" />'>Home</a>
               </li>
+              <!-- Chỗ này sẽ vào trang list grid 4 ô {(avatar store (avatar người dùng), tên store (tên người dùng/ tên nhãn hiệu)
+                  , trung bình số sao đánh giá
+                ),(điều kiện câu select ("Chỉ những store có từ 1 sản phẩm trở lên") ) }  -->
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Cửa hàng</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
