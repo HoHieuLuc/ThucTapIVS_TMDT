@@ -4,15 +4,15 @@ const showstoreListDOM = async () => {
 
     try {
         const { data: { listStores } } = await axios.get(`${baseURL}/api/v1/store`);
-        
-	// 	const allLoaiSanPhams = loaiSanPhams.map((loaiSanPham) => {
-    //         const { maLoaiSanPham,tenLoaiSanPham } = loaiSanPham;
-    //         return `
-    //            <a class="dropdown-item" href="${baseURL}/api/v1/sanpham/${maLoaiSanPham}">${tenLoaiSanPham}</a>
-	// 		   `;
-    //     }).join('');
+        //{ma_khach_hang: 1, avatar: "1.png", ten: "Lâm Minh Thiện"}
+		const alllistStores = listStores.map((listStore) => {
+            const { ma_khach_hang,avatar,ten } = listStore;
+            return `
+               <p>${ma_khach_hang} ++ ${avatar} ++ ${ten}</p>
+			   `;
+        }).join('');
 		
-	 	storeListDOM.innerHTML = console.log(listStores);
+	 	storeListDOM.innerHTML = alllistStores;
     } catch (error) {
         console.log(error);
     }
