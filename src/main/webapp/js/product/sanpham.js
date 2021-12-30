@@ -265,7 +265,6 @@ const buildListPhanHoi = async (ma_danh_gia) => {
         const allPhanHoiDGSPs = phanHoiDGSPs.map((phanHoiDGSP) => {
             const {avatar,ten,ngay_tao,ngay_sua,noi_dung} = phanHoiDGSP;
             return `
-            <hr>
                 <div class="comment m-4 text-justify float-left" style=" color: black; "> 
                     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
                     <h4>${ten}</h4><span>
@@ -273,7 +272,6 @@ const buildListPhanHoi = async (ma_danh_gia) => {
                     <br>
                     <p>${noi_dung}</p>
                 </div>
-            <hr>
             `
         } )
         document.querySelector(`#dsph${ma_danh_gia}`).innerHTML = allPhanHoiDGSPs;
