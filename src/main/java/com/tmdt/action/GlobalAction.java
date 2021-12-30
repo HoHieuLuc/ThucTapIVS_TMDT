@@ -42,7 +42,7 @@ public class GlobalAction extends ActionSupport {
     }
 
     // Xem danh sách các store
-    @Action(value = "/store",results = {
+    @Action(value = "/Fuckstore",results = {
         @Result(name = "success",location = "/WEB-INF/jsp/store/listStore.jsp")
     })
     public String listStorePage(){
