@@ -58,7 +58,7 @@
                   aria-expanded="false">
                   Danh mục sản phẩm
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" id="danhMucSP">
                   <!--- Chỗ này để hiện ra các danh mục bằng câu select-->
                   <li><a class="dropdown-item" href="#">Điện thoại</a></li>
                 </ul>
