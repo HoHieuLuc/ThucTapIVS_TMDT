@@ -6,6 +6,7 @@
 
 </style>
 <div class="container-fluid bg-3 text-center">
+    <h3>DANH SÁCH CỬA HÀNG</h3><br>
     <div class="row" id="storeList">
 
     </div>
