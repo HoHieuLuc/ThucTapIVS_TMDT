@@ -4,7 +4,7 @@
 
 <body>
 <div class="container-fluid bg-3 text-center">    
-  <h3>SẢN PHẨM MỚI</h3><br>
+  <h3>TRANG CHỦ</h3><br>
   <div class="row" id="listSanPham">
 
   </div>
