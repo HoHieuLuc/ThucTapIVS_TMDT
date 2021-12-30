@@ -60,7 +60,7 @@ public class StoreAction extends ActionSupport {
     }
 
     // Lấy danh sách các store có đăng từ 1 mặt hàng trở lên
-    @Action(value = "/api/v1/listStore", results = {
+    @Action(value = "/api/v1/store", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String getListStore() throws IOException {
@@ -71,7 +71,9 @@ public class StoreAction extends ActionSupport {
 
         // Json Respone
         Map<String, Object> jsonRes = new HashMap<String, Object>();
-        jsonRes.put("listStore", listStore);
+        jsonRes.put("listStores", listStore);
+        sqlSession.commit();
+        sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }
