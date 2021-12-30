@@ -5,11 +5,16 @@
 <style>
 
 </style>
+<div class="row">
+    <div class="col-12" id="storeList">
+
+    </div>
+    
+</div>
 
 
 
-
-<script src='<c:url value="/js/store/store.js"/>'></script>
+<script src='<c:url value="/js/store/store-browser.js"/>'></script>
 
 
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />
