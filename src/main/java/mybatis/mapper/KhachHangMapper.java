@@ -54,4 +54,6 @@ public interface KhachHangMapper {
         final String GET_LIST_STORE = "SELECT TK.avatar,KH.ma_khach_hang,KH.ten from khach_hang " +
                         "kh LEFT JOIN san_pham sp on kh.ma_khach_hang = sp.ma_khach_hang " +
                         " LEFT JOIN tai_khoan tk on kh.id_tai_khoan = tk.id GROUP BY ma_khach_hang;";
+        @Select(GET_LIST_STORE)
+        public List<Map<String,Object>> getListStore();
 }
