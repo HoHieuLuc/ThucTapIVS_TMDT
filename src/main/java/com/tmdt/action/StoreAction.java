@@ -58,4 +58,24 @@ public class StoreAction extends ActionSupport {
         jsonRes.put("product_rating", phanLoaiDanhGia);
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
+
+    //Lấy danh sách các store có đăng từ 1 mặt hàng trở lên
+    @Action(value = "/api/v1/listStore", results = {
+        @Result(name = SUCCESS, location = "/index.html")
+})
+public String getListStore() throws IOException {
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
+    // lấy thông tin khách hàng
+    Map<String, Object> storeInfo = khachHangMapper.getStoreInfoByUsername(username);
+    // lấy số lượng theo từng số sao trong đánh giá sản phẩm
+    List<Map<Integer, Integer>> phanLoaiDanhGia = khachHangMapper.getProductRating(username);
+    if (storeInfo.get("ten") == null) {
+        return CustomError.createCustomError("Người bán hàng không tồn tại", 404, response);
+    }
+    Map<String, Object> jsonRes = new HashMap<String, Object>();
+    jsonRes.put("store_info", storeInfo);
+    jsonRes.put("product_rating", phanLoaiDanhGia);
+    return JsonResponse.createJsonResponse(jsonRes, 200, response);
+}
 }

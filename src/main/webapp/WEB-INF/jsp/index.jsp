@@ -10,6 +10,7 @@
   </div>
   <script src='<c:url value="/js/product/sanpham-browser.js"/>'></script>
   <script src='<c:url value="/js/product/loaisanpham-browser.js"/>'></script>
+  <script src='<c:url value="/js/store/store-browser.js"/>'></script>
 </div>
 </body>
 
