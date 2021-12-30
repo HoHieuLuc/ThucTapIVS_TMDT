@@ -51,7 +51,7 @@
                   , trung bình số sao đánh giá
                 ),(điều kiện câu select ("Chỉ những store có từ 1 sản phẩm trở lên") ) }  -->
               <li class="nav-item">
-                <a class="nav-link" href="#">Cửa hàng</a>
+                <a class="nav-link" href='<c:url value="/listStore" />'>Cửa hàng</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"

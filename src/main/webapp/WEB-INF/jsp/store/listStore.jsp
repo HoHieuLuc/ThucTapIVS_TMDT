@@ -5,8 +5,8 @@
 <style>
 
 </style>
-<div class="row">
-    <div class="col-12" id="storeList">
+<div class="container-fluid bg-3 text-center">
+    <div class="row" id="storeList">
 
     </div>
     
