@@ -1,11 +1,4 @@
-// TODO: sửa đoạn này
-const changePage = (page) => {
-    const url = new URL(window.location);
-    url.searchParams.set("page", page);
-    window.location = url;
-}
-
-const buildPagination = (page, totalPages, maxPages) => {
+const buildPagination = (page, totalPages, maxPages, callback) => {
     // maxPages là số nút điều hướng tối đa sẽ hiển thị
     // chôm bên bài php qua
     if (totalPages <= 1) {
@@ -30,14 +23,13 @@ const buildPagination = (page, totalPages, maxPages) => {
     if (page > 1) {
         paginationHTML += `
             <li class="page-item">
-                <a class="page-link" href="javascript:void(0)" onclick="changePage(${page - 1})">
+                <a class="page-link" href="javascript:void(0)" onclick="${callback}(${page - 1})">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
         `;
     }
     // tính số trang bắt đầu và kết thúc cho các nút điều hướng
-    // đoạn này Kiều Viết Long viết
     let start = 0;
     let end = 0;
     if (page <= Math.ceil(maxPages / 2)) {
@@ -65,7 +57,7 @@ const buildPagination = (page, totalPages, maxPages) => {
             } else {
                 paginationHTML += `
                     <li class="page-item">
-                        <a class="page-link" href="javascript:void(0)" onclick="changePage(${i})">
+                        <a class="page-link" href="javascript:void(0)" onclick="${callback}(${i})">
                             ${i}
                         </a>
                     </li>
@@ -78,7 +70,7 @@ const buildPagination = (page, totalPages, maxPages) => {
     if (page < totalPages) {
         paginationHTML += `
             <li class="page-item">
-                <a class="page-link" href="javascript:void(0)" onclick="changePage(${page + 1})">
+                <a class="page-link" href="javascript:void(0)" onclick="${callback}(${page + 1})">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

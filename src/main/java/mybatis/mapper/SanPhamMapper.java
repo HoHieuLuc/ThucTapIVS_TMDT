@@ -16,6 +16,7 @@ public interface SanPhamMapper {
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "GROUP BY sp.ma_san_pham";
+
     @Select(GET_ALL_SANPHAM)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -45,6 +46,7 @@ public interface SanPhamMapper {
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "WHERE sp.ma_san_pham = #{maSanPham} " +
             "GROUP BY sp.ma_san_pham ";
+
     @Select(SAN_PHAM_DETAIL)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -65,7 +67,7 @@ public interface SanPhamMapper {
     /* ===================================== */
     /* dành cho trang cá nhân của khách hàng */
     /* ===================================== */
-    // Lấy danh sách sản phẩm theo mã khách hàng
+    // Lấy danh sách sản phẩm theo mã khách hàng để hiển thị kho hàng
     final String GET_SAN_PHAM_BY_MA_KH = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, sp.gia, sp.status, kh.ma_khach_hang, kh.ten, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
             +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
@@ -74,6 +76,7 @@ public interface SanPhamMapper {
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "WHERE sp.ma_khach_hang = #{maKhachHang} " +
             "GROUP BY sp.ma_san_pham";
+
     @Select(GET_SAN_PHAM_BY_MA_KH)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -92,7 +95,7 @@ public interface SanPhamMapper {
     })
     public List<Map<String, Object>> getAllSanPhamByMaKH(int maKhachHang);
 
-    // Lấy sản phẩm theo mã khách hàng và mã sản phẩm
+    // Lấy sản phẩm theo mã khách hàng và mã sản phẩm để hiển thị chi tiết sản phẩm
     final String GET_SAN_PHAM_BY_MA_KH_AND_MA_SP = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, sp.gia, sp.status, kh.ma_khach_hang, kh.ten, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
             +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
@@ -102,6 +105,7 @@ public interface SanPhamMapper {
             "WHERE sp.ma_khach_hang = #{maKhachHang} " +
             "AND sp.ma_san_pham = #{maSanPham} " +
             "GROUP BY sp.ma_san_pham";
+
     @Select(GET_SAN_PHAM_BY_MA_KH_AND_MA_SP)
     @Results(value = {
             @Result(property = "maSanPham", column = "ma_san_pham"),
@@ -122,10 +126,11 @@ public interface SanPhamMapper {
             @Param("maKhachHang") int maKhachHang,
             @Param("maSanPham") String maSanPham);
 
-    // Thêm sản phẩm
+    // Thêm sản phẩm vô kho
     final String ADD_SAN_PHAM = "INSERT INTO `san_pham`(`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) "
             +
             "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, #{maLoaiSanPham}, #{soLuong}, now(), #{soLuongDaBan})";
+
     @Insert(ADD_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maSanPham")
     public void insert(SanPham sanPham);
@@ -134,13 +139,56 @@ public interface SanPhamMapper {
     final String GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT ma_san_pham FROM san_pham " +
             "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham}" +
             "LIMIT 1";
+
     @Select(GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
-    public String getIdSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang, @Param("tenSanPham") String tenSanPham);
+    public String getIdSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang,
+            @Param("tenSanPham") String tenSanPham);
 
     // đếm sản phẩm từ mã khách hàng và tên sản phẩm để kiểm tra trùng
     final String COUNT_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT COUNT(*) FROM san_pham " +
             "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham}";
+
     @Select(COUNT_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
-    public int countSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang, @Param("tenSanPham") String tenSanPham);
-    
+    public int countSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang,
+            @Param("tenSanPham") String tenSanPham);
+
+    /* ==================== */
+    /* dành cho trang store */
+    /* ==================== */
+    // đếm số lượng sản phẩm của 1 người dùng
+    // nhưng không có limit offset để đếm tất cả dòng trả về
+    // từ đó tính được số trang
+    final String COUNT_SAN_PHAM_BY_USERNAME = "SELECT COUNT(*) " +
+            "FROM SAN_PHAM sp " +
+            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
+            "WHERE tk.username = #{username} " +
+            "AND sp.ten_san_pham LIKE CONCAT('%', #{search}, '%')";
+
+    @Select(COUNT_SAN_PHAM_BY_USERNAME)
+    public int countSanPhamByUsername(@Param("username") String username, @Param("search") String search);
+
+    // lấy danh sách sản phẩm theo username cho trang store
+    final String GET_SAN_PHAM_BY_USERNAME = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, lsp.ten_loai_sp, " +
+            "sp.so_luong, sp.ngay_dang, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
+            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
+            "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
+            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
+            "WHERE tk.username = #{username} " +
+            "AND sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
+            "GROUP BY sp.ma_san_pham " +
+            "ORDER BY ${orderBy} ${order} " +
+            "LIMIT #{offset}, #{rowsPerPage}";
+
+    @Select(GET_SAN_PHAM_BY_USERNAME)
+    public List<Map<String, Object>> getSanPhamByUsername(
+            @Param("username") String username,
+            @Param("search") String search,
+            @Param("orderBy") String orderBy,
+            @Param("order") String order,
+            @Param("offset") int offset,
+            @Param("rowsPerPage") int rowsPerPage);
+
 }
