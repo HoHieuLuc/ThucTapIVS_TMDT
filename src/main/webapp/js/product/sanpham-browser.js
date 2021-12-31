@@ -13,7 +13,7 @@ const showSanPhamList = async () => {
                   <img src="${baseURL}images/product/${anhSanPham}" class="img-responsive" style="width: 200px; height: 200px;" alt="${tenSanPham}">
                   <p style="color:red;font-size:25px;font-family:poroto">${gia} VNĐ</p>
                   <p>${tenSanPham}</p>
-                  <div class="card-footer">
+                  <div class="">
                     <a href="${baseURL}sanpham/${maSanPham}">
                       <button type="button" class="btn btn-success">Xem chi tiết</button>
                     </a>
