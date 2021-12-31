@@ -42,6 +42,37 @@
 					</div>
 					<div><span id="gioiThieu" class="fst-italic" style="white-space: pre-line;"></span></div>
 					<p>Đánh giá: <span id="rating"></span></p>
+					              <!-- Nút đánh giá, hiện modal -->
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Đánh giá
+              </button>
+
+              <!-- Modal, hiện form đánh giá -->
+              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Chọn mức đánh giá</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <select class="form-select" size="5" aria-label="size 3 select example">
+                        <option value>1. Không tốt</option>
+                        <option value="1">2. Tốt Vừa</option>
+                        <option value="2">3. Tốt</option>
+                        <option value="3">4. Rất Tốt</option>
+                        <option value="3">5. Xuất sắc</option>
+                      </select>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                      <button type="button" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Nút đánh giá, hiện modal -->
 				</div>
 				<div class="col-md-4">
 					<p class="fw-bold text-center">Tổng quan đánh giá sản phẩm:</p>
