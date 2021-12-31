@@ -46,7 +46,7 @@ public class LoaiSanPhamAction extends ActionSupport {
     public String getAllLoaiSanPham() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         LoaiSanPhamMapper loaiSanPhamMapper = sqlSession.getMapper(LoaiSanPhamMapper.class);
-        List<LoaiSanPham> loaiSanPhams = loaiSanPhamMapper.getAllLoaiSanPham();
+        List<LoaiSanPham> loaiSanPhams = loaiSanPhamMapper.layTatCaLoaiSanPham();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("loaiSanPhams", loaiSanPhams);
         sqlSession.commit();

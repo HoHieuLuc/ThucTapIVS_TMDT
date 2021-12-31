@@ -248,28 +248,25 @@ public class RegisterAction extends ActionSupport {
             // Thêm dữ liệu vào database,
             // Kiểm tra tài khoản mới có trùng username,email với tài khoản cũ
             try {
-                taiKhoanMapper.insert(taiKhoan);
-                int accountID = taiKhoanMapper.getIdByUsername(username);
+                taiKhoanMapper.insertTaiKhoan(taiKhoan);
+                int accountID = taiKhoanMapper.getTaiKhoanIdByUsername(username);
                 // Khi tạo tài khoản thành công thì mới tạo thông tin khách hàng
                 KhachHang khachHang = new KhachHang(accountID, 0, ten, diaChi,
                         gioiThieu);
-                khachHangMapper.insert(khachHang);
-
-            
+                khachHangMapper.themKhachHang(khachHang);
 
                 Map<String, Object> loginInfo = taiKhoanMapper.getKhLoginInfoByUsername(username);
                 System.out.println(loginInfo);
 
                 int maKhachHang = (int) loginInfo.get("maNguoiDung");
 
-                //Có mã khách hàng, tiến hành tạo thông tin liên hệ
-                ThongTinLienHeMapper thongTinLienHeMapper =sqlSession.getMapper(ThongTinLienHeMapper.class);
-                ThongTinLienHe thongTinLienHe = new ThongTinLienHe(maKhachHang,trangCaNhan,twitterLink,facebookLink);
-                thongTinLienHeMapper.insert(thongTinLienHe);
+                // Có mã khách hàng, tiến hành tạo thông tin liên hệ
+                ThongTinLienHeMapper thongTinLienHeMapper = sqlSession.getMapper(ThongTinLienHeMapper.class);
+                ThongTinLienHe thongTinLienHe = new ThongTinLienHe(maKhachHang, trangCaNhan, twitterLink, facebookLink);
+                thongTinLienHeMapper.insertThongTinLienHe(thongTinLienHe);
 
-                    // Flush database connection, batch script and close connection
-                    sqlSession.commit();
-
+                // Flush database connection, batch script and close connection
+                sqlSession.commit();
 
                 String avatar = (String) loginInfo.get("avatar");
                 //

@@ -93,11 +93,11 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         Integer level = (Integer) session.getAttribute("level");
         // khi chưa đăng nhập hoặc không phải là khách hàng thì lấy hết tất cả đánh giá
         if (loggedIn == null || !loggedIn || level > 0) {
-            danhSachDanhGia = danhGiaSanPhamMapper.getAll(maSanPham);
+            danhSachDanhGia = danhGiaSanPhamMapper.getAllDanhGiaSanPham(maSanPham);
         } else {
             int maKhachHang = (int) session.getAttribute("maNguoiDung");
-            danhGiaCuaKhachHang = danhGiaSanPhamMapper.getByMaKHandMaSP(maKhachHang, maSanPham);
-            danhSachDanhGia = danhGiaSanPhamMapper.getAllExceptOwn(maSanPham, maKhachHang);
+            danhGiaCuaKhachHang = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang, maSanPham);
+            danhSachDanhGia = danhGiaSanPhamMapper.getAllDanhGiaSanPhamExceptOwn(maSanPham, maKhachHang);
         }
         // nếu tìm thấy đánh giá của khách thì trả về thêm đánh giá đó
         // như vậy không cần cái api kia nữa, mặc dù code bên js nhìn khá rác
@@ -136,7 +136,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
-        Map<String, Object> danhGiaSanPham = danhGiaSanPhamMapper.getByMaKHandMaSP(maKhachHang, maSanPham);
+        Map<String, Object> danhGiaSanPham = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang, maSanPham);
         if (danhGiaSanPham == null) {
             System.out.println("insert");
             DanhGiaSanPham dgsp = new DanhGiaSanPham(maSanPham, maKhachHang, noiDung, soSao);
