@@ -2,9 +2,14 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 </main>
 <hr>
+<!-- (thongbao.js), trigger hiển thị thông báo cho toàn bộ trang
+   (index.js: chuyển hướng khi đăng nhập),
+    (loaisanpham-browser.js) hiển danh mục loại sản phẩm dropdownmenu trên  navbar
+-->
   <script src='<c:url value="/js/thongbao.js"/>'></script>
   <script src='<c:url value="/js/index.js"/>'></script>
   <script src='<c:url value="/js/product/loaisanpham-browser.js"/>'></script>
+ 
 
 <!-- Site footer -->
     <footer class="site-footer">
