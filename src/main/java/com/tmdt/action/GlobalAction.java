@@ -35,8 +35,8 @@ public class GlobalAction extends ActionSupport {
     // nếu để /store/{.*} hay /store/{[a-zA-Z0-9]+} hay đủ thứ loại regex
     // thì nó vẫn báo cái warning khá là khó chịu, nên tạo 1 biến params nhét vô
     // luôn
-    @Action(value = "/store/{params}", results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/store/listStore.jsp")
+@Action(value = "/store/{params}", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/store/index.jsp")
     })
     public String storePage() {
         return SUCCESS;
