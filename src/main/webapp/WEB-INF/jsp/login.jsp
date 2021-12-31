@@ -5,24 +5,23 @@
 <body>
     <div class="container">
         <form id="loginForm">
-            
-            <div class="w-50 mx-auto jumbotron">
-                <h2 class="col-sm-12 form-title">Đăng nhập</h2>
-                <div class="col-sm-12 form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" name="username" id="zip" placeholder="Username" required>
+            <div class="container w-50 mx-auto shadow rounded">
+                <h2 class="text-center">Đăng nhập</h2>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingUsername" name="username" placeholder="Username" required>
+                    <label for="floatingUsername">Tài khoản</label>
                 </div>
-                <div class="col-sm-12 form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password" id="zip" placeholder="Password" required>
-                </div>
-                <div class="col-sm-12 form-group">
-                    <button class="btn btn-danger">Quên mật khẩu</button>
-                </div>
-                <div class="col-sm-12 form-group">
-                    <input type="submit" class="btn btn-primary" value="Đăng nhập">
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
+                    <label for="floatingPassword">Mật khẩu</label>
                 </div>
                 <p id="login_error" class="text-danger"></p>
+                <div class="d-grid">
+                    <input type="submit" class="btn btn-primary fs-5" value="Đăng nhập">
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-link text-decoration-none fs-5">Quên mật khẩu?</button>
+                </div>
             </div>
         </form>
     </div>
