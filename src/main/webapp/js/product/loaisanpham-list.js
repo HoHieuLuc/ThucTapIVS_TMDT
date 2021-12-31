@@ -9,7 +9,7 @@ const showSanPhamList = async () => {
     try {
         const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/listSanPhamByLSP/${maLoaiSP}`);
         console.log(sanphams);
-        tenLoaiSP.innerHTML = sanphams.sanphams[0].tenLoaiSanPham;
+        tenLoaiSP.innerHTML = sanphams[0].tenLoaiSanPham;
         const allSanPhams = sanphams.map((sanpham) => {
             const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
             return `
