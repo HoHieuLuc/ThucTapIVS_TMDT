@@ -65,7 +65,7 @@ public class DanhGiaKhachHangAction extends ActionSupport {
         DanhGiaKhachHangMapper.themDGKhachHang(dgkh);
         sqlSession.commit();
         sqlSession.close();
-        jsonObject.put("message", "Đánh giá sản phẩm thành công");
+        jsonObject.put("message", "Đánh giá khách hàng thành công");
         return JsonResponse.createJsonResponse(jsonObject, 201, response);
     }
 }

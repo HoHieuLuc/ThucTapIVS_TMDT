@@ -30,7 +30,7 @@
                             </div>
                             <div class="col-md-6">
                                 <h3 class="" id="tenSanPham"></h3>
-                                <a href="" class="" id="nguoiDangSanPham"></a>
+                               Cửa hàng <a href="" class="" id="nguoiDangSanPham"></a>
                                 <div class="rating"></div>
                                 Mức đánh giá trung bình của người dùng: <span id="danhGia"></span>
                             </div>
