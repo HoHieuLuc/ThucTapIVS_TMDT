@@ -54,7 +54,7 @@ public class LoaiSanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
-    @Action(value = "/api/v1/listSanPhamByLSP/{maLoaiSanPham}", results = {
+    @Action(value = "/api/v1/category/{maLoaiSanPham}", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String getAllSanPhamByLSP() throws IOException {
