@@ -9,7 +9,7 @@
 
     <properties>
         <struts2.version>2.5.27</struts2.version>
-        <log4j2.version>2.17.0</log4j2.version>
+        <log4j2.version>2.17.1</log4j2.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

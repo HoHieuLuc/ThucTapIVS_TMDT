@@ -182,7 +182,7 @@ public class SanPhamAction extends ActionSupport {
             return JsonResponse.createJsonResponse(jsonRes, 404, response);
         }
 
-        List<String> listAnhSanPham = anhSanPhamMapper.getAnhSanPham(maSanPham);
+        List<String> listAnhSanPham = anhSanPhamMapper.getAllAnhSanPham(maSanPham);
         sanPham.put("anhSanPhams", listAnhSanPham);
 
         jsonRes.put("sanpham", sanPham);
@@ -259,7 +259,7 @@ public class SanPhamAction extends ActionSupport {
 
         SanPham sanPham = new SanPham(tenSanPham, maKhachHang, moTa, gia, 0, maLoaiSanPham, soLuong, 0);
         try {
-            sanPhamMapper.insert(sanPham);
+            sanPhamMapper.insertSanPham(sanPham);
             sqlSession.commit();
             // khi thêm sản phẩm thành công thì mới bắt đầu thêm ảnh
             String insertedId = sanPhamMapper.getIdSanPhamByMaKHAndTenSP(maKhachHang, tenSanPham);

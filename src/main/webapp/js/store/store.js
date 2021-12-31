@@ -61,9 +61,9 @@ const showStoreInfo = async () => {
         emailDOM.textContent = email;
         diaChiDOM.textContent = dia_chi;
 
-        const facebookLink = facebook_link === undefined ? '' : `<a href="${facebook_link}" target="_blank"><i class="fab fa-facebook"></i></a>`;
-        const twitterLink = twitter_link === undefined ? '' : `<a href="${twitter_link}" target="_blank"><i class="fab fa-twitter"></i></a>`;
-        const personalLink = personal_link === undefined ? '' : `<a href="${personal_link}" target="_blank"><i class="fas fa-external-link-alt"></i></a>`;
+        const facebookLink = facebook_link === '' ? '' : `<a href="${facebook_link}" target="_blank"><i class="fab fa-facebook"></i></a>`;
+        const twitterLink = twitter_link === '' ? '' : `<a href="${twitter_link}" target="_blank"><i class="fab fa-twitter"></i></a>`;
+        const personalLink = personal_link === '' ? '' : `<a href="${personal_link}" target="_blank"><i class="fas fa-external-link-alt"></i></a>`;
         linkDOM.innerHTML = `${facebookLink} ${twitterLink} ${personalLink}`;
 
         const myData = [];

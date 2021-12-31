@@ -72,7 +72,7 @@ public class LoginAction extends ActionSupport {
         TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
         // Mapper lấy thông tin khách Hàng
 
-        TaiKhoan account = taiKhoanMapper.getByUsername(username);
+        TaiKhoan account = taiKhoanMapper.getTaiKhoanByUsername(username);
         if (account != null) {
             // Kiểm tra mật khẩu
             if (BCrypt.checkpw(password, account.getPassword())) {
