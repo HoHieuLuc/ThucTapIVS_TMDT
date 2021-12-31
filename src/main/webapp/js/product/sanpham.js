@@ -264,11 +264,16 @@ const buildListPhanHoi = async (ma_danh_gia) => {
         //SELECT tk.avatar,tk.username,kh.ten, phdgsp.noi_dung, phdgsp.ngay_tao, phdgsp.ngay_sua
         const allPhanHoiDGSPs = phanHoiDGSPs.map((phanHoiDGSP) => {
             const {avatar,ten,ngay_tao,ngay_sua,noi_dung} = phanHoiDGSP;
+            //Nếu người dùng đã chỉnh sửa phản hồi, thì ngay_sua mới tồn tại, ngược lại là để trống
+            if (ngay_sua != undefined)  const ngaySuaElement = `
+            ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p`
+            else const ngaySuaElement = ``;
             return `
                 <div class="comment m-4 text-justify float-left" style=" color: black; "> 
                     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
                     <h4>${ten}</h4><span>
                         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+                        - ${ngaySuaElement}
                     <br>
                     <p>${noi_dung}</p>
                 </div>
