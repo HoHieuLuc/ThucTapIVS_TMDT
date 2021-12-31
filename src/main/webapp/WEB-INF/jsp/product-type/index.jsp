@@ -2,7 +2,6 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 
-        <body>
             <!-- Trang này giống trang index gốc, nhưng mà hiển thị sản phẩm được lọc theo loại sản phẩm-->
             <div class="container-fluid bg-3 text-center">
                 <!--Đổi tiêu đề này theo tên loại sản phẩm mình đang xem-->
@@ -13,7 +12,6 @@
                 <script src='<c:url value="/js/product/loaisanpham-list.js"/>'></script>
 
             </div>
-        </body>
 
 
         <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />
