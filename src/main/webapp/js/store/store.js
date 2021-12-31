@@ -49,7 +49,7 @@ const config = (myData, myLabels) => ({
 const showStoreInfo = async () => {
     try {
         const { data: { store_info, product_rating } } = await axios.get(`${baseURL}api/v1/store/${username}/info`);
-        const { ten, dia_chi, gioi_thieu, ngay_tao, email, so_dien_thoai,
+        const { ten,ma_khach_hang, dia_chi, gioi_thieu, ngay_tao, email, so_dien_thoai,
             avatar, twitter_link, facebook_link, personal_link, rating, so_danh_gia
         } = store_info;
         avatarDOM.src = `${baseURL}images/user/${avatar}`;
@@ -90,6 +90,33 @@ const showStoreInfo = async () => {
             ratingChartDOM,
             myConfig
         );
+        /* 
+            ========================= ========================= ========================= =========================
+            Khu vực đánh giá khách hàng
+            ========================= ========================= ========================= =========================
+        */
+        //Lấy số sao đã chọn
+        const soSao = document.querySelector("#soSao");
+        console.log(soSao.value);
+
+        //Tạo formDG_Data
+        var formDG_Data = new FormData();
+        //Thêm dữ liệu như: maKHDuocDanhGia, soSao vào formDG_Data
+        formDG_Data.append('maKHDuocDanhGia',ma_khach_hang);
+        formDG_Data.append('soSao', soSao);
+
+        //Log dữ liệu trong form test
+        // Display the values
+        console.log("Đây là chỗ xem dữ liệu form Đánh giá khách hàng");
+        for (var value of formDG_Data.values()) {
+            console.log(value);
+        }
+        console.log("Đây là chỗ xem dữ liệu form Đánh giá khách hàng");
+        /* 
+       ========================= ========================= ========================= =========================
+       Khu vực đánh giá khách hàng
+       ========================= ========================= ========================= =========================
+   */
         showProductList();
     } catch (error) {
         console.log(error);

@@ -58,11 +58,11 @@
                     </div>
                     <div class="modal-body">
                       <select class="form-select" size="5" aria-label="size 3 select example">
-                        <option value>1. Không tốt</option>
-                        <option value="1">2. Tốt Vừa</option>
-                        <option value="2">3. Tốt</option>
-                        <option value="3">4. Rất Tốt</option>
-                        <option value="3">5. Xuất sắc</option>
+                        <option value="1">1. Không tốt</option>
+                        <option value="2">2. Tốt Vừa</option>
+                        <option selected="3">3. Tốt</option>
+                        <option value="4">4. Rất Tốt</option>
+                        <option value="5">5. Xuất sắc</option>
                       </select>
                     </div>
                     <div class="modal-footer">
