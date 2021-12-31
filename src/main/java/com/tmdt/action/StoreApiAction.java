@@ -161,7 +161,7 @@ public class StoreApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    @Action(value = "/api/v1/listStore", results = {
+    @Action(value = "/api/v1/store", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String getListStore() throws IOException {

@@ -3,7 +3,7 @@ const storeListDOM = document.querySelector('#storeList');
 const showstoreListDOM = async () => {
 
     try {
-        const { data: { listStores } } = await axios.get(`${baseURL}api/v1/listStore`);
+        const { data: { listStores } } = await axios.get(`${baseURL}api/v1/store`);
         //{ma_khach_hang: 1, avatar: "1.png", ten: "Lâm Minh Thiện"}
 		const alllistStores = listStores.map((listStore) => {
             const { avatar,ten,username } = listStore;
