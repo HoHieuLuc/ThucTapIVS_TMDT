@@ -16,13 +16,13 @@ public interface TaiKhoanMapper {
 
     @Insert(INSERT_TAI_KHOAN)
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    public void insert(TaiKhoan taiKhoan);
+    public void insertTaiKhoan(TaiKhoan taiKhoan);
 
     // Lấy id tài khoản bằng username
     final String GET_ID_BY_USERNAME = "SELECT id FROM `tai_khoan` WHERE username=#{username};";
 
     @Select(GET_ID_BY_USERNAME)
-    public int getIdByUsername(String username);
+    public int getTaiKhoanIdByUsername(String username);
 
     final String GET_ACCOUNT_BY_USERNAME = "SELECT * FROM `tai_khoan` WHERE USERNAME = #{username} LIMIT 1";
 
@@ -40,7 +40,7 @@ public interface TaiKhoanMapper {
             @Result(property = "maQuyen", column = "ma_quyen"),
             @Result(property = "avatar", column = "avatar")
     })
-    public TaiKhoan getByUsername(String username);
+    public TaiKhoan getTaiKhoanByUsername(String username);
 
     // lấy thông tin đăng nhập cho khách hàng
     final String GET_KH_LOGIN_INFO_BY_USERNAME = "SELECT tk.id, kh.ma_khach_hang, kh.ten, q.cap_do, tk.avatar "

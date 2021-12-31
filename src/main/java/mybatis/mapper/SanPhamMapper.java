@@ -133,7 +133,7 @@ public interface SanPhamMapper {
 
     @Insert(ADD_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maSanPham")
-    public void insert(SanPham sanPham);
+    public void insertSanPham(SanPham sanPham);
 
     // lấy id từ sản phẩm vừa tạo để insert ảnh sản phẩm
     final String GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT ma_san_pham FROM san_pham " +
