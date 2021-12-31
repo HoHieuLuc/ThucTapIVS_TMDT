@@ -1,5 +1,5 @@
 const storeListDOM = document.querySelector('#storeList');
-		storeListDOM.textContent = "Loading..."
+		
 const showstoreListDOM = async () => {
 
     try {
