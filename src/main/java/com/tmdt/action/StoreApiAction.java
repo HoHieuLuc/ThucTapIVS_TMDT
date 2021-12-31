@@ -75,7 +75,7 @@ public class StoreApiAction extends ActionSupport {
     }
 
     public int getPage() {
-        if(page < 1) {
+        if (page < 1) {
             page = 1;
         }
         return page;
@@ -86,7 +86,7 @@ public class StoreApiAction extends ActionSupport {
     }
 
     public int getRowsPerPage() {
-        switch(rowsPerPage) {
+        switch (rowsPerPage) {
             case 10:
             case 20:
             case 30:
@@ -136,7 +136,7 @@ public class StoreApiAction extends ActionSupport {
     public String getStoreProducts() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-                
+
         int _page = getPage();
         int _rowsPerPage = getRowsPerPage();
         String _search = getSearch();
@@ -146,12 +146,12 @@ public class StoreApiAction extends ActionSupport {
 
         int countSanPham = sanPhamMapper.countSanPhamByUsername(username, _search);
 
-
         int offset = (_page - 1) * _rowsPerPage;
         int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
         System.out.println("offset: " + offset);
 
-        List<Map<String, Object>> storeProducts = sanPhamMapper.getSanPhamByUsername(username, _search, _orderBy, _order, offset, _rowsPerPage);
+        List<Map<String, Object>> storeProducts = sanPhamMapper.getSanPhamByUsername(username, _search, _orderBy,
+                _order, offset, _rowsPerPage);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("products", storeProducts);
         jsonRes.put("total_page", totalPage);
@@ -160,4 +160,20 @@ public class StoreApiAction extends ActionSupport {
 
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
+
+    @Action(value = "/api/v1/listStore", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getListStore() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
+        // lấy mã store, avatar, tên store của từng khách hàng
+        List<Map<String, Object>> listStore = khachHangMapper.getListStore();
+
+        // Json Respone
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("listStores", listStore);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
 }
