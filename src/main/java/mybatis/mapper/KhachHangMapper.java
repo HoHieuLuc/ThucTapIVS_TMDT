@@ -26,7 +26,7 @@ public interface KhachHangMapper {
         /* store */
         /* ============================ */
         // lấy thông tin khách hàng cho trang store dựa vào username
-        final String GET_STORE_INFO = "SELECT kh.ten, kh.dia_chi, kh.gioi_thieu, tk.email, tk.so_dien_thoai, " +
+        final String GET_STORE_INFO = "SELECT kh.ma_khach_hang,kh.ten, kh.dia_chi, kh.gioi_thieu, tk.email, tk.so_dien_thoai, " +
                         "tk.avatar, tk.ngay_tao, ttlh.twitter_link, ttlh.facebook_link, ttlh.personal_link, " +
                         "COUNT(dgkh.ma_danh_gia) AS so_danh_gia, AVG(dgkh.so_sao) AS rating " +
                         "FROM khach_hang kh " +
