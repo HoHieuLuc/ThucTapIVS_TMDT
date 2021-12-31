@@ -53,7 +53,7 @@ public interface KhachHangMapper {
         // Lấy avatar, mã khách hàng, tên khách hàng để làm trang danh sách store
         final String GET_LIST_STORE = "SELECT TK.avatar,TK.username,KH.ten from khach_hang " +
                         "kh LEFT JOIN san_pham sp on kh.ma_khach_hang = sp.ma_khach_hang " +
-                        " LEFT JOIN tai_khoan tk on kh.id_tai_khoan = tk.id GROUP BY ma_khach_hang;";
+                        " LEFT JOIN tai_khoan tk on kh.id_tai_khoan = tk.id GROUP BY username;";
         @Select(GET_LIST_STORE)
         public List<Map<String,Object>> getListStore();
 }
