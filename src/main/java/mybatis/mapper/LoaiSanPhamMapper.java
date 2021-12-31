@@ -40,5 +40,5 @@ public interface LoaiSanPhamMapper {
         @Result(property = "anhSanPham", column = "anh"),
         @Result(property = "xepHang", column = "xep_hang")
 })
-public List<Map<String, Object>> getAllSanPhamByLSP();
+public List<Map<String, Object>> getAllSanPhamByLSP(int maLoaiSP);
 }
