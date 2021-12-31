@@ -36,7 +36,7 @@
                             </div>
                             <p class="" id="moTaSanPham"></p>
                             <h4 class="" id="gia"></h4>
-                            <div class="">
+                            <div class="card-footer">
                                 <button type="button" class="btn btn-success">Thêm vào giỏ hàng</button>
                                 <a href="" target="_blank">
                                     <button type="button" class="btn btn-success float-right">Mua ngay</button>
