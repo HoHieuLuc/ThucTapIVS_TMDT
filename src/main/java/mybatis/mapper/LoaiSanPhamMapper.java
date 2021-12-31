@@ -9,7 +9,10 @@ import org.apache.ibatis.annotations.*;
 
 public interface LoaiSanPhamMapper {
     
-    final String GET_ALL_LOAI_SAN_PHAM = "SELECT * FROM loai_san_pham";
+    //Mục đích hàm này là chỉ hiện những tên loại sản phẩm mà nó có ít nhất 1 sản phẩm
+    final String GET_ALL_LOAI_SAN_PHAM = "SELECT lsp.ma_loai_sp, lsp.ten_loai_sp FROM loai_san_pham lsp RIGHT JOIN " + 
+    "san_pham sp on  lsp.ma_loai_sp = sp.ma_loai_san_pham " +
+    "GROUP BY lsp.ma_loai_sp ";
     @Select(GET_ALL_LOAI_SAN_PHAM)
     @Results({
         @Result(property = "maLoaiSanPham", column = "ma_loai_sp"),
