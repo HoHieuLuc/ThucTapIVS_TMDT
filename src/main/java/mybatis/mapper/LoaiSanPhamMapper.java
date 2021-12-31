@@ -9,16 +9,26 @@ import org.apache.ibatis.annotations.*;
 
 public interface LoaiSanPhamMapper {
     
-    //Mục đích hàm này là chỉ hiện những tên loại sản phẩm mà nó có ít nhất 1 sản phẩm
-    final String GET_ALL_LOAI_SAN_PHAM = "SELECT lsp.ma_loai_sp, lsp.ten_loai_sp FROM loai_san_pham lsp RIGHT JOIN " + 
-    "san_pham sp on  lsp.ma_loai_sp = sp.ma_loai_san_pham " +
-    "GROUP BY lsp.ma_loai_sp ";
+    final String GET_ALL_LOAI_SAN_PHAM = "SELECT * FROM loai_san_pham";
     @Select(GET_ALL_LOAI_SAN_PHAM)
     @Results({
         @Result(property = "maLoaiSanPham", column = "ma_loai_sp"),
         @Result(property = "tenLoaiSanPham", column = "ten_loai_sp")
     })
     public List<LoaiSanPham> getAllLoaiSanPham();
+
+
+
+    //Mục đích hàm này là chỉ hiện những tên loại sản phẩm mà nó có ít nhất 1 sản phẩm
+    final String GET_TEN_LOAI_SAN_PHAM = "SELECT lsp.ma_loai_sp, lsp.ten_loai_sp FROM loai_san_pham lsp RIGHT JOIN " + 
+    "san_pham sp on  lsp.ma_loai_sp = sp.ma_loai_san_pham " +
+    "GROUP BY lsp.ma_loai_sp ";
+    @Select(GET_TEN_LOAI_SAN_PHAM)
+    @Results({
+        @Result(property = "maLoaiSanPham", column = "ma_loai_sp"),
+        @Result(property = "tenLoaiSanPham", column = "ten_loai_sp")
+    })
+    public List<LoaiSanPham> getAllTenLoaiSanPham();
 
     final String GET_SAN_PHAM_BY_LSP = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, sp.gia, sp.status, kh.ma_khach_hang, kh.ten, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
     +
