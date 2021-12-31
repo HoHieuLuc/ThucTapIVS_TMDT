@@ -63,7 +63,7 @@ public class LoaiSanPhamAction extends ActionSupport {
         LoaiSanPhamMapper loaiSanPhamMapper = sqlSession.getMapper(LoaiSanPhamMapper.class);
         List<Map<String, Object>> sanPhams = loaiSanPhamMapper.getAllSanPhamByLSP(maLoaiSanPham);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sanpham", sanPhams);
+        map.put("sanphams", sanPhams);
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 }
