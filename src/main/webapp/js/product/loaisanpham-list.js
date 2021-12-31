@@ -1,10 +1,12 @@
 const sanPhamListDOM = document.querySelector('#listSanPham');
+const params = window.location.pathname.split('/').slice(0);
+const maLoaiSP = params[params.length - 1];
 
 const showSanPhamList = async () => {
     sanPhamListDOM.textContent = 'Loading...';
 
     try {
-        const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/sanpham/getall`);
+        const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/listSanPhamByLSP/${maLoaiSP}`);
         console.log(sanphams);
         const allSanPhams = sanphams.map((sanpham) => {
             const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
