@@ -36,7 +36,9 @@
       </div>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
+          <a class="navbar-brand" href="#">
+            <img src='<c:url value="/images/brand_logo.png" />' alt="" width="30" height="24" class="d-inline-block align-text-top">
+          </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -45,7 +47,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href='<c:url value="/" />'>Home</a>
+                <a class="nav-link active" aria-current="page" href='<c:url value="/" />'>Trang chủ</a>
               </li>
               <!-- Chỗ này sẽ vào trang list grid 4 ô {(avatar store (avatar người dùng), tên store (tên người dùng/ tên nhãn hiệu)
                   , trung bình số sao đánh giá
