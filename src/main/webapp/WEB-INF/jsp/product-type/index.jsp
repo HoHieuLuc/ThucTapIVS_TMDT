@@ -10,7 +10,7 @@
                 <div class="row" id="listSanPham">
 
                 </div>
-                <script src='<c:url value="/js/product/sanpham-browser.js"/>'></script>
+                <script src='<c:url value="/js/product/loaisanpham-list.js"/>'></script>
 
             </div>
         </body>
