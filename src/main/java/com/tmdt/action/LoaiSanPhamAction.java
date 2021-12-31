@@ -24,7 +24,6 @@ import mybatis.mapper.LoaiSanPhamMapper;
 public class LoaiSanPhamAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private int maLoaiSanPham;
-    
 
     public int getMaLoaiSanPham() {
         return maLoaiSanPham;
@@ -40,7 +39,8 @@ public class LoaiSanPhamAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    @Action(value = "/api/v1/loaisanpham", results = {
+    // Dành cho menu loại sản phẩm khi add sản phẩm mới
+    @Action(value = "/api/v1/category_have_product", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String getAllLoaiSanPham() throws IOException {
@@ -54,6 +54,22 @@ public class LoaiSanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
+    // Kiểm tra xem category đó có sản phẩm hay chưa
+    @Action(value = "/api/v1/loaisanpham", results = {
+            @Result(name = "success", location = "/index.html")
+    })
+    public String getAllTenLoaiSanPham() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        LoaiSanPhamMapper loaiSanPhamMapper = sqlSession.getMapper(LoaiSanPhamMapper.class);
+        List<LoaiSanPham> loaiSanPhams = loaiSanPhamMapper.getAllTenLoaiSanPham();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("loaiSanPhams", loaiSanPhams);
+        sqlSession.commit();
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(map, 200, response);
+    }
+
+    // Liệt kê sản phẩm cùng category
     @Action(value = "/api/v1/category/{maLoaiSanPham}", results = {
             @Result(name = "success", location = "/index.html")
     })

@@ -3,7 +3,7 @@ const loaiSPListDOM = document.querySelector('#danhMucSP');
 const showLoaiSPList = async () => {
 
     try {
-        const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/loaisanpham`);
+        const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/category_have_product`);
       //  console.log(loaiSanPhams);
 		const allLoaiSanPhams = loaiSanPhams.map((loaiSanPham) => {
             const { maLoaiSanPham,tenLoaiSanPham } = loaiSanPham;
