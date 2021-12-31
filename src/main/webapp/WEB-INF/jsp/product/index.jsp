@@ -54,16 +54,15 @@
                     <c:choose>
                         <c:when test="${sessionScope.level == 0}">
                             <form id="formDanhGiaSanPham">
-                                <div class="text-danger" id="errorMsg"></div>
-                                <div class="form-group">
-                                    <label>Nội dung</label>
+                                <div class="form-floating mb-1">
                                     <textarea name="noiDung" style="height: 100px;" id="noiDung"
                                         class="form-control" placeholder="2 ký tự trở lên"></textarea>
+                                    <label for="noiDung">Nội dung</label>
                                 </div>
 
-                                <div class="form-inline">
-                                    <label>Số sao</label>
-                                    <select name="soSao" id="soSao">
+                                <div class="mb-1">
+                                    <label for="soSao">Số sao</label>
+                                    <select class="rounded" name="soSao" id="soSao">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -72,10 +71,10 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <button type="button" id="huyDanhGiaBtn" style="display: none;"
-                                        class="btn btn-danger">Hủy</button>
-                                    <input type="submit" id="danhGiaBtn" class="btn btn-success" value="Đánh giá">
+                                <div class="d-flex gap-2">
+                                    <button type="button" id="huyDanhGiaBtn"
+                                        class="btn btn-block btn-outline-danger w-100">Hủy</button>
+                                    <input type="submit" id="danhGiaBtn" class="btn btn-block btn-outline-success w-100" value="Đánh giá">
                                 </div>
                             </form>
                         </c:when>
