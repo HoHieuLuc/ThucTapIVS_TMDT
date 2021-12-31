@@ -36,11 +36,11 @@ public class LoaiSanPhamAction extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
-
+    
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
-
+    
     // Dành cho menu loại sản phẩm khi add sản phẩm mới
-    @Action(value = "/api/v1/category_have_product", results = {
+    @Action(value = "/api/v1/loaisanpham", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String getAllLoaiSanPham() throws IOException {
@@ -55,7 +55,7 @@ public class LoaiSanPhamAction extends ActionSupport {
     }
 
     // Kiểm tra xem category đó có sản phẩm hay chưa
-    @Action(value = "/api/v1/loaisanpham", results = {
+    @Action(value = "/api/v1/category_have_product", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String getAllTenLoaiSanPham() throws IOException {
