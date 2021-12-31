@@ -263,7 +263,8 @@ const buildListPhanHoi = async (ma_danh_gia) => {
         console.log(phanHoiDGSPs);
         //SELECT tk.avatar,tk.username,kh.ten, phdgsp.noi_dung, phdgsp.ngay_tao, phdgsp.ngay_sua
         const allPhanHoiDGSPs = phanHoiDGSPs.map((phanHoiDGSP) => {
-            const {avatar,ten,ngay_tao,ngay_sua,noi_dung} = phanHoiDGSP;
+            const {avatar,ten,ngay_tao,noi_dung} = phanHoiDGSP;
+           
             return `
                 <div class="comment m-4 text-justify float-left" style=" color: black; "> 
                     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">

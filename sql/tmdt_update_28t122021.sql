@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Dec 28, 2021 at 09:22 AM
+-- Host: 127.0.0.1
+-- Generation Time: Dec 31, 2021 at 04:08 AM
 -- Server version: 10.4.22-MariaDB
--- PHP Version: 8.0.14
+-- PHP Version: 8.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -225,12 +225,12 @@ CREATE TABLE `khach_hang` (
 --
 
 INSERT INTO `khach_hang` (`ma_khach_hang`, `ten`, `dia_chi`, `id_tai_khoan`, `tien_no`, `gioi_thieu`) VALUES
-(1, 'Lâm Minh Thiện', '421412', 4, 0, '412421'),
-(2, 'gagagafafafafaf', 'gsgag', 5, 0, 'gagagaga'),
-(3, 'gagag gagagag', 'fafaf', 7, 0, 'agagagag'),
-(6, 'Hồ Hiểu Lực', 'fafaf g252', 10, 0, 'Viết giới thiệu về bản thân'),
-(8, 'fafgsg gsgsg', '', 13, 0, 'gsgsg'),
-(9, 'Nguyễn Test', 'fafaf g252', 16, 0, 'babaj sgg\r\ngjajgaga\r\ngakgajga\r\nggag'),
+(1, 'Lâm Minh Thiện', '324 Minh Mạng, Đường 16/7,TX. Ninh Hòa', 4, 0, 'Đây là giới thiệu của Store Lâm Minh Thiện'),
+(2, 'Hồ Hiểu Lực', 'Newyork', 5, 0, 'Đây là giới thiệu store Hồ Hiểu Lực'),
+(3, 'Nguyễn Ngọc Vũ', 'Bà Rịa Vũng Tàu', 7, 0, 'Đây là giới thiệu store của Vũ'),
+(6, 'Quang Thế Bảo', 'Cam Ranh', 10, 0, 'Đây là giới thiệu store của Quang Thế Bảo'),
+(8, 'Trường Gia Minh', 'Ninh Diêm', 13, 0, 'Đây là giới thiệu store của Trường Gia Minh'),
+(9, 'Hạ Châu Minh', 'Ninh Trung', 16, 0, 'Đây là giới thiệu của Hạ Châu Minh'),
 (10, 'gaga gagagag', 'fafafa', 18, 0, 'gsgsg'),
 (11, 'fafafaf afa faf', 'dfafafaf', 19, 0, 'afafafa'),
 (15, 'Nguyễn Thị Test', 'gsgsgsg', 23, 0, 'ggggggggggggggg'),
@@ -256,7 +256,15 @@ CREATE TABLE `loai_san_pham` (
 --
 
 INSERT INTO `loai_san_pham` (`ma_loai_sp`, `ten_loai_sp`) VALUES
-(1, 'Điện thoại');
+(6, 'Ẩm Thực'),
+(3, 'Nội Thất'),
+(9, 'Phim Ảnh'),
+(7, 'Sách'),
+(8, 'Thể Thao'),
+(2, 'Thời Trang'),
+(5, 'Thức Uống'),
+(4, 'Xe Cộ'),
+(1, 'Đồ Công Nghệ');
 
 -- --------------------------------------------------------
 
@@ -375,16 +383,16 @@ CREATE TABLE `san_pham` (
 --
 
 INSERT INTO `san_pham` (`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) VALUES
-('130ea67a-6528-11ec-b702-7845f2f0d96e', 15, 'Alo alo alo', 'fffffffffffffffffffff', 252525, 0, 1, 62, '2021-12-25 04:19:00', 0),
-('1e717293-652c-11ec-b702-7845f2f0d96e', 6, 'new', 'new', 1111, 0, 1, 11111, '2021-12-25 00:00:00', 0),
-('35a99f29-64da-11ec-bb14-8378cfa7d63d', 15, 'Iphone 13', 'Iphone 13 rất xịn rất ngon rất mạnh\r\nok?', 150000, 0, 1, 20, '2021-12-24 00:00:00', 0),
-('5dfb7106-651f-11ec-b702-7845f2f0d96e', 16, 'TV Samsung', 'gshsshwt wjtklw jkwjgklwjgkwg', 63636363, 0, 1, 15, '2021-12-25 00:00:00', 0),
-('a862b5ce-64d6-11ec-bb14-8378cfa7d63d', 15, 'test', 'test24252', 60000, 0, 1, 500, '2021-12-24 00:00:00', 0),
-('bc49e268-6528-11ec-b702-7845f2f0d96e', 17, 'Galaxy S22', 'Chip exynos siêu mạnh', 31000000, 0, 1, 10, '2021-12-25 00:00:00', 0),
-('e4f55954-652b-11ec-b702-7845f2f0d96e', 6, 'iphone 55', 'fafaf', 525252, 0, 1, 2626, '2021-12-25 00:00:00', 0),
+('130ea67a-6528-11ec-b702-7845f2f0d96e', 15, 'Galaxy Bud', 'Tai nghe không dây true wireless', 99999, 0, 1, 10, '2021-12-13 04:19:07', 0),
+('1e717293-652c-11ec-b702-7845f2f0d96e', 6, 'Áo Khoác TOTORA', 'Áo khoác nhãn hiệu totora bền chắc', 33567, 0, 2, 12, '2021-12-23 03:12:11', 0),
+('35a99f29-64da-11ec-bb14-8378cfa7d63d', 15, 'Sofa Gỗ Trầm Hương ', 'Mô tả của Sofa Gỗ Trầm Hương ', 150000, 0, 3, 20, '2021-12-24 00:00:00', 0),
+('5dfb7106-651f-11ec-b702-7845f2f0d96e', 16, 'TV Samsung', 'gshsshwt wjtklw jkwjgklwjgkwg', 63636363, 0, 4, 15, '2021-12-25 00:00:00', 0),
+('a862b5ce-64d6-11ec-bb14-8378cfa7d63d', 15, 'test', 'test24252', 60000, 0, 5, 500, '2021-12-24 00:00:00', 0),
+('bc49e268-6528-11ec-b702-7845f2f0d96e', 17, 'Galaxy S22', 'Chip exynos siêu mạnh', 31000000, 0, 6, 10, '2021-12-25 00:00:00', 0),
+('e4f55954-652b-11ec-b702-7845f2f0d96e', 6, 'iphone 55', 'fafaf', 525252, 0, 7, 2626, '2021-12-25 00:00:00', 0),
 ('gggggg', 1, 'gagag6 252', 'gagagsgs 2 626', 262626, 0, 1, 10, '2021-12-24 00:00:00', 25),
-('SP001', 15, 'Galaxy Note 21 Ultra', 'Điện thoại samsung S21 ultra', 27000000, 0, 1, 20, '2021-01-13 00:00:00', 0),
-('test', 15, 'tsgsgsg', 'gqgqgqgqgqgqg', 552525, 0, 1, 100000, '2021-12-21 00:00:00', 25);
+('SP001', 15, 'Galaxy Note 21 Ultra', 'Điện thoại samsung S21 ultra', 27000000, 0, 2, 20, '2021-01-13 00:00:00', 0),
+('test', 15, 'tsgsgsg', 'gqgqgqgqgqgqg', 552525, 0, 3, 100000, '2021-12-21 00:00:00', 25);
 
 -- --------------------------------------------------------
 
@@ -684,7 +692,7 @@ ALTER TABLE `khach_hang`
 -- AUTO_INCREMENT for table `loai_san_pham`
 --
 ALTER TABLE `loai_san_pham`
-  MODIFY `ma_loai_sp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ma_loai_sp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `log`

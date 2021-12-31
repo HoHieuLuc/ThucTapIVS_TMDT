@@ -35,17 +35,28 @@ public class GlobalAction extends ActionSupport {
     // nếu để /store/{.*} hay /store/{[a-zA-Z0-9]+} hay đủ thứ loại regex
     // thì nó vẫn báo cái warning khá là khó chịu, nên tạo 1 biến params nhét vô
     // luôn
-    @Action(value = "/store/{params}", results = {
+@Action(value = "/store/{params}", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/store/index.jsp")
     })
     public String storePage() {
         return SUCCESS;
     }
 
-    @Action(value = "/store", results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/index.jsp")
+    // Xem danh sách các store
+    @Action(value = "/store",results = {
+        @Result(name = "success",location = "/WEB-INF/jsp/store/listStore.jsp")
     })
-    public String storeList() {
+    public String listStorePage(){
+        return SUCCESS;
+    }
+
+
+    //Xem danh sách sản phẩm đã được lọc theo loại sản phẩm
+    //src\main\webapp\WEB-INF\jsp\product-type\index.jsp
+    @Action(value = "/loaiSanPham/{params}",results = {
+        @Result(name = "success",location = "/WEB-INF/jsp/product-type/index.jsp")
+    })
+    public String listSanPhamByProductType(){
         return SUCCESS;
     }
 
