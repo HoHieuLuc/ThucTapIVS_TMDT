@@ -53,32 +53,16 @@ prefix="c" %>
             ></span>
           </div>
           <p>Đánh giá: <span id="rating"></span></p>
-       <!----------------- Khu vực đánh giá cửa hàng, kiểm tra phải là khách hàng đăng nhập bằng JSTL ------------------------------->
           <c:choose>
             <c:when test="${sessionScope.level == 0}">
-            
               <!-- Nút đánh giá, hiện modal -->
-              <button
-                type="button"
-                class="btn btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop"
-              >
+              <button type="button" class="btn btn-success" data-bs-toggle="modal"data-bs-target="#staticBackdrop">
                 Đánh giá
               </button>
-
               <!-- Modal, hiện form đánh giá -->
-              <div
-                class="modal fade"
-                id="staticBackdrop"
-                data-bs-backdrop="static"
-                data-bs-keyboard="false"
-                tabindex="-1"
-                aria-labelledby="staticBackdropLabel"
-                aria-hidden="true"
-              >
+              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
+                  <form id="formDanhGiaKhachHang" class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="staticBackdropLabel">
                         Chọn mức đánh giá
@@ -91,50 +75,33 @@ prefix="c" %>
                       ></button>
                     </div>
                     <div class="modal-body">
-                      <p class="d-none" id="userNameStore">
-                        Block tàng hình để lấy username của store hiện tại
-                      </p>
-                      <select
-                        class="form-select"
-                        size="5"
-                        aria-label="size 3"
-                        id="soSao"
-                        name="soSao"
-                      >
+                      <div class="form-floating mb-1">
+                        <textarea class="form-control" id="floatingNoiDung" style="height: 100px;" name="noiDung"></textarea>
+                        <label for="floatingNoiDung">Nội dung</label>
+                      </div>
+                      <select class="form-select" size="5" aria-label="size 3" name="soSao">
                         <option value="1">1. Không tốt</option>
                         <option value="2">2. Tốt Vừa</option>
-                        <option selected="3">3. Tốt</option>
+                        <option value="3" selected>3. Tốt</option>
                         <option value="4">4. Rất Tốt</option>
                         <option value="5">5. Xuất sắc</option>
                       </select>
                     </div>
                     <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary"data-bs-dismiss="modal">
                         Thoát
                       </button>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        onclick="formDanhGiaKH_Submit(userNameStoreDOM.textContent,soSaoDOM.value)"
-                      >
-                        Xác nhận
-                      </button>
+                      <input type="submit" class="btn btn-primary" value="Xác nhận">
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
-              <!-- Nút đánh giá, hiện modal -->
-       <!----------------- Khu vực đánh giá cửa hàng, kiểm tra phải là khách hàng đăng nhập bằng JSTL ------------------------------->
-            </c:when>
+           </c:when>
             <c:when test="${sessionScope.level > 0}">
               Bạn không phải là khách hàng
             </c:when>
             <c:otherwise>
-              Bạn phải <a href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
+              Bạn phải <a id="loginDanhGiaKH" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
               được đánh giá cửa hàng
             </c:otherwise>
           </c:choose>
@@ -189,7 +156,6 @@ prefix="c" %>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src='<c:url value="/js/function.js"/>'></script>
-<script src='<c:url value="/js/pagination.js"/>'></script>
 <script src='<c:url value="/js/store/store.js"/>'></script>
 
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />
