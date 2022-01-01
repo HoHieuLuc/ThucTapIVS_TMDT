@@ -278,7 +278,7 @@ productListDOM.addEventListener("click", (event) => {
 
 
 //Hàm submit form Đánh giá khách hàng
-const formDanhGiaKH_Submit = (ma_khach_hang, soSao) => {
+const formDanhGiaKH_Submit =(ma_khach_hang, soSao) => {
     //Tạo formDG_Data
     var formDG_Data = new FormData();
     //Thêm dữ liệu như: maKHDuocDanhGia, soSao vào formDG_Data
@@ -290,4 +290,19 @@ const formDanhGiaKH_Submit = (ma_khach_hang, soSao) => {
     for (var value of formDG_Data.values()) {
         console.log(value);
     }
+
+    //Hàm gửi vào server, để ở đây tránh bị gọi hàm bất đồng bộ sớm
+    const sendToServer = async (formData) => {
+        try {
+            await axios.post(`${baseURL}api/v1/danhgia/khachhang/submit`, formData);
+            thongBao("Gửi đánh giá thành công", true);
+        }
+        catch (e){
+            console.log(e);
+            thongBao(e.response.data.message, false);
+        }
+    }
+
+    sendToServer(formDG_Data);
+
 }
