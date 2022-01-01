@@ -1,8 +1,10 @@
 package mybatis.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -13,7 +15,7 @@ public interface GioHangMapper {
      " FROM gio_hang GH LEFT JOIN khach_hang kh " +
      " ON kh.ma_khach_hang = gh.ma_khach_hang WHERE kh.ma_khach_hang = #{maKhachHang} ";  
      @Select(GET_GIO_HANG_BY_MA_KH) 
-     public void getGioHangByMaKH(int maKhachHang);
+     public List<Map<String,Object>> getGioHangByMaKH(int maKhachHang);
 
      //Hàm thêm sản phẩm vào giỏ hàng
       final String THEM_SP_VAO_GIO_HANG =  "INSERT INTO `gio_hang` (`ma_khach_hang`, `ma_san_pham`, `so_luong`) " +
