@@ -8,7 +8,7 @@ const showLoaiSPList = async () => {
 		const allLoaiSanPhams = loaiSanPhams.map((loaiSanPham) => {
             const { maLoaiSanPham,tenLoaiSanPham } = loaiSanPham;
             return `
-               <a class="dropdown-item" href="${baseURL}loaiSanPham/${maLoaiSanPham}">${tenLoaiSanPham}</a>
+               <a class="dropdown-item" href="${baseURL}category/${maLoaiSanPham}">${tenLoaiSanPham}</a>
 			   `;
         }).join('');
 		

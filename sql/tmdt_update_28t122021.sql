@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2021 at 04:08 AM
+-- Generation Time: Jan 01, 2022 at 05:37 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -133,6 +133,15 @@ CREATE TABLE `danh_gia_khach_hang` (
   `ngay_sua` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `danh_gia_khach_hang`
+--
+
+INSERT INTO `danh_gia_khach_hang` (`ma_danh_gia`, `ma_kh_danh_gia`, `ma_kh_duoc_danh_gia`, `so_sao`, `ngay_tao`, `ngay_sua`) VALUES
+(3, 9, 2, 5, '2021-12-31 09:34:19', '2021-12-31 09:34:19'),
+(4, 1, 18, 1, '2022-01-01 08:29:26', NULL),
+(5, 1, 18, 5, '2022-01-01 09:10:02', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -172,11 +181,11 @@ INSERT INTO `danh_gia_san_pham` (`ma_danh_gia`, `ma_khach_hang`, `so_sao`, `noi_
 (19, 6, 1, 'jgkhgkshggag', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-25 06:26:37', '2021-12-27 11:22:47'),
 (20, 19, 4, 'gsgsgdadfafaf', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-26 10:10:29', '2021-12-26 06:28:30'),
 (21, 18, 5, '4214', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-27 03:08:41', '2021-12-27 03:08:41'),
-(22, 1, 5, '1234', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-27 06:16:39', '2021-12-28 08:26:34'),
-(23, 1, 1, '9999999999999', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-27 14:32:18', '2021-12-27 14:33:16'),
+(22, 1, 5, '1234a', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2021-12-27 06:16:39', '2021-12-31 14:56:54'),
+(23, 1, 3, '99999', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-27 14:32:18', '2022-01-01 08:23:52'),
 (24, 1, 1, '41242w112212', 'test', '2021-12-28 08:05:52', '2021-12-28 08:05:52'),
 (25, 1, 5, 'aa', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-28 08:13:54', '2021-12-28 08:14:04'),
-(26, 1, 1, '412412', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-28 09:53:24', '2021-12-28 10:53:13'),
+(26, 1, 1, 'test', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-28 09:53:24', '2021-12-31 19:37:35'),
 (27, 1, 1, '4214', 'e4f55954-652b-11ec-b702-7845f2f0d96e', '2021-12-28 12:11:30', '2021-12-28 12:11:30');
 
 -- --------------------------------------------------------
@@ -204,6 +213,16 @@ CREATE TABLE `gio_hang` (
   `ma_san_pham` varchar(36) NOT NULL,
   `so_luong` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `gio_hang`
+--
+
+INSERT INTO `gio_hang` (`ma_khach_hang`, `ma_san_pham`, `so_luong`) VALUES
+(1, '130ea67a-6528-11ec-b702-7845f2f0d96e', 1),
+(1, '1e717293-652c-11ec-b702-7845f2f0d96e', 1),
+(1, '35a99f29-64da-11ec-bb14-8378cfa7d63d', 1),
+(1, '5dfb7106-651f-11ec-b702-7845f2f0d96e', 1);
 
 -- --------------------------------------------------------
 
@@ -337,7 +356,9 @@ CREATE TABLE `phan_hoi_danh_gia_sp` (
 
 INSERT INTO `phan_hoi_danh_gia_sp` (`ma_phan_hoi`, `ma_danh_gia`, `noi_dung`, `ma_khach_hang`, `ngay_tao`, `ngay_sua`) VALUES
 (1, 16, '9999999999999999', 1, '2021-12-28 15:20:22', NULL),
-(2, 16, '11111111111111111111111', 1, '2021-12-28 15:20:36', NULL);
+(2, 16, '11111111111111111111111', 1, '2021-12-28 15:20:36', NULL),
+(3, 16, 'thêm phản hồi', 1, '2021-12-31 14:57:02', NULL),
+(4, 16, 'comcomo', 1, '2021-12-31 19:39:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -668,7 +689,7 @@ ALTER TABLE `bao_cao_nguoi_dung`
 -- AUTO_INCREMENT for table `danh_gia_khach_hang`
 --
 ALTER TABLE `danh_gia_khach_hang`
-  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ma_danh_gia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `danh_gia_san_pham`
@@ -710,7 +731,7 @@ ALTER TABLE `phan_hoi_danh_gia_kh`
 -- AUTO_INCREMENT for table `phan_hoi_danh_gia_sp`
 --
 ALTER TABLE `phan_hoi_danh_gia_sp`
-  MODIFY `ma_phan_hoi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ma_phan_hoi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tai_khoan`

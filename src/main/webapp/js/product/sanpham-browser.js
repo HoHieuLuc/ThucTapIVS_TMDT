@@ -18,7 +18,7 @@ const showSanPhamList = async () => {
                       <button type="button" class="btn btn-success">Xem chi tiết</button>
                     </a>
                     <a href="#">
-                      <button type="button" class="btn btn-success float-right">Mua ngay</button>
+                    <button type="button" id="button2_${maSanPham}" class="btn btn-success float-right" onclick="{themVaoGioHang('${maSanPham}')}">Thêm vào giỏ hàng</button>
                     </a>
                   </div>
                 </div>`;

@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 
-<body>
+
     <div class="container">
         <form id="loginForm">
             <div class="container w-50 mx-auto shadow rounded">
@@ -25,7 +25,7 @@
             </div>
         </form>
     </div>
-</body>
+
 <script src='<c:url value="/js/login.js"/>'></script>
 
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />

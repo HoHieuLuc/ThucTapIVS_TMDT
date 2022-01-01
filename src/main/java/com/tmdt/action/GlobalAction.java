@@ -53,7 +53,7 @@ public class GlobalAction extends ActionSupport {
 
     //Xem danh sách sản phẩm đã được lọc theo loại sản phẩm
     //src\main\webapp\WEB-INF\jsp\product-type\index.jsp
-    @Action(value = "/loaiSanPham/{params}",results = {
+    @Action(value = "/category/{params}",results = {
         @Result(name = "success",location = "/WEB-INF/jsp/product-type/index.jsp")
     })
     public String listSanPhamByProductType(){

@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 
-<body>
+
     <div class="container">
     <!--  -->
         <form id="registerForm" enctype="multipart/form-data"> 
@@ -98,5 +98,4 @@
         </form>
         <script src='<c:url value="/js/register.js"/>'></script>
     </div>
-</body>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />
