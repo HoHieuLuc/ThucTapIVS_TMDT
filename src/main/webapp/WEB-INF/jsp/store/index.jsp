@@ -42,7 +42,7 @@
 					</div>
 					<div><span id="gioiThieu" class="fst-italic" style="white-space: pre-line;"></span></div>
 					<p>Đánh giá: <span id="rating"></span></p>
- <!-- Nút đánh giá, hiện modal -->
+			    <!-- Nút đánh giá, hiện modal -->
               <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Đánh giá
               </button>
@@ -57,6 +57,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                      <p class="d-none" id="maKHDuocDanhGia">Block tàng hình để lấy mã khách hàng</p>
                       <select class="form-select" size="5" aria-label="size 3" id="soSao" name="soSao">
                         <option value="1">1. Không tốt</option>
                         <option value="2">2. Tốt Vừa</option>
@@ -67,12 +68,13 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                      <button type="button" class="btn btn-primary">Xác nhận</button>
+                      <button type="button" class="btn btn-primary"
+                        onclick="formDanhGiaKH_Submit(maKHDuocDGDOM.textContent,soSaoDOM.value)">Xác nhận</button>
                     </div>
                   </div>
                 </div>
               </div>
-               <!-- Nút đánh giá, hiện modal -->
+              <!-- Nút đánh giá, hiện modal -->
 				</div>
 				<div class="col-md-4">
 					<p class="fw-bold text-center">Tổng quan đánh giá sản phẩm:</p>
