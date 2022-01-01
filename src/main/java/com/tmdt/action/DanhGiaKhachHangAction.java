@@ -57,7 +57,7 @@ public class DanhGiaKhachHangAction extends ActionSupport {
     }
     //endregion
 
-    @Action(value = "/api/v1/danhgia/store/{username}", results = {
+    @Action(value = "/api/v1/danhgia/store/{username}/submit", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
