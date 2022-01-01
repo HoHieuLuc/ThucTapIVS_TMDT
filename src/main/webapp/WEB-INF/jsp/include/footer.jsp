@@ -9,9 +9,6 @@
     <script src='<c:url value="/js/thongbao.js"/>'></script>
     <script src='<c:url value="/js/index.js"/>'></script>
     <script src='<c:url value="/js/product/loaisanpham-browser.js"/>'></script>
-    <!--Giỏ hàng js -->
-     <script src='<c:url value="/js/product/giohang.js"/>'></script>
-
 
     <!-- Site footer -->
     <footer class="site-footer">''
