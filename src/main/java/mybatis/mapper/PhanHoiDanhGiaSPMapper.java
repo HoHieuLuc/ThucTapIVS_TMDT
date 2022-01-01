@@ -17,7 +17,7 @@ public interface PhanHoiDanhGiaSPMapper {
     public void themPhanHoiDanhGiaSP(@Param("maDanhGia") int maDanhGia, @Param("noiDung") String noiDung, @Param("maKhachHang") int maKhachHang);
 
     //Hiển thị các phản hồi của từng đánh giá sản phẩm
-    final String PHAN_HOI_DANH_GIA_SP = "SELECT tk.avatar,tk.username,kh.ten, phdgsp.noi_dung, phdgsp.ngay_tao, phdgsp.ngay_sua " +
+    final String PHAN_HOI_DANH_GIA_SP = "SELECT tk.avatar, tk.username, kh.ten, phdgsp.noi_dung, phdgsp.ngay_tao, phdgsp.ngay_sua " +
     "FROM phan_hoi_danh_gia_sp phdgsp JOIN khach_hang kh on kh.ma_khach_hang = phdgsp.ma_khach_hang  " + 
     "JOIN tai_khoan tk on kh.id_tai_khoan = tk.id WHERE phdgsp.ma_danh_gia = #{maDanhGia};";
     @Select(PHAN_HOI_DANH_GIA_SP)

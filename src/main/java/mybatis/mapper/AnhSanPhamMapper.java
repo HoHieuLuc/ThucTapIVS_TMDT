@@ -19,5 +19,5 @@ public interface AnhSanPhamMapper {
     // lấy ảnh cho 1 sản phẩm
     final String SELECT_ANH_SAN_PHAM = "SELECT anh FROM anh_san_pham WHERE ma_san_pham = #{maSanPham}";
     @Select(SELECT_ANH_SAN_PHAM)
-    public List<String> getAnhSanPham(String maSanPham);
+    public List<String> getAllAnhSanPham(String maSanPham);
 }

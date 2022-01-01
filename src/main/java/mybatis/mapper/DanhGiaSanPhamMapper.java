@@ -20,7 +20,7 @@ public interface DanhGiaSanPhamMapper {
 	 + "LEFT JOIN phan_hoi_danh_gia_sp phdgsp ON phdgsp.ma_danh_gia = dgsp.ma_danh_gia WHERE dgsp.ma_san_pham = #{maSanPham} "
 	 +"GROUP BY dgsp.ma_danh_gia ORDER BY dgsp.ngay_tao DESC;";
 	@Select(GET_ALL_DANH_GIA_SAN_PHAM)
-	public List<Map<String, Object>> getAll(String maSanPham);
+	public List<Map<String, Object>> getAllDanhGiaSanPham(String maSanPham);
 
 	// Lấy tất cả đánh giá sản phẩm ngoại trừ đánh giá của người dùng
 	final String GET_ALL_DGSP_EXCEPT_OWN = "SELECT COUNT(phdgsp.ma_phan_hoi) as so_phan_hoi, kh.ten, dgsp.ma_danh_gia ,dgsp.so_sao, dgsp.noi_dung, dgsp.ngay_tao, dgsp.ngay_sua, dgsp.ma_san_pham, "
@@ -31,7 +31,7 @@ public interface DanhGiaSanPhamMapper {
 			"WHERE dgsp.ma_san_pham = #{maSanPham} AND dgsp.ma_khach_hang != #{maKhachHang} " +
 			"GROUP BY dgsp.ma_danh_gia ORDER BY dgsp.ngay_tao DESC";
 	@Select(GET_ALL_DGSP_EXCEPT_OWN)
-	public List<Map<String, Object>> getAllExceptOwn(@Param("maSanPham") String maSanPham,
+	public List<Map<String, Object>> getAllDanhGiaSanPhamExceptOwn(@Param("maSanPham") String maSanPham,
 			@Param("maKhachHang") int maKhachHang);
 
 	// Lấy đánh giá của khách hàng cho sản phẩm tương ứng
@@ -45,7 +45,7 @@ public interface DanhGiaSanPhamMapper {
 			"GROUP BY dgsp.ma_danh_gia";
 
 	@Select(GET_BY_MAKH_AND_MASP)
-	public Map<String, Object> getByMaKHandMaSP(@Param("maKhachHang") int maKhachHang,
+	public Map<String, Object> getDanhGiaSanPhamByMaKHandMaSP(@Param("maKhachHang") int maKhachHang,
 			@Param("maSanPham") String maSanPham);
 
 	// Thêm đánh giá sản phẩm
