@@ -4,7 +4,7 @@
 <div class="container">
     <div id="sanpham"></div>
 </div>
-<script src='<c:url value="/js/khachHang/khohang/sanpham.js"/>'></script>
+<script src='<c:url value="/js/user/khohang/sanpham.js"/>'></script>
 <script>
     document.getElementById('aside-san-pham').classList.add('active');
     document.getElementById('aside-kho-hang').classList.add('menu-is-opening', 'menu-open');
