@@ -7,6 +7,7 @@ const capNhatUIGioHang = ()=>{
 const themVaoGioHang = (maSanPham) => {
     /*TODO: Thêm vào server ngay khi người dùng click chuột (liệu có lag server mysql không) */
     document.querySelector(`#button2_${maSanPham}`).innerText = "Đã thêm vào giỏ hàng"
+    document.querySelector(`#button2_${maSanPham}`).removeAttribute("onclick");
     alert("Bạn đã thêm sản phẩm có mã là:" + maSanPham);
     // Gọi lại hàm cập nhật UI giỏ hàng
     capNhatUIGioHang();
