@@ -53,6 +53,7 @@ public class DanhGiaKhachHangAction extends ActionSupport {
     })
     public String danhGiaKHSubmit() throws IOException {
         if (soSao == null || soSao < 0 || soSao > 5) {
+            System.out.print( maKHDuocDanhGia + " " + soSao);
             return CustomError.createCustomError("Đánh giá thất bại ", 400, response);
         }
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -62,6 +63,7 @@ public class DanhGiaKhachHangAction extends ActionSupport {
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         // Tạo instance DanhGiaKhachHang
         DanhGiaKhachHang dgkh = new DanhGiaKhachHang(maKHDanhGia, maKHDuocDanhGia, soSao);
+        
         DanhGiaKhachHangMapper.themDGKhachHang(dgkh);
         sqlSession.commit();
         sqlSession.close();
