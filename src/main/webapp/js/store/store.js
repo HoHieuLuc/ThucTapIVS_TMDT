@@ -122,7 +122,7 @@ const showStoreInfo = async () => {
         */
 
     //Lưu mã khách hàng được đánh giá vào element
-    maKHDuocDGDOM.innerHTML = ma_khach_hang;
+   if (maKHDuocDGDOM != undefined)   maKHDuocDGDOM.innerHTML = ma_khach_hang;
     //Số sao chỉ được lấy khi người dúng nhấm nút submit, bên JSP
     /* 
        ========================= ========================= ========================= =========================
