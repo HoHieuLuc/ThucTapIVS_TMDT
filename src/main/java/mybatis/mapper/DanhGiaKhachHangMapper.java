@@ -7,6 +7,7 @@ import com.tmdt.model.DanhGiaKhachHang;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 public interface DanhGiaKhachHangMapper {
@@ -22,6 +23,6 @@ public interface DanhGiaKhachHangMapper {
     public final String KIEM_TRA_KH_DA_DANH_GIA = "SELECT * FROM `danh_gia_khach_hang` " +
             "WHERE ma_kh_danh_gia = #{maKHDanhGia} and ma_kh_duoc_danh_gia = #{maKHDuocDanhGia};";
     @Select(KIEM_TRA_KH_DA_DANH_GIA)
-    public List<Map<String,Object>> kiemTraDanhGia();
+    public List<Map<String,Object>> kiemTraDanhGia(@Param("maKHDanhGia") int maKHDanhGia,@Param("maKHDuocDanhGia") int maKHDuocDanhGia);
 
 }

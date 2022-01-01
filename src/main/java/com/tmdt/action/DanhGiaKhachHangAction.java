@@ -60,6 +60,12 @@ public class DanhGiaKhachHangAction extends ActionSupport {
         DanhGiaKhachHangMapper DanhGiaKhachHangMapper = sqlSession.getMapper(DanhGiaKhachHangMapper.class);
         // Mã khách hàng đánh giá
         int maKHDanhGia = (int) session.getAttribute("maNguoiDung");
+
+        // Kiểm tra xem khách hàng đã đánh giá cửa hàng này hay chưa ?
+        if (DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia)!= null)
+        {
+            return CustomError.createCustomError("Bạn đã đánh giá khách hàng này", 400, response);
+        }
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         // Tạo instance DanhGiaKhachHang
         DanhGiaKhachHang dgkh = new DanhGiaKhachHang(maKHDanhGia, maKHDuocDanhGia, soSao);
