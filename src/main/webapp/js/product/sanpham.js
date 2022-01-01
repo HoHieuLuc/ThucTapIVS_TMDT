@@ -44,7 +44,7 @@ const buildInlineGallery = (images) => lightGallery(anhSanPhamDOM, {
     download: false,
 });
 
-const showSanPhamDetail = async (skip = false) => {
+const showSanPhamDetail = async (skip) => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         // có avatar nữa

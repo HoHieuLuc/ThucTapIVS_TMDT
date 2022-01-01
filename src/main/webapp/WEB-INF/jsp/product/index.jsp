@@ -73,7 +73,7 @@
 
                                 <div class="d-flex gap-2">
                                     <button type="button" id="huyDanhGiaBtn"
-                                        class="d-none btn btn-block btn-outline-danger w-100">Hủy</button>
+                                        class="btn btn-block btn-outline-danger w-100">Hủy</button>
                                     <input type="submit" id="danhGiaBtn" class="btn btn-block btn-outline-success w-100" value="Đánh giá">
                                 </div>
                             </form>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import com.tmdt.errors.CustomError;
@@ -28,16 +29,14 @@ public class DanhGiaKhachHangAction extends ActionSupport {
     HttpSession session = request.getSession();
     SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
     private Integer soSao;
-    private String username;
-    private String noiDung;
+    private String userName;
 
-    //region Getter and Setter
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Integer getSoSao() {
@@ -48,22 +47,15 @@ public class DanhGiaKhachHangAction extends ActionSupport {
         this.soSao = soSao;
     }
 
-    public String getNoiDung() {
-        return noiDung;
-    }
 
-    public void setNoiDung(String noiDung) {
-        this.noiDung = noiDung;
-    }
-    //endregion
-
-    @Action(value = "/api/v1/danhgia/store/{username}/submit", results = {
+    @Action(value = "/api/v1/danhgia/khachhang/submit", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
     public String danhGiaKHSubmit() throws IOException {
-        if (soSao == null || soSao < 0 || soSao > 5 || username == null) {
+        if (soSao == null || soSao < 0 || soSao > 5) {
+            System.out.print( userName + " " + soSao);
             return CustomError.createCustomError("Đánh giá thất bại ", 400, response);
         }
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -71,17 +63,17 @@ public class DanhGiaKhachHangAction extends ActionSupport {
         // Mã khách hàng đánh giá
         int maKHDanhGia = (int) session.getAttribute("maNguoiDung");
         // Mã khách hàng được đánh giá (Dựa vào username của store)
-        int maKHDuocDanhGia = DanhGiaKhachHangMapper.getMaKHDuocDanhGia(username);
-        if(maKHDanhGia == maKHDuocDanhGia){
-            return CustomError.createCustomError("Bạn không thể đánh giá chính mình", 400, response);
-        }
+        int maKHDuocDanhGia = DanhGiaKhachHangMapper.getMaKHDuocDanhGia(userName);
+
         // Kiểm tra xem khách hàng đã đánh giá cửa hàng này hay chưa ?
-        if (DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia) > 0) {
+        if (DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia).size() != 0)
+        {
+            System.out.println(DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia).size());
             return CustomError.createCustomError("Bạn đã đánh giá khách hàng này", 400, response);
         }
         Map<String, Object> jsonObject = new HashMap<String, Object>();
         // Tạo instance DanhGiaKhachHang
-        DanhGiaKhachHang dgkh = new DanhGiaKhachHang(maKHDanhGia, maKHDuocDanhGia, noiDung, soSao);
+        DanhGiaKhachHang dgkh = new DanhGiaKhachHang(maKHDanhGia, maKHDuocDanhGia, soSao);
         
         DanhGiaKhachHangMapper.themDGKhachHang(dgkh);
         sqlSession.commit();

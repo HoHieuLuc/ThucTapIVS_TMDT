@@ -170,7 +170,7 @@ public interface SanPhamMapper {
 
     // lấy danh sách sản phẩm theo username cho trang store
     final String GET_SAN_PHAM_BY_USERNAME = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, lsp.ten_loai_sp, " +
-            "lsp.ma_loai_sp, sp.so_luong, sp.ngay_dang, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "sp.so_luong, sp.ngay_dang, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
@@ -190,4 +190,5 @@ public interface SanPhamMapper {
             @Param("order") String order,
             @Param("offset") int offset,
             @Param("rowsPerPage") int rowsPerPage);
+
 }

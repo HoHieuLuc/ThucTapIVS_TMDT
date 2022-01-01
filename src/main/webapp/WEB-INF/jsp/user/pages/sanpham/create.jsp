@@ -43,8 +43,8 @@
     </form>
 </div>
 
-<script src='<c:url value="/js/function.js"/>'></script>
-<script src='<c:url value="/js/user/khohang/create.js"/>'></script>
+<script src='<c:url value="/js/options.js"/>'></script>
+<script src='<c:url value="/js/khachHang/khohang/create.js"/>'></script>
 <script>
     document.getElementById('aside-them-san-pham').classList.add('active');
     document.getElementById('aside-kho-hang').classList.add('menu-is-opening', 'menu-open');
