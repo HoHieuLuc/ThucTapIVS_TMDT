@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import mybatis.mapper.GioHangMapper;
@@ -65,12 +64,13 @@ public class GioHangAction extends ActionSupport {
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
         // Tạo list gioHangs;
         List<Map<String, Object>> gioHangs;
+
         // Kiểm tra nếu chưa đăng nhập thì in thông báo
         if (maKhachHang != null) {
             gioHangs = gioHangMapper.getGioHangByMaKH(maKhachHang);
             sqlSession.commit();
             sqlSession.close();
-
+            
             Map<String, Object> jsonRes = new HashMap<String, Object>();
 
             //Kiểm tra nếu giỏ hàng đang rỗng thì in thông báo
