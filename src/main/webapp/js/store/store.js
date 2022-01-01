@@ -305,15 +305,4 @@ const formDanhGiaKH_Submit =(ma_khach_hang, soSao) => {
     sendToServer(formDG_Data);
 }
 
-//Check đã đăng nhập hay chưa 
-//Nếu chưa, hiện dòng chữ, hãy đăng nhập để đánh giá
-const loginCheckFunction = async () => {
-    try {
-        await axios.get(`${baseURL}checkCustomer`);
-    }
-    catch (error) {
-        document.querySelector('#danhGiaStore_Area').innerHTML = "Bạn hãy đăng nhập để đánh giá cửa hàng nhé!";
-    }
-}
-//Chạy hàm kiểm tra đăng nhập ngay
-loginCheckFunction();
+

@@ -53,81 +53,91 @@ prefix="c" %>
             ></span>
           </div>
           <p>Đánh giá: <span id="rating"></span></p>
-          <!----------------- Khu vực đánh giá cửa hàng ------------------------------->
-          <div id="danhGiaStore_Area">
-            <!-- Nút đánh giá, hiện modal -->
-            <button
-              type="button"
-              class="btn btn-success"
-              data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
-            >
-              Đánh giá
-            </button>
+       <!----------------- Khu vực đánh giá cửa hàng, kiểm tra phải là khách hàng đăng nhập bằng JSTL ------------------------------->
+          <c:choose>
+            <c:when test="${sessionScope.level == 0}">
+            
+              <!-- Nút đánh giá, hiện modal -->
+              <button
+                type="button"
+                class="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop"
+              >
+                Đánh giá
+              </button>
 
-            <!-- Modal, hiện form đánh giá -->
-            <div
-              class="modal fade"
-              id="staticBackdrop"
-              data-bs-backdrop="static"
-              data-bs-keyboard="false"
-              tabindex="-1"
-              aria-labelledby="staticBackdropLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">
-                      Chọn mức đánh giá
-                    </h5>
-                    <button
-                      type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div class="modal-body">
-                    <p class="d-none" id="maKHDuocDanhGia">
-                      Block tàng hình để lấy mã khách hàng
-                    </p>
-                    <select
-                      class="form-select"
-                      size="5"
-                      aria-label="size 3"
-                      id="soSao"
-                      name="soSao"
-                    >
-                      <option value="1">1. Không tốt</option>
-                      <option value="2">2. Tốt Vừa</option>
-                      <option selected="3">3. Tốt</option>
-                      <option value="4">4. Rất Tốt</option>
-                      <option value="5">5. Xuất sắc</option>
-                    </select>
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Thoát
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      onclick="formDanhGiaKH_Submit(maKHDuocDGDOM.textContent,soSaoDOM.value)"
-                    >
-                      Xác nhận
-                    </button>
+              <!-- Modal, hiện form đánh giá -->
+              <div
+                class="modal fade"
+                id="staticBackdrop"
+                data-bs-backdrop="static"
+                data-bs-keyboard="false"
+                tabindex="-1"
+                aria-labelledby="staticBackdropLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">
+                        Chọn mức đánh giá
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <p class="d-none" id="maKHDuocDanhGia">
+                        Block tàng hình để lấy mã khách hàng
+                      </p>
+                      <select
+                        class="form-select"
+                        size="5"
+                        aria-label="size 3"
+                        id="soSao"
+                        name="soSao"
+                      >
+                        <option value="1">1. Không tốt</option>
+                        <option value="2">2. Tốt Vừa</option>
+                        <option selected="3">3. Tốt</option>
+                        <option value="4">4. Rất Tốt</option>
+                        <option value="5">5. Xuất sắc</option>
+                      </select>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Thoát
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        onclick="formDanhGiaKH_Submit(maKHDuocDGDOM.textContent,soSaoDOM.value)"
+                      >
+                        Xác nhận
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- Nút đánh giá, hiện modal -->
-            <!----------------- Khu vực đánh giá cửa hàng ------------------------------->
-          </div>
+              <!-- Nút đánh giá, hiện modal -->
+       <!----------------- Khu vực đánh giá cửa hàng, kiểm tra phải là khách hàng đăng nhập bằng JSTL ------------------------------->
+            </c:when>
+            <c:when test="${sessionScope.level > 0}">
+              Bạn không phải là khách hàng
+            </c:when>
+            <c:otherwise>
+              Bạn phải <a href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
+              được đánh giá cửa hàng
+            </c:otherwise>
+          </c:choose>
         </div>
         <div class="col-md-4">
           <p class="fw-bold text-center">Tổng quan đánh giá sản phẩm:</p>
