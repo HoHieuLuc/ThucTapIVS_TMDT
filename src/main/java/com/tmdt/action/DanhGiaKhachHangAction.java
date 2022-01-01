@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import com.tmdt.errors.CustomError;
@@ -62,8 +63,9 @@ public class DanhGiaKhachHangAction extends ActionSupport {
         int maKHDanhGia = (int) session.getAttribute("maNguoiDung");
 
         // Kiểm tra xem khách hàng đã đánh giá cửa hàng này hay chưa ?
-        if (DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia)!= null)
+        if (DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia).size() != 0)
         {
+            System.out.println(DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia).size());
             return CustomError.createCustomError("Bạn đã đánh giá khách hàng này", 400, response);
         }
         Map<String, Object> jsonObject = new HashMap<String, Object>();
