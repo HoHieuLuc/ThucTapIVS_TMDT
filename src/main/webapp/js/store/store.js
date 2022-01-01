@@ -1,5 +1,5 @@
 // Lẫy mã khách hàng được đánh giá và số sao đánh giá
-const maKHDuocDGDOM = document.querySelector("#maKHDuocDanhGia");
+const userNameStoreDOM = document.querySelector("#userNameStore");
 const soSaoDOM = document.querySelector("#soSao");
 
 // thông tin người bán
@@ -122,7 +122,7 @@ const showStoreInfo = async () => {
         */
 
     //Lưu mã khách hàng được đánh giá vào element
-   if (maKHDuocDGDOM != undefined)   maKHDuocDGDOM.innerHTML = ma_khach_hang;
+   if (userNameStoreDOM != undefined)   userNameStoreDOM.innerHTML = username;
     //Số sao chỉ được lấy khi người dúng nhấm nút submit, bên JSP
     /* 
        ========================= ========================= ========================= =========================

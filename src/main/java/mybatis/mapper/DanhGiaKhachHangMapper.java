@@ -22,7 +22,15 @@ public interface DanhGiaKhachHangMapper {
     // Kiểm tra khách hàng đã đánh giá
     public final String KIEM_TRA_KH_DA_DANH_GIA = "SELECT * FROM `danh_gia_khach_hang` " +
             "WHERE ma_kh_danh_gia = #{maKHDanhGia} and ma_kh_duoc_danh_gia = #{maKHDuocDanhGia};";
-    @Select(KIEM_TRA_KH_DA_DANH_GIA)
-    public List<Map<String,Object>> kiemTraDanhGia(@Param("maKHDanhGia") int maKHDanhGia,@Param("maKHDuocDanhGia") int maKHDuocDanhGia);
 
+    @Select(KIEM_TRA_KH_DA_DANH_GIA)
+    public List<Map<String, Object>> kiemTraDanhGia(@Param("maKHDanhGia") int maKHDanhGia,
+            @Param("maKHDuocDanhGia") int maKHDuocDanhGia);
+
+    // Lấy mã khách hàng được đánh giá dựa vào username của khách hàng đó (ở trang
+    // store)
+    public final String GET_MA_KH_DUOC_DANH_GIA = "SELECT kh.ma_khach_hang FROM khach_hang kh " +
+     "JOIN tai_khoan tk on tk.id = kh.ma_khach_hang WHERE tk.username = #{userName};";
+     @Select(GET_MA_KH_DUOC_DANH_GIA)
+     public int getMaKHDuocDanhGia(String userName);
 }

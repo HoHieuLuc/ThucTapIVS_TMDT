@@ -91,8 +91,8 @@ prefix="c" %>
                       ></button>
                     </div>
                     <div class="modal-body">
-                      <p class="d-none" id="maKHDuocDanhGia">
-                        Block tàng hình để lấy mã khách hàng
+                      <p class="d-none" id="userNameStore">
+                        Block tàng hình để lấy username của store hiện tại
                       </p>
                       <select
                         class="form-select"
@@ -119,7 +119,7 @@ prefix="c" %>
                       <button
                         type="button"
                         class="btn btn-primary"
-                        onclick="formDanhGiaKH_Submit(maKHDuocDGDOM.textContent,soSaoDOM.value)"
+                        onclick="formDanhGiaKH_Submit(userNameStoreDOM.textContent,soSaoDOM.value)"
                       >
                         Xác nhận
                       </button>

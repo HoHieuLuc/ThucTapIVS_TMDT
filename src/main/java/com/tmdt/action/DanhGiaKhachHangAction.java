@@ -29,7 +29,15 @@ public class DanhGiaKhachHangAction extends ActionSupport {
     HttpSession session = request.getSession();
     SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
     private Integer soSao;
-    private int maKHDuocDanhGia;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Integer getSoSao() {
         return soSao;
@@ -39,13 +47,6 @@ public class DanhGiaKhachHangAction extends ActionSupport {
         this.soSao = soSao;
     }
 
-    public int getMaKHDuocDanhGia() {
-        return maKHDuocDanhGia;
-    }
-
-    public void setMaKHDuocDanhGia(int maKHDuocDanhGia) {
-        this.maKHDuocDanhGia = maKHDuocDanhGia;
-    }
 
     @Action(value = "/api/v1/danhgia/khachhang/submit", results = {
             @Result(name = SUCCESS, location = "/index.html")
@@ -54,13 +55,15 @@ public class DanhGiaKhachHangAction extends ActionSupport {
     })
     public String danhGiaKHSubmit() throws IOException {
         if (soSao == null || soSao < 0 || soSao > 5) {
-            System.out.print( maKHDuocDanhGia + " " + soSao);
+            System.out.print( userName + " " + soSao);
             return CustomError.createCustomError("Đánh giá thất bại ", 400, response);
         }
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DanhGiaKhachHangMapper DanhGiaKhachHangMapper = sqlSession.getMapper(DanhGiaKhachHangMapper.class);
         // Mã khách hàng đánh giá
         int maKHDanhGia = (int) session.getAttribute("maNguoiDung");
+        // Mã khách hàng được đánh giá (Dựa vào username của store)
+        int maKHDuocDanhGia = DanhGiaKhachHangMapper.getMaKHDuocDanhGia(userName);
 
         // Kiểm tra xem khách hàng đã đánh giá cửa hàng này hay chưa ?
         if (DanhGiaKhachHangMapper.kiemTraDanhGia(maKHDanhGia,maKHDuocDanhGia).size() != 0)
