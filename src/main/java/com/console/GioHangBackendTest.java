@@ -43,6 +43,12 @@ public class GioHangBackendTest {
         gioHangs.addAll(sellerList);
         System.out.println("-----------Giỏ hàng--------");
         System.out.println(gson.toJson(gioHangs));
+
+
+        if (gioHangMapper.deleteSP(maKhachHang,"35a99f29-64da-11ec-bb14-8378cfa7d63d") == 0) {
+          System.out.println("Sản phẩm cần xóa không có");
+        }
+        sqlSession.commit();
            
         // }
         // System.out.println("--------Danh sách các sản phẩm theo từng id--------");
