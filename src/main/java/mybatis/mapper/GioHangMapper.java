@@ -1,5 +1,6 @@
 package mybatis.mapper;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import org.apache.ibatis.annotations.Update;
 
 public interface GioHangMapper {
 //Lấy danh sách mã người bán từ giỏ hàng của khách hàng 1
-final String SELLER_LIST = "SELECT sp.ma_khach_hang as 'seller_id' from gio_hang gh JOIN khach_hang kh on gh.ma_khach_hang = kh.ma_khach_hang join san_pham sp on sp.ma_san_pham = gh.ma_san_pham where gh.ma_khach_hang = #{maKhachHang};";
+final String SELLER_LIST = "SELECT sp.ma_khach_hang as 'seller_id' from gio_hang gh JOIN khach_hang kh on gh.ma_khach_hang = kh.ma_khach_hang join san_pham sp on sp.ma_san_pham = gh.ma_san_pham where gh.ma_khach_hang = #{maKhachHang} GROUP BY sp.ma_khach_hang";
 @Select(SELLER_LIST)
 public List<Integer> getSellerList(int maKhachHang);
 
@@ -20,7 +21,7 @@ public List<Integer> getSellerList(int maKhachHang);
 final String GET_GH_INFO_BY_SELLER_ID = "SELECT sp.ten_san_pham,sp.gia,gh.so_luong,kh.ten as 'seller_name' FROM gio_hang gh JOIN san_pham sp on gh.ma_san_pham =sp.ma_san_pham JOIN khach_hang kh on sp.ma_khach_hang = kh.ma_khach_hang " +
 " WHERE gh.ma_khach_hang = #{maNguoiMua} and sp.ma_khach_hang = #{maNguoiBan};";
 @Select(GET_GH_INFO_BY_SELLER_ID)
-public List<Map<String,Object>> getGH_Info_By_Seller_ID(@Param("maNguoiBan") int maKhachHang, @Param("maNguoiMua") int maNguoiMua); 
+public List<Map<String,Object>> getGH_Info_By_Seller_ID(@Param("maNguoiMua") int maNguoiMua,@Param("maNguoiBan") int maKhachHang); 
 
 
 // Hàm lấy giỏ hàng của khách đang đăng nhập
