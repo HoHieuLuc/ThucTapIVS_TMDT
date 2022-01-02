@@ -17,7 +17,6 @@ import mybatis.mapper.GioHangMapper;
 import com.tmdt.errors.CustomError;
 import com.tmdt.utilities.JsonResponse;
 
-
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -102,27 +101,46 @@ public class GioHangAction extends ActionSupport {
 
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
-        
-        //Thêm sản phẩm
+
+        // Thêm sản phẩm
         try {
             gioHangMapper.themSP_GioHang(maKhachHang, maSanPham);
-        }
-        catch (PersistenceException e)
-        {
-            if (e.getMessage().contains("PRIMARY"))
-            {
+        } catch (PersistenceException e) {
+            if (e.getMessage().contains("PRIMARY")) {
                 gioHangMapper.increaseSoLuongSP(maKhachHang, maSanPham);
             }
-            if (e.getMessage().contains("FOREIGN"))
-            {
+            if (e.getMessage().contains("FOREIGN")) {
                 return CustomError.createCustomError("Sản phẩm không tồn tại", 404, response);
             }
-        }
-        finally {
+        } finally {
             sqlSession.commit();
             sqlSession.close();
         }
         return CustomError.createCustomError("Thêm sp vào giỏ hàng thành công", 200, response);
+
+    }
+
+    @Action(value = "/api/v1/giohang/{maSanPham}/xoa", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+
+    public String xoa_GioHang() throws IOException {
+
+        // SqlSession và Mapper
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
+
+        // Lấy mã khách hàng từ session
+        Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
+
+        // Xóa sản phẩm
+
+        gioHangMapper.deleteSP(maKhachHang, maSanPham);
+        sqlSession.commit();
+        sqlSession.close();
+        return CustomError.createCustomError("Xóa sản phẩm khỏi giỏ hàng thành công", 200, response);
 
     }
 }
