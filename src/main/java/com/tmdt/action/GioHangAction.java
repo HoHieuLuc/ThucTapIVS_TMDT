@@ -1,6 +1,7 @@
 package com.tmdt.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,28 +65,25 @@ public class GioHangAction extends ActionSupport {
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
         // Tạo list gioHangs;
-        List<Map<String, Object>> gioHangs;
+        List<Map<String, Object>> gioHangs = new ArrayList<Map<String, Object>>();
 
         // Lấy seller id cho các sản phẩm trong giỏ hàng
-        List<Integer> sellerID = gioHangMapper.getSellerList(maKhachHang);
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(sellerID));
-        gioHangs = gioHangMapper.getGioHangByMaKH(maKhachHang);
+        List<Map<String, Object>> sellerList = gioHangMapper.getSellerList(maKhachHang);
+        for (Map<String, Object> seller : sellerList) {
+            // System.out.println(gson.toJson(gioHangMapper.getGH_Info_By_Seller_ID(1,
+            // integer)));
+            List<Map<String, Object>> sanPhams = gioHangMapper.getGH_Info_By_Seller_ID(1,
+                    (String) seller.get("username"));
+            seller.put("san_phams", sanPhams);
+        }
+        gioHangs.addAll(sellerList);
         sqlSession.commit();
         sqlSession.close();
 
         Map<String, Object> jsonRes = new HashMap<String, Object>();
 
-        // Kiểm tra nếu giỏ hàng đang rỗng thì in thông báo
-        if (gioHangs.size() > 0) {
-            jsonRes.put("gioHangs", gioHangs);
-            return JsonResponse.createJsonResponse(jsonRes, 200, response);
-        } else {
-            CustomError.createCustomError("Bạn chưa có sản phẩm nào trong giỏ hàng", 400, response);
-        }
-
-        
-        return SUCCESS;
+        jsonRes.put("gio_hangs", gioHangs);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
 
     }
 }

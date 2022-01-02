@@ -39,7 +39,7 @@ public List<Map<String,Object>> getGH_Info_By_Seller_ID(@Param("maNguoiMua") int
  @Select(GET_GIO_HANG_BY_MA_KH)
  public List<Map<String,Object>> getGioHangByMaKH(int maKhachHang);
 
- //Hàm thêm sản phẩm vào giỏ hàng
+ //Hàm thêm sản phẩm vào giỏ hàng, nếu bị trùng, dùng hàm update số lượng lên 1
   final String THEM_SP_VAO_GIO_HANG =  "INSERT INTO `gio_hang` (`ma_khach_hang`, `ma_san_pham`, `so_luong`) " +
   "VALUES (#{maKhacHang},#{maSanPham},'1')";
   @Insert(THEM_SP_VAO_GIO_HANG)
