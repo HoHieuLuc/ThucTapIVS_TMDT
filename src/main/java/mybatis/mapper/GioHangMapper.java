@@ -41,16 +41,22 @@ public List<Map<String,Object>> getGH_Info_By_Seller_ID(@Param("maNguoiMua") int
 
  //Hàm thêm sản phẩm vào giỏ hàng, nếu bị trùng, dùng hàm update số lượng lên 1
   final String THEM_SP_VAO_GIO_HANG =  "INSERT INTO `gio_hang` (`ma_khach_hang`, `ma_san_pham`, `so_luong`) " +
-  "VALUES (#{maKhacHang},#{maSanPham},'1')";
+  "VALUES (#{maKhachHang},#{maSanPham},'1')";
   @Insert(THEM_SP_VAO_GIO_HANG)
   public void themSP_GioHang(@Param("maKhachHang") int maKhachHang,@Param("maSanPham") String maSanPham);
 
-  //cập nhật số lượng sản phẩm trong giỏ hàng
-  final String UPDATE_SO_LUONG_SP = "UPDATE `gio_hang` SET `ma_khach_hang` = #{maKhachHang}, `ma_san_pham` = #{maSanPham}, " +
-  "`so_luong` = #{soLuong} " +
-  "WHERE `gio_hang`.`ma_khach_hang` = #{maKhachHang} AND `gio_hang`.`ma_san_pham` = #{maSanPham};";
-  @Update(UPDATE_SO_LUONG_SP)
-  public void updateSoLuongSP(@Param("maKhachHang") int maKhachHang,@Param("maSanPham") String maSanPham,@Param("soLuong") int soLuong);
+  //cập nhật số lượng sản phẩm trong giỏ hàng, khi người dùng bấm nút thêm giỏ hàng nhiều lần
+  final String INCREASE_SL_SP = "UPDATE `gio_hang` SET `ma_khach_hang` = 1, `so_luong` = `so_luong` + 1 " +
+  " WHERE `gio_hang`.`ma_khach_hang` = #{maKhachHang} AND `gio_hang`.`ma_san_pham` = #{maSanPham}";
+  @Update(INCREASE_SL_SP)
+  public void increaseSoLuongSP(@Param("maKhachHang") int maKhachHang,@Param("maSanPham") String maSanPham);
+
+    //cập nhật số lượng sản phẩm trong giỏ hàng
+    final String UPDATE_SO_LUONG_SP = "UPDATE `gio_hang` SET `ma_khach_hang` = #{maKhachHang}, `ma_san_pham` = #{maSanPham}, " +
+    "`so_luong` = #{soLuong} " +
+    "WHERE `gio_hang`.`ma_khach_hang` = #{maKhachHang} AND `gio_hang`.`ma_san_pham` = #{maSanPham};";
+    @Update(UPDATE_SO_LUONG_SP)
+    public void updateSoLuongSP(@Param("maKhachHang") int maKhachHang,@Param("maSanPham") String maSanPham,@Param("soLuong") int soLuong);
 
 
   //Xóa sản phẩm ra khỏi giỏ hàng
