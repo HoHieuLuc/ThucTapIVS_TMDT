@@ -20,7 +20,7 @@ public interface DatHangMapper {
     //Lấy mã đặt hàng gần đây nhất của khách hàng để làm chi tiết đặt hàng
     final String GET_MA_DH_LATELY = "SELECT ma_dat_hang from dat_hang WHERE ma_khach_hang = #{maKhachHang} ORDER BY ma_dat_hang DESC limit 1;";
     @Select(GET_MA_DH_LATELY)
-    public int getMaDHLatELY(int maKhachHang);
+    public int getMaDHLatelY(int maKhachHang);
 
     //Thêm chi tiết đặt hàng
     final String THEM_CHI_TIET_DH ="INSERT INTO `chi_tiet_dat_hang`(`ma_dat_hang`, `ma_san_pham`, `so_luong`) VALUES (#{maDatHang},#{maSanPham},#{soLuong})";
