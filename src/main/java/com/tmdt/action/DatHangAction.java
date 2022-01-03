@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.mysql.cj.xdevapi.SessionFactory;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import com.tmdt.errors.CustomError;
