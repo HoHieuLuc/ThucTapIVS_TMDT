@@ -11,23 +11,21 @@ public interface DatHangMapper {
     //Tham khảo từ (https://dev.mysql.com/)
     final String THEM_DON_DH_MOI = "INSERT INTO `dat_hang`(`ma_dat_hang`, `ma_khach_hang`, `ngay_dat`, `tong_tien`, `tinh_trang`) "+ 
     "VALUES (NULL,#{maKhachHang},now(),(select sum(gh.so_luong*sp.gia) from gio_hang gh join san_pham sp " +
-    "on sp.ma_san_pham = gh.ma_san_pham where gh.ma_khach_hang = #{maKhachHang}),0)";
-    @Insert(THEM_DON_DH_MOI)
-    public void themDonDHMoi(
+    "on sp.ma_san_pham = gh.ma_san_pham where gh.ma_khach_hang = #{maKhachHang}),0); " +
+    "Select last_insert_id();";
+    @Select(THEM_DON_DH_MOI)
+    public int themDonDHMoi(
         @Param("maKhachHang") int maKhachHang
     );
 
-    //Lấy mã đặt hàng gần đây nhất của khách hàng để làm chi tiết đặt hàng
-    final String GET_MA_DH_LATELY = "SELECT ma_dat_hang from dat_hang WHERE ma_khach_hang = #{maKhachHang} ORDER BY ma_dat_hang DESC limit 1;";
-    @Select(GET_MA_DH_LATELY)
-    public int getMaDHLatelY(int maKhachHang);
-
     //Thêm chi tiết đặt hàng
-    final String THEM_CHI_TIET_DH ="INSERT INTO `chi_tiet_dat_hang`(`ma_dat_hang`, `ma_san_pham`, `so_luong`) VALUES (#{maDatHang},#{maSanPham},#{soLuong})";
+    final String THEM_CHI_TIET_DH ="INSERT INTO `chi_tiet_dat_hang` (`ma_dat_hang`, `ma_san_pham`, `so_luong`) VALUES (#{maDatHang},#{maSanPham},#{soLuong}); " +
+    "DELETE FROM `gio_hang` WHERE ma_khach_hang = #{maKhachHang} and ma_san_pham = #{maSanPham}";
     @Insert(THEM_CHI_TIET_DH)
     public void themChiTietDh(
         @Param("maDatHang") int maDatHang,
         @Param("maSanPham") String maSanPham,
+        @Param("maKhachHang") int maKhachHang,
         @Param("soLuong") int soLuong
     );
 
