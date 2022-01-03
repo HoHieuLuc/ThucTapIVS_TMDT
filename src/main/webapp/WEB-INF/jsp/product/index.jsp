@@ -82,7 +82,7 @@
                             Bạn không phải là khách hàng
                         </c:when>
                         <c:otherwise>
-                            Bạn phải <a href='<c:url value="/login"/>'>Đăng nhập</a> thì mới được đánh giá sản phẩm
+                            Bạn phải <a id="loginDanhGia" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới được đánh giá sản phẩm
                         </c:otherwise>
                     </c:choose>
                 </div>
