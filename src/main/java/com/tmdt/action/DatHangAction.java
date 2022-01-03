@@ -84,7 +84,7 @@ public class DatHangAction extends ActionSupport {
         try {
             datHangMapper.themDonDHMoi(maKhachHang, tongTien, 0, maSanPham, soLuong);
             // Khi sai mã sản phẩm ở câu querry thứ 2
-            // Thì câu querry thứ nhất không commit được dữ liệu vào database
+            // Thì câu querry thứ nhất không commit được dữ liệu vào database, dù nó chạy được
             sqlSession.commit();
         } catch (PersistenceException e) {
             //System.out.println(e.getMessage());
@@ -92,7 +92,6 @@ public class DatHangAction extends ActionSupport {
                 return CustomError.createCustomError("Thêm đơn đặt hàng thất bại",401,response);
             }
         } finally {
-
             sqlSession.close();
         }
         return SUCCESS;
