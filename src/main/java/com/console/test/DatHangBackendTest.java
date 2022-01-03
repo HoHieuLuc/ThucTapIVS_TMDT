@@ -28,8 +28,8 @@ public class DatHangBackendTest {
          
          try {
             datHangMapper.themDonDHMoi(maKhachHang, 88000, 0, "abcd", 1);
-            // Chỉ cần có lỗi sai mã sản phẩm thì dữ liệu sẽ không bao giờ 
-            // commit vào database dù cho câu insert đầu tiên chạy được
+            // Khi sai mã sản phẩm ở câu querry thứ 2  
+            // Thì câu querry thứ nhất không commit được dữ liệu vào database
             sqlSession.commit();
          }
          catch(PersistenceException e) {
