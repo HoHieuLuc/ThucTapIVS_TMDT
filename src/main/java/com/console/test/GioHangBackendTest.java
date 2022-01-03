@@ -1,4 +1,4 @@
-package com.console;
+package com.console.test;
 
 
 import java.util.ArrayList;
