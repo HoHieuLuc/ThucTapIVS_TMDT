@@ -101,7 +101,7 @@ prefix="c" %>
               Bạn không phải là khách hàng
             </c:when>
             <c:otherwise>
-              Bạn phải <a id="loginDanhGiaKH" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
+              Bạn phải <a id="loginDanhGia" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
               được đánh giá cửa hàng
             </c:otherwise>
           </c:choose>
@@ -143,6 +143,9 @@ prefix="c" %>
       <div class="mb-2">
         Số mặt hàng mỗi trang:
         <select class="rowsPerPage rounded">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
           <option value="10" selected>10</option>
           <option value="20">20</option>
           <option value="30">30</option>
