@@ -49,14 +49,14 @@ const showSanPhamDetail = async (skip = false) => {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         // có avatar nữa
         const { tenSanPham, tenKhachHang, moTa, gia, anhSanPhams, xepHang, username } = sanpham;
-        danhGiaDOM.innerHTML = xepHang ?? "Chưa có đánh giá";
+        danhGiaDOM.textContent = xepHang ?? "Chưa có đánh giá";
         if (skip) {
             return;
         }
-        tenSanPhamDOM.innerHTML = tenSanPham;
-        moTaSanPhamDOM.innerHTML = moTa;
+        tenSanPhamDOM.textContent = tenSanPham;
+        moTaSanPhamDOM.textContent = moTa;
         giaDOM.innerHTML = gia;
-        nguoiDangSanPham.innerHTML = tenKhachHang;
+        nguoiDangSanPham.textContent = tenKhachHang;
         nguoiDangSanPham.href = `${baseURL}store/${username}`;
         const anhSanPhamData = anhSanPhams.map((anhSanPham) => {
             return {
@@ -120,7 +120,7 @@ const showDanhGiaSPs = async () => {
 
             const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : '';
             danhGiaCuaBanHTML = `
-                <div class="comment mt-4 text-justify float-left" id="danhGiaCuaToi"> 
+                <div class="mt-4" id="danhGiaCuaToi"> 
                     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
                     <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a> <span>${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p</span>${lanSuaCuoi}
                     <br>
@@ -129,7 +129,8 @@ const showDanhGiaSPs = async () => {
                     <button class="btn btn-link text-decoration-none" onclick="suaDanhGiaSP()">Sửa</button>
                     ${phanHoiElement}
                     ${formPhanHoiElement}
-                </div>`;
+                </div>
+            `;
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
@@ -162,7 +163,7 @@ const showDanhGiaSPs = async () => {
 
                 const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
                 return `
-                    <div class="comment mt-4 text-justify float-left"> 
+                    <div class="mt-4"> 
                         <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
                         <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a><span>
                         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
@@ -193,7 +194,8 @@ showSanPhamDetail();
 const suaDanhGiaSP = () => {
     document.querySelector('#danhGiaCuaToi').style.display = 'none';
     formDOM.style.display = 'block';
-    huyDanhGiaBtnDOM.style.display = 'block';
+    huyDanhGiaBtnDOM.classList.remove('d-none');
+    huyDanhGiaBtnDOM.classList.add('d-block');
     document.querySelector('#noiDung').focus();
     danhGiaBtnDOM.value = "Cập nhật";
 }
@@ -271,7 +273,7 @@ const buildListPhanHoi = async (ma_danh_gia) => {
             const { username, avatar, ten, ngay_tao, ngay_sua, noi_dung } = phanHoiDGSP;
             const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
             return `
-                <div class="comment m-4 text-justify float-left" style=" color: black;"> 
+                <div class="m-4"> 
                     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
                     <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a>
                     <span>
