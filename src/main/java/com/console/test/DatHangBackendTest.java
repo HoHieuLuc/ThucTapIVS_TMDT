@@ -28,12 +28,15 @@ public class DatHangBackendTest {
          
          try {
             datHangMapper.themDonDHMoi(maKhachHang, 88000, 0, "abcd", 1);
+            // Chỉ cần có lỗi sai mã sản phẩm thì dữ liệu sẽ không bao giờ 
+            // commit vào database dù cho câu insert đầu tiên chạy được
+            sqlSession.commit();
          }
          catch(PersistenceException e) {
             System.out.println(e.getMessage());
          }
          finally {
-             sqlSession.commit();
+             
              sqlSession.close();
          }
     }
