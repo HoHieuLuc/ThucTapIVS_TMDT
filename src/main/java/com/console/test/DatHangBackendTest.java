@@ -27,7 +27,7 @@ public class DatHangBackendTest {
          Integer maKhachHang = 1;
          
          try {
-            datHangMapper.themDonDHMoi(maKhachHang, 88000, 0, "abcd", 1);
+            datHangMapper.themDonDHMoi(maKhachHang);
             // Khi sai mã sản phẩm ở câu querry thứ 2  
             // Thì câu querry thứ nhất không commit được dữ liệu vào database
             sqlSession.commit();

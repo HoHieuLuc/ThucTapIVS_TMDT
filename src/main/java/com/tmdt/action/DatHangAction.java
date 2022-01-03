@@ -26,47 +26,7 @@ public class DatHangAction extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
     static SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
-    /* Getter and setter */
-
-    int tongTien;
-    int tinhTrang;
-    String maSanPham;
-    int soLuong;
-
-    public int getTongTien() {
-        return tongTien;
-    }
-
-    public void setTongTien(int tongTien) {
-        this.tongTien = tongTien;
-    }
-
-    public int getTinhTrang() {
-        return tinhTrang;
-    }
-
-    public void setTinhTrang(int tinhTrang) {
-        this.tinhTrang = tinhTrang;
-    }
-
-    public String getMaSanPham() {
-        return maSanPham;
-    }
-
-    public void setMaSanPham(String maSanPham) {
-        this.maSanPham = maSanPham;
-    }
-
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
-    }
-
-    /* End Getter and setter */
-
+    
     // Lấy mã khách hàng từ session
     Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
 
@@ -82,7 +42,7 @@ public class DatHangAction extends ActionSupport {
 
         //Thêm đơn đặt hàng mới
         try {
-            datHangMapper.themDonDHMoi(maKhachHang, tongTien, 0, maSanPham, soLuong);
+            datHangMapper.themDonDHMoi(maKhachHang);
             // Khi sai mã sản phẩm ở câu querry thứ 2
             // Thì câu querry thứ nhất không commit được dữ liệu vào database, dù nó chạy được
             sqlSession.commit();
