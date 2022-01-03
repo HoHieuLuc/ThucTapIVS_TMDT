@@ -235,6 +235,7 @@ searchFormDOM.addEventListener("submit", (event) => {
 // khi đổi giá trị số mặt hàng mỗi trang
 rowsPerPageDOM.addEventListener("change", () => {
     changeURLparam("rpp", rowsPerPageDOM.value);
+    removeURLparam("page");
     showProductList();
 });
 
