@@ -71,9 +71,7 @@ public class GioHangAction extends ActionSupport {
         // Lấy seller id cho các sản phẩm trong giỏ hàng
         List<Map<String, Object>> sellerList = gioHangMapper.getSellerList(maKhachHang);
         for (Map<String, Object> seller : sellerList) {
-            // System.out.println(gson.toJson(gioHangMapper.getGH_Info_By_Seller_ID(1,
-            // integer)));
-            List<Map<String, Object>> sanPhams = gioHangMapper.getGH_Info_By_Seller_ID(1,
+            List<Map<String, Object>> sanPhams = gioHangMapper.getGH_Info_By_Seller_ID(maKhachHang,
                     (String) seller.get("username"));
             seller.put("san_phams", sanPhams);
         }
@@ -150,18 +148,19 @@ public class GioHangAction extends ActionSupport {
     })
 
     public String capNhatGioHang() throws IOException {
-
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
-
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
 
         // Cập nhật lại giỏ hàng
-        if (soLuong < 0) {
+        if (soLuong < 1) {
             sqlSession.close();
-            return CustomError.createCustomError("Số lượng sản phẩm không được < = 0", 401, response);
+            jsonRes.put("soLuong", 1);
+            jsonRes.put("message", "Số lượng không hợp lệ");
+            return JsonResponse.createJsonResponse(jsonRes, 400, response);
         }
 
         /// Kiểm tra xem số lượng trong giỏ hàng có <= số lượng hiện có sản phẩm đó hay
@@ -171,15 +170,16 @@ public class GioHangAction extends ActionSupport {
         if (soLuong > soLuongSP_HienCo) {
             // Điều chỉnh lại con số trong input số lượng của sản phẩm đó
             // Bằng JsonRes và hiện thông báo
-            Map<String, Object> jsonRes = new HashMap<String, Object>();
-            jsonRes.put("so_luong_maximum", soLuongSP_HienCo);
-            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa là: " + soLuongSP_HienCo);
-            return JsonResponse.createJsonResponse(jsonRes, 200, response);
+            sqlSession.close();
+            jsonRes.put("soLuong", soLuongSP_HienCo);
+            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSP_HienCo + " sản phẩm");
+            return JsonResponse.createJsonResponse(jsonRes, 403, response);
         }
 
         gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham, soLuong);
         sqlSession.commit();
         sqlSession.close();
-        return CustomError.createCustomError("Cập nhật số lượng sản phẩm thành công", 200, response);
+        jsonRes.put("soLuong", soLuong);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }
