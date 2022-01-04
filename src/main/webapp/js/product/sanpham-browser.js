@@ -10,7 +10,12 @@ const showSanPhamList = async () => {
             const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
             return `
                 <div class="col-sm-3 mb-2">
-                  <img src="${baseURL}images/product/${anhSanPham}" class="img-responsive" style="width: 200px; height: 200px;" alt="${tenSanPham}">
+                  <img 
+                    src="${baseURL}images/product/${anhSanPham}" 
+                    class="img-responsive" 
+                    style="object-fit: contain; width: 100%; height: 12rem;" 
+                    alt="${tenSanPham}"
+                  >
                   <p style="color:red;font-size:25px;font-family:poroto">${gia} VNĐ</p>
                   <p>${tenSanPham}</p>
                   <div class="d-flex gap-2">
