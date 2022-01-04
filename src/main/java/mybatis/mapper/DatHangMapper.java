@@ -25,8 +25,8 @@ public interface DatHangMapper {
     // Thêm chi tiết đặt hàng
     final String THEM_CHI_TIET_DH = "INSERT INTO `chi_tiet_dat_hang` (`ma_dat_hang`, `ma_san_pham`, `so_luong`) VALUES (#{maDatHang},#{maSanPham},#{soLuong}); "
             +
-            "DELETE FROM `gio_hang` WHERE ma_khach_hang = #{maKhachHang} and ma_san_pham = #{maSanPham}";
-
+            "DELETE FROM `gio_hang` WHERE ma_khach_hang = #{maKhachHang} and ma_san_pham = #{maSanPham}; " +
+            "update san_pham set so_luong = so_luong - #{soLuong}, so_luong_da_ban = so_luong_da_ban + #{soluong} where ma_san_pham = #{maSanPham};";
     @Insert(THEM_CHI_TIET_DH)
     public void themChiTietDh(
             @Param("maDatHang") int maDatHang,
