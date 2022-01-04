@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import mybatis.mapper.GioHangMapper;
@@ -88,13 +87,14 @@ public class GioHangAction extends ActionSupport {
 
     }
 
-    @Action(value = "/api/v1/giohang/{maSanPham}/them", results = {
+    @Action(value = "/api/v1/giohang/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "khachHangStack"),
     })
-    public String themSP_GioHang() throws IOException {
-
+    public String themVaoGioHang() throws IOException {
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        if (loggedIn == null || !loggedIn) {
+            return CustomError.createCustomError("Bạn chưa đăng nhập", 401, response);
+        }
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
@@ -116,17 +116,16 @@ public class GioHangAction extends ActionSupport {
             sqlSession.commit();
             sqlSession.close();
         }
-        return CustomError.createCustomError("Thêm sp vào giỏ hàng thành công", 200, response);
-
+        return CustomError.createCustomError("Thêm sản phẩm vào giỏ hàng thành công", 200, response);
     }
 
-    @Action(value = "/api/v1/giohang/{maSanPham}/xoa", results = {
+    @Action(value = "/api/v1/giohang/xoa", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
 
-    public String xoa_GioHang() throws IOException {
+    public String xoaKhoiGioHang() throws IOException {
 
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -143,13 +142,13 @@ public class GioHangAction extends ActionSupport {
 
     }
 
-    @Action(value = "/api/v1/giohang/{maSanPham}/sua", results = {
+    @Action(value = "/api/v1/giohang/capnhat", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
 
-    public String sua_GioHang() throws IOException {
+    public String capNhatGioHang() throws IOException {
 
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -159,11 +158,9 @@ public class GioHangAction extends ActionSupport {
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
 
         // Sửa sản phẩm
-        gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham,soLuong);
+        gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham, soLuong);
         sqlSession.commit();
         sqlSession.close();
         return CustomError.createCustomError("Cập nhật số lượng sản phẩm thành công", 200, response);
-
     }
-
 }
