@@ -35,7 +35,7 @@ public class GlobalAction extends ActionSupport {
     // nếu để /store/{.*} hay /store/{[a-zA-Z0-9]+} hay đủ thứ loại regex
     // thì nó vẫn báo cái warning khá là khó chịu, nên tạo 1 biến params nhét vô
     // luôn
-@Action(value = "/store/{params}", results = {
+    @Action(value = "/store/{params}", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/store/index.jsp")
     })
     public String storePage() {
@@ -43,20 +43,19 @@ public class GlobalAction extends ActionSupport {
     }
 
     // Xem danh sách các store
-    @Action(value = "/store",results = {
-        @Result(name = "success",location = "/WEB-INF/jsp/store/listStore.jsp")
+    @Action(value = "/store", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/store/listStore.jsp")
     })
-    public String listStorePage(){
+    public String listStorePage() {
         return SUCCESS;
     }
 
-
-    //Xem danh sách sản phẩm đã được lọc theo loại sản phẩm
-    //src\main\webapp\WEB-INF\jsp\product-type\index.jsp
-    @Action(value = "/category/{params}",results = {
-        @Result(name = "success",location = "/WEB-INF/jsp/product-type/index.jsp")
+    // Xem danh sách sản phẩm đã được lọc theo loại sản phẩm
+    // src\main\webapp\WEB-INF\jsp\product-type\index.jsp
+    @Action(value = "/category/{params}", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/product-type/index.jsp")
     })
-    public String listSanPhamByProductType(){
+    public String listSanPhamByProductType() {
         return SUCCESS;
     }
 
@@ -69,6 +68,14 @@ public class GlobalAction extends ActionSupport {
     }
 
     /* route cho khách hàng */
+    // giỏ hàng
+    @Action(value = "/cart", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/cart/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack") })
+    public String cartPage() {
+        return SUCCESS;
+    }
+
     // dashboard
     @Action(value = "/user/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/user/index.jsp")
