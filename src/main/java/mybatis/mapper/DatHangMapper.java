@@ -9,10 +9,13 @@ public interface DatHangMapper {
     // To obtain the value immediately after an INSERT, use a SELECT query with the
     // LAST_INSERT_ID() function.
     // Tham khảo từ (https://dev.mysql.com/)
+
     final String THEM_DON_DH_MOI = "INSERT INTO `dat_hang`(`ma_dat_hang`, `ma_khach_hang`, `ngay_dat`, `tong_tien`, `tinh_trang`) "
             +
-            "VALUES (NULL,#{maKhachHang},now(),(select sum(gh.so_luong*sp.gia) from gio_hang gh join san_pham sp " +
-            "on sp.ma_san_pham = gh.ma_san_pham where gh.ma_khach_hang = #{maKhachHang}),0); " +
+            "VALUES (NULL,#{maKhachHang},now(), " +
+                        "(select sum(gh.so_luong*sp.gia) from gio_hang gh join san_pham sp " +
+                                 /* Ràng buộc chỉ thêm khi sản phẩm đó có đủ số lượng --------- (Ràng buộc vào column `tong_tien`)  */
+                        "on sp.ma_san_pham = gh.ma_san_pham where gh.ma_khach_hang = #{maKhachHang} AND gh.so_luong <= sp.so_luong),0); " +
             "Select last_insert_id();";
 
     @Select(THEM_DON_DH_MOI)
@@ -59,7 +62,7 @@ public interface DatHangMapper {
             "(select sum(gh.so_luong*sp.gia) from gio_hang gh join san_pham sp " +
             " on sp.ma_san_pham = gh.ma_san_pham " +
             "JOIN khach_hang kh on kh.ma_khach_hang = sp.ma_khach_hang JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
-            "where gh.ma_khach_hang = #{maKhachHang} and tk.username = #{usernameNguoiBan}),0); " +
+            "where gh.ma_khach_hang = #{maKhachHang} and tk.username = #{usernameNguoiBan} AND gh.so_luong <= sp.so_luong),0); " +
             "Select last_insert_id();";
     @Select(THEM_DON_DH_THEO_SELLER)
     public int themDonDHTheoSeller(
