@@ -89,7 +89,7 @@ public interface GioHangMapper {
    */
   final String CHECK_SP_HET_HANG = "select sp.so_luong as 'so_luong_hien_co',sp.ten_san_pham,gh.so_luong as 'so_luong_can_mua' " +
     "from gio_hang gh join san_pham sp on sp.ma_san_pham = gh.ma_san_pham " +
-    "where gh.ma_khach_hang = #{maKhachHang} AND gh.so_luong = #{soLuong} and sp.ma_san_pham = #{maSanPham} AND gh.so_luong > sp.so_luong;";
+    "where gh.ma_khach_hang = #{maKhachHang} and gh.ma_san_pham = #{maSanPham} AND #{soLuong} > sp.so_luong;";
 
   @Select(CHECK_SP_HET_HANG)
   public List<Map<String, Object>> checkSPHetHang(
