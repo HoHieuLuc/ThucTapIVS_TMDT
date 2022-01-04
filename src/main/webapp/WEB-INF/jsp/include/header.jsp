@@ -113,6 +113,15 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
               <c:choose>
                 <c:when test="${sessionScope.loggedIn != null && sessionScope.loggedIn == true}">
+                  <c:choose>
+                    <c:when test="${sessionScope.level == 0}">
+                      <li class="nav-item">
+                        <a class="nav-link" href='<c:url value="/cart" />'>
+                          Giỏ hàng <i class="fas fa-shopping-cart"></i>
+                        </a>
+                      </li>
+                    </c:when>
+                  </c:choose>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src='<c:url value="/images/user/${sessionScope.avatar}"/>' style="width:25px; height: 25px;" class="rounded-circle" alt="User Image">
