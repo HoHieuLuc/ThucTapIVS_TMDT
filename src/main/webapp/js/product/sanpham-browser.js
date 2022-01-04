@@ -9,17 +9,17 @@ const showSanPhamList = async () => {
         const allSanPhams = sanphams.map((sanpham) => {
             const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
             return `
-                <div class="col-sm-3">
+                <div class="col-sm-3 mb-2">
                   <img src="${baseURL}images/product/${anhSanPham}" class="img-responsive" style="width: 200px; height: 200px;" alt="${tenSanPham}">
                   <p style="color:red;font-size:25px;font-family:poroto">${gia} VNĐ</p>
                   <p>${tenSanPham}</p>
-                  <div class="card-footer">
-                    <a href="${baseURL}sanpham/${maSanPham}">
-                      <button type="button" class="btn btn-success">Xem chi tiết</button>
+                  <div class="d-flex gap-2">
+                    <a href="${baseURL}sanpham/${maSanPham}" class="btn btn-block w-100 btn-success">
+                      Chi tiết
                     </a>
-                    <a href="#">
-                    <button type="button" data-ma_san_pham="${maSanPham}" class="btn btn-success float-right">Thêm vào giỏ hàng</button>
-                    </a>
+                    <button type="button" data-masanpham="${maSanPham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
+                      <i class="fas fa-cart-plus"></i>
+                    </button>
                   </div>
                 </div>`;
         }).join('');
