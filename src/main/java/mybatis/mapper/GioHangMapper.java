@@ -1,6 +1,5 @@
 package mybatis.mapper;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +45,7 @@ public List<Map<String,Object>> getGH_Info_By_Seller_ID(@Param("maNguoiMua") int
   public void themSP_GioHang(@Param("maKhachHang") int maKhachHang,@Param("maSanPham") String maSanPham);
 
   //cập nhật số lượng sản phẩm trong giỏ hàng, khi người dùng bấm nút thêm giỏ hàng nhiều lần
-  final String INCREASE_SL_SP = "UPDATE `gio_hang` SET `ma_khach_hang` = 1, `so_luong` = `so_luong` + 1 " +
+  final String INCREASE_SL_SP = "UPDATE `gio_hang` SET `ma_khach_hang` = #{maKhachHang}, `so_luong` = `so_luong` + 1 " +
   " WHERE `gio_hang`.`ma_khach_hang` = #{maKhachHang} AND `gio_hang`.`ma_san_pham` = #{maSanPham}";
   @Update(INCREASE_SL_SP)
   public int increaseSoLuongSP(@Param("maKhachHang") int maKhachHang,@Param("maSanPham") String maSanPham);
