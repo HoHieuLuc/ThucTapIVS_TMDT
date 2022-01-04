@@ -40,6 +40,7 @@ public class RegisterAction extends ActionSupport {
     static final String USERNAME_REGEX = "^[A-Za-z0-9]{6,20}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
     static final String PHONE_REGEX = "^[0-9]{9,12}";
+    //
 
     private Date ngaySinh;
     private String ten;

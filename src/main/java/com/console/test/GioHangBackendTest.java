@@ -24,14 +24,25 @@ public class GioHangBackendTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
 
-        int listCheckSPHetHang = gioHangMapper.checkSPHetHang(1,"130ea67a-6528-11ec-b702-7845f2f0d96e",11);
-        System.out.println("Số lượng sản phẩm bị hết hàng   " +listCheckSPHetHang);
+           // // Lấy mã khách hàng từ session
+         Integer maKhachHang = 1;
+        int soLuongGH = 200;
+        String maSanPham = "130ea67a-6528-11ec-b702-7845f2f0d96e";
 
-        // // Lấy mã khách hàng từ session
-        // Integer maKhachHang = 1;
+       // int listCheckSPHetHang = gioHangMapper.checkSPHetHang(maKhachHang,maSanPham,soLuongGH);
+        int soLuongSPHienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
+        if (soLuongGH > soLuongSPHienCo)
+        {
+               System.out.println("Sản phẩm này chỉ cho phép đặt tối đa là " + soLuongSPHienCo);
+        }
+        else System.out.println("OK");
+        //System.out.println("Số lượng sản phẩm bị hết hàng   " +listCheckSPHetHang);
+        
+
+     
         // // Tạo list gioHangs;
         // List<Map<String, Object>> gioHangs = new ArrayList<Map<String,Object>>();
-
+          
         // // Lấy seller id cho các sản phẩm trong giỏ hàng
         // List<Map<String,Object>> sellerList = gioHangMapper.getSellerList(maKhachHang);
         // Gson gson = new Gson();

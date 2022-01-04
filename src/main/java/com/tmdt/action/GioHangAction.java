@@ -52,8 +52,7 @@ public class GioHangAction extends ActionSupport {
 
     /* End Getter and setter */
 
-
-    /******  Lấy giỏ hàng   **********/
+    /****** Lấy giỏ hàng **********/
     @Action(value = "/api/v1/giohang", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -90,7 +89,7 @@ public class GioHangAction extends ActionSupport {
 
     }
 
-     /******  Thêm vào giỏ hàng   **********/
+    /****** Thêm vào giỏ hàng **********/
     @Action(value = "/api/v1/giohang/{maSanPham}/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -123,7 +122,7 @@ public class GioHangAction extends ActionSupport {
 
     }
 
-     /******  Xóa sản phảm khỏi giỏ hàng   **********/
+    /****** Xóa sản phảm khỏi giỏ hàng **********/
     @Action(value = "/api/v1/giohang/{maSanPham}/xoa", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -147,11 +146,14 @@ public class GioHangAction extends ActionSupport {
 
     }
 
-     /******  Sửa và cập nhật giỏ hàng   **********/
-     /** Test: Login tài khoản khách hàng trước và chạy url
-      * localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=-55 (Để test lỗi số lượng âm)
-      localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=100 (Để test số lượng vượt quá số lượng sp có sẵn)
-      */
+    /****** Sửa và cập nhật giỏ hàng **********/
+    /**
+     * Test: Login tài khoản khách hàng trước và chạy url
+     * localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=-55
+     * (Để test lỗi số lượng âm)
+     * localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=100
+     * (Để test số lượng vượt quá số lượng sp có sẵn)
+     */
     @Action(value = "/api/v1/giohang/{maSanPham}/sua", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -167,22 +169,25 @@ public class GioHangAction extends ActionSupport {
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
 
-        // Danh sách các sản phẩm có số lượng trong giỏ hàng vượt quá số lượng hiện có
-        // của sản phẩm đó
-        int listCheckSPHetHang = gioHangMapper.checkSPHetHang(maKhachHang,maSanPham,soLuong);
-        System.out.println("Số lượng sản phẩm bị hết hàng" +listCheckSPHetHang);
-        if (listCheckSPHetHang>0) {
-            sqlSession.close();
-            Map<String, Object> jsonRes = new HashMap<String, Object>();
-            jsonRes.put("san_phams_error", listCheckSPHetHang);
-            return JsonResponse.createJsonResponse(jsonRes, 200, response);
-
-        }
         // Cập nhật lại giỏ hàng
         if (soLuong < 0) {
             sqlSession.close();
             return CustomError.createCustomError("Số lượng sản phẩm không được < = 0", 401, response);
         }
+
+        /// Kiểm tra xem số lượng trong giỏ hàng có <= số lượng hiện có sản phẩm đó hay
+        /// không
+        int soLuongSP_HienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
+
+        if (soLuong > soLuongSP_HienCo) {
+            // Điều chỉnh lại con số trong input số lượng của sản phẩm đó
+            // Bằng JsonRes và hiện thông báo
+            Map<String, Object> jsonRes = new HashMap<String, Object>();
+            jsonRes.put("so_luong_maximum", soLuongSP_HienCo);
+            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa là: " + soLuongSP_HienCo);
+            return JsonResponse.createJsonResponse(jsonRes, 200, response);
+        }
+
         gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham, soLuong);
         sqlSession.commit();
         sqlSession.close();

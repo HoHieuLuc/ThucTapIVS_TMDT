@@ -97,4 +97,10 @@ public interface GioHangMapper {
     @Param("maSanPham") String maSanPham,
     @Param("soLuong") int soLuong
   );
+
+  // Số lượng tối đa có thể đặt cho sản phẩm nào đó
+  final String GET_SO_LUONG_SP_HIEN_CO = "SELECT so_luong from `san_pham` WHERE ma_san_pham = #{maSanPham}";
+  @Select(GET_SO_LUONG_SP_HIEN_CO)
+  public int getSoLuongSPHienCo(String maSanPham);
+
 }
