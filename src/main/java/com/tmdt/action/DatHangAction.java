@@ -17,7 +17,6 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
 import mybatis.mapper.DatHangMapper;
-import mybatis.mapper.GioHangMapper;
 
 public class DatHangAction extends ActionSupport {
     // Respone hay dùng cho AJAX và JSON
