@@ -20,6 +20,46 @@
       <script>
         const baseURL = <c:url value="/" />;
       </script>
+
+      <style>
+        .tlt-bottom-of-div {
+          position: absolute;
+          bottom: 0;
+        }
+
+        .tlt-description {
+          max-height: 4rem;
+          white-space: pre-line;
+          overflow-y: scroll;
+          display: block;
+        }
+
+        .tlt-comment {
+          max-height: 10rem;
+          white-space: pre-line;
+          overflow-y: scroll;
+          display: block;
+        }
+
+        button>i {
+          pointer-events: none;
+        }
+
+        ::-webkit-scrollbar {
+          width: 0.5rem;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #aaaaaa;
+          border-radius: 15px;
+        }
+      </style>
+
+
     </head>
 
     <body>
