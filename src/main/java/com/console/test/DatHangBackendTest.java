@@ -42,7 +42,10 @@ public class DatHangBackendTest {
             sqlSession.commit();
          }
          catch(PersistenceException e) {
+             //Khi không thể tạo đơn đặt hàng
             System.out.println(e.getMessage());
+            // Trả về danh sách sản phẩm hết hàng,error code 401
+            List<Map<String, Object>> checkSPHetHang = datHangMapper.checkSPHetHang(maKhachHang);
          }
          finally {
              
