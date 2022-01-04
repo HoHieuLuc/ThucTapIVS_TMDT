@@ -24,8 +24,8 @@ public class GioHangBackendTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
 
-        List<Map<String, Object>> listCheckSPHetHang = gioHangMapper.checkSPHetHang(1,"130ea67a-6528-11ec-b702-7845f2f0d96e",100);
-        System.out.println("Số lượng sản phẩm bị hết hàng" +listCheckSPHetHang.size());
+        int listCheckSPHetHang = gioHangMapper.checkSPHetHang(1,"130ea67a-6528-11ec-b702-7845f2f0d96e",11);
+        System.out.println("Số lượng sản phẩm bị hết hàng   " +listCheckSPHetHang);
 
         // // Lấy mã khách hàng từ session
         // Integer maKhachHang = 1;

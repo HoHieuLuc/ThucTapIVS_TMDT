@@ -169,9 +169,9 @@ public class GioHangAction extends ActionSupport {
 
         // Danh sách các sản phẩm có số lượng trong giỏ hàng vượt quá số lượng hiện có
         // của sản phẩm đó
-        List<Map<String, Object>> listCheckSPHetHang = gioHangMapper.checkSPHetHang(maKhachHang,maSanPham,soLuong);
-        System.out.println("Số lượng sản phẩm bị hết hàng" +listCheckSPHetHang.size());
-        if (listCheckSPHetHang.size()>0) {
+        int listCheckSPHetHang = gioHangMapper.checkSPHetHang(maKhachHang,maSanPham,soLuong);
+        System.out.println("Số lượng sản phẩm bị hết hàng" +listCheckSPHetHang);
+        if (listCheckSPHetHang>0) {
             sqlSession.close();
             Map<String, Object> jsonRes = new HashMap<String, Object>();
             jsonRes.put("san_phams_error", listCheckSPHetHang);
