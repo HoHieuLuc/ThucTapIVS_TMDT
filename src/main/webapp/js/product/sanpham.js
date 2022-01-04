@@ -252,7 +252,7 @@ if (formDanhGiaDOM) {
 
 // trả về chuỗi html của form phản hồi
 const buildFormPhanHoi = (ma_danh_gia, isLogin) => {
-    if (isLogin){
+    if (isLogin) {
         return `
         <button class="phan-hoi-btn btn btn-link text-decoration-none">Phản hồi</button>
         <form style="display: none;">
@@ -327,7 +327,7 @@ const buildListPhanHoi = async (ma_danh_gia) => {
 danhGiaSPListDom.addEventListener('click', async (event) => {
     const el = event.target;
     const parentNode = event.target.parentNode; // => thẻ cha chứa thẻ mình bấm
-    if(el.classList.contains('sua-danh-gia-btn')){
+    if (el.classList.contains('sua-danh-gia-btn')) {
         suaDanhGiaSP();
         return;
     }
@@ -342,7 +342,7 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
         const html = await buildListPhanHoi(ma_danh_gia);
         // tạo 1 div mới để chứa phản hồi
         const div = document.createElement('div');
-        div.className = 'border-start border-1';
+        div.className = 'div-phan-hoi border-start border-1';
         div.innerHTML = html;
         // thêm phản hồi vào thẻ cha của button (các cái div mà mình build ở showDanhGiaSPs)
         parentNode.appendChild(div);
@@ -352,10 +352,10 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
         el.innerHTML = 'Xem phản hồi';
         el.classList.remove('an-phan-hoi');
         el.classList.add('xem-phan-hoi');
-        parentNode.removeChild(parentNode.lastChild);
+        parentNode.removeChild(parentNode.querySelector('.div-phan-hoi'));
         return;
     }
-    if(el.classList.contains('phan-hoi-btn')){
+    if (el.classList.contains('phan-hoi-btn')) {
         // nextElementSibling là thẻ form sau thẻ button
         el.nextElementSibling.style.display = 'block';
         return;
@@ -368,21 +368,38 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
         const formNode = parentNode.parentNode; // là cái form phản hồi do cái button nằm trong 1 cái div nữa
         const ma_danh_gia = el.dataset.ma_danh_gia;
         const kiemTraFormPhanHoi = await submitPhanHoiDanhGiaSP(formNode, ma_danh_gia);
-        if(!kiemTraFormPhanHoi){
+        if (!kiemTraFormPhanHoi) {
             return;
         }
         formNode.style.display = 'none';
         // xử lý hiện thị phản hồi vừa tạo
         const html = await buildListPhanHoi(ma_danh_gia); // fetch lại tất cả phản hồi
         // thẻ cha của thẻ form là thẻ div chứa cả đánh giá và phản hồi
-        const phanHoiDiv = formNode.parentNode;
-        // xóa thẻ con cuối cùng (thẻ div con chứa phản hồi)
-        phanHoiDiv.removeChild(phanHoiDiv.lastChild);
+        // div chứa cái đánh giá và phản hồi
+        const danhGiaDiv = formNode.parentNode;
+        const phanHoiDiv = danhGiaDiv.querySelector('.div-phan-hoi');
+        // nếu div phản hồi đã được mở (ấn nút xem phản hồi thì cái câu ở trên mới không bị null)
+        // thì xóa cái div phản hồi đó đi
+        if (phanHoiDiv) {
+            danhGiaDiv.removeChild(phanHoiDiv);
+        }
         // tạo lại thẻ con mới
         const div = document.createElement('div');
-        div.className = 'border-start border-1';
+        div.className = 'div-phan-hoi border-start border-1';
         div.innerHTML = html;
-        phanHoiDiv.appendChild(div);
-        formNode.previousElementSibling.previousElementSibling.classList.remove('d-none');
+        danhGiaDiv.appendChild(div);
+        // khi submit thành công sẽ hiện nút ẩn phản hồi
+        const anPhanHoiBtn = danhGiaDiv.querySelector('.an-phan-hoi');
+        const xemPhanHoiBtn = danhGiaDiv.querySelector('.xem-phan-hoi');
+        if (anPhanHoiBtn) {
+            console.log(anPhanHoiBtn);
+            anPhanHoiBtn.classList.remove('d-none');
+        }
+        if (xemPhanHoiBtn) {
+            console.log(xemPhanHoiBtn);
+            xemPhanHoiBtn.classList.remove('xem-phan-hoi');
+            xemPhanHoiBtn.classList.add('an-phan-hoi');
+            xemPhanHoiBtn.innerHTML = 'Ẩn phản hồi';
+        }
     }
 });
