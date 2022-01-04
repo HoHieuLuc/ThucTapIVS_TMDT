@@ -24,30 +24,33 @@ public class GioHangBackendTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
 
-        // Lấy mã khách hàng từ session
-        Integer maKhachHang = 1;
-        // Tạo list gioHangs;
-        List<Map<String, Object>> gioHangs = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> listCheckSPHetHang = gioHangMapper.checkSPHetHang(1,"130ea67a-6528-11ec-b702-7845f2f0d96e",100);
+        System.out.println("Số lượng sản phẩm bị hết hàng" +listCheckSPHetHang.size());
 
-        // Lấy seller id cho các sản phẩm trong giỏ hàng
-        List<Map<String,Object>> sellerList = gioHangMapper.getSellerList(maKhachHang);
-        Gson gson = new Gson();
+        // // Lấy mã khách hàng từ session
+        // Integer maKhachHang = 1;
+        // // Tạo list gioHangs;
+        // List<Map<String, Object>> gioHangs = new ArrayList<Map<String,Object>>();
 
-        // System.out.println("------------Danh sách sản phẩm chia theo id người bán--------");
-        for (Map<String, Object> seller : sellerList) {
-           // System.out.println(gson.toJson(gioHangMapper.getGH_Info_By_Seller_ID(1, integer)));
-            List<Map<String,Object>> sanPhams = gioHangMapper.getGH_Info_By_Seller_ID(1, (String) seller.get("username"));
-            seller.put("san_phams", sanPhams);
-        }  
-        gioHangs.addAll(sellerList);
-        System.out.println("-----------Giỏ hàng--------");
-        System.out.println(gson.toJson(gioHangs));
+        // // Lấy seller id cho các sản phẩm trong giỏ hàng
+        // List<Map<String,Object>> sellerList = gioHangMapper.getSellerList(maKhachHang);
+        // Gson gson = new Gson();
+
+        // // System.out.println("------------Danh sách sản phẩm chia theo id người bán--------");
+        // for (Map<String, Object> seller : sellerList) {
+        //    // System.out.println(gson.toJson(gioHangMapper.getGH_Info_By_Seller_ID(1, integer)));
+        //     List<Map<String,Object>> sanPhams = gioHangMapper.getGH_Info_By_Seller_ID(1, (String) seller.get("username"));
+        //     seller.put("san_phams", sanPhams);
+        // }  
+        // gioHangs.addAll(sellerList);
+        // System.out.println("-----------Giỏ hàng--------");
+        // System.out.println(gson.toJson(gioHangs));
 
 
-        if (gioHangMapper.deleteSP(maKhachHang,"35a99f29-64da-11ec-bb14-8378cfa7d63d") == 0) {
-          System.out.println("Sản phẩm cần xóa không có");
-        }
-        sqlSession.commit();
+        // if (gioHangMapper.deleteSP(maKhachHang,"35a99f29-64da-11ec-bb14-8378cfa7d63d") == 0) {
+        //   System.out.println("Sản phẩm cần xóa không có");
+        // }
+        // sqlSession.commit();
            
         // }
         // System.out.println("--------Danh sách các sản phẩm theo từng id--------");

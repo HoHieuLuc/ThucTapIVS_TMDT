@@ -87,12 +87,9 @@ public interface GioHangMapper {
    * Kiểm tra xem số lượng của giỏ hàng có lớn 0 và vượt quá `so_luong` trong
    * table `san_pham` hay không?
    */
-  final String CHECK_SP_HET_HANG = "select sp.so_luong as 'so_luong_hien_co',sp.ten_san_pham,gh.so_luong as 'so_luong_can_mua' "
-      +
-      "from gio_hang gh join san_pham sp on sp.ma_san_pham = gh.ma_san_pham " +
-      "where gh.ma_khach_hang = #{maKhachHang}  " +
-      "AND gh.so_luong = #{soLuong} and sp.ma_san_pham = #{maSanPham} " +
-      "AND gh.so_luong > sp.so_luong ";
+  final String CHECK_SP_HET_HANG = "select sp.so_luong as 'so_luong_hien_co',sp.ten_san_pham,gh.so_luong as 'so_luong_can_mua' " +
+    "from gio_hang gh join san_pham sp on sp.ma_san_pham = gh.ma_san_pham " +
+    "where gh.ma_khach_hang = #{maKhachHang} AND gh.so_luong = #{soLuong} and sp.ma_san_pham = #{maSanPham} AND gh.so_luong > sp.so_luong;";
 
   @Select(CHECK_SP_HET_HANG)
   public List<Map<String, Object>> checkSPHetHang(

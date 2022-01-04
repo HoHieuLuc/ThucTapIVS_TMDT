@@ -148,6 +148,10 @@ public class GioHangAction extends ActionSupport {
     }
 
      /******  Sửa và cập nhật giỏ hàng   **********/
+     /** Test: Login tài khoản khách hàng và chạy url
+      * http://localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=-55 (Để test lỗi số lượng âm)
+      http://localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=999 (Để test số lượng vượt quá số lượng sp có sẵn)
+      */
     @Action(value = "/api/v1/giohang/{maSanPham}/sua", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -166,8 +170,8 @@ public class GioHangAction extends ActionSupport {
         // Danh sách các sản phẩm có số lượng trong giỏ hàng vượt quá số lượng hiện có
         // của sản phẩm đó
         List<Map<String, Object>> listCheckSPHetHang = gioHangMapper.checkSPHetHang(maKhachHang,maSanPham,soLuong);
-
-        if (!listCheckSPHetHang.isEmpty()) {
+        System.out.println("Số lượng sản phẩm bị hết hàng" +listCheckSPHetHang.size());
+        if (listCheckSPHetHang.size()>0) {
             sqlSession.close();
             Map<String, Object> jsonRes = new HashMap<String, Object>();
             jsonRes.put("san_phams_error", listCheckSPHetHang);
