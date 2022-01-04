@@ -20,12 +20,7 @@ prefix="c" %>
   <div class="row mb-5 bg-light rounded">
     <div class="col-md-3">
       <div>
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
-          alt="avatar"
-          id="avatar"
-          class="d-block img-fluid border border-3 border-white rounded-circle"
-        />
+        <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" alt="avatar" id="avatar" class="d-block img-fluid border border-3 border-white rounded-circle"/>
       </div>
     </div>
     <div class="col-md-9">
@@ -46,11 +41,7 @@ prefix="c" %>
             <div class="col-md-12">Địa chỉ: <span id="diaChi"></span></div>
           </div>
           <div>
-            <span
-              id="gioiThieu"
-              class="fst-italic"
-              style="white-space: pre-line"
-            ></span>
+            <span id="gioiThieu" class="tlt-description fst-italic"></span>
           </div>
           <p>Đánh giá: <span id="rating"></span></p>
           <c:choose>
