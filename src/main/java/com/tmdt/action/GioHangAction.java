@@ -52,6 +52,8 @@ public class GioHangAction extends ActionSupport {
 
     /* End Getter and setter */
 
+
+    /******  Lấy giỏ hàng   **********/
     @Action(value = "/api/v1/giohang", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -88,6 +90,7 @@ public class GioHangAction extends ActionSupport {
 
     }
 
+     /******  Thêm vào giỏ hàng   **********/
     @Action(value = "/api/v1/giohang/{maSanPham}/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -120,6 +123,7 @@ public class GioHangAction extends ActionSupport {
 
     }
 
+     /******  Xóa sản phảm khỏi giỏ hàng   **********/
     @Action(value = "/api/v1/giohang/{maSanPham}/xoa", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -143,6 +147,7 @@ public class GioHangAction extends ActionSupport {
 
     }
 
+     /******  Sửa và cập nhật giỏ hàng   **********/
     @Action(value = "/api/v1/giohang/{maSanPham}/sua", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -158,8 +163,23 @@ public class GioHangAction extends ActionSupport {
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
 
-        // Sửa sản phẩm
-        gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham,soLuong);
+        // Danh sách các sản phẩm có số lượng trong giỏ hàng vượt quá số lượng hiện có
+        // của sản phẩm đó
+        List<Map<String, Object>> listCheckSPHetHang = gioHangMapper.checkSPHetHang(maKhachHang,maSanPham,soLuong);
+
+        if (!listCheckSPHetHang.isEmpty()) {
+            sqlSession.close();
+            Map<String, Object> jsonRes = new HashMap<String, Object>();
+            jsonRes.put("san_phams_error", listCheckSPHetHang);
+            return JsonResponse.createJsonResponse(jsonRes, 200, response);
+
+        }
+        // Cập nhật lại giỏ hàng
+        if (soLuong < 0) {
+            sqlSession.close();
+            return CustomError.createCustomError("Số lượng sản phẩm không được < = 0", 401, response);
+        }
+        gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham, soLuong);
         sqlSession.commit();
         sqlSession.close();
         return CustomError.createCustomError("Cập nhật số lượng sản phẩm thành công", 200, response);
