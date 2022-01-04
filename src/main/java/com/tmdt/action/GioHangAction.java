@@ -148,9 +148,9 @@ public class GioHangAction extends ActionSupport {
     }
 
      /******  Sửa và cập nhật giỏ hàng   **********/
-     /** Test: Login tài khoản khách hàng và chạy url
-      * http://localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=-55 (Để test lỗi số lượng âm)
-      http://localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=999 (Để test số lượng vượt quá số lượng sp có sẵn)
+     /** Test: Login tài khoản khách hàng trước và chạy url
+      * localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=-55 (Để test lỗi số lượng âm)
+      localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=100 (Để test số lượng vượt quá số lượng sp có sẵn)
       */
     @Action(value = "/api/v1/giohang/{maSanPham}/sua", results = {
             @Result(name = SUCCESS, location = "/index.html")
