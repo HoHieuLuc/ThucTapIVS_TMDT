@@ -113,7 +113,7 @@ const showStoreInfo = async (skip = false) => {
         showProductList();
     } catch (error) {
         console.log(error);
-        thongBao(error.response.data.message, true);
+        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
     }
 };
 
@@ -163,10 +163,10 @@ const showProductList = async () => {
             const xepHang = xep_hang === undefined ? "Chưa có đánh giá" : `${xep_hang} &#11088;`;
             return `
                 <div class="row mt-3">
-                    <a href="${baseURL}sanpham/${ma_san_pham}" class="col-md-3 bg-light rounded store-product-img-link">
+                    <a href="${baseURL}sanpham/${ma_san_pham}" class="col-md-3 position-relative bg-light rounded store-product-img-link">
                         <img alt="" 
                         src="${baseURL}images/product/${anh}"" 
-                        class="d-block img-fluid store-product-img">
+                        class="d-block position-absolute top-50 start-50 translate-middle img-fluid store-product-img">
                     </a>
                     <div class="col-md-9">
                         <a href="${baseURL}sanpham/${ma_san_pham}" class="fs-5 text-decoration-none">${ten_san_pham}</a>
@@ -174,8 +174,12 @@ const showProductList = async () => {
                         <a href="${baseURL}category/${ma_loai_sp}" class="text-muted">${ten_loai_sp}</a>
                         <p>Xếp hạng: ${xepHang}</p>
                         <p class="fs-4">${giaVND}</p>
-                        <button class="add-to-card-btn btn btn-link" data-id="${ma_san_pham}">Thêm vào giỏ</button>
-                        <button class="add-to-wishlist-btn btn btn-link" data-id="${ma_san_pham}">Thêm vào mục yêu thích</button>
+                        <button type="button" data-masanpham="${ma_san_pham}" class="add-to-cart-btn btn btn-block btn-warning">
+                            Thêm vào giỏ hàng <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button type="button" data-masanpham="${ma_san_pham}" class="add-to-fav-btn btn btn-block btn-danger">
+                            Thêm vào mục yêu tích <i class="far fa-heart"></i>
+                        </button>
                     </div>
                 </div>
                 <hr>
@@ -190,31 +194,7 @@ const showProductList = async () => {
         );
     } catch (error) {
         console.log(error);
-        thongBao(error.response.data.message, true);
-    }
-};
-
-// 2 hàm thêm vào giỏ này sẽ bỏ vào file js khác vì nhiều trang sử dụng 2 hàm này
-// giờ tạm thời bỏ vô đây để test
-// thêm vào giỏ
-const addToCart = async (maSanPham) => {
-    try {
-        // await axios.post(...);
-        alert(`test thêm vào giỏ: ${maSanPham}`);
-    } catch (error) {
-        console.log(error);
-        thongBao(error.response.data.message, true);
-    }
-};
-
-// thêm vào mục yêu thích
-const addToWishList = async (maSanPham) => {
-    try {
-        // await axios.post(...);
-        alert(`test mục yêu thích: ${maSanPham}`);
-    } catch (error) {
-        console.log(error);
-        thongBao(error.response.data.message, true);
+        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
     }
 };
 
@@ -239,18 +219,6 @@ rowsPerPageDOM.addEventListener("change", () => {
     showProductList();
 });
 
-// khi click vào nút thêm vào giỏ và thêm vào mục yêu thích
-productListDOM.addEventListener("click", (event) => {
-    const el = event.target;
-    if (el.classList.contains("add-to-card-btn")) {
-        addToCart(el.dataset.id);
-    }
-    if (el.classList.contains("add-to-wishlist-btn")) {
-        addToWishList(el.dataset.id);
-    }
-});
-
-
 if (formDanhGiaKhachHangDOM) {
     formDanhGiaKhachHangDOM.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -260,11 +228,7 @@ if (formDanhGiaKhachHangDOM) {
             thongBao('Đánh giá thành công');
             await showStoreInfo(true);
         } catch (error) {
-            const { message } = error.response.data;
-            console.log(error);
-            if (message) {
-                thongBao(message, true);
-            }
+            thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
         }
     });
 }
