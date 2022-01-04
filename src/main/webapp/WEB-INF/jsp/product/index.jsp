@@ -20,27 +20,26 @@
                 }
             </style>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/css/lightgallery-bundle.min.css" integrity="sha512-91yJwfiGTCo9TM74ZzlAIAN4Eh5EWHpQJUfvo/XhpH6lzQtiRFkFRW1W+JSg4ch4XW3/xzh+dY4TOw/ILpavQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <div class="container">
+            <div class="container mb-3">
                 <!-- Chi tiết sản phẩm -->
-                <div class="card">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 border border-dark inline-gallery-container" id="anhSanPham">
-
-                            </div>
-                            <div class="col-md-6">
-                                <h3 class="" id="tenSanPham"></h3>
-                               Cửa hàng <a href="" class="" id="nguoiDangSanPham"></a>
-                                <div class="rating"></div>
-                                Mức đánh giá trung bình của người dùng: <span id="danhGia"></span>
-                            </div>
-                            <p class="" id="moTaSanPham"></p>
-                            <h4 class="" id="gia"></h4>
-                            <div class="card-footer">
-                                <button type="button" class="btn btn-success">Thêm vào giỏ hàng</button>
-                                <a href="" target="_blank">
-                                    <button type="button" class="btn btn-success float-right">Mua ngay</button>
-                                </a>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 border border-dark inline-gallery-container" id="anhSanPham">
+                        </div>
+                        <div class="col-md-6 position-relative">
+                            <h3 class="" id="tenSanPham"></h3>
+                            Cửa hàng <a href="" class="" id="nguoiDangSanPham"></a>
+                            <div class="rating"></div>
+                            Mức đánh giá trung bình của người dùng: <span id="danhGia"></span>
+                            <p class="tlt-description" id="moTaSanPham"></p>
+                            <h4 id="gia"></h4>
+                            <div class="d-block tlt-bottom-of-div">
+                                <button type="button" id="addToCartBtn" class="add-to-cart-btn mb-3 w-75 btn btn-warning">
+                                    Thêm vào giỏ hàng <i class="fas fa-cart-plus"></i>
+                                </button>
+                                <button type="button" id="addToFavBtn" class="add-to-fav-btn w-75 btn btn-danger">
+                                    Thêm vào mục yêu tích <i class="far fa-heart"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -48,9 +47,9 @@
             </div>
 
             <!-- Khu vực đánh giá sản phẩm -->
-            <div class="row">
+            <div class="row w-50">
                 <!--Form nhập bình luận-->
-                <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                <div class="col-12">
                     <c:choose>
                         <c:when test="${sessionScope.level == 0}">
                             <form id="formDanhGiaSanPham">
@@ -87,9 +86,7 @@
                     </c:choose>
                 </div>
 
-
-
-                <div class="col-sm-12 col-md-12 col-12" id="danhGiaSPListDom">
+                <div class="col-12" id="danhGiaSPListDom">
                 </div>
             </div>
             </div>
