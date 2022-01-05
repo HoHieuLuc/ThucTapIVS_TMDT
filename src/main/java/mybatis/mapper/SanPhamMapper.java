@@ -198,13 +198,13 @@ public interface SanPhamMapper {
     /* ==================== */
 
     // Lấy danh sách các sản phẩm chưa duyệt
-    final String GET_SP_STATUS_0 = "SELECT kh.ten,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
+    final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
         "sp.so_luong,sp.ngay_dang " +
         "FROM san_pham SP " +
         "RIGHT JOIN khach_hang KH ON SP.ma_khach_hang = KH.ma_khach_hang " +
         "RIGHT JOIN loai_san_pham LSP ON SP.ma_loai_san_pham = LSP.ma_loai_sp " +
         "WHERE SP.status = 0; ";
-    @Select(GET_SP_STATUS_0)
+    @Select(GET_SP_BY_STATUS)
     public List<Map<String,Object>> getSP_ChuaDuyet();
 
     //Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
