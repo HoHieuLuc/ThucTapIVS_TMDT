@@ -355,8 +355,8 @@ public class RegisterAction extends ActionSupport {
         Map<String, Object> message = new HashMap<String, Object>();
 
         if (!Pattern.matches(USERNAME_REGEX, username)) {
-            message.put("password",
-            "Password có tối thiểu 8 ký tự và tối đa 30 kí tự, bao gồm kí tự chữ cái và chữ số, kí tự đầu tiên bắt buộc viết hoa");
+            message.put("message",
+            "Username có tối thiểu 6 ký tự và tối đa 20 kí tự gồm chữ thường, chữ hoa và số");
             return JsonResponse.createJsonResponse(message, 200, response);
         }
 
