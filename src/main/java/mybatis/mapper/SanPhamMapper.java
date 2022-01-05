@@ -190,4 +190,28 @@ public interface SanPhamMapper {
             @Param("order") String order,
             @Param("offset") int offset,
             @Param("rowsPerPage") int rowsPerPage);
+
+
+    
+    /* ==================== */
+    /* dành cho trang admin */
+    /* ==================== */
+
+    // Lấy danh sách các sản phẩm chưa duyệt
+    final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
+        "sp.so_luong,sp.ngay_dang " +
+        "FROM san_pham SP " +
+        "RIGHT JOIN khach_hang KH ON SP.ma_khach_hang = KH.ma_khach_hang " +
+        "RIGHT JOIN loai_san_pham LSP ON SP.ma_loai_san_pham = LSP.ma_loai_sp " +
+        "WHERE SP.status = #{status}; ";
+    @Select(GET_SP_BY_STATUS)
+    public List<Map<String,Object>> getSP_ByStatus(int status);
+
+    //Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
+    final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";
+    @Update(UPDATE_SP_STATUS)
+    public int updateSP_Status(
+            @Param("status") int status,
+            @Param("maSanPham") String maSanPham
+    );
 }

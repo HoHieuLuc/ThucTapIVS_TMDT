@@ -94,6 +94,13 @@ public class GioHangAction extends ActionSupport {
         if (loggedIn == null || !loggedIn) {
             return CustomError.createCustomError("Bạn chưa đăng nhập", 401, response);
         }
+        // Kiểm tra không cho nhân viên đặt hàng
+        Integer level = (Integer) session.getAttribute("level");
+        if (level > 0) {
+            return CustomError.createCustomError("Nhân viên không thể thêm vào giỏ hàng", 401, response);
+        }
+
+
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);

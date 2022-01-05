@@ -2,6 +2,8 @@ const formDOM = document.querySelector('#registerForm');
 const url = new URL(window.location);
 const redirect = url.searchParams.get('redirect');
 
+const usernameDOM = document.getElementsByName('username')[0];
+
 const userNameErrorMessage = document.querySelector('#username_error');
 const passwordErrorMessage = document.querySelector('#password_error');
 const emailErrorMessage = document.querySelector('#email_error');
@@ -31,6 +33,12 @@ const register = async () => {
 
     }
 }
+
+//Kiểm tra username bị trùng
+    usernameDOM.addEventListener('keyup', async () => {
+        const {data : {message} } = await axios.post(`${baseURL}checkUsername?username=${usernameDOM.value}`);
+        userNameErrorMessage.textContent = message;
+    })
 
 formDOM.addEventListener('submit', (event) => {
     event.preventDefault();
