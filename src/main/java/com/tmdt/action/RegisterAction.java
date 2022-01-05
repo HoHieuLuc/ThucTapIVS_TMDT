@@ -38,6 +38,7 @@ public class RegisterAction extends ActionSupport {
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
     static final String USERNAME_REGEX = "^[A-Za-z0-9]{6,20}$";
+    static final String PASSWORD_REGEX = "^[A-Z]{1}[A-Za-z0-9]{7,29}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
     static final String PHONE_REGEX = "^[0-9]{9,12}";
     //
