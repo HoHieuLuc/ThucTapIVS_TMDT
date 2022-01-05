@@ -75,23 +75,7 @@
     <a href="" class="brand-link">
       <img src="https://via.placeholder.com/30" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">
-          <c:choose>
-                <c:when test="${sessionScope.loggedIn != null && sessionScope.loggedIn == true}">
-                  <c:choose>
-                      <c:when test="${sessionScope.level == 0}">
-						            Khách Hàng
-                    </c:when>
-                  </c:choose>
-
-                   <c:choose>
-                        <%-- nhân viên --%>
-                        <c:when test="${sessionScope.level > 0}">
-						            	Nhân viên
-                        </c:when>
-                        <%-- khách hàng --%>
-                   </c:choose>                  
-                </c:when>
-          </c:choose>
+          Nhân Viên
       </span>
     </a>
 
