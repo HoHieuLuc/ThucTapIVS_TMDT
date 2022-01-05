@@ -205,7 +205,7 @@ public interface SanPhamMapper {
         "RIGHT JOIN loai_san_pham LSP ON SP.ma_loai_san_pham = LSP.ma_loai_sp " +
         "WHERE SP.status = 0; ";
     @Select(GET_SP_BY_STATUS)
-    public List<Map<String,Object>> getSP_ChuaDuyet();
+    public List<Map<String,Object>> getSP_ByStatus();
 
     //Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
     final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";
