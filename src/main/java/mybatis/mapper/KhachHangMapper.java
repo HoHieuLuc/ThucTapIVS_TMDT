@@ -52,10 +52,10 @@ public interface KhachHangMapper {
     public List<Map<Integer, Integer>> getProductRating(String username);
 
     // Lấy avatar, mã khách hàng, tên khách hàng để làm trang danh sách store
-    final String GET_LIST_STORE = " SELECT TK.avatar,TK.username,KH.ten from khach_hang kh " +
+    final String GET_LIST_STORE = "SELECT TK.avatar,TK.username,KH.ten from khach_hang kh " +
         "LEFT JOIN tai_khoan tk on kh.id_tai_khoan = tk.id " +
         "WHERE tk.id NOT  IN (SELECT id_tai_khoan FROM nhan_vien) " +
-        "GROUP BY username; ";
+        "GROUP BY username;";
 
     @Select(GET_LIST_STORE)
     public List<Map<String, Object>> getListStore();
