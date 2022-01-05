@@ -212,7 +212,7 @@ public class RegisterAction extends ActionSupport {
 
     // Validate All Field
     public boolean isValid() {
-        return Pattern.matches(USERNAME_REGEX, username) && between(password, 8, 30)
+        return Pattern.matches(USERNAME_REGEX, username) && Pattern.matches(PASSWORD_REGEX, password)
                 && Pattern.matches(EMAIL_REGEX, email) && between(ten, 2, 50)
                 && between(facebookLink, 0, 100) && between(twitterLink, 0, 100)
                 && Pattern.matches(PHONE_REGEX, soDienThoai)
@@ -311,9 +311,9 @@ public class RegisterAction extends ActionSupport {
                 jsonObject.put("username",
                         "Username có tối thiểu 6 ký tự và tối đa 20 kí tự gồm chữ thường, chữ hoa và số");
             }
-            if (!between(password, 8, 30)) {
+            if (!Pattern.matches(PASSWORD_REGEX, password)) {
                 jsonObject.put("password",
-                        "Password có tối thiểu 8 ký tự và tối đa 30 kí tự");
+                        "Password có tối thiểu 8 ký tự và tối đa 30 kí tự, bao gồm kí tự chữ cái và chữ số, kí tự đầu tiên bắt buộc viết hoa");
             }
             if (!Pattern.matches(EMAIL_REGEX, email)) {
                 jsonObject.put("email", "email không đúng định dạng");
