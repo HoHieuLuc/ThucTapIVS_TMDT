@@ -196,6 +196,7 @@ public interface SanPhamMapper {
     /* ==================== */
     /* dành cho trang admin */
     /* ==================== */
+
     // Lấy danh sách các sản phẩm chưa duyệt
     final String GET_SP_STATUS_0 = "SELECT kh.ten,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
         "sp.so_luong,sp.ngay_dang " +
@@ -205,4 +206,12 @@ public interface SanPhamMapper {
         "WHERE SP.status = 0; ";
     @Select(GET_SP_STATUS_0)
     public List<Map<String,Object>> getSP_ChuaDuyet();
+
+    //Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
+    final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";
+    @Update(UPDATE_SP_STATUS)
+    public int updateSP_Status(
+            @Param("status") int status,
+            @Param("maSanPham") String maSanPham
+    );
 }
