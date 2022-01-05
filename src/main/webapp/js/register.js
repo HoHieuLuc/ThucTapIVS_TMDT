@@ -35,7 +35,7 @@ const register = async () => {
 }
 
 //Kiểm tra username bị trùng
-    usernameDOM.addEventListener('focusout', async () => {
+    usernameDOM.addEventListener('change', async () => {
         const {data : {message} } = await axios.post(`${baseURL}checkUsername?username=${usernameDOM.value}`);
         userNameErrorMessage.textContent = message;
     })
