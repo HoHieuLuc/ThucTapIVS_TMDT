@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import mybatis.mapper.GioHangMapper;
@@ -72,9 +71,7 @@ public class GioHangAction extends ActionSupport {
         // Lấy seller id cho các sản phẩm trong giỏ hàng
         List<Map<String, Object>> sellerList = gioHangMapper.getSellerList(maKhachHang);
         for (Map<String, Object> seller : sellerList) {
-            // System.out.println(gson.toJson(gioHangMapper.getGH_Info_By_Seller_ID(1,
-            // integer)));
-            List<Map<String, Object>> sanPhams = gioHangMapper.getGH_Info_By_Seller_ID(1,
+            List<Map<String, Object>> sanPhams = gioHangMapper.getGH_Info_By_Seller_ID(maKhachHang,
                     (String) seller.get("username"));
             seller.put("san_phams", sanPhams);
         }
@@ -89,14 +86,14 @@ public class GioHangAction extends ActionSupport {
 
     }
 
-    /****** Thêm vào giỏ hàng **********/
-    @Action(value = "/api/v1/giohang/{maSanPham}/them", results = {
+    @Action(value = "/api/v1/giohang/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "khachHangStack"),
     })
-    public String themSP_GioHang() throws IOException {
-
+    public String themVaoGioHang() throws IOException {
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        if (loggedIn == null || !loggedIn) {
+            return CustomError.createCustomError("Bạn chưa đăng nhập", 401, response);
+        }
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
@@ -118,18 +115,16 @@ public class GioHangAction extends ActionSupport {
             sqlSession.commit();
             sqlSession.close();
         }
-        return CustomError.createCustomError("Thêm sp vào giỏ hàng thành công", 200, response);
-
+        return CustomError.createCustomError("Thêm sản phẩm vào giỏ hàng thành công", 200, response);
     }
 
-    /****** Xóa sản phảm khỏi giỏ hàng **********/
-    @Action(value = "/api/v1/giohang/{maSanPham}/xoa", results = {
+    @Action(value = "/api/v1/giohang/xoa", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
 
-    public String xoa_GioHang() throws IOException {
+    public String xoaKhoiGioHang() throws IOException {
 
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -146,33 +141,26 @@ public class GioHangAction extends ActionSupport {
 
     }
 
-    /****** Sửa và cập nhật giỏ hàng **********/
-    /**
-     * Test: Login tài khoản khách hàng trước và chạy url
-     * localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=-55
-     * (Để test lỗi số lượng âm)
-     * localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/giohang/130ea67a-6528-11ec-b702-7845f2f0d96e/sua?soLuong=100
-     * (Để test số lượng vượt quá số lượng sp có sẵn)
-     */
-    @Action(value = "/api/v1/giohang/{maSanPham}/sua", results = {
+    @Action(value = "/api/v1/giohang/capnhat", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
 
-    public String sua_GioHang() throws IOException {
-
+    public String capNhatGioHang() throws IOException {
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
-
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
 
         // Cập nhật lại giỏ hàng
-        if (soLuong < 0) {
+        if (soLuong < 1) {
             sqlSession.close();
-            return CustomError.createCustomError("Số lượng sản phẩm không được < = 0", 401, response);
+            jsonRes.put("soLuong", 1);
+            jsonRes.put("message", "Số lượng không hợp lệ");
+            return JsonResponse.createJsonResponse(jsonRes, 400, response);
         }
 
         /// Kiểm tra xem số lượng trong giỏ hàng có <= số lượng hiện có sản phẩm đó hay
@@ -182,17 +170,16 @@ public class GioHangAction extends ActionSupport {
         if (soLuong > soLuongSP_HienCo) {
             // Điều chỉnh lại con số trong input số lượng của sản phẩm đó
             // Bằng JsonRes và hiện thông báo
-            Map<String, Object> jsonRes = new HashMap<String, Object>();
-            jsonRes.put("so_luong_maximum", soLuongSP_HienCo);
-            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa là: " + soLuongSP_HienCo);
-            return JsonResponse.createJsonResponse(jsonRes, 200, response);
+            sqlSession.close();
+            jsonRes.put("soLuong", soLuongSP_HienCo);
+            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSP_HienCo + " sản phẩm");
+            return JsonResponse.createJsonResponse(jsonRes, 403, response);
         }
 
         gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham, soLuong);
         sqlSession.commit();
         sqlSession.close();
-        return CustomError.createCustomError("Cập nhật số lượng sản phẩm thành công", 200, response);
-
+        jsonRes.put("soLuong", soLuong);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
-
 }

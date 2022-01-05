@@ -11,7 +11,7 @@
     <script src='<c:url value="/js/product/loaisanpham-browser.js"/>'></script>
 
     <!-- Site footer -->
-    <footer class="site-footer">''
+    <footer class="site-footer">
       <div class="container">
         <div class="row">
           <div class="col-sm-12 col-md-6">

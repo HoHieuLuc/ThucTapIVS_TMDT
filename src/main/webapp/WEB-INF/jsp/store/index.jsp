@@ -20,12 +20,7 @@ prefix="c" %>
   <div class="row mb-5 bg-light rounded">
     <div class="col-md-3">
       <div>
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
-          alt="avatar"
-          id="avatar"
-          class="d-block img-fluid border border-3 border-white rounded-circle"
-        />
+        <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" alt="avatar" id="avatar" class="d-block img-fluid border border-3 border-white rounded-circle"/>
       </div>
     </div>
     <div class="col-md-9">
@@ -46,11 +41,7 @@ prefix="c" %>
             <div class="col-md-12">Địa chỉ: <span id="diaChi"></span></div>
           </div>
           <div>
-            <span
-              id="gioiThieu"
-              class="fst-italic"
-              style="white-space: pre-line"
-            ></span>
+            <span id="gioiThieu" class="tlt-description fst-italic"></span>
           </div>
           <p>Đánh giá: <span id="rating"></span></p>
           <c:choose>
@@ -101,7 +92,7 @@ prefix="c" %>
               Bạn không phải là khách hàng
             </c:when>
             <c:otherwise>
-              Bạn phải <a id="loginDanhGiaKH" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
+              Bạn phải <a id="loginDanhGia" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
               được đánh giá cửa hàng
             </c:otherwise>
           </c:choose>
@@ -143,6 +134,9 @@ prefix="c" %>
       <div class="mb-2">
         Số mặt hàng mỗi trang:
         <select class="rowsPerPage rounded">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
           <option value="10" selected>10</option>
           <option value="20">20</option>
           <option value="30">30</option>

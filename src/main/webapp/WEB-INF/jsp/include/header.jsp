@@ -20,6 +20,46 @@
       <script>
         const baseURL = <c:url value="/" />;
       </script>
+
+      <style>
+        .tlt-bottom-of-div {
+          position: absolute;
+          bottom: 0;
+        }
+
+        .tlt-description {
+          max-height: 4rem;
+          white-space: pre-line;
+          overflow-y: scroll;
+          display: block;
+        }
+
+        .tlt-comment {
+          max-height: 10rem;
+          white-space: pre-line;
+          overflow-y: scroll;
+          display: block;
+        }
+
+        button>i {
+          pointer-events: none;
+        }
+
+        ::-webkit-scrollbar {
+          width: 0.5rem;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #aaaaaa;
+          border-radius: 15px;
+        }
+      </style>
+
+
     </head>
 
     <body>
@@ -73,6 +113,15 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
               <c:choose>
                 <c:when test="${sessionScope.loggedIn != null && sessionScope.loggedIn == true}">
+                  <c:choose>
+                    <c:when test="${sessionScope.level == 0}">
+                      <li class="nav-item">
+                        <a class="nav-link" href='<c:url value="/cart" />'>
+                          Giỏ hàng <i class="fas fa-shopping-cart"></i>
+                        </a>
+                      </li>
+                    </c:when>
+                  </c:choose>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src='<c:url value="/images/user/${sessionScope.avatar}"/>' style="width:25px; height: 25px;" class="rounded-circle" alt="User Image">

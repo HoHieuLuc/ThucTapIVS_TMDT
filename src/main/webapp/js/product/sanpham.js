@@ -1,4 +1,4 @@
-const formDOM = document.querySelector('#formDanhGiaSanPham');
+const formDanhGiaDOM = document.querySelector('#formDanhGiaSanPham');
 const huyDanhGiaBtnDOM = document.querySelector('#huyDanhGiaBtn');
 const danhGiaBtnDOM = document.querySelector('#danhGiaBtn');
 //Lấy mã sản phẩm trên đường dẫn
@@ -12,6 +12,8 @@ const danhGiaDOM = document.querySelector('#danhGia');
 const moTaSanPhamDOM = document.querySelector('#moTaSanPham');
 const giaDOM = document.querySelector('#gia');
 const anhSanPhamDOM = document.querySelector('#anhSanPham');
+const addToCartBtnDOM = document.querySelector('#addToCartBtn');
+const addToFavBtnDOM = document.querySelector('#addToFavBtn');
 
 //Các biến của đánh giá sản phẩm
 const danhGiaSPListDom = document.querySelector('#danhGiaSPListDom');
@@ -49,14 +51,16 @@ const showSanPhamDetail = async (skip = false) => {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         // có avatar nữa
         const { tenSanPham, tenKhachHang, moTa, gia, anhSanPhams, xepHang, username } = sanpham;
-        danhGiaDOM.innerHTML = xepHang ?? "Chưa có đánh giá";
+        danhGiaDOM.textContent = xepHang ?? "Chưa có đánh giá";
         if (skip) {
             return;
         }
-        tenSanPhamDOM.innerHTML = tenSanPham;
-        moTaSanPhamDOM.innerHTML = moTa;
+        addToCartBtnDOM.dataset.masanpham = maSanPham;
+        addToFavBtnDOM.dataset.masanpham = maSanPham;
+        tenSanPhamDOM.textContent = tenSanPham;
+        moTaSanPhamDOM.textContent = moTa;
         giaDOM.innerHTML = gia;
-        nguoiDangSanPham.innerHTML = tenKhachHang;
+        nguoiDangSanPham.textContent = tenKhachHang;
         nguoiDangSanPham.href = `${baseURL}store/${username}`;
         const anhSanPhamData = anhSanPhams.map((anhSanPham) => {
             return {
@@ -93,7 +97,7 @@ const showDanhGiaSPs = async () => {
         let danhGiaSPsHTML = '';
         // nếu đã đánh giá thì sẽ ưu tiên hiển thị đánh giá của người dùng lên đầu
         if (danhGiaCuaBan !== undefined) {
-            formDOM.style.display = 'none';
+            formDanhGiaDOM.style.display = 'none';
             const { ma_danh_gia, so_phan_hoi, ngay_tao, ngay_sua, noi_dung, so_sao, ten, username, avatar } = danhGiaCuaBan;
             document.querySelector('#noiDung').value = noi_dung;
             document.querySelector('#soSao').value = so_sao;
@@ -106,7 +110,14 @@ const showDanhGiaSPs = async () => {
 
             const formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia, isLogin)}`;
             //Nếu số phản hồi lớn hơn 0 thì hiển thị ra nút xem phản hồi
-            let phanHoiElement = '';
+            let phanHoiElement = `
+                <button 
+                    class="an-phan-hoi btn btn-link m-2 d-none" style="text-decoration: none;"
+                    data-ma_danh_gia = "${ma_danh_gia}"
+                >
+                    Ẩn phản hồi
+                </button>
+            `;
             if (so_phan_hoi > 0) {
                 phanHoiElement = `
                     <button 
@@ -120,16 +131,23 @@ const showDanhGiaSPs = async () => {
 
             const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : '';
             danhGiaCuaBanHTML = `
-                <div class="comment mt-4 text-justify float-left" id="danhGiaCuaToi"> 
+                <div class="mt-4" id="danhGiaCuaToi"> 
                     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
-                    <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a> <span>${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p</span>${lanSuaCuoi}
-                    <br>
+                    <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a>
+                    <div>
+                        <span>
+                            ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
+                            lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+                        </span>
+                        ${lanSuaCuoi}
+                    </div>
                     ${so_sao_html}
-                    <p style="white-space: pre-line;">${noi_dung}</p>
-                    <button class="btn btn-link text-decoration-none" onclick="suaDanhGiaSP()">Sửa</button>
+                    <p class="tlt-comment">${noi_dung}</p>
+                    <button class="sua-danh-gia-btn btn btn-link text-decoration-none">Sửa</button>
                     ${phanHoiElement}
                     ${formPhanHoiElement}
-                </div>`;
+                </div>
+            `;
         }
         if (danhGiaSPs.length > 0) {
             const allDanhGiaSPs = danhGiaSPs.map((danhGiaSP) => {
@@ -145,9 +163,14 @@ const showDanhGiaSPs = async () => {
                 // Chỉ khi đăng  nhập rồi thì mới hiện form
                 const formPhanHoiElement = `${buildFormPhanHoi(ma_danh_gia, isLogin)}`;
 
-                // Nếu số phản hồi 0 thì không in ra
-                let phanHoiElement = '';
-
+                let phanHoiElement = `
+                    <button 
+                        class="an-phan-hoi btn btn-link m-2 d-none" style="text-decoration: none;"
+                        data-ma_danh_gia = "${ma_danh_gia}"
+                    >
+                        Ẩn phản hồi
+                    </button>
+                `;
                 // có phản hồi thì hiện nút xem phản hồi
                 if (so_phan_hoi > 0) {
                     phanHoiElement = `
@@ -162,14 +185,18 @@ const showDanhGiaSPs = async () => {
 
                 const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
                 return `
-                    <div class="comment mt-4 text-justify float-left"> 
+                    <div class="mt-4"> 
                         <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
-                        <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a><span>
-                        ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
-                        </span>${lanSuaCuoi}
-                        <br>
+                        <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a>
+                        <div>
+                            <span>
+                                ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
+                                lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+                            </span>
+                                ${lanSuaCuoi}
+                        </div>
                         ${so_sao_html}
-                        <p style="white-space: pre-line;">${noi_dung}</p>
+                        <p class="tlt-comment">${noi_dung}</p>
                         ${phanHoiElement}
                         ${formPhanHoiElement}
                     </div>
@@ -192,17 +219,18 @@ showSanPhamDetail();
 // hiển thị form sửa đánh giá
 const suaDanhGiaSP = () => {
     document.querySelector('#danhGiaCuaToi').style.display = 'none';
-    formDOM.style.display = 'block';
-    huyDanhGiaBtnDOM.style.display = 'block';
+    formDanhGiaDOM.style.display = 'block';
+    huyDanhGiaBtnDOM.classList.remove('d-none');
+    huyDanhGiaBtnDOM.classList.add('d-block');
     document.querySelector('#noiDung').focus();
     danhGiaBtnDOM.value = "Cập nhật";
 }
 
 const submitDanhGiaSP = async () => {
-    const formData = new FormData(formDOM);
+    const formData = new FormData(formDanhGiaDOM);
     try {
         await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
-        formDOM.style.display = 'none';
+        formDanhGiaDOM.style.display = 'none';
         showSanPhamDetail(true);
         showDanhGiaSPs();
         thongBao("Gửi đánh giá thành công");
@@ -211,31 +239,33 @@ const submitDanhGiaSP = async () => {
     }
 }
 
-if (formDOM) {
-    formDOM.addEventListener('submit', (event) => {
+if (formDanhGiaDOM) {
+    formDanhGiaDOM.addEventListener('submit', (event) => {
         event.preventDefault();
         submitDanhGiaSP();
     });
     huyDanhGiaBtnDOM.addEventListener('click', () => {
-        formDOM.style.display = 'none';
+        formDanhGiaDOM.style.display = 'none';
         danhGiaCuaToi.style.display = 'block';
     });
 }
 
 // trả về chuỗi html của form phản hồi
 const buildFormPhanHoi = (ma_danh_gia, isLogin) => {
-    if (isLogin){
+    if (isLogin) {
         return `
         <button class="phan-hoi-btn btn btn-link text-decoration-none">Phản hồi</button>
         <form style="display: none;">
-            <textarea type="text" name="noiDung" class="form-control" placeholder="Nhập nội dung phản hồi"></textarea>
-            <button 
-                type="button" class="submit-phan-hoi btn btn-success" 
-                data-ma_danh_gia = "${ma_danh_gia}"
-            >Gửi phản hồi</button>
-            <button type="button" class="huy-phan-hoi btn btn-success">
-                Hủy
-            </button>
+            <textarea type="text" name="noiDung" class="form-control mb-1" placeholder="Nhập nội dung phản hồi"></textarea>
+            <div class="d-flex gap-2">
+                <button type="button" class="huy-phan-hoi w-100 btn btn-block btn-outline-danger">
+                    Hủy
+                </button>
+                <button 
+                    type="button" class="submit-phan-hoi w-100 btn btn-block btn-outline-success" 
+                    data-ma_danh_gia = "${ma_danh_gia}"
+                >Gửi phản hồi</button>
+            </div>
         </form>
         `;
     }
@@ -256,10 +286,12 @@ const submitPhanHoiDanhGiaSP = async (_formDOM, ma_danh_gia) => {
         await axios.post(`${baseURL}api/v1/phanhoi/sanpham/submit`, formDanhGiaSanPham, {
             params: { maDanhGia: ma_danh_gia }
         });
-        formDOM.style.display = 'none';
+        formDanhGiaDOM.style.display = 'none';
         thongBao(`Gửi phản hồi thành công`);
+        return true;
     } catch (error) {
         thongBao(error.response.data.message, true);
+        return false;
     }
 }
 
@@ -271,14 +303,17 @@ const buildListPhanHoi = async (ma_danh_gia) => {
             const { username, avatar, ten, ngay_tao, ngay_sua, noi_dung } = phanHoiDGSP;
             const lanSuaCuoi = ngay_sua ? `<span class="text-muted"> (Lần sửa cuối: ${ngay_sua.date.day}/${ngay_sua.date.month}/${ngay_sua.date.year} lúc ${ngay_sua.time.hour}h:${ngay_sua.time.minute}p)</span>` : ``;
             return `
-                <div class="comment m-4 text-justify float-left" style=" color: black;"> 
+                <div class="m-4"> 
                     <img src="${baseURL}images/user/${avatar}" alt="avatar" class="rounded-circle" width="40" height="40">
                     <a href="${baseURL}store/${username}" class="fs-5 text-dark text-decoration-none">${ten}</a>
-                    <span>
-                        ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
-                    </span>${lanSuaCuoi}
-                    <br>
-                    <p style="white-space: pre-line;">${noi_dung}</p>
+                    <div>
+                        <span>
+                            ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
+                            lúc ${ngay_tao.time.hour}h:${ngay_tao.time.minute}p
+                        </span>
+                        ${lanSuaCuoi}
+                    </div>
+                    <p class="tlt-comment">${noi_dung}</p>
                 </div>
             `;
         }).join('');
@@ -292,6 +327,10 @@ const buildListPhanHoi = async (ma_danh_gia) => {
 danhGiaSPListDom.addEventListener('click', async (event) => {
     const el = event.target;
     const parentNode = event.target.parentNode; // => thẻ cha chứa thẻ mình bấm
+    if (el.classList.contains('sua-danh-gia-btn')) {
+        suaDanhGiaSP();
+        return;
+    }
     if (el.classList.contains('xem-phan-hoi')) { // ở đây là thẻ cha của button xem phản hồi
         const ma_danh_gia = el.dataset.ma_danh_gia;
         // xóa class đó ra khỏi button và thêm class an-phan-hoi
@@ -303,7 +342,7 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
         const html = await buildListPhanHoi(ma_danh_gia);
         // tạo 1 div mới để chứa phản hồi
         const div = document.createElement('div');
-        div.className = 'border-start border-1';
+        div.className = 'div-phan-hoi border-start border-1';
         div.innerHTML = html;
         // thêm phản hồi vào thẻ cha của button (các cái div mà mình build ở showDanhGiaSPs)
         parentNode.appendChild(div);
@@ -313,22 +352,54 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
         el.innerHTML = 'Xem phản hồi';
         el.classList.remove('an-phan-hoi');
         el.classList.add('xem-phan-hoi');
-        parentNode.removeChild(parentNode.lastChild);
+        parentNode.removeChild(parentNode.querySelector('.div-phan-hoi'));
         return;
     }
-    if(el.classList.contains('phan-hoi-btn')){
+    if (el.classList.contains('phan-hoi-btn')) {
         // nextElementSibling là thẻ form sau thẻ button
         el.nextElementSibling.style.display = 'block';
         return;
     }
     if (el.classList.contains('huy-phan-hoi')) {
-        parentNode.style.display = 'none'; // là cái form phản hồi
+        parentNode.parentNode.style.display = 'none'; // là cái form phản hồi
         return;
     }
     if (el.classList.contains('submit-phan-hoi')) {
+        const formNode = parentNode.parentNode; // là cái form phản hồi do cái button nằm trong 1 cái div nữa
         const ma_danh_gia = el.dataset.ma_danh_gia;
-        await submitPhanHoiDanhGiaSP(parentNode, ma_danh_gia);
-        parentNode.style.display = 'none';
-        await showDanhGiaSPs();
+        const kiemTraFormPhanHoi = await submitPhanHoiDanhGiaSP(formNode, ma_danh_gia);
+        if (!kiemTraFormPhanHoi) {
+            return;
+        }
+        formNode.style.display = 'none';
+        // xử lý hiện thị phản hồi vừa tạo
+        const html = await buildListPhanHoi(ma_danh_gia); // fetch lại tất cả phản hồi
+        // thẻ cha của thẻ form là thẻ div chứa cả đánh giá và phản hồi
+        // div chứa cái đánh giá và phản hồi
+        const danhGiaDiv = formNode.parentNode;
+        const phanHoiDiv = danhGiaDiv.querySelector('.div-phan-hoi');
+        // nếu div phản hồi đã được mở (ấn nút xem phản hồi thì cái câu ở trên mới không bị null)
+        // thì xóa cái div phản hồi đó đi
+        if (phanHoiDiv) {
+            danhGiaDiv.removeChild(phanHoiDiv);
+        }
+        // tạo lại thẻ con mới
+        const div = document.createElement('div');
+        div.className = 'div-phan-hoi border-start border-1';
+        div.innerHTML = html;
+        danhGiaDiv.appendChild(div);
+        // khi submit thành công sẽ hiện nút ẩn phản hồi
+        const anPhanHoiBtn = danhGiaDiv.querySelector('.an-phan-hoi');
+        const xemPhanHoiBtn = danhGiaDiv.querySelector('.xem-phan-hoi');
+        if (anPhanHoiBtn) {
+            console.log(anPhanHoiBtn);
+            anPhanHoiBtn.classList.remove('d-none');
+        }
+        if (xemPhanHoiBtn) {
+            console.log(xemPhanHoiBtn);
+            xemPhanHoiBtn.classList.remove('xem-phan-hoi');
+            xemPhanHoiBtn.classList.add('an-phan-hoi');
+            xemPhanHoiBtn.innerHTML = 'Ẩn phản hồi';
+        }
     }
 });

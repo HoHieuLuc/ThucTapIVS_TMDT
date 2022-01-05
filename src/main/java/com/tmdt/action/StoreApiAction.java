@@ -87,6 +87,9 @@ public class StoreApiAction extends ActionSupport {
 
     public int getRowsPerPage() {
         switch (rowsPerPage) {
+            case 1:
+            case 2:
+            case 3:
             case 10:
             case 20:
             case 30:
