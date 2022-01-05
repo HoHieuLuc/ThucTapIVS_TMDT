@@ -4,16 +4,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
+import com.google.gson.Gson;
+import com.tmdt.utilities.ProjectPath;
 
 public class FilterTextTest {
         //Hàm đọc file và chuyển từng dòng thành arrayList
-        public static ArrayList<Integer> readFileToArray(String filename) throws FileNotFoundException
+        public static ArrayList<String> readFileToArray(String filename) throws FileNotFoundException
         {
-                ArrayList<Integer> result = new ArrayList<>();
+                ArrayList<String> result = new ArrayList<>();
 
                 try (Scanner s = new Scanner(new FileReader(filename))) {
                         while (s.hasNext()) {
-                                result.add(s.nextInt());
+                                result.add(s.next());
                         }
                         return result;
                 }
@@ -27,10 +29,14 @@ public class FilterTextTest {
                 // Lowwer toàn bộ kí tự cần kiểm tra xuống chữ thường
                 noiDung_Trim.toLowerCase();
 
+                // String LocalPath = ProjectPath.getPath() + "WEB-INF\\badWord.txt";
                  // Đọc file badWord.txt và đưa vào array
-                ArrayList<Integer> badWords = readFileToArray("filename");
+                 String tempPath = "D:\\Code\\ThucTapIVS_TMDT\\src\\main\\java\\com\\console\\test\\badWord.txt";
+                 ArrayList<String> badWords = readFileToArray(tempPath);
                 
-                
+                 Gson gson = new Gson();
+                 System.out.println(gson.toJson(badWords));
+                //System.out.println(LocalPath);
         }
 
 }
