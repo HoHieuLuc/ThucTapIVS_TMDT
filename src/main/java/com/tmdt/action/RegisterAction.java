@@ -348,4 +348,31 @@ public class RegisterAction extends ActionSupport {
         return SUCCESS;
     }
 
+    @Action(value = "/checkUsername", results = {
+        @Result(name = "success", location = "index.html")
+    })
+    public String checkUsername() throws IOException {
+        Map<String, Object> message = new HashMap<String, Object>();
+
+        if (!Pattern.matches(USERNAME_REGEX, username)) {
+            message.put("password",
+            "Password có tối thiểu 8 ký tự và tối đa 30 kí tự, bao gồm kí tự chữ cái và chữ số, kí tự đầu tiên bắt buộc viết hoa");
+            return JsonResponse.createJsonResponse(message, 200, response);
+        }
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
+
+        int check = taiKhoanMapper.checkDuplicateUsername(username);
+
+        if (check > 0 ) {
+            message.put("message","Tài khoản này đã có người đăng ký");
+        } else  {
+            message.put("message","Tài khoản này có thể đăng ký");
+        }
+
+        return JsonResponse.createJsonResponse(message, 200, response);
+    }
+
 }

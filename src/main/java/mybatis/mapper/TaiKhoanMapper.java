@@ -74,4 +74,9 @@ public interface TaiKhoanMapper {
     })
     public Map<String, Object> getNvLoginInfoByUsername(String username);
 
+
+    // Kiểm tra username bị trùng
+    final String CHECK_DUPLICATE_USERNAME = "SELECT tk.username FROM tai_khoan tk WHERE tk.username = #{userName};";
+    @Select(CHECK_DUPLICATE_USERNAME)
+    public int checkDuplicateUsername(String username);
 }
