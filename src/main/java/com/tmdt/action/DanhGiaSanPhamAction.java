@@ -140,7 +140,9 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         if (danhGiaSanPham == null) {
             System.out.println("insert");
             DanhGiaSanPham dgsp = new DanhGiaSanPham(maSanPham, maKhachHang, noiDung, soSao);
-            danhGiaSanPhamMapper.themDGSP(dgsp);
+            // Ngăn không cho khách hàng tự đánh giá sản phẩm chính mình
+            if (maKhachHang != danhGiaSanPhamMapper.getMaKHFromMaSP(maSanPham)) danhGiaSanPhamMapper.themDGSP(dgsp);
+                else jsonObject.put("message","Bạn không thể tự đánh giá chính mình");
             sqlSession.commit();
             sqlSession.close();
             jsonObject.put("message", "Đánh giá sản phẩm thành công");
