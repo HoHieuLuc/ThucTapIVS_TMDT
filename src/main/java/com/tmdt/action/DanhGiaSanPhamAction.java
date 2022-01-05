@@ -1,4 +1,5 @@
 package com.tmdt.action;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
@@ -47,7 +48,6 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     public void setNoiDung(String noiDung) {
         this.noiDung = noiDung;
     }
-    
 
     public int getSoSao() {
         return soSao;
@@ -136,22 +136,22 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
-        Map<String, Object> danhGiaSanPham = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang, maSanPham);
+        Map<String, Object> danhGiaSanPham = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang,
+                maSanPham);
         if (danhGiaSanPham == null) {
             System.out.println("insert");
             DanhGiaSanPham dgsp = new DanhGiaSanPham(maSanPham, maKhachHang, noiDung, soSao);
             // Ngăn không cho khách hàng tự đánh giá sản phẩm chính mình
-            if (maKhachHang != danhGiaSanPhamMapper.getMaKHFromMaSP(maSanPham))
-            {
-                danhGiaSanPhamMapper.themDGSP(dgsp);
-                jsonObject.put("message", "Đánh giá sản phẩm thành công");
-            } 
-                else jsonObject.put("message","Bạn không thể tự đánh giá chính mình");
-                
+            if (maKhachHang == danhGiaSanPhamMapper.getMaKHFromMaSP(maSanPham)) {
+                jsonObject.put("message", "Bạn không thể tự đánh giá chính mình");
+                return JsonResponse.createJsonResponse(jsonObject, 401, response);
+            }
+            danhGiaSanPhamMapper.themDGSP(dgsp);
+            jsonObject.put("message", "Đánh giá sản phẩm thành công");
             sqlSession.commit();
             sqlSession.close();
-            
-            return JsonResponse.createJsonResponse(jsonObject, 201, response);
+            return JsonResponse.createJsonResponse(jsonObject, 200, response);
+
         } else {
             System.out.println("update");
             danhGiaSanPhamMapper.updateDanhGiaSp(maSanPham, maKhachHang, noiDung, soSao);
