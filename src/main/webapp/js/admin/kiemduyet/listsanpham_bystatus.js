@@ -14,7 +14,7 @@ listTrongKhoDOM.addEventListener('click', async () => {
     document.title = "Sản phẩm trong kho "
     const {data : {sanphams} } = await axios.post(`${baseURL}api/v1/sanpham/getbystatus/0`);
     console.log(sanphams);
-    listSanPhamDOM.innerHTML = "<p>Test thử nút listTrongKho</p>";
+    renderData(sanphams);
 })
 
 //Render lại danh sách sản phẩm đúng với status 
@@ -40,5 +40,28 @@ listYeuCauDuyetDOM.addEventListener('click', async () => {
     console.log(sanphams);
     listSanPhamDOM.innerHTML = "<p>Test thử nút listYeuCauDuyet</p>";
 })
+
+//Hàm xuất table ra màn hình trang quản lý
+const renderData = (allSanPhams) => {
+    const allSanPhams = sanphams.map(sanpham => {
+        const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, mo_ta, ten_nguoi_ban, ten_loai_sp } = sanpham;
+        return `
+            <tr>
+                <td>${ten_san_pham}</td>
+                <td>${gia}</td>
+                <td>${so_luong}</td>
+                <td>${ngay_dang}</td>
+                <td>${ten_nguoi_ban}</td>
+                <td>${mo_ta}</td>
+                <td>${ten_loai_sp}</td>
+                <td>
+                    <div class="d-flex justify-content-evenly">
+                        <a href="./sanpham/${ma_san_pham}" class="">Chi tiết</a>
+                    </div>
+                </td>
+            </tr>`;
+    }).join('');
+    listSanPhamDOM.innerHTML = allSanPhams;
+}
 
 
