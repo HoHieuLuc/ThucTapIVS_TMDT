@@ -41,13 +41,23 @@ public class SanPhamAction extends ActionSupport {
     private int gia;
     private int maLoaiSanPham;
     private int soLuong;
+    private int status;
     private List<File> anhSanPhams = new ArrayList<File>();
     private List<String> anhSanPhamsFileName = new ArrayList<String>();
     private List<String> anhSanPhamsContentType = new ArrayList<String>();
 
     // region Getter and Setter
+    
     public String getMaSanPham() {
         return maSanPham;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public void setMaSanPham(String maSanPham) {
@@ -289,7 +299,7 @@ public class SanPhamAction extends ActionSupport {
      * 
      */
 
-    @Action(value = "/api/v1/sanpham/getall_chuaduyet", results = {
+    @Action(value = "/api/v1/sanpham/getbystatus/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "nhanVienStack"),
@@ -297,7 +307,7 @@ public class SanPhamAction extends ActionSupport {
     public String getAllSanPhamsChuaDuyet() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(0);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(status);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sanphams", listSanPham);
         return JsonResponse.createJsonResponse(map, 200, response);
