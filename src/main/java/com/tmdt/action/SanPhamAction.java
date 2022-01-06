@@ -282,4 +282,25 @@ public class SanPhamAction extends ActionSupport {
         map.put("message", "Thêm sản phẩm thành công");
         return JsonResponse.createJsonResponse(map, 201, response);
     }
+
+    /**
+     * Dành cho nhân viên stack
+     * 
+     * 
+     */
+
+    @Action(value = "/api/v1/sanpham/getall_chuaduyet", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String getAllSanPhamsChuaDuyet() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(0);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sanphams", listSanPham);
+        return JsonResponse.createJsonResponse(map, 200, response);
+    }
+
 }
