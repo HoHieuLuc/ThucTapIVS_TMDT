@@ -18,6 +18,7 @@ listSPByStatusDOM.addEventListener('click', async () => {
 //Hàm xuất table ra màn hình trang quản lý
 const renderData = (datas) => {
     const allSanPhams = datas.map(data => {
+        //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, mo_ta, ten, ten_loai_sp } = data;
         return `
             <tr>
