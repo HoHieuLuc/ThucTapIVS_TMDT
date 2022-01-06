@@ -1,20 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
+  <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
+    <div class="container">
 
-    <!-- Các button tương tác với trang web -->
-    <div class="btn-group" role="group" aria-label="Bộ lọc các nút xem danh sách sản phẩm">
-    <button type="button" class="btn btn-danger" id="biXoa">Đã Xóa</button>
-    <button type="button" class="btn btn-primary" id="trongKho">Trong kho</button>
-    <button type="button" class="btn btn-warning" id="yeuCauDuyet">Chờ duyệt</button>
-    <button type="button" class="btn btn-success" id="daDuyet">Đã duyệt</button>
-    </div>
+     Bộ lọc: <select id="listSPByStatus" >
+        <option value="-1">Bị xóa</option>
+        <option value="0">Trong kho</option>
+        <option value="1">Chờ duyệt</option>
+        <option value="2">Được duyệt</option>
+      </select>
 
-
-    <div id="listSanPham">
+      <div id="listSanPham">
         Đang tải dữ liệu
+      </div>
     </div>
 
 
-   <script src='<c:url value="/js/admin/kiemduyet/listsanpham_bystatus.js"/>'></script>
-<jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
+
+    <script src='<c:url value="/js/admin/kiemduyet/listsanpham_bystatus.js"/>'></script>
+    <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
