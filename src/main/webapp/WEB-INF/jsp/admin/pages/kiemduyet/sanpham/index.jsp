@@ -17,7 +17,6 @@
             <th>Số lượng</th>
             <th>Ngày đăng</th>
             <th>Tên người bán</th>
-            <th>Mô tả</th>
             <th>Tên loại sản phẩm</th>
             <th class='d-flex justify-content-center'>Chức năng</th>
           </tr>

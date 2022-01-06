@@ -19,16 +19,14 @@ listSPByStatusDOM.addEventListener('click', async () => {
 const renderData = (datas) => {
     const allSanPhams = datas.map(data => {
         //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
-        const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, mo_ta, ten, ten_loai_sp } = data;
+        const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, ten, ten_loai_sp } = data;
         return `
             <tr>
                 <td>${ten_san_pham}</td>
-                <td>${gia}</td>
+                <td>${gia}</td>p
                 <td>${so_luong}</td>
-                <td>   ${ngay_dang.date.day}/${ngay_dang.date.month}/${ngay_dang.date.year} 
-                lúc ${ngay_dang.time.hour}h:${ngay_dang.time.minute}p</td>
+                <td>   ${ngay_dang.date.day}/${ngay_dang.date.month}/${ngay_dang.date.year}
                 <td>${ten}</td>
-                <td>${mo_ta}</td>
                 <td>${ten_loai_sp}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
