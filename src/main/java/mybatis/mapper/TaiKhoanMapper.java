@@ -76,7 +76,7 @@ public interface TaiKhoanMapper {
 
 
     // Kiểm tra username bị trùng
-    final String CHECK_DUPLICATE_USERNAME = "SELECT * FROM tai_khoan tk WHERE tk.username = #{userName};";
+    final String CHECK_DUPLICATE_USERNAME = "SELECT COUNT(*) FROM tai_khoan tk WHERE tk.username = #{userName};";
     @Select(CHECK_DUPLICATE_USERNAME)
     public int checkDuplicateUsername(String username);
 }
