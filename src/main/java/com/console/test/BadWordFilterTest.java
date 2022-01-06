@@ -14,6 +14,7 @@ import com.tmdt.utilities.ProjectPath;
 public class BadWordFilterTest {
 	
 	public static void main(String[] args) throws InterruptedException, FileNotFoundException, UnsupportedEncodingException {
+		// Đừng chỉnh sửa file CSV bằng Excel, mà hãy chỉnh trực tiếp trong vscode hoặc notepad ++
 		String input = new String("vếu aa".getBytes(Charset.forName("utf-8")));
 		String output = BadWordFilter.getCensoredText(input);
 		System.out.println(output);
