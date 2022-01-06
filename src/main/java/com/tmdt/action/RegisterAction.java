@@ -349,15 +349,16 @@ public class RegisterAction extends ActionSupport {
     }
 
     @Action(value = "/checkUsername", results = {
-        @Result(name = "success", location = "index.html")
+            @Result(name = "success", location = "/index.html")
     })
     public String checkUsername() throws IOException {
-        Map<String, Object> message = new HashMap<String, Object>();
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
 
         if (!Pattern.matches(USERNAME_REGEX, username)) {
-            message.put("message",
-            "Username có tối thiểu 6 ký tự và tối đa 20 kí tự gồm chữ thường, chữ hoa và số");
-            return JsonResponse.createJsonResponse(message, 200, response);
+            jsonRes.put("invalidInput", true);
+            jsonRes.put("message",
+                    "Username có tối thiểu 6 ký tự và tối đa 20 kí tự gồm chữ thường, chữ hoa và số");
+            return JsonResponse.createJsonResponse(jsonRes, 200, response);
         }
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -366,13 +367,12 @@ public class RegisterAction extends ActionSupport {
 
         int check = taiKhoanMapper.checkDuplicateUsername(username);
 
-        if (check > 0 ) {
-            message.put("message","Tài khoản này đã có người đăng ký");
-        } else  {
-            message.put("message","Tài khoản này có thể đăng ký");
+        if (check > 0) {
+            jsonRes.put("message", "Tài khoản đã tồn tại");
+            return JsonResponse.createJsonResponse(jsonRes, 409, response);
+        } else {
+            jsonRes.put("message", "Bạn có thể sử dụng tài khoản này");
+            return JsonResponse.createJsonResponse(jsonRes, 200, response);
         }
-
-        return JsonResponse.createJsonResponse(message, 200, response);
     }
-
 }
