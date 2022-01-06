@@ -333,13 +333,10 @@ public class SanPhamAction extends ActionSupport {
             }
             sqlSession.close();
             return CustomError.createCustomError("Mã sản phẩm không hợp lệ", 401, response);
-
         }
         // Map<String, Object> map = new HashMap<String, Object>();
         // map.put("sanphams", listSanPham);
         return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
-        
-
     }
 
 }
