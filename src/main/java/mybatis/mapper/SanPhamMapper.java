@@ -217,7 +217,7 @@ public interface SanPhamMapper {
 
     //Khách hàng sửa thông tin của sản phẩm (Đừng cho khách update status)
     final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
-         "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} " +
+         "`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} " +
          " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang} ;";
     @Update(UPDATE_SP_INFO)
     public int updateSP_info_admin(SanPham sanpham);
