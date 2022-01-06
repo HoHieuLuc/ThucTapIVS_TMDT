@@ -1,6 +1,7 @@
 package com.tmdt.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +41,19 @@ public class LoaiSanPhamAction extends ActionSupport {
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
     
     // Dành cho menu loại sản phẩm khi add sản phẩm mới
-    @Action(value = "/api/v1/loaisanpham", results = {
+    @Action(value = "/api/v1/loaisanpham/{maLoaiSanPham}", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String getAllLoaiSanPham() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         LoaiSanPhamMapper loaiSanPhamMapper = sqlSession.getMapper(LoaiSanPhamMapper.class);
-        List<LoaiSanPham> loaiSanPhams = loaiSanPhamMapper.layTatCaLoaiSanPham();
+        List<Map<String, Object>> loaiSanPhams = new ArrayList<>();
+        if(maLoaiSanPham == 0){
+            loaiSanPhams = loaiSanPhamMapper.getAllLoaiSanPhamCapCao();
+        }
+        else {
+            loaiSanPhams = loaiSanPhamMapper.getAllLoaiSanPhamCon(maLoaiSanPham);
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("loaiSanPhams", loaiSanPhams);
         sqlSession.commit();
@@ -81,5 +88,21 @@ public class LoaiSanPhamAction extends ActionSupport {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sanphams", sanPhams);
         return JsonResponse.createJsonResponse(map, 200, response);
+    }
+
+    /* ================== */
+    /* Dành cho nhân viên */
+    /* ================== */
+    
+    @Action(value = "/api/v1/admin/loaisanpham/them", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+        @InterceptorRef("nhanVienStack")
+    })
+    public String themLoaiSanPhan(){
+        //SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        //LoaiSanPhamMapper loaiSanPhamMapper = sqlSession.getMapper(LoaiSanPhamMapper.class);
+        return SUCCESS;
     }
 }

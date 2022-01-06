@@ -18,9 +18,9 @@
             </div>
             <div class="mb-1">
                 <label class="">Loại sản phẩm</label>
-                <select name="maLoaiSanPham" id="ma-loai-san-pham" class="form-control rounded">
+                <div class="row g-2" id="loaiSanPham">
 
-                </select>
+                </div>
             </div>
             <div class="mb-1">
                 <label class="">Số lượng</label>
@@ -42,8 +42,7 @@
         </div>
     </form>
 </div>
-
-<script src='<c:url value="/js/function.js"/>'></script>
+<script src='<c:url value="/js/thongbao.js"/>'></script>
 <script src='<c:url value="/js/user/khohang/create.js"/>'></script>
 <script>
     document.getElementById('aside-them-san-pham').classList.add('active');
