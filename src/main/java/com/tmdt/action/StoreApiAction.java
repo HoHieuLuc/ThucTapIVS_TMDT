@@ -145,13 +145,11 @@ public class StoreApiAction extends ActionSupport {
         String _search = getSearch();
         String _orderBy = getOrderBy();
         String _order = getOrder();
-        System.out.println(_orderBy + " " + _order);
 
         int countSanPham = sanPhamMapper.countSanPhamByUsername(username, _search);
 
         int offset = (_page - 1) * _rowsPerPage;
         int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
-        System.out.println("offset: " + offset);
 
         List<Map<String, Object>> storeProducts = sanPhamMapper.getSanPhamByUsername(username, _search, _orderBy,
                 _order, offset, _rowsPerPage);
