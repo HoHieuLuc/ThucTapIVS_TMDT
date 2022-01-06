@@ -3,7 +3,7 @@ const registerLinkDOM = document.querySelector('#register');
 const logOutLinkDOM = document.querySelector('#logout');
 const loginDanhGiaDOM = document.querySelector('#loginDanhGia');
 
-const bodyDOM = document.querySelector('body');
+const mainDOM = document.querySelector('#main');
 
 const currentURL = new URL(window.location);
 currentURL.searchParams.delete('redirect');
@@ -53,7 +53,7 @@ const updateCart = async (formData) => {
 }
 
 
-bodyDOM.addEventListener('click', async (event) => {
+mainDOM.addEventListener('click', async (event) => {
     const target = event.target;
     const formData = new FormData();
     if (target.classList.contains('add-to-cart-btn')) {
@@ -74,8 +74,8 @@ bodyDOM.addEventListener('click', async (event) => {
         soLuongInputDOM.disabled = true;
         target.disabled = true;
         formData.append('maSanPham', soLuongInputDOM.dataset.masanpham);
-        if(target.classList.contains('tang-gio-hang')) {
-        formData.append('soLuong', parseInt(soLuongInputDOM.value) + 1);
+        if (target.classList.contains('tang-gio-hang')) {
+            formData.append('soLuong', parseInt(soLuongInputDOM.value) + 1);
         }
         else {
             formData.append('soLuong', parseInt(soLuongInputDOM.value) - 1);
