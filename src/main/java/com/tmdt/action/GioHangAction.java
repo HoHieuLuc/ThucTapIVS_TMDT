@@ -97,9 +97,8 @@ public class GioHangAction extends ActionSupport {
         // Kiểm tra không cho nhân viên đặt hàng
         Integer level = (Integer) session.getAttribute("level");
         if (level > 0) {
-            return CustomError.createCustomError("Nhân viên không thể thêm vào giỏ hàng", 401, response);
+            return CustomError.createCustomError("Nhân viên không thể thêm vào giỏ hàng", 403, response);
         }
-
 
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -107,12 +106,21 @@ public class GioHangAction extends ActionSupport {
 
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
+        if(maKhachHang == gioHangMapper.getMaKhachHangByMaSP(maSanPham)){
+            return CustomError.createCustomError("Bạn không thể thêm sản phẩm của mình vào giỏ hàng", 403, response);
+        }
 
         // Thêm sản phẩm
         try {
             gioHangMapper.themSP_GioHang(maKhachHang, maSanPham);
         } catch (PersistenceException e) {
             if (e.getMessage().contains("PRIMARY")) {
+                int soLuongSPTrongGioHang = gioHangMapper.getSoLuongSPTrongGioHang(maKhachHang, maSanPham);
+                int soLuongSPHienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
+                if (soLuongSPTrongGioHang >= soLuongSPHienCo) {
+                    gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham, soLuongSPHienCo);
+                    return CustomError.createCustomError("Bạn chỉ có thể đặt tối đa " + soLuongSPHienCo + " sản phẩm cho sản phẩm này", 403, response);
+                }
                 gioHangMapper.increaseSoLuongSP(maKhachHang, maSanPham);
             }
             if (e.getMessage().contains("FOREIGN")) {
@@ -122,7 +130,7 @@ public class GioHangAction extends ActionSupport {
             sqlSession.commit();
             sqlSession.close();
         }
-        return CustomError.createCustomError("Thêm sản phẩm vào giỏ hàng thành công", 200, response);
+        return CustomError.createCustomError("Thêm sản phẩm vào giỏ hàng thành công", 201, response);
     }
 
     @Action(value = "/api/v1/giohang/xoa", results = {
@@ -172,14 +180,15 @@ public class GioHangAction extends ActionSupport {
 
         /// Kiểm tra xem số lượng trong giỏ hàng có <= số lượng hiện có sản phẩm đó hay
         /// không
-        int soLuongSP_HienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
+        int soLuongSPHienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
 
-        if (soLuong > soLuongSP_HienCo) {
+        if (soLuong > soLuongSPHienCo) {
             // Điều chỉnh lại con số trong input số lượng của sản phẩm đó
             // Bằng JsonRes và hiện thông báo
+            gioHangMapper.updateSoLuongSP_In_GioHang(maKhachHang, maSanPham, soLuongSPHienCo);
             sqlSession.close();
-            jsonRes.put("soLuong", soLuongSP_HienCo);
-            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSP_HienCo + " sản phẩm");
+            jsonRes.put("soLuong", soLuongSPHienCo);
+            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSPHienCo + " sản phẩm cho sản phẩm này");
             return JsonResponse.createJsonResponse(jsonRes, 403, response);
         }
 
