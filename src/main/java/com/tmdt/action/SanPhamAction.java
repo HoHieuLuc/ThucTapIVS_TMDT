@@ -47,7 +47,7 @@ public class SanPhamAction extends ActionSupport {
     private List<String> anhSanPhamsContentType = new ArrayList<String>();
 
     // region Getter and Setter
-    
+
     public String getMaSanPham() {
         return maSanPham;
     }
@@ -311,6 +311,23 @@ public class SanPhamAction extends ActionSupport {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sanphams", listSanPham);
         return JsonResponse.createJsonResponse(map, 200, response);
+    }
+
+    @Action(value = "/api/v1/sanpham/changestatus", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String changeStatusSP() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+
+        int changeStatusSP = sanPhamMapper.updateSP_Status(status, maSanPham);
+        // Map<String, Object> map = new HashMap<String, Object>();
+        // map.put("sanphams", listSanPham);
+        if (changeStatusSP == 1)
+            return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thành công", 201, response);
+        else return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thất bại",401,response);
     }
 
 }

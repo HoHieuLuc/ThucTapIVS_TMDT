@@ -197,7 +197,7 @@ public interface SanPhamMapper {
     /* dành cho trang admin */
     /* ==================== */
 
-    // Lấy danh sách các sản phẩm chưa duyệt
+    // Lấy danh sách các sản phẩm theo status nào đó
     final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
         "sp.so_luong,sp.ngay_dang " +
         "FROM san_pham SP " +
@@ -214,4 +214,10 @@ public interface SanPhamMapper {
             @Param("status") int status,
             @Param("maSanPham") String maSanPham
     );
+
+    //Sửa thông tin của sản phẩm (bên admin)
+    final String UPDATE_SP_INFO_ADMIN = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
+         "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} WHERE `ma_san_pham` = #{maSanPham};";
+    @Update(UPDATE_SP_INFO_ADMIN)
+    public int updateSP_info_admin(SanPham sanpham);
 }
