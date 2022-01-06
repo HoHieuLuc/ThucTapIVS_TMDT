@@ -109,12 +109,7 @@ prefix="c" %>
     <div class="col-md-3">bộ lọc</div>
     <div class="col-md-9">
       <form class="searchForm input-group mb-3">
-        <input
-          id="search"
-          type="text"
-          class="form-control w-50"
-          placeholder="Tìm 1 mặt hàng"
-        />
+        <input id="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
         <select id="orderBy" class="form-select">
           <option value="date">Ngày đăng</option>
           <option value="price">Giá</option>
@@ -124,12 +119,7 @@ prefix="c" %>
           <option value="desc">Giảm dần</option>
           <option value="asc">Tăng dần</option>
         </select>
-        <input
-          type="submit"
-          class="btn btn-outline-secondary"
-          type="button"
-          value="Tìm kiếm"
-        />
+        <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
       </form>
       <div class="mb-2">
         Số mặt hàng mỗi trang:
