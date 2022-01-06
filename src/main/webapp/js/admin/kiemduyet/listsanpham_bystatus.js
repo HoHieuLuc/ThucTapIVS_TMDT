@@ -43,7 +43,7 @@ listYeuCauDuyetDOM.addEventListener('click', async () => {
 
 //Hàm xuất table ra màn hình trang quản lý
 const renderData = (allSanPhams) => {
-    const allSanPhams = sanphams.map(sanpham => {
+     allSanPhams = sanphams.map(sanpham => {
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, mo_ta, ten_nguoi_ban, ten_loai_sp } = sanpham;
         return `
             <tr>
