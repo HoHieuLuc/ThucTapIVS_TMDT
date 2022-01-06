@@ -169,7 +169,14 @@ const showProductList = async () => {
                         class="d-block position-absolute top-50 start-50 translate-middle img-fluid store-product-img">
                     </a>
                     <div class="col-md-9">
-                        <a href="${baseURL}sanpham/${ma_san_pham}" class="fs-5 text-decoration-none">${ten_san_pham}</a>
+                        <a 
+                            href="${baseURL}sanpham/${ma_san_pham}" 
+                            style="text-overflow: ellipsis; display: block; overflow: hidden;" 
+                            class="fs-5 text-decoration-none"
+                            title="${ten_san_pham}"
+                        >
+                            ${ten_san_pham}
+                        </a>
                         <br>
                         <a href="${baseURL}category/${ma_loai_sp}" class="text-muted">${ten_loai_sp}</a>
                         <p>Xếp hạng: ${xepHang}</p>
