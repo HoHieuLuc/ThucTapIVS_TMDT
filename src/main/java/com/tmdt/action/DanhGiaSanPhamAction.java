@@ -144,7 +144,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
             // Ngăn không cho khách hàng tự đánh giá sản phẩm chính mình
             if (maKhachHang == danhGiaSanPhamMapper.getMaKHFromMaSP(maSanPham)) {
                 jsonObject.put("message", "Bạn không thể tự đánh giá chính mình");
-                return JsonResponse.createJsonResponse(jsonObject, 401, response);
+                return JsonResponse.createJsonResponse(jsonObject, 403, response);
             }
             danhGiaSanPhamMapper.themDGSP(dgsp);
             jsonObject.put("message", "Đánh giá sản phẩm thành công");
