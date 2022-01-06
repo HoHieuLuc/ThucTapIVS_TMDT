@@ -18,14 +18,15 @@ listSPByStatusDOM.addEventListener('click', async () => {
 //Hàm xuất table ra màn hình trang quản lý
 const renderData = (datas) => {
     const allSanPhams = datas.map(data => {
-        const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, mo_ta, ten_nguoi_ban, ten_loai_sp } = data;
+        const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, mo_ta, ten, ten_loai_sp } = data;
         return `
             <tr>
                 <td>${ten_san_pham}</td>
                 <td>${gia}</td>
                 <td>${so_luong}</td>
-                <td>${ngay_dang}</td>
-                <td>${ten_nguoi_ban}</td>
+                <td>   ${ngay_dang.date.day}/${ngay_dang.date.month}/${ngay_dang.date.year} 
+                lúc ${ngay_dang.time.hour}h:${ngay_dang.time.minute}p</td>
+                <td>${ten}</td>
                 <td>${mo_ta}</td>
                 <td>${ten_loai_sp}</td>
                 <td>
