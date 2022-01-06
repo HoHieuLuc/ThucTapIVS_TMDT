@@ -3,12 +3,14 @@
 <jsp:include page="/WEB-INF/jsp/user/include/header.jsp" />
 <div class="container">
     <div>
-        <form id="search-form">
-            <div class="form-group">
-                <label for="">Tìm kiếm</label>
-                <input type="text" class="form-control" name="search" id="search">
-            </div>
-            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        <form class="searchForm input-group mb-3">
+            <input id="search" name="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
+            <select id="tinhTrang" name="status" class="form-select">
+                <option value="0">Trong kho</option>
+                <option value="1">Đang chờ duyệt</option>
+                <option value="2">Đang bán</option>
+            </select>
+            <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
         </form>
     </div>
     <table class="table table-striped table-hover">
@@ -20,15 +22,13 @@
                 <th>Số lượng đã bán</th>
                 <th>Ngày đăng</th>
                 <th>Xếp hạng</th>
-                <th>Tình trạng</th>
-                <th class='d-flex justify-content-center'>Chức năng</th>
+                <th><div class="text-center">Chức năng</div></th>
             </tr>
         </thead>
         <tbody id="sanpham-list"></tbody>
     </table>
     <div id="pagination" class="d-flex justify-content-center"></div>
 </div>
-<script src='<c:url value="/js/function.js"/>'></script>
 <script src='<c:url value="/js/user/khohang/index.js"/>'></script>
 <script>
     document.getElementById('aside-san-pham').classList.add('active');
