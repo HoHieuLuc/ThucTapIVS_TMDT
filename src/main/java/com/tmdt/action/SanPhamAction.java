@@ -3,9 +3,11 @@ package com.tmdt.action;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -322,12 +324,22 @@ public class SanPhamAction extends ActionSupport {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
 
-        int changeStatusSP = sanPhamMapper.updateSP_Status(status, maSanPham);
+        if (status >= -1 && status <= 2) {
+            int changeStatusSP = sanPhamMapper.updateSP_Status(status, maSanPham);
+            if (changeStatusSP == 1) {
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thành công", 201, response);
+            }
+            sqlSession.close();
+            return CustomError.createCustomError("Mã sản phẩm không hợp lệ", 401, response);
+
+        }
         // Map<String, Object> map = new HashMap<String, Object>();
         // map.put("sanphams", listSanPham);
-        if (changeStatusSP == 1)
-            return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thành công", 201, response);
-        else return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thất bại",401,response);
+        return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
+        
+
     }
 
 }
