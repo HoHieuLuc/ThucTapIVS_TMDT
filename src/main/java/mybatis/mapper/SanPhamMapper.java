@@ -215,9 +215,10 @@ public interface SanPhamMapper {
             @Param("maSanPham") String maSanPham
     );
 
-    //Sửa thông tin của sản phẩm (bên admin)
-    final String UPDATE_SP_INFO_ADMIN = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
-         "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} WHERE `ma_san_pham` = #{maSanPham};";
-    @Update(UPDATE_SP_INFO_ADMIN)
+    //Khách hàng sửa thông tin của sản phẩm 
+    final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
+         "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} " +
+         " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang} ;";
+    @Update(UPDATE_SP_INFO)
     public int updateSP_info_admin(SanPham sanpham);
 }
