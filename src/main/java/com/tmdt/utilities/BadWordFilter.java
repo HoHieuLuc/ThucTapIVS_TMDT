@@ -27,12 +27,7 @@ public class BadWordFilter {
 
     String modifiedInput = input;
 
-    // remove leetspeak
-    modifiedInput = modifiedInput.replaceAll("1", "i").replaceAll("!", "i").replaceAll("3", "e").replaceAll("4", "a")
-        .replaceAll("@", "a").replaceAll("5", "s").replaceAll("7", "t").replaceAll("0", "o").replaceAll("9", "g");
-
-    // ignore any character that is not a letter
-    modifiedInput = modifiedInput.toLowerCase().replaceAll("[^a-zA-Z]", "");
+  
 
     ArrayList<String> badWordsFound = new ArrayList<>();
 
