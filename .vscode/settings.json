@@ -1,3 +1,12 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "better-comments.highlightPlainText": true,
+    "diffEditor.wordWrap": "on",
+    "files.autoSave": "onFocusChange",
+    "superBG.images": [
+        "/C:/Users/lammi/Pictures/Screenshots/Screenshot (1).png"
+    ],
+    "superBG.activeImage": 0,
+    "superBG.url": "",
+    "superBG.opacity": 50
 }

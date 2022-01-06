@@ -3,19 +3,43 @@
 <struts>
     <constant name="struts.devMode" value="true" />
     <constant name="struts.convention.default.parent.package" value="default"/>
+    <!--Đừng xóa maxSize và saveDir nhan -->
     <constant name="struts.multipart.saveDir" value="/tmp/struts.multipart.save" />
+    <constant name="struts.multipart.maxSize" value="20971520" />
+
+    <constant name="struts.patternMatcher" value="regex" />
+    <constant name="struts.matcher.appendNamedParameters" value="true"/>   <!-- Required from 2.5.25+ -->
 
     <package name="default" extends="struts-default">
         <interceptors>    
-            <interceptor name="LoginInterceptor" class="com.thuctap.struts2_crud_mybatis.interceptor.LoginInterceptor" />  
-            <interceptor-stack name="loginStack">
-                <interceptor-ref name="LoginInterceptor" />
+            <interceptor name="AuthInterceptor" class="com.tmdt.interceptor.AuthInterceptor" />  
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="AuthInterceptor" />
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>  
+ 
+            <interceptor name="LoggedInInterceptor" class="com.tmdt.interceptor.LoggedInInterceptor" />  
+            <interceptor-stack name="loggedInStack">
+                <interceptor-ref name="LoggedInInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack> 
+
+            <interceptor name="NhanVienInterceptor" class="com.tmdt.interceptor.NhanVienInterceptor" />  
+            <interceptor-stack name="nhanVienStack">
+                <interceptor-ref name="NhanVienInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack> 
+
+            <interceptor name="KhachHangInterceptor" class="com.tmdt.interceptor.KhachHangInterceptor" />  
+            <interceptor-stack name="khachHangStack">
+                <interceptor-ref name="KhachHangInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack> 
         </interceptors>  
 
         <global-results>
             <result name="login" type="redirect">/login</result>
-        </global-results>     
+            <result name="home" type="redirect">/</result>
+        </global-results>
     </package>
 </struts>

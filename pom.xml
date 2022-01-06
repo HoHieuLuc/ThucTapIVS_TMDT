@@ -9,7 +9,7 @@
 
     <properties>
         <struts2.version>2.5.27</struts2.version>
-        <log4j2.version>2.15.0</log4j2.version>
+        <log4j2.version>2.17.1</log4j2.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -53,13 +53,6 @@
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
@@ -76,7 +69,7 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.5.7</version>
+            <version>3.5.8</version>
         </dependency>
 
         <dependency>
@@ -92,14 +85,14 @@
             <version>2.8.9</version>
             <scope>compile</scope>
         </dependency>
-        
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
         <dependency>
@@ -108,7 +101,12 @@
             <version>0.4</version>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/jstl/jstl -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
 
     </dependencies>
 

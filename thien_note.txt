@@ -1,0 +1,21 @@
+Chỗ này tui note lại mấy route của api, ... , để copy pass test nhanh hơn
+Ô bấm ctrl + shift + p (Xóa dấu <, tìm file này tiện hơn)
+
+//Note sql chi tiết sản phẩm cần test nhanh
+SELECT sp.ma_san_pham, sp.ten_san_pham,kh.ten, sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang 
+            
+            FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP 
+            JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham
+            LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham 
+             RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang
+            WHERE sp.ma_san_pham = "a862b5ce-64d6-11ec-bb14-8378cfa7d63d"
+            GROUP BY sp.ma_san_pham
+
+//Route trang chủ
+http://localhost:8080/TMDT-0.0.1-SNAPSHOT/
+
+//Route chi tiết sản phẩm
+http://localhost:8080/TMDT-0.0.1-SNAPSHOT/sanpham/a862b5ce-64d6-11ec-bb14-8378cfa7d63d {{View Location: /WEB-INF/jsp/product/index.jsp}}
+
+//Route api chi tiết sản phẩm 
+http://localhost:8080/TMDT-0.0.1-SNAPSHOT/api/v1/sanpham/a862b5ce-64d6-11ec-bb14-8378cfa7d63d

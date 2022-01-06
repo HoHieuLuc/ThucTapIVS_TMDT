@@ -1,61 +1,49 @@
-console.log("Fuck you tomcat!!!");
+const formDOM = document.querySelector('#registerForm');
+const url = new URL(window.location);
+const redirect = url.searchParams.get('redirect');
 
+const usernameDOM = document.getElementsByName('username')[0];
 
-const validateRegisterForm = async () => {
-    //Hiên thị thông báo lỗi
-    const userNameErrorMessage = document.querySelector('#username_error');
-    const passwordErrorMessage = document.querySelector('#password_error');
+const userNameErrorMessage = document.querySelector('#username_error');
+const passwordErrorMessage = document.querySelector('#password_error');
+const emailErrorMessage = document.querySelector('#email_error');
+const tenErrorMessage = document.querySelector('#ten_error');
+const facebookErrorMessage = document.querySelector('#facebook_error');
+const twitterErrorMessage = document.querySelector('#twitter_error');
+const retypePasswordErrorMessage = document.querySelector('#retype_password')
+const phoneErrorMessage = document.querySelector('#phone_error')
 
-    const formDOM = document.querySelector('#registerForm');
+const register = async () => {
     const formData = new FormData(formDOM);
     //Thực hiện request
     try {
-         await axios.post(`./register`,formData);
-         window.location.href = "./register_success.html";
+        await axios.post(`./registerSubmit`, formData);
+        window.location.href = redirect !== null ? decodeURIComponent(redirect) : baseURL;
     } catch (error) {
-        //Khi có lỗi thì 
-           const data = error.response.data;
-            console.log(data);
-            userNameErrorMessage.innerHTML=data[0];
-            passwordErrorMessage.innerHTML=data[1];
+        const data = error.response.data;
+        console.log(data);
+        userNameErrorMessage.textContent = data.username ?? "";
+        passwordErrorMessage.textContent = data.password ?? "";
+        emailErrorMessage.textContent = data.email ?? "";
+        tenErrorMessage.textContent = data.ten ?? "";
+        facebookErrorMessage.textContent = data.facebook_link ?? "";
+        twitterErrorMessage.textContent = data.twitter_link ?? "";
+        retypePasswordErrorMessage.textContent = data.xac_nhan_password ?? "";
+        phoneErrorMessage.textContent = data.dien_thoai ?? "";
+
     }
 }
 
-function validateUNameFrontEnd(){    
-    var username = document.getElementById("username").value;
-    console.log(username);
+//Kiểm tra username bị trùng
+    usernameDOM.addEventListener('keyup', async () => {
+        const {data : {message} } = await axios.post(`${baseURL}checkUsername?username=${usernameDOM.value}`);
+        userNameErrorMessage.textContent = message;
+    })
 
-    if (!username.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,14}$/g))
-        {
-            document.getElementById("username_error").innerHTML=`
-            Username Tối thiểu 6 ký tự và tối đa 14 kí tự,
-            ít nhất một chữ cái và một số, không có kí tự khoảng trắng
-            `;
-        }
-    else {
-            document.getElementById("username_error").innerHTML=`Username đúng quy tắc`;
-    }
-
-}  
-
-function validatePasswordFrontEnd(){    
-    var password = document.getElementById("password").value;
-    console.log(password);
-
-    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,14}$/g))
-        {
-            document.getElementById("password_error").innerHTML=`
-            Password Tối thiểu 8 và tối đa 14 ký tự, 
-            ít nhất một chữ cái viết hoa, một chữ cái viết thường,
-             một số và một ký tự đặc biệt, không có khoảng trắng
-            `;
-        }
-    else {
-            document.getElementById("password_error").innerHTML=`Password đúng quy tắc`;
-    }
-
-}  
-
+formDOM.addEventListener('submit', (event) => {
+    event.preventDefault();
+    register();
+});
 
 
 
