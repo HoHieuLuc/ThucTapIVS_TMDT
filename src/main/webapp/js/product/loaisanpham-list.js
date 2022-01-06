@@ -4,15 +4,15 @@ const maLoaiSP = params[params.length - 1];
 const tenLoaiSP = document.querySelector('#tenLoaiSP');
 
 const showSanPhamList = async () => {
-    sanPhamListDOM.textContent = 'Loading...';
+  sanPhamListDOM.textContent = 'Loading...';
 
-    try {
-        const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/category/${maLoaiSP}`);
-        console.log(sanphams);
-        tenLoaiSP.innerHTML = sanphams[0].tenLoaiSanPham;
-        const allSanPhams = sanphams.map((sanpham) => {
-            const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
-            return `
+  try {
+    const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/category/${maLoaiSP}`);
+    console.log(sanphams);
+    tenLoaiSP.innerHTML = sanphams[0].tenLoaiSanPham;
+    const allSanPhams = sanphams.map((sanpham) => {
+      const { maSanPham, tenSanPham, gia, anhSanPham } = sanpham;
+      return `
                 <div class="col-sm-3">
                   <img src="${baseURL}images/product/${anhSanPham}" class="img-responsive" style="width: 200px; height: 200px;" alt="${tenSanPham}">
                   <p style="color:red;font-size:25px;font-family:poroto">${gia} VNĐ</p>
@@ -26,11 +26,18 @@ const showSanPhamList = async () => {
                     </a>
                   </div>
                 </div>`;
-        }).join('');
-        sanPhamListDOM.innerHTML = allSanPhams;
-    } catch (error) {
-        console.log(error);
-    }
+    }).join('');
+    sanPhamListDOM.innerHTML = allSanPhams;
+  } catch (error) {
+    console.log(error);
+    sanPhamListDOM.innerHTML = `
+            <a href="${baseURL}/">
+              <p>Bấm vào đây để về trang chủ</p>
+            </a>
+        `;
+    tenLoaiSP.innerHTML = `<h3>Không tồn tại loại sản phẩm này</h3>`;
+
+  }
 }
 
 showSanPhamList();

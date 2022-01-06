@@ -38,6 +38,7 @@ public class RegisterAction extends ActionSupport {
     // Regex vừa dùng kiểm tra đại số boolean, vừa dùng để in từng thông báo lỗi cụ
     // thể cho phía Client
     static final String USERNAME_REGEX = "^[A-Za-z0-9]{6,20}$";
+    static final String PASSWORD_REGEX = "^[A-Z]{1}[A-Za-z0-9]{7,29}$";
     static final String EMAIL_REGEX = "^(.+)@(\\S+)$";
     static final String PHONE_REGEX = "^[0-9]{9,12}";
     //
@@ -211,7 +212,7 @@ public class RegisterAction extends ActionSupport {
 
     // Validate All Field
     public boolean isValid() {
-        return Pattern.matches(USERNAME_REGEX, username) && between(password, 8, 30)
+        return Pattern.matches(USERNAME_REGEX, username) && Pattern.matches(PASSWORD_REGEX, password)
                 && Pattern.matches(EMAIL_REGEX, email) && between(ten, 2, 50)
                 && between(facebookLink, 0, 100) && between(twitterLink, 0, 100)
                 && Pattern.matches(PHONE_REGEX, soDienThoai)
@@ -310,9 +311,9 @@ public class RegisterAction extends ActionSupport {
                 jsonObject.put("username",
                         "Username có tối thiểu 6 ký tự và tối đa 20 kí tự gồm chữ thường, chữ hoa và số");
             }
-            if (!between(password, 8, 30)) {
+            if (!Pattern.matches(PASSWORD_REGEX, password)) {
                 jsonObject.put("password",
-                        "Password có tối thiểu 8 ký tự và tối đa 30 kí tự");
+                        "Password có tối thiểu 8 ký tự và tối đa 30 kí tự, bao gồm kí tự chữ cái và chữ số, kí tự đầu tiên bắt buộc viết hoa");
             }
             if (!Pattern.matches(EMAIL_REGEX, email)) {
                 jsonObject.put("email", "email không đúng định dạng");
@@ -345,6 +346,33 @@ public class RegisterAction extends ActionSupport {
     })
     public String viewRegister() {
         return SUCCESS;
+    }
+
+    @Action(value = "/checkUsername", results = {
+        @Result(name = "success", location = "index.html")
+    })
+    public String checkUsername() throws IOException {
+        Map<String, Object> message = new HashMap<String, Object>();
+
+        if (!Pattern.matches(USERNAME_REGEX, username)) {
+            message.put("message",
+            "Username có tối thiểu 6 ký tự và tối đa 20 kí tự gồm chữ thường, chữ hoa và số");
+            return JsonResponse.createJsonResponse(message, 200, response);
+        }
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
+
+        int check = taiKhoanMapper.checkDuplicateUsername(username);
+
+        if (check > 0 ) {
+            message.put("message","Tài khoản này đã có người đăng ký");
+        } else  {
+            message.put("message","Tài khoản này có thể đăng ký");
+        }
+
+        return JsonResponse.createJsonResponse(message, 200, response);
     }
 
 }

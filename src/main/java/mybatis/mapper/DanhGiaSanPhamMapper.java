@@ -67,7 +67,11 @@ public interface DanhGiaSanPhamMapper {
 	public void updateDanhGiaSp(@Param("maSanPham") String maSanPham, @Param("maKhachHang") int maKhachHang,
 			@Param("noiDung") String noiDung, @Param("soSao") int soSao);
 
-		
+
+	// Lẫy mã khách hàng của sản phẩm mình đang xem
+	final String GET_MAKH_FROM_MASP = "SELECT ma_khach_hang from `san_pham` WHERE ma_san_pham = #{maSanPham}";
+	@Select(GET_MAKH_FROM_MASP)
+	public int getMaKHFromMaSP(String maSanPham);
 	
 	
 
