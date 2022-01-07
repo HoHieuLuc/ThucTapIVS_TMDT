@@ -112,4 +112,6 @@ chucNangDOM.addEventListener('click',async(event)=>{
         console.log(error)
         thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true)
     }
+    //Reload lại data chi tiết sản phẩm
+    showSanPhamDetail();
 })
