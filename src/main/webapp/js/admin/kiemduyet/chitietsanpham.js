@@ -48,7 +48,23 @@ const showSanPhamDetail = async () => {
         moTaSanPhamDOM.textContent = moTa;
         giaDOM.innerHTML = gia;
         nguoiDangSanPham.textContent = tenKhachHang;
-        statusDOM.textContent = `${status}`;
+        //if status==0 statusDOM.textContent = `${status}`;
+        switch (status) {
+            case '-1':
+                statusDOM.textContent = `Bị Xóa (Ẩn)`;
+                break;
+            case '0':
+                statusDOM.textContent = `Trong Kho`;
+                break;
+            case '1':
+                statusDOM.textContent = `Yêu Cầu Duyệt `;
+                break;
+            case '2':
+                statusDOM.textContent = `Đã duyệt`;
+                break;
+
+            
+        }
         const anhSanPhamData = anhSanPhams.map((anhSanPham) => {
             return {
                 src: `${baseURL}images/product/${anhSanPham}`,
