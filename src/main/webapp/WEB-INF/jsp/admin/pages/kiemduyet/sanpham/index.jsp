@@ -29,15 +29,16 @@
             <div class="col-md-6 position-relative">
                 <div class="row">
                     <div class="col-4 border border-dark"><b>Tên Sản phẩm</b></div>
-                    <div class="col-8 border border-dark"> <h3 class="" id="tenSanPham"></h3></div>
+                    <div class="col-8 border border-dark"> <p class="" id="tenSanPham"></p></div>
                     <div class="col-4 border border-dark"><b>Người Đăng</b></div>
-                    <div class="col-8 border border-dark"> <h3 class="" id="nguoiDangSanPham"></h3></div>
+                    <div class="col-8 border border-dark"> <p class="" id="nguoiDangSanPham"></p></div>
                     <div class="col-4 border border-dark"><b>Mô Tả</b></div>
-                    <div class="col-8 border border-dark"> <h3 class="" id="moTaSanPham"></h3></div>
+                    <div class="col-8 border border-dark" > 
+                    <p class="" id="moTaSanPham" style="text-overflow: ellipsis; display: block; overflow: scroll;"></p></div>
                     <div class="col-4 border border-dark"><b>Giá</b></div>
-                    <div class="col-8 border border-dark"> <h3 class="" id="gia"></h3></div>
+                    <div class="col-8 border border-dark"> <p class="" id="gia"></p></div>
                     <div class="col-4 border border-dark"><b>Trạng Thái</b></div>
-                    <div class="col-8 border border-dark"> <h3 class="" id="status"></h3></div>
+                    <div class="col-8 border border-dark"> <p class="" id="status"></p></div>
                     <div class="col-6 pt-3" id="chucNang">   
                     </div>
             </div>
