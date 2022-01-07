@@ -187,7 +187,7 @@ public interface SanPhamMapper {
     /* ==================== */
 
     // Lấy danh sách các sản phẩm theo status nào đó
-    final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
+    final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ma_san_pham,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
             "sp.so_luong,sp.ngay_dang " +
             "FROM san_pham SP " +
             "RIGHT JOIN khach_hang KH ON SP.ma_khach_hang = KH.ma_khach_hang " +
@@ -195,7 +195,7 @@ public interface SanPhamMapper {
             "WHERE SP.status = #{status}; ";
 
     @Select(GET_SP_BY_STATUS)
-    public List<Map<String, Object>> getSP_ByStatus(float status);
+    public List<Map<String, Object>> getSP_ByStatus(int status);
 
     // Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
     final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";

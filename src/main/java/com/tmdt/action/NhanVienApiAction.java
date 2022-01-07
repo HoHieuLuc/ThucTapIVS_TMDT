@@ -21,14 +21,14 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.SanPhamMapper;
 
 public class NhanVienApiAction {
-    private float status;
+    private int status;
     private String maSanPham;
 
-    public float getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(float status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -76,8 +76,7 @@ public class NhanVienApiAction {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
 
-        System.out.println("Math Ceil = " + Math.ceil(status) + "Math Floor = " + Math.floor(status));
-        if (status >= -1 && status <= 2  && Math.ceil(status) == Math.floor(status)) {
+        if (status >= -1 && status <= 2) {
             int changeStatusSP = sanPhamMapper.updateSP_Status(status, maSanPham);
             if (changeStatusSP == 1) {
                 sqlSession.commit();
