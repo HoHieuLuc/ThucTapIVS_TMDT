@@ -248,10 +248,13 @@ public class UserApiAction extends ActionSupport{
         if (sanPham.isEmpty()) {
             return CustomError.createCustomError("Không tìm thấy sản phẩm", 404, response);
         }
+        AnhSanPhamMapper anhSanPhamMapper = sqlSession.getMapper(AnhSanPhamMapper.class);
+        List<String> listAnhSanPham = anhSanPhamMapper.getAllAnhSanPham(maSanPham);
+
         Map<String, Object> jsonRes = new HashMap<String, Object>();
+        sanPham.put("anhSanPhams", listAnhSanPham);
         jsonRes.put("sanpham", sanPham);
-        jsonRes.put("status", 200);
-        System.out.println(jsonRes);
+
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
