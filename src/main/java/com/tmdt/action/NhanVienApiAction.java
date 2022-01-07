@@ -92,13 +92,4 @@ public class NhanVienApiAction {
         return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
     }
 
-
-    // route giao diện xem chi tiết sản phẩm
-    @Action(value = "/admin/sanpham/{params}", results = {
-            @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/sanpham/index.jsp")
-    })
-    public String viewChiTietSanPham() {
-        return "SUCCESS";
-    }
-
 }
