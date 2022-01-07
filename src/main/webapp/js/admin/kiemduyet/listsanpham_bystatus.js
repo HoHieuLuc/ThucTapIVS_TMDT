@@ -9,20 +9,51 @@ const listSanPhamDOM = document.querySelector("#listSanPham");
 //Render lại danh sách sản phẩm đúng với status  
 listSPByStatusDOM.addEventListener('change', async () => {
     const status = listSPByStatusDOM.value;
-    const {data : {sanphams} } = await axios.post(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
+    const { data: { sanphams } } = await axios.post(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
     renderData(sanphams);
 })
 
 //Hàm xuất table ra màn hình trang quản lý
-const renderData = (datas) => {
+const renderData =  (datas) => {
     const allSanPhams = datas.map(data => {
         //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, ten, ten_loai_sp } = data;
         let chucNangElement = ``;
-        if (listSPByStatusDOM.value == -1) chucNangElement = `
-            <a href="./api/v1/nhanvien/sanpham/changestatus?status=0&&maSanPham=${ma_san_pham}" class="">
-                Phục hồi
-            </a>`;
+
+        switch (listSPByStatusDOM.value) {
+            case '-1':
+                chucNangElement = `
+                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=0&&maSanPham=${ma_san_pham}" class="">
+                    Phục hồi vào kho
+                </a>`;
+                break;
+            case '0':
+                chucNangElement = `
+                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=2&&maSanPham=${ma_san_pham}" class="">
+                    Duyệt
+                </a>
+                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=-1&&maSanPham=${ma_san_pham}" class="">
+                  Xóa
+                </a>
+                         `;
+                break;
+            case '1':
+                chucNangElement = `
+                    <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=2&&maSanPham=${ma_san_pham}" class="">
+                        Duyệt
+                    </a>
+                    <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=-1&&maSanPham=${ma_san_pham}" class="">
+                      Xóa
+                    </a>
+                             `;
+                break;
+            case '2':
+                chucNangElement = `
+                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=-1&&maSanPham=${ma_san_pham}" class="">
+                    Xóa
+                </a>`;
+                break;
+        }
         return `
             <tr>
                 <td>${ten_san_pham}</td>
@@ -44,7 +75,7 @@ const renderData = (datas) => {
 const firstTimeRun = async () => {
     const status = listSPByStatusDOM.value;
     document.title = "Sản phẩm trong kho "
-    const {data : {sanphams} } = await axios.post(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
+    const { data: { sanphams } } = await axios.post(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
     renderData(sanphams);
 }
 firstTimeRun();
