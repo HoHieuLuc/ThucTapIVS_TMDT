@@ -18,42 +18,7 @@ const renderData =  (datas) => {
     const allSanPhams = datas.map(data => {
         //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, ten, ten_loai_sp } = data;
-        let chucNangElement = ``;
 
-        switch (listSPByStatusDOM.value) {
-            case '-1':
-                chucNangElement = `
-                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=0&&maSanPham=${ma_san_pham}" class="">
-                    Phục hồi vào kho
-                </a>`;
-                break;
-            case '0':
-                chucNangElement = `
-                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=2&&maSanPham=${ma_san_pham}" class="">
-                    Duyệt
-                </a>
-                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=-1&&maSanPham=${ma_san_pham}" class="">
-                  Xóa
-                </a>
-                         `;
-                break;
-            case '1':
-                chucNangElement = `
-                    <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=2&&maSanPham=${ma_san_pham}" class="">
-                        Duyệt
-                    </a>
-                    <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=-1&&maSanPham=${ma_san_pham}" class="">
-                      Xóa
-                    </a>
-                             `;
-                break;
-            case '2':
-                chucNangElement = `
-                <a href="${baseURL}api/v1/nhanvien/sanpham/changestatus?status=-1&&maSanPham=${ma_san_pham}" class="">
-                    Xóa
-                </a>`;
-                break;
-        }
         return `
             <tr>
                 <td>${ten_san_pham}</td>
@@ -64,7 +29,7 @@ const renderData =  (datas) => {
                 <td>${ten_loai_sp}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                        ${chucNangElement}
+                         <a href="${baseURL}sanpham/${ma_san_pham}" class="">Chi tiết</a>
                     </div>
                 </td>
             </tr>`;
@@ -80,6 +45,7 @@ const firstTimeRun = async () => {
 }
 firstTimeRun();
 
+listSanPhamDOM.addEventListener()
 
 
 
