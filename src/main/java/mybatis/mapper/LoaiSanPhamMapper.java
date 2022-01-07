@@ -9,14 +9,26 @@ import org.apache.ibatis.annotations.*;
 
 public interface LoaiSanPhamMapper {
 
-    final String GET_ALL_LOAI_SAN_PHAM = "SELECT * FROM loai_san_pham";
+    // lấy tất cả loại sản phẩm cấp cao nhất
+    final String GET_ALL_LOAI_SAN_PHAM = "SELECT * FROM loai_san_pham WHERE ma_loai_cha IS NULL";
 
     @Select(GET_ALL_LOAI_SAN_PHAM)
-    @Results({
-            @Result(property = "maLoaiSanPham", column = "ma_loai_sp"),
-            @Result(property = "tenLoaiSanPham", column = "ten_loai_sp")
-    })
-    public List<LoaiSanPham> layTatCaLoaiSanPham();
+    public List<Map<String, Object>> getAllLoaiSanPhamCapCao();
+
+    // lấy tất cả loại sản phẩm con của 1 loại sản phẩm cha
+    final String GET_ALL_LOAI_SAN_PHAM_CON = "SELECT * FROM loai_san_pham WHERE ma_loai_cha = #{maLoaiSanPham}";
+
+    @Select(GET_ALL_LOAI_SAN_PHAM_CON)
+    public List<Map<String, Object>> getAllLoaiSanPhamCon(@Param("maLoaiSanPham") int maLoaiSanPham);
+
+    // kiểm tra xem loại sản phẩm có phải là loại sản phẩm cấp thấp nhất không
+    // nếu là sản phẩm cấp thấp nhất thì mới loại sản phẩm đó mới hợp lệ để thêm
+    final String IS_LOAI_SAN_PHAM_CAP_THAP = "SELECT COUNT(*) " +
+            "FROM `loai_san_pham` lsp WHERE lsp.ma_loai_sp = #{maLoaiSanPham} AND NOT EXISTS " +
+            "(SELECT * FROM loai_san_pham lsp_con WHERE lsp_con.ma_loai_cha = lsp.ma_loai_sp)";
+
+    @Select(IS_LOAI_SAN_PHAM_CAP_THAP)
+    public int isLoaiSanPhamCapThap(@Param("maLoaiSanPham") int maLoaiSanPham);
 
     // Mục đích hàm này là chỉ hiện những tên loại sản phẩm mà nó có ít nhất 1 sản
     // phẩm

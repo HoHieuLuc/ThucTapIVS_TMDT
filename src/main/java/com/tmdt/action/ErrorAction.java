@@ -13,8 +13,6 @@ public class ErrorAction {
     @Action(value = "/bad-request", results = { @Result(location = "/index.html") })
     public String badRequest() throws IOException {
         HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType("application/json;charset=utf-8");
-        response.setHeader("Cache-Control", "no-cache");
-        return CustomError.createCustomError("Có lỗi xảy ra", 400, response);
+        return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response);
     }
 }

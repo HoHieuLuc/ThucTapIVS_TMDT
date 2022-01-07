@@ -102,4 +102,20 @@ public interface GioHangMapper {
     @Select(GET_SO_LUONG_SP_HIEN_CO)
     public int getSoLuongSPHienCo(String maSanPham);
 
+    // Lấy số lượng sản phẩm trong giỏ hàng theo mã sản phẩm
+    // để kiểm tra xem số lượng sản phẩm trong giỏ hàng có lớn hơn số lượng tối đa
+    // sử dụng khi insert bị trùng
+    final String GET_SO_LUONG_SP_TRONG_GIO_HANG = "SELECT so_luong FROM `gio_hang` WHERE ma_khach_hang = #{maKhachHang} "
+            +
+            "AND ma_san_pham = #{maSanPham}";
+    
+    @Select(GET_SO_LUONG_SP_TRONG_GIO_HANG)
+    public int getSoLuongSPTrongGioHang(@Param("maKhachHang") int maKhachHang, @Param("maSanPham") String maSanPham);
+
+    // lấy mã khách hàng của 1 sản phẩm để kiểm tra không cho tự thêm vô giỏ sản
+    // phẩm của mình
+    final String GET_MA_KHACH_HANG_BY_MA_SP = "SELECT ma_khach_hang FROM `san_pham` WHERE ma_san_pham = #{maSanPham}";
+
+    @Select(GET_MA_KHACH_HANG_BY_MA_SP)
+    public int getMaKhachHangByMaSP(String maSanPham);
 }

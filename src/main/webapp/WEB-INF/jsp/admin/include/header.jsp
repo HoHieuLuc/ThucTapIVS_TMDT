@@ -75,7 +75,7 @@
     <a href="" class="brand-link">
       <img src="https://via.placeholder.com/30" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">
-          Nhân Viên
+          Trang quản lý
       </span>
     </a>
 
