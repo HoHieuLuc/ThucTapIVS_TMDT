@@ -21,7 +21,7 @@ const renderData = (datas) => {
         return `
             <tr>
                 <td>${ten_san_pham}</td>
-                <td>${gia}</td>p
+                <td>${gia}</td>
                 <td>${so_luong}</td>
                 <td>   ${ngay_dang.date.day}/${ngay_dang.date.month}/${ngay_dang.date.year}
                 <td>${ten}</td>
