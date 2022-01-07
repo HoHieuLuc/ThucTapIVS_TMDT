@@ -77,7 +77,7 @@ const buildPagination = (page, totalPages, maxPages, callback) => {
             }
         }
     }
-    
+
     // trang hiện tại nhỏ hơn trang cuối thì mới bấm được nút next
     if (page < totalPages) {
         paginationHTML += `
@@ -88,7 +88,7 @@ const buildPagination = (page, totalPages, maxPages, callback) => {
             </li>
         `;
     }
-    
+
     if (page == totalPages) {
         paginationHTML += `
             <li class="page-item disabled">
@@ -97,7 +97,7 @@ const buildPagination = (page, totalPages, maxPages, callback) => {
                 </a>
             </li>
         `;
-    } 
+    }
     paginationHTML += `
             </ul >
         </nav >
@@ -105,8 +105,13 @@ const buildPagination = (page, totalPages, maxPages, callback) => {
     return paginationHTML;
 }
 
-const buildOptions = (data, id, value) => {
-    return data.map((item) => {
+const buildOptions = (data, id, value, defaultOption = '') => {
+    let defaultOptionHtml = '';
+    if (defaultOption != '') {
+        defaultOptionHtml = `<option selected disabled class="form-control">${defaultOption}</option>`;
+    }
+    const optionHtml = data.map((item) => {
         return `<option value="${item[id]}" class="form-control">${item[value]}</option>`;
     }).join('');
+    return defaultOptionHtml + optionHtml;
 }

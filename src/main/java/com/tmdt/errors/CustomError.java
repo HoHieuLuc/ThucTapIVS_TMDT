@@ -16,6 +16,7 @@ public class CustomError {
         PrintWriter printWriter = response.getWriter();
         response.setStatus(errorCode);
         response.setContentType("application/json;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache");
         printWriter.print("{\"message\":\"" + message + "\"}");
         printWriter.flush();
         printWriter.close();

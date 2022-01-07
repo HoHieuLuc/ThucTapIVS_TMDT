@@ -1,29 +1,73 @@
 const formDOM = document.querySelector("#them-san-pham-form");
-const maLoaiSanPhamDOM = document.querySelector("#ma-loai-san-pham");
+const loaiSanPhamDOM = document.querySelector("#loaiSanPham");
 
-const getLoaiSanPham = async () => {
+const buildLoaiSanPham = async (maLoai) => {
     try {
-        const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/loaisanpham`);
-        const options = buildOptions(loaiSanPhams, "maLoaiSanPham", "tenLoaiSanPham");
-        maLoaiSanPhamDOM.innerHTML = options;
+        const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/loaisanpham/${maLoai}`);
+        if (loaiSanPhams.length === 0) {
+            return '';
+        }
+        const options = buildOptions(loaiSanPhams, "ma_loai_sp", "ten_loai_sp", 'Chọn loại sản phẩm');
+        return `
+            <select name="maLoaiSanPham" class="form-select rounded">
+                ${options}
+            </select>
+        `;
+
+    } catch (error) {
+        console.log(error);
+        return '';
+    }
+}
+
+const getLoaiSanPham = async (maLoai) => {
+    try {
+        const loaiSanPhamHtml = await buildLoaiSanPham(maLoai);
+        const newSelectDiv = document.createElement('div');
+        newSelectDiv.className = 'divLoaiSanPham col-4';
+        newSelectDiv.innerHTML = loaiSanPhamHtml;
+        if (loaiSanPhamHtml !== '') {
+            loaiSanPhamDOM.appendChild(newSelectDiv);
+        }
     } catch (error) {
         console.log(error);
     }
 }
 
-getLoaiSanPham();
+getLoaiSanPham(0);
 
-const upload = async () => {
+const themSanPham = async () => {
     const formData = new FormData(formDOM);
+    formData.set('maLoaiSanPham', formData.getAll('maLoaiSanPham').at(-1));
     try {
-        await axios.post(`${baseURL}api/v1/user/sanpham/create`, formData);
+        await axios.post(`${baseURL}api/v1/user/sanpham/them`, formData);
         alert('Thêm sản phẩm thành công');
     } catch (error) {
         console.log(error);
+        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
     }
 }
 
 formDOM.addEventListener("submit", (event) => {
     event.preventDefault();
-    upload();
+    themSanPham();
+});
+
+loaiSanPhamDOM.addEventListener('change', async (event) => {
+    const eventTarget = event.target;
+    const maLoai = eventTarget.value;
+    const parentNode = eventTarget.parentNode;
+    // xóa các thẻ divLoaiSanPham nằm sau nó
+    while (true) {
+        const nextNode = parentNode.nextElementSibling;
+        if (nextNode) {
+            if (nextNode.classList.contains('divLoaiSanPham')) {
+                nextNode.remove();
+            }
+        }
+        else {
+            break;
+        }
+    }
+    await getLoaiSanPham(maLoai);
 });
