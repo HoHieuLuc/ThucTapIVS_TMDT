@@ -27,11 +27,18 @@
             <div class="col-md-6 border border-dark inline-gallery-container" id="anhSanPham">
             </div>
             <div class="col-md-6 position-relative">
-               <b>Tên sản phẩm:</b>   <h3 class="" id="tenSanPham"></h3>   </br>
-                <b>Cửa hàng:</b>  <a href="" class="" id="nguoiDangSanPham"></a>  </br>
-                <b>Mô tả sản phẩm:</b>  <p class="tlt-description" id="moTaSanPham"></p> </br>
-                <b> Giá </b> <h4 id="gia"></h4> <b> VNĐ </b> </br>
-                <b> Tình Trạng </b> <p class="tlt-description" id="status"></p>
+                <div class="row">
+                    <div class="col-4 border border-dark"><b>Tên Sản phẩm</b></div>
+                    <div class="col-8 border border-dark"> <h3 class="" id="tenSanPham"></h3></div>
+                    <div class="col-4 border border-dark"><b>Người Đăng</b></div>
+                    <div class="col-8 border border-dark"> <h3 class="" id="nguoiDangSanPham"></h3></div>
+                    <div class="col-4 border border-dark"><b>Mô Tả</b></div>
+                    <div class="col-8 border border-dark"> <h3 class="" id="moTaSanPham"></h3></div>
+                    <div class="col-4 border border-dark"><b>Giá</b></div>
+                    <div class="col-8 border border-dark"> <h3 class="" id="gia"></h3></div>
+                    <div class="col-4 border border-dark"><b>Trạng Thái</b></div>
+                    <div class="col-8 border border-dark"> <h3 class="" id="status"></h3></div>
+                </div>
             </div>
         </div>
     </div>
