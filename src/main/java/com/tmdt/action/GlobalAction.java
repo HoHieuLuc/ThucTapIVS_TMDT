@@ -67,6 +67,14 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // Xem chi tiết sản phẩm để kiểm duyệt
+    @Action(value = "/admin/sanpham/{params}", results = {
+            @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/sanpham/index.jsp")
+    })
+    public String viewChiTietSanPhamAdmin() {
+        return "SUCCESS";
+    }
+
     /* route cho khách hàng */
     // giỏ hàng
     @Action(value = "/cart", results = {
