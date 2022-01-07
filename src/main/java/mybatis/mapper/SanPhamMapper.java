@@ -202,7 +202,7 @@ public interface SanPhamMapper {
 
     @Update(UPDATE_SP_STATUS)
     public int updateSP_Status(
-            @Param("status") float status,
+            @Param("status") int status,
             @Param("maSanPham") String maSanPham);
 
     // Khách hàng sửa thông tin của sản phẩm

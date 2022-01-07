@@ -9,7 +9,7 @@ const listSanPhamDOM = document.querySelector("#listSanPham");
 //Render lại danh sách sản phẩm đúng với status  
 listSPByStatusDOM.addEventListener('change', async () => {
     const status = listSPByStatusDOM.value;
-    const { data: { sanphams } } = await axios.post(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
+    const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
     renderData(sanphams);
 })
 
@@ -40,7 +40,7 @@ const renderData =  (datas) => {
 const firstTimeRun = async () => {
     const status = listSPByStatusDOM.value;
     document.title = "Sản phẩm trong kho "
-    const { data: { sanphams } } = await axios.post(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
+    const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
     renderData(sanphams);
 }
 firstTimeRun();
