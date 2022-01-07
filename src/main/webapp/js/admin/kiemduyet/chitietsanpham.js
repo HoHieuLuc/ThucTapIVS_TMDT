@@ -105,4 +105,11 @@ chucNangDOM.addEventListener('click',async(event)=>{
     formData.append('maSanPham',maSanPham);
     console.log(target.dataset);
     formData.append('status',target.dataset.status);
+    try {
+        await axios.post(`${baseURL}api/v1/nhanvien/sanpham/changestatus`,formData)
+    }
+    catch (error) {
+        console.log(error)
+        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true)
+    }
 })
