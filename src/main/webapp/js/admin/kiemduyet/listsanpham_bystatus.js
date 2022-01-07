@@ -10,7 +10,7 @@ const listSanPhamDOM = document.querySelector("#listSanPham");
 listSPByStatusDOM.addEventListener('click', async () => {
     const status = listSPByStatusDOM.value;
     document.title = "Sản phẩm trong kho "
-    const {data : {sanphams} } = await axios.post(`${baseURL}api/v1/sanpham/getbystatus/${status}`);
+    const {data : {sanphams} } = await axios.post(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
     console.log(sanphams);
     renderData(sanphams);
 })

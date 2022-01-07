@@ -40,55 +40,54 @@ public class NhanVienApiAction {
         this.maSanPham = maSanPham;
     }
 
-
-
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
-     /**
+
+    /**
      * Dành cho nhân viên stack
      * 
      * 
      */
 
-    @Action(value = "/api/v1/sanpham/getbystatus/{status}", results = {
-        @Result(name = "success", location = "/index.html")
-}, interceptorRefs = {
-        @InterceptorRef(value = "nhanVienStack"),
-})
-public String getAllSanPhamsChuaDuyet() throws IOException {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-    List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(status);
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("sanphams", listSanPham);
-    return JsonResponse.createJsonResponse(map, 200, response);
-}
-
-@Action(value = "/api/v1/sanpham/changestatus", results = {
-        @Result(name = "success", location = "/index.html")
-}, interceptorRefs = {
-        @InterceptorRef(value = "nhanVienStack"),
-})
-public String changeStatusSP() throws IOException {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-
-    if (status >= -1 && status <= 2) {
-        int changeStatusSP = sanPhamMapper.updateSP_Status(status, maSanPham);
-        if (changeStatusSP == 1) {
-            sqlSession.commit();
-            sqlSession.close();
-            return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thành công", 201, response);
-        }
-        sqlSession.close();
-        return CustomError.createCustomError("Mã sản phẩm không hợp lệ", 401, response);
+    @Action(value = "/api/v1/nhanvien/sanpham/getbystatus/{status}", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String getAllSanPhamsChuaDuyet() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(status);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sanphams", listSanPham);
+        return JsonResponse.createJsonResponse(map, 200, response);
     }
-    // Map<String, Object> map = new HashMap<String, Object>();
-    // map.put("sanphams", listSanPham);
-    sqlSession.close();
-    return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
-}
+
+    @Action(value = "/api/v1/nhanvien/sanpham/changestatus", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String changeStatusSP() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+
+        if (status >= -1 && status <= 2) {
+            int changeStatusSP = sanPhamMapper.updateSP_Status(status, maSanPham);
+            if (changeStatusSP == 1) {
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thành công", 201, response);
+            }
+            sqlSession.close();
+            return CustomError.createCustomError("Mã sản phẩm không hợp lệ", 401, response);
+        }
+        // Map<String, Object> map = new HashMap<String, Object>();
+        // map.put("sanphams", listSanPham);
+        sqlSession.close();
+        return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
+    }
 }
