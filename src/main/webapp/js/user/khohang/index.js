@@ -66,7 +66,7 @@ const showSanPhamList = async () => {
 
 showSanPhamList();
 
-searchFormDOM.addEventListener('submit', async (event) => {
+searchFormDOM.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(searchFormDOM);
     removeURLparam("page");
