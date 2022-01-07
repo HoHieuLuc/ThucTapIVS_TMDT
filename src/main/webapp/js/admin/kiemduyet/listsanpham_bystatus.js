@@ -18,6 +18,11 @@ const renderData = (datas) => {
     const allSanPhams = datas.map(data => {
         //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, ten, ten_loai_sp } = data;
+        let chucNangElement = ``;
+        if (listSPByStatusDOM.value == -1) chucNangElement = `
+            <a href="./api/v1/nhanvien/sanpham/changestatus?status=0&&maSanPham=${ma_san_pham}" class="">
+                Phục hồi
+            </a>`;
         return `
             <tr>
                 <td>${ten_san_pham}</td>
@@ -28,7 +33,7 @@ const renderData = (datas) => {
                 <td>${ten_loai_sp}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                        <a href="./sanpham/${ma_san_pham}" class="">Chi tiết</a>
+                        ${chucNangElement}
                     </div>
                 </td>
             </tr>`;

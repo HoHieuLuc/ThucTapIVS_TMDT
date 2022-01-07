@@ -63,6 +63,7 @@ public class NhanVienApiAction {
         List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(status);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sanphams", listSanPham);
+        sqlSession.close();
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
