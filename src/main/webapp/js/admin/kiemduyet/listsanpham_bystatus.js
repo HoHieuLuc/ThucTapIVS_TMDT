@@ -45,7 +45,6 @@ const firstTimeRun = async () => {
 }
 firstTimeRun();
 
-listSanPhamDOM.addEventListener()
 
 
 
