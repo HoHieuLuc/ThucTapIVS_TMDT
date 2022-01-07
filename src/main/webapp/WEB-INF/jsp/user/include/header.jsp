@@ -33,6 +33,7 @@
       </div>
     </div>
   </div>
+  <script src='<c:url value="/js/thongbao.js"/>'></script>
   <div class="wrapper">
 
   <!-- Preloader -->
