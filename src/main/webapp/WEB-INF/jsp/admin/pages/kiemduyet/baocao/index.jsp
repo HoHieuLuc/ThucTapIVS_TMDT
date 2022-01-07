@@ -4,5 +4,8 @@
 
 phê duyệt báo cáo
 
-
+<script>
+    document.getElementById('aside-kiem-duyet-bao-cao').classList.add('active');
+    document.getElementById('aside-kiem-duyet').classList.add('menu-is-opening', 'menu-open');
+</script>
 <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
