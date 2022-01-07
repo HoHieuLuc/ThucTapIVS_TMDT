@@ -94,7 +94,7 @@ public class NhanVienApiAction {
 
 
     // route giao diện xem chi tiết sản phẩm
-    @Action(value = "/api/v1/nhanvien/sanpham/{params}", results = {
+    @Action(value = "/admin/sanpham/{params}", results = {
             @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/sanpham/index.jsp")
     })
     public String viewChiTietSanPham() {
