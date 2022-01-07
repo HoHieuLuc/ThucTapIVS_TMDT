@@ -56,29 +56,29 @@ const showSanPhamDetail = async () => {
             case -1:
                 statusDOM.textContent = `Bị Xóa (Ẩn)`;
                 chucNangDOM.innerHTML =`
-                    <button type="button" class="btn btn-danger">Phục hồi</button>
-                    <button type="button" class="btn btn-success">Duyệt</button></div>
+                    <button type="button" class="btn btn-danger" data-status="1">Phục hồi</button>
+                    <button type="button" class="btn btn-success" data-status="1">Duyệt</button></div>
                 `;
                 break;
             case 0:
                 statusDOM.textContent = `Trong Kho`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger">Rút về kho</button>
-                <button type="button" class="btn btn-success">Duyệt</button></div>
+                <button type="button" class="btn btn-danger" data-status="1">Rút về kho</button>
+                <button type="button" class="btn btn-success" data-status="1">Duyệt</button></div>
             `;
                 break;
             case 1:
                 statusDOM.textContent = `Yêu Cầu Duyệt `;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger">Xóa</button>
-                <button type="button" class="btn btn-success">Duyệt</button></div>
+                <button type="button" class="btn btn-danger" data-status="1">Xóa</button>
+                <button type="button" class="btn btn-success" data-status="1">Duyệt</button></div>
             `;
                 break;
             case 2:
                 statusDOM.textContent = `Đã duyệt`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger">Xóa</button>
-                <button type="button" class="btn btn-success">Duyệt</button></div>
+                <button type="button" class="btn btn-danger" data-status="1">Xóa</button>
+                <button type="button" class="btn btn-success" data-status="1">Duyệt</button></div>
             `;
                 break;
         }
@@ -97,3 +97,12 @@ const showSanPhamDetail = async () => {
 }
 showSanPhamDetail();
 
+
+//Bắt sự kiện của từng nút để duyệt
+chucNangDOM.addEventListener('click',async(event)=>{
+    const target = event.target;
+    const formData = new FormData();
+    formData.append('maSanPham',maSanPham);
+    console.log(target.dataset);
+    formData.append('status',target.dataset.status);
+})
