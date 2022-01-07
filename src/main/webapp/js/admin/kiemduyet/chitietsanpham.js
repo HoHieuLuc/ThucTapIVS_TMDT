@@ -56,7 +56,7 @@ const showSanPhamDetail = async () => {
             case -1:
                 statusDOM.textContent = `Bị Xóa (Ẩn)`;
                 chucNangDOM.innerHTML =`
-                    <button type="button" class="btn btn-danger" data-status="0">Phục hồi vào kho</button>
+                    <button type="button" class="btn btn-primary" data-status="0">Phục hồi vào kho</button>
                     <button type="button" class="btn btn-success" data-status="2">Duyệt</button></div>
                 `;
                 break;
@@ -71,15 +71,14 @@ const showSanPhamDetail = async () => {
                 statusDOM.textContent = `Yêu Cầu Duyệt `;
                 chucNangDOM.innerHTML =`
                 <button type="button" class="btn btn-danger" data-status="-1">Xóa</button>
-                <button type="button" class="btn btn-success" data-status="1">Duyệt</button></div>
-                <button type="button" class="btn btn-success" data-status="0">Đưa vào kho</button></div>
+                <button type="button" class="btn btn-success" data-status="2">Duyệt</button></div>
             `;
                 break;
             case 2:
                 statusDOM.textContent = `Đã duyệt`;
                 chucNangDOM.innerHTML =`
                 <button type="button" class="btn btn-danger" data-status="-1">Xóa</button>
-                <button type="button" class="btn btn-success" data-status="0">Đưa vào kho</button></div>
+                <button type="button" class="btn btn-primary" data-status="0">Đưa vào kho</button></div>
             `;
                 break;
         }
