@@ -27,11 +27,11 @@
             <div class="col-md-6 border border-dark inline-gallery-container" id="anhSanPham">
             </div>
             <div class="col-md-6 position-relative">
-                <h3 class="" id="tenSanPham"></h3>
+               Tên sản phẩm <h3 class="" id="tenSanPham"></h3>
                 Cửa hàng <a href="" class="" id="nguoiDangSanPham"></a>
-                <p class="tlt-description" id="moTaSanPham"></p>
-                <h4 id="gia"></h4>
-                <p class="tlt-description" id="status"></p>
+                Mô tả sản phẩm:<p class="tlt-description" id="moTaSanPham"></p>
+                Giá<h4 id="gia"></h4> VNĐ
+               Tình Trạng <p class="tlt-description" id="status"></p>
             </div>
         </div>
     </div>
@@ -48,4 +48,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/plugins/zoom/lg-zoom.min.js"></script>
    
    
-    <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
