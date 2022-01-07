@@ -23,6 +23,9 @@ import mybatis.mapper.SanPhamMapper;
 public class NhanVienApiAction {
     private int status;
     private String maSanPham;
+    private int page;
+    private int rowsPerPage;
+    private String search;
 
     public int getStatus() {
         return status;
@@ -38,6 +41,41 @@ public class NhanVienApiAction {
 
     public void setMaSanPham(String maSanPham) {
         this.maSanPham = maSanPham;
+    }
+
+    public int getPage() {
+        if (page < 1) {
+            page = 1;
+        }
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getRowsPerPage() {
+        switch (rowsPerPage) {
+            case 5:
+            case 10:
+            case 20:
+            case 30:
+                return rowsPerPage;
+            default:
+                return 5;
+        }
+    }
+
+    public void setRowsPerPage(int rowsPerPage) {
+        this.rowsPerPage = rowsPerPage;
+    }
+
+    public String getSearch() {
+        return search == null ? "" : search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -60,11 +98,22 @@ public class NhanVienApiAction {
     public String getAllSanPhamsChuaDuyet() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(status);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sanphams", listSanPham);
+
+        int _page = getPage();
+        int _rowsPerPage = getRowsPerPage();
+        int _status = getStatus();
+        String _search = getSearch();
+
+        int countSanPham = sanPhamMapper.countSanPhamByStatus(_status, _search);
+        int offset = (_page - 1) * _rowsPerPage;
+        int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
+
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(_status, offset, _rowsPerPage, _search);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("sanphams", listSanPham);
+        jsonRes.put("total_page", totalPage);
         sqlSession.close();
-        return JsonResponse.createJsonResponse(map, 200, response);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
     @Action(value = "/api/v1/nhanvien/sanpham/changestatus", results = {
