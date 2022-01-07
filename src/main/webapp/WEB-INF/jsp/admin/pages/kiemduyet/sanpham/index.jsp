@@ -27,11 +27,11 @@
             <div class="col-md-6 border border-dark inline-gallery-container" id="anhSanPham">
             </div>
             <div class="col-md-6 position-relative">
-               Tên sản phẩm <h3 class="" id="tenSanPham"></h3>
-                Cửa hàng <a href="" class="" id="nguoiDangSanPham"></a>
-                Mô tả sản phẩm:<p class="tlt-description" id="moTaSanPham"></p>
-                Giá<h4 id="gia"></h4> VNĐ
-               Tình Trạng <p class="tlt-description" id="status"></p>
+               <b>Tên sản phẩm:</b>   <h3 class="" id="tenSanPham"></h3>   </br>
+                <b>Cửa hàng:</b>  <a href="" class="" id="nguoiDangSanPham"></a>  </br>
+                <b>Mô tả sản phẩm:</b>  <p class="tlt-description" id="moTaSanPham"></p> </br>
+                <b> Giá </b> <h4 id="gia"></h4> <b> VNĐ </b> </br>
+                <b> Tình Trạng </b> <p class="tlt-description" id="status"></p>
             </div>
         </div>
     </div>
