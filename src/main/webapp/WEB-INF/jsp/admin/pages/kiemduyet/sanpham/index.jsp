@@ -34,7 +34,10 @@
                     <div class="col-8 border border-dark"> <p class="" id="nguoiDangSanPham"></p></div>
                     <div class="col-4 border border-dark"><b>Mô Tả</b></div>
                     <div class="col-8 border border-dark" > 
-                    <p class="" id="moTaSanPham" style="text-overflow: ellipsis; display: block; overflow: scroll;"></p></div>
+                    <p class="" id="moTaSanPham" style="max-height: 4rem;
+                                                white-space: pre-line;
+                                                overflow-y: scroll;
+                                                display: block;"></p></div>
                     <div class="col-4 border border-dark"><b>Giá</b></div>
                     <div class="col-8 border border-dark"> <p class="" id="gia"></p></div>
                     <div class="col-4 border border-dark"><b>Trạng Thái</b></div>
