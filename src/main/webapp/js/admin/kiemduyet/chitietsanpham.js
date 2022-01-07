@@ -11,6 +11,9 @@ const giaDOM = document.querySelector('#gia');
 const anhSanPhamDOM = document.querySelector('#anhSanPham');
 const statusDOM = document.querySelector('#status');
 
+//Tạo chức năng tùy theo trạng Thái
+const chucNangDOM = document.querySelector('#chucNang');
+
 
 // inline gallery
 const buildInlineGallery = (images) => lightGallery(anhSanPhamDOM, {
@@ -52,15 +55,31 @@ const showSanPhamDetail = async () => {
         switch (status) {
             case -1:
                 statusDOM.textContent = `Bị Xóa (Ẩn)`;
+                chucNangDOM.innerHTML =`
+                    <button type="button" class="btn btn-danger">Phục hồi</button>
+                    <button type="button" class="btn btn-success">Duyệt</button></div>
+                `;
                 break;
             case 0:
                 statusDOM.textContent = `Trong Kho`;
+                chucNangDOM.innerHTML =`
+                <button type="button" class="btn btn-danger">Rút về kho</button>
+                <button type="button" class="btn btn-success">Duyệt</button></div>
+            `;
                 break;
             case 1:
                 statusDOM.textContent = `Yêu Cầu Duyệt `;
+                chucNangDOM.innerHTML =`
+                <button type="button" class="btn btn-danger">Xóa</button>
+                <button type="button" class="btn btn-success">Duyệt</button></div>
+            `;
                 break;
             case 2:
                 statusDOM.textContent = `Đã duyệt`;
+                chucNangDOM.innerHTML =`
+                <button type="button" class="btn btn-danger">Xóa</button>
+                <button type="button" class="btn btn-success">Duyệt</button></div>
+            `;
                 break;
         }
         

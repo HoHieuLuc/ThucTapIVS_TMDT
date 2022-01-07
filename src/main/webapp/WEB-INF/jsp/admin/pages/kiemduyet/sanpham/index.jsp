@@ -38,7 +38,8 @@
                     <div class="col-8 border border-dark"> <h3 class="" id="gia"></h3></div>
                     <div class="col-4 border border-dark"><b>Trạng Thái</b></div>
                     <div class="col-8 border border-dark"> <h3 class="" id="status"></h3></div>
-                </div>
+                    <div class="col-6 pt-3" id="chucNang">   
+                    </div>
             </div>
         </div>
     </div>
