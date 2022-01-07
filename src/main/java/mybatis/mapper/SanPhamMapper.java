@@ -195,14 +195,14 @@ public interface SanPhamMapper {
             "WHERE SP.status = #{status}; ";
 
     @Select(GET_SP_BY_STATUS)
-    public List<Map<String, Object>> getSP_ByStatus(int status);
+    public List<Map<String, Object>> getSP_ByStatus(float status);
 
     // Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
     final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";
 
     @Update(UPDATE_SP_STATUS)
     public int updateSP_Status(
-            @Param("status") int status,
+            @Param("status") float status,
             @Param("maSanPham") String maSanPham);
 
     // Khách hàng sửa thông tin của sản phẩm
