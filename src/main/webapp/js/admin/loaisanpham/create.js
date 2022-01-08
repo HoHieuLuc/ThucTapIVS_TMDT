@@ -3,7 +3,7 @@ const loaiSanPhamDOM = document.querySelector("#loaiSanPham");
 
 const buildLoaiSanPham = async (maLoai) => {
     try {
-        const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/loaisanpham/${maLoai}`);
+        const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/subcategory/${maLoai}`);
         if (loaiSanPhams.length === 0) {
             return '';
         }
