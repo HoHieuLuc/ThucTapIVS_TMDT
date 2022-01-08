@@ -14,7 +14,7 @@ public interface SanPhamMapper {
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
-            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
+            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham WHERE sp.status = 2 " +
             "GROUP BY sp.ma_san_pham";
 
     @Select(GET_ALL_SANPHAM)
@@ -44,7 +44,7 @@ public interface SanPhamMapper {
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
-            "WHERE sp.ma_san_pham = #{maSanPham} and sp.status = 2 " +
+            "WHERE sp.ma_san_pham = #{maSanPham}" +
             "GROUP BY sp.ma_san_pham ";
 
     @Select(SAN_PHAM_DETAIL)
