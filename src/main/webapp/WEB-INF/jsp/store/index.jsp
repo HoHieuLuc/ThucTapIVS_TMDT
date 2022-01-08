@@ -95,7 +95,7 @@ prefix="c" %>
                     <label class="form-label">Nội dung báo cáo</label>
                     <textarea class="form-control" rows="3" id="noiDungBaoCao"></textarea>
                     <button type="submit" class="btn btn-primary">Gửi</button>
-                    <button type="submit" class="btn btn-primary ms-2">Đóng</button>
+                    <button class="btn btn-primary ms-2">Đóng</button>
                 </div>
            </c:when>
             <c:when test="${sessionScope.level > 0}">
