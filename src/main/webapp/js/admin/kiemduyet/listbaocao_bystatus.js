@@ -18,8 +18,8 @@ const renderData = (datas) => {
                 <td>${ma_bao_cao}</td>
                 <td>${unameSender}</td>
                 <td>${unameReceiver}</td>
-                <td>${noi_dung}</td>
                 <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
+                <td>${noi_dung}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
                         <a href="${baseURL}${ma_bao_cao}" class="">Chi tiết</a>
