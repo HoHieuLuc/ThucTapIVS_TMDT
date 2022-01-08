@@ -24,6 +24,11 @@ const rowsPerPageDOM = document.querySelector(".rowsPerPage");
 const params = window.location.pathname.split("/").slice(0);
 const username = params[params.length - 1];
 
+// Báo cáo người dùng DOM
+const baoCaoButtonDom = document.querySelector('#baoCaoButton');
+const formBaoCaoDOM = document.querySelector('#formBaoCao');
+const noiDungBaoCaoDom = document.querySelector('#noiDungBaoCao');
+
 const data = (myData, myLabels) => ({
     labels: myLabels,
     datasets: [
@@ -240,3 +245,34 @@ if (formDanhGiaKhachHangDOM) {
     });
 }
 
+
+
+//Mở form báo cáo ng dùng
+baoCaoButtonDom.addEventListener('click', (event) => {
+    document.getElementById('formBaoCao').classList.remove("d-none");
+});
+
+//Bắt sự kiện xử lý form và lấy dữ liệu
+formBaoCaoDOM.addEventListener('click', async(event) => {
+    const el = event.target;
+    if (el.textContent == "Gửi"){
+        console.log("Tiến hành gửi báo cáo");
+        const formData = new FormData();
+        formData.append('userName',username);
+        formData.append('noiDung',noiDungBaoCaoDom.value);
+        //Lấy tạm tên route vô hình để test formData trong Payload 
+        try {
+            await axios.post(`${baseURL}api/v1/baocao/${username}/submit`,formData);
+            thongBao('Gửi báo cáo thành công');
+            //Sau khi gửi, xóa nội dung trong noiDungBaoCaoDOM
+            noiDungBaoCaoDom.value = "";
+        }
+        catch (error) {
+            thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+        }
+
+        
+
+    }
+    if (el.textContent == "Đóng") document.getElementById('formBaoCao').classList.add("d-none");
+      })

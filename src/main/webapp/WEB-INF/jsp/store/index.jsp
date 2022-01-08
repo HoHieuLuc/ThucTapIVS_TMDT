@@ -88,6 +88,16 @@ prefix="c" %>
                   </form>
                 </div>
               </div>
+              <!-- Báo cáo người dùng -->
+              <button type="button" id="baoCaoButton" class="btn btn-danger">Báo Cáo</button>
+                <div class="mb-3">
+                  </div>
+                  <div class="mb-3 d-none" id="formBaoCao">
+                    <label class="form-label">Nội dung báo cáo</label>
+                    <textarea class="form-control" rows="3" id="noiDungBaoCao"></textarea>
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                    <button class="btn btn-primary ms-2">Đóng</button>
+                </div>
            </c:when>
             <c:when test="${sessionScope.level > 0}">
               Bạn không phải là khách hàng
