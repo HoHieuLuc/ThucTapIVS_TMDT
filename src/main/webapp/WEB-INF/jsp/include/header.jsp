@@ -17,16 +17,12 @@
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+      <script src='<c:url value="/js/function.js"/>'></script>
       <script>
         const baseURL = <c:url value="/" />;
       </script>
 
       <style>
-        .tlt-bottom-of-div {
-          position: absolute;
-          bottom: 0;
-        }
-
         .tlt-description {
           max-height: 4rem;
           white-space: pre-line;
@@ -39,6 +35,15 @@
           white-space: pre-line;
           overflow-y: scroll;
           display: block;
+        }
+
+        .tlt-thumbnail {
+          height:11rem; 
+          width:11rem; 
+          object-fit: scale-down;
+        }
+        .tlt-thumbnail:hover {
+          border: solid 1px gray;
         }
 
         button>i {
