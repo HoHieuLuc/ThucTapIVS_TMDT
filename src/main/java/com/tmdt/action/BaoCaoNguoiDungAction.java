@@ -46,6 +46,18 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
         this.noiDung = noiDung;
     }
 
-    
+    @Action(value = "/api/v1/baocao/{userName}/submit", results = {
+        @Result(name = SUCCESS, location = "/index.html")
+        }, interceptorRefs = {
+                @InterceptorRef(value = "khachHangStack"),
+        })
+    public String baoCaoNguoi() throws IOException {
+        System.out.println("Username bị báo cáo là " + userName);
+        System.out.println("Nội dung báo cáo là " + noiDung);
+        return SUCCESS;
+        
+    }
+
+
 
 }
