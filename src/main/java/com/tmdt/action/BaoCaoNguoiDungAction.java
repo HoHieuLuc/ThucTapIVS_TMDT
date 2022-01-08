@@ -82,7 +82,9 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
         }
 
         //Tiến hành gửi báo cáo
-        baoCaoNguoiDungMapper.guiBaoCaoNguoiDung(idNguoiNhan, idNguoiGui);
+        baoCaoNguoiDungMapper.guiBaoCaoNguoiDung(idNguoiNhan, idNguoiGui,noiDung);
+        sqlSession.commit();
+        sqlSession.close();
         return SUCCESS;
     }
 
