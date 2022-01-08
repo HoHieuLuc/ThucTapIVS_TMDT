@@ -31,28 +31,7 @@
 <script>
     document.getElementById('aside-kiem-duyet-bao-cao').classList.add('active');
     document.getElementById('aside-kiem-duyet').classList.add('menu-is-opening', 'menu-open');
-
-//Sẽ chuyển nó qua file js sau
-const statusButtonDOM = document.querySelector('#listBaoCaoByStatus');
-const listBaoCaoDOM = document.querySelector('#baocao-list');
-//Bắt sự kiện thẻ select
-statusButtonDOM.addEventListener('change',(event) => {
-    const status = statusButtonDOM.value;
-    const data = "Data from axios " + status;
-    renderData(data);
-});
-
-//Render data
-const renderData = (data) => {
-    listBaoCaoDOM.innerHTML = data;
-}
-
-//Show list báo cáo lần đầu tiên
-const showListBaoCao = () => {
-    renderData("Data from axios " + statusButtonDOM.value);
-}
-
-showListBaoCao();
-
 </script>
+    <!--Js chính của trang này -->
+<script src='<c:url value="/js/admin/kiemduyet/listbaocao_bystatus.js"/>'></script>
 <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
