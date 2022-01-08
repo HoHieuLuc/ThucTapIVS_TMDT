@@ -49,6 +49,9 @@ public class StoreApiAction extends ActionSupport {
     }
 
     public String getOrderBy() {
+        if (orderBy == null) {
+            return "ngay_dang";
+        }
         switch (orderBy) {
             case "price":
                 return "gia";
@@ -64,10 +67,13 @@ public class StoreApiAction extends ActionSupport {
     }
 
     public String getOrder() {
-        if (order.equals("asc")) {
-            return "ASC";
+        if (order == null) {
+            return "desc";
         }
-        return "DESC";
+        if (order.equals("asc")) {
+            return "asc";
+        }
+        return "desc";
     }
 
     public void setOrder(String order) {
@@ -177,4 +183,16 @@ public class StoreApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    // api lấy top store
+    @Action(value = "/api/v1/store/top", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getTopStore() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
+        List<Map<String, Object>> listStore = khachHangMapper.getTopStore();
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("topStores", listStore);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
 }
