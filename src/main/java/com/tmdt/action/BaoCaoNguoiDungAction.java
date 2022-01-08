@@ -20,6 +20,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
 import mybatis.mapper.BaoCaoNguoiDungMapper;
+import mybatis.mapper.TaiKhoanMapper;
 
 public class BaoCaoNguoiDungAction extends ActionSupport {
     // Respone hay dùng cho AJAX và JSON
@@ -64,7 +65,8 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
         // Lấy id người nhận
         SqlSession sqlSession = sqlSessionFactory.openSession();
         BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
-        int idNguoiNhan = baoCaoNguoiDungMapper.getMaNguoiDungBiBaoCao(userName);
+        TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
+        int idNguoiNhan = taiKhoanMapper.getTaiKhoanIdByUsername(userName);
 
         
         //Chặn không cho mình tự báo cáo chính mình
