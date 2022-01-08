@@ -91,6 +91,22 @@ public class GlobalAction extends ActionSupport {
         return "success";
     } 
 
+    // danh sách loại sản phẩm
+    @Action(value = "/admin/loaisanpham", results = {
+        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
+    public String listLoaiSanPham() {
+        return "success";
+    }
+
+    // thêm loại sản phẩm
+    @Action(value = "/admin/loaisanpham/them", results = {
+        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/create.jsp")
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
+    public String addLoaiSanPham() {
+        return "success";
+    }
+
     /* =========================================================================================== */
     /* route cho khách hàng */
     // giỏ hàng
