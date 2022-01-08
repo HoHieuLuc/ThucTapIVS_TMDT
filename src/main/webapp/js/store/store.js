@@ -240,3 +240,17 @@ if (formDanhGiaKhachHangDOM) {
     });
 }
 
+// Báo cáo người dùng
+const baoCaoButtonDom = document.querySelector('#baoCaoButton');
+const formBaoCaoDOM = document.querySelector('#formBaoCao');
+
+//Mở form báo cáo ng dùng
+baoCaoButtonDom.addEventListener('click', (event) => {
+    document.getElementById('formBaoCao').classList.remove("d-none");
+});
+
+formBaoCaoDOM.addEventListener('click', (event) => {
+    const el = event.target;
+    if (el.textContent == "Gửi") console.log("Bắt nút gửi");
+    if (el.textContent == "Đóng") document.getElementById('formBaoCao').classList.add("d-none");
+      })
