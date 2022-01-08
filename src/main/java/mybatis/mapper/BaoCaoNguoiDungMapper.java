@@ -1,11 +1,9 @@
 package mybatis.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
-public interface DanhGiaNguoiDungMapper {
+
+public interface BaoCaoNguoiDungMapper {
     // Ghi chú: id_nguoi_gui = (int) session.getAttribute("maNguoiDung");
 
     final String GUI_DANH_GIA_NGUOI_DUNG = "INSERT INTO `bao_cao_nguoi_dung` (`ma_bao_cao`, `id_nguoi_nhan`, `id_nguoi_gui`, `noi_dung`, `status`, `ngay_tao`) "
