@@ -5,7 +5,6 @@ const showSanPhamList = async () => {
 
     try {
         const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/sanpham/getall`);
-        console.log(sanphams);
         const allSanPhams = sanphams.map((sanpham) => {
             const { maSanPham,tenSanPham, gia, anhSanPham } = sanpham;
             return `
