@@ -24,6 +24,11 @@ const rowsPerPageDOM = document.querySelector(".rowsPerPage");
 const params = window.location.pathname.split("/").slice(0);
 const username = params[params.length - 1];
 
+// Báo cáo người dùng DOM
+const baoCaoButtonDom = document.querySelector('#baoCaoButton');
+const formBaoCaoDOM = document.querySelector('#formBaoCao');
+const noiDungBaoCaoDom = document.querySelector('#noiDungBaoCao');
+
 const data = (myData, myLabels) => ({
     labels: myLabels,
     datasets: [
@@ -240,10 +245,7 @@ if (formDanhGiaKhachHangDOM) {
     });
 }
 
-// Báo cáo người dùng DOM
-const baoCaoButtonDom = document.querySelector('#baoCaoButton');
-const formBaoCaoDOM = document.querySelector('#formBaoCao');
-const noiDungBaoCaoDom = document.querySelector('#noiDungBaoCao');
+
 
 //Mở form báo cáo ng dùng
 baoCaoButtonDom.addEventListener('click', (event) => {
