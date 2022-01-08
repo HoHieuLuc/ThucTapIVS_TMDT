@@ -20,6 +20,10 @@ import org.apache.struts2.convention.annotation.*;
 
 import mybatis.mapper.SanPhamMapper;
 
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
 public class NhanVienApiAction {
     private int status;
     private String maSanPham;
@@ -140,5 +144,4 @@ public class NhanVienApiAction {
         sqlSession.close();
         return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
     }
-
 }
