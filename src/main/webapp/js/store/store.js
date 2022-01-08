@@ -251,14 +251,25 @@ baoCaoButtonDom.addEventListener('click', (event) => {
 });
 
 //Bắt sự kiện xử lý form và lấy dữ liệu
-formBaoCaoDOM.addEventListener('click', (event) => {
+formBaoCaoDOM.addEventListener('click', async(event) => {
     const el = event.target;
     if (el.textContent == "Gửi"){
         console.log("Tiến hành gửi báo cáo");
         const formData = new FormData();
         formData.append('userName',username);
         formData.append('password',noiDungBaoCaoDom.value);
+        //Lấy tạm tên route vô hình để test formData trong Payload 
+        try {
+            await axios.post(`${baseURL}guiBaoCaoSubmit`,formData);
+            //Sau khi gửi, xóa nội dung trong noiDungBaoCaoDOM
+            noiDungBaoCaoDom.value = "";
+        }
+        catch (error) {
+            thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+        }
+
         
+
     }
     if (el.textContent == "Đóng") document.getElementById('formBaoCao').classList.add("d-none");
       })
