@@ -69,4 +69,11 @@ public interface LoaiSanPhamMapper {
             @Result(property = "xepHang", column = "xep_hang")
     })
     public List<Map<String, Object>> getAllSanPhamByLSP(int maLoaiSP);
+
+    // thêm loại sản phẩm
+    final String ADD_LOAI_SAN_PHAM = "INSERT INTO loai_san_pham " +
+            "VALUES (null, #{tenLoaiSanPham}, #{anh}, #{maLoaiCha})";
+    @Insert(ADD_LOAI_SAN_PHAM)
+    public int addLoaiSanPham(LoaiSanPham loaiSanPham);
+
 }
