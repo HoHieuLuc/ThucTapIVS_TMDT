@@ -18,6 +18,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
+import mybatis.mapper.BaoCaoNguoiDungMapper;
 import mybatis.mapper.SanPhamMapper;
 
 public class NhanVienApiAction {
@@ -140,5 +141,26 @@ public class NhanVienApiAction {
         sqlSession.close();
         return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
     }
+
+    @Action(value = "/api/v1/nhanvien/baocao/getbystatus/{status}", results = {
+        @Result(name = "success", location = "/index.html")
+        }, interceptorRefs = {
+                @InterceptorRef(value = "nhanVienStack"),
+        })
+    public String getBaoCaoByStatus() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
+
+        List<Map<String, Object>> listBaoCao = baoCaoNguoiDungMapper.listBaoCaoByStatus(status);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("list_baocaos",listBaoCao);
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes,200,response);
+    }
+    
+
+
+
 
 }
