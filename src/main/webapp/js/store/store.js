@@ -240,17 +240,25 @@ if (formDanhGiaKhachHangDOM) {
     });
 }
 
-// Báo cáo người dùng
+// Báo cáo người dùng DOM
 const baoCaoButtonDom = document.querySelector('#baoCaoButton');
 const formBaoCaoDOM = document.querySelector('#formBaoCao');
+const noiDungBaoCaoDom = document.querySelector('#noiDungBaoCao');
 
 //Mở form báo cáo ng dùng
 baoCaoButtonDom.addEventListener('click', (event) => {
     document.getElementById('formBaoCao').classList.remove("d-none");
 });
 
+//Bắt sự kiện xử lý form và lấy dữ liệu
 formBaoCaoDOM.addEventListener('click', (event) => {
     const el = event.target;
-    if (el.textContent == "Gửi") console.log("Bắt nút gửi");
+    if (el.textContent == "Gửi"){
+        console.log("Tiến hành gửi báo cáo");
+        const formData = new FormData();
+        formData.append('userName',username);
+        formData.append('password',noiDungBaoCaoDom.value);
+        
+    }
     if (el.textContent == "Đóng") document.getElementById('formBaoCao').classList.add("d-none");
       })
