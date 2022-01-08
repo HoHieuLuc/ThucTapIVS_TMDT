@@ -29,8 +29,15 @@ public interface BaoCaoNguoiDungMapper {
 
         //Cập nhật trạng thái cho báo cáo
         final String UPDATE_BAO_CAO_STATUS = "UPDATE `bao_cao_nguoi_dung` SET `status` = #{status} WHERE `bao_cao_nguoi_dung`.`ma_bao_cao` = #{maBaoCao};";
+        @Update(UPDATE_BAO_CAO_STATUS)
+        public int updateBaoCaoStatus(
+                @Param("status") int status,
+                @Param("maBaoCao") int maBaoCao
+        );
 
         //Tăng số lần cảnh báo cho tài khoản bị cảnh báo ngay khi status được cập nhật sang -1 
         final String TANG_SO_LAN_CANH_BAO = "UPDATE `tai_khoan` SET `so_lan_canh_cao` = `so_lan_canh_cao` + 1 WHERE `tai_khoan`.`id` = #{idNguoiNhan};";
+        @Update(TANG_SO_LAN_CANH_BAO)
+        public int tangSoLanCanhBao(int idNguoiNhan);
 
 }
