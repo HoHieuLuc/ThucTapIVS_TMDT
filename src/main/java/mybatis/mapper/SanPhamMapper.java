@@ -38,9 +38,8 @@ public interface SanPhamMapper {
     // Xem chi tiết sản phẩm
     final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham, kh.ten, " +
             "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, " +
-            "tk.username, tk.avatar, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "tk.username, tk.avatar, AVG(dgsp.so_sao) AS xep_hang " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
-            "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
@@ -48,21 +47,37 @@ public interface SanPhamMapper {
             "GROUP BY sp.ma_san_pham ";
 
     @Select(SAN_PHAM_DETAIL)
-    @Results(value = {
-            @Result(property = "maSanPham", column = "ma_san_pham"),
-            @Result(property = "tenSanPham", column = "ten_san_pham"),
-            @Result(property = "tenKhachHang", column = "ten"),
-            @Result(property = "moTa", column = "mo_ta"),
-            @Result(property = "gia", column = "gia"),
-            @Result(property = "status", column = "status"),
-            @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
-            @Result(property = "soLuong", column = "so_luong"),
-            @Result(property = "ngayDang", column = "ngay_dang"),
-            @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
-            @Result(property = "anhSanPham", column = "anh"),
-            @Result(property = "xepHang", column = "xep_hang")
-    })
     public Map<String, Object> getDetailSanPham(String maSanPham);
+
+    // đếm sản phẩm theo loại sản phẩm để phân trang
+    final String COUNT_SAN_PHAM_BY_LSP = "SELECT COUNT(*) FROM san_pham " +
+            "WHERE ma_loai_san_pham = #{maLoaiSP} AND " +
+            "ten_san_pham LIKE CONCAT ('%', #{search}, '%')";
+
+    @Select(COUNT_SAN_PHAM_BY_LSP)
+    public int countSanPhamByLSP(@Param("maLoaiSP") int maLoaiSP, @Param("search") String search);
+
+    // tìm kiếm sản phẩm theo loại sản phẩm
+    final String GET_SAN_PHAM_BY_LSP = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, " +
+            "kh.ten, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
+            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "LEFT JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
+            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
+            "WHERE sp.ma_loai_san_pham = #{maLoaiSP} AND " +
+            "sp.ten_san_pham LIKE CONCAT ('%', #{search}, '%') " +
+            "GROUP BY sp.ma_san_pham " +
+            "ORDER BY ${orderBy} ${order} " +
+            "LIMIT #{offset}, #{rowsPerPage}";
+
+    @Select(GET_SAN_PHAM_BY_LSP)
+    public List<Map<String, Object>> getAllSanPhamByLSP(
+            @Param("maLoaiSP") int maLoaiSP,
+            @Param("search") String search,
+            @Param("offset") int offset,
+            @Param("rowsPerPage") int rowsPerPage,
+            @Param("orderBy") String orderBy,
+            @Param("order") String order);
 
     /* ===================================== */
     /* dành cho trang cá nhân của khách hàng */
@@ -180,7 +195,7 @@ public interface SanPhamMapper {
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
-            "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
+            "LEFT JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "WHERE tk.username = #{username} " +
             "AND sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
@@ -235,4 +250,15 @@ public interface SanPhamMapper {
     public int updateSP_Status(
             @Param("status") int status,
             @Param("maSanPham") String maSanPham);
+
+    // trang chủ
+    // lấy sản phẩm mới
+    final String GET_NEWEST_PRODUCTS = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, asp.anh " +
+            "FROM san_pham sp LEFT JOIN anh_san_pham asp ON asp.ma_san_pham = sp.ma_san_pham " +
+            "GROUP BY sp.ma_san_pham " +
+            "ORDER BY ngay_dang DESC " +
+            "LIMIT 6";
+
+    @Select(GET_NEWEST_PRODUCTS)
+    public List<Map<String, Object>> getNewestProducts();
 }
