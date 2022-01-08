@@ -50,10 +50,13 @@
 </div>
 
 
-
+<script>
+    document.getElementById('aside-kiem-duyet-san-pham').classList.add('active');
+    document.getElementById('aside-kiem-duyet').classList.add('menu-is-opening', 'menu-open');
+</script>
 
 <!-- JS thư viện ảnh sideshow -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/lightgallery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/lightgallery.min.js"></script>
 <!-- lightgallery plugins -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/plugins/thumbnail/lg-thumbnail.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/plugins/zoom/lg-zoom.min.js"></script>

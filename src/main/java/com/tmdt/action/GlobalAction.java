@@ -59,6 +59,7 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    /* ========================================================================================== */
     /* route cho nhân viên */
     @Action(value = "/admin/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/admin/index.jsp")
@@ -67,14 +68,30 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // phê duyệt sản phẩm
+    @Action(value = "/admin/phe-duyet-san-pham", results = {
+        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/kiemduyet/sanpham/list.jsp")
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
+    public String pheDuyetSanPham() {
+        return "success";
+    }
+
     // Xem chi tiết sản phẩm để kiểm duyệt
     @Action(value = "/admin/sanpham/{params}", results = {
             @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/sanpham/index.jsp")
-    })
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
     public String viewChiTietSanPhamAdmin() {
         return "SUCCESS";
     }
 
+    @Action(value = "/admin/phe-duyet-bao-cao", results = {
+        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/kiemduyet/baocao/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
+    public String pheDuyetBaoCao() {
+        return "success";
+    } 
+
+    /* =========================================================================================== */
     /* route cho khách hàng */
     // giỏ hàng
     @Action(value = "/cart", results = {

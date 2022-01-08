@@ -4,8 +4,8 @@
 <div class="container">
     <div>
         <form class="searchForm input-group mb-3">
-            <input id="search" name="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
-            <select id="tinhTrang" name="status" class="form-select">
+            <input name="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
+            <select name="status" class="form-select">
                 <option value="0">Trong kho</option>
                 <option value="1">Đang chờ duyệt</option>
                 <option value="2">Đang bán</option>

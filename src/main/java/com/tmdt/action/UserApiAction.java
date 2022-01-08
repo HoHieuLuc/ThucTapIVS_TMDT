@@ -29,11 +29,11 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.*;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
+        "namespace", "/",
+        "actionName", "bad-request"
 })
 @InterceptorRef("khachHangStack")
-public class UserApiAction extends ActionSupport{
+public class UserApiAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private String maSanPham;
     private String tenSanPham;
@@ -56,6 +56,7 @@ public class UserApiAction extends ActionSupport{
 
     public int getStatus() {
         switch (status) {
+            case -1:
             case 0:
             case 1:
             case 2:
@@ -227,9 +228,10 @@ public class UserApiAction extends ActionSupport{
         int offset = (_page - 1) * _rowsPerPage;
         int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
 
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getSanPhamByMaKH(maKhachHang, _search, _status, offset, _rowsPerPage);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSanPhamByMaKH(maKhachHang, _search, _status, offset,
+                _rowsPerPage);
         sqlSession.close();
-        
+
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("sanphams", listSanPham);
         jsonRes.put("total_page", totalPage);
@@ -245,13 +247,16 @@ public class UserApiAction extends ActionSupport{
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
         Map<String, Object> sanPham = sanPhamMapper.getSanPhamByMaKHAndMaSP(maKhachHang, maSanPham);
-        if (sanPham.isEmpty()) {
+        if (sanPham == null) {
             return CustomError.createCustomError("Không tìm thấy sản phẩm", 404, response);
         }
+        AnhSanPhamMapper anhSanPhamMapper = sqlSession.getMapper(AnhSanPhamMapper.class);
+        List<String> listAnhSanPham = anhSanPhamMapper.getAllAnhSanPham(maSanPham);
+
         Map<String, Object> jsonRes = new HashMap<String, Object>();
+        sanPham.put("anhSanPhams", listAnhSanPham);
         jsonRes.put("sanpham", sanPham);
-        jsonRes.put("status", 200);
-        System.out.println(jsonRes);
+
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
@@ -273,7 +278,7 @@ public class UserApiAction extends ActionSupport{
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
 
         // kiểm tra loại sản phẩm có hợp lệ hay không
-        if(loaiSanPhamMapper.isLoaiSanPhamCapThap(maLoaiSanPham) == 0){
+        if (loaiSanPhamMapper.isLoaiSanPhamCapThap(maLoaiSanPham) == 0) {
             return CustomError.createCustomError("Loại sản phẩm không hợp lệ", 400, response);
         }
 
@@ -310,5 +315,49 @@ public class UserApiAction extends ActionSupport{
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("message", "Thêm sản phẩm thành công");
         return JsonResponse.createJsonResponse(jsonRes, 201, response);
+    }
+
+    // cập nhật tình trạng sản phẩm
+    @Action(value = "/api/v1/user/sanpham/changestatus", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String changeStatus() throws IOException {
+        if (status < -1 || status > 1) {
+            return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
+        }
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+        Integer statusHienTai = sanPhamMapper.getStatusFromSanPham(maSanPham, maKhachHang);
+        String message = "";
+        // khi sản phẩm không thuộc về khách hàng hoặc ko tồn tại thì status = null
+        if (statusHienTai == null) {
+            return CustomError.createCustomError("Không tìm thấy sản phẩm", 404, response);
+        }
+        // nếu status hiện tại = 0 (còn trong kho)
+        // và status người dùng đưa qua là -1 hoặc 1 thì mới cập nhật
+        if (statusHienTai == 0 && status != 0) {
+            sanPhamMapper.updateSP_Status(status, maSanPham);
+            if (status == 1) {
+                message = "Bạn đã gửi yêu cầu duyệt sản phẩm";
+            } else {
+                message = "Xóa sản phẩm thành công";
+            }
+        }
+        // đang yêu cầu duyệt thì nút duy nhất là hủy yêu cầu
+        // tức chuyển status về lại 0
+        else if (statusHienTai == 1) {
+            sanPhamMapper.updateSP_Status(0, maSanPham);
+            message = "Bạn đã hủy yêu cầu duyệt sản phẩm";
+        }
+        // đang bán thì nút duy nhất là hủy bán
+        // tức chuyển status về lại 0
+        else if (statusHienTai == 2) {
+            message = "Bạn đã ngừng bán sản phẩm";
+            sanPhamMapper.updateSP_Status(0, maSanPham);
+        }
+        sqlSession.commit();
+        sqlSession.close();
+        return CustomError.createCustomError(message, 200, response);
     }
 }

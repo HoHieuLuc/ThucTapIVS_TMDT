@@ -14,7 +14,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <%-- js --%>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src='<c:url value="/js/function.js"/>'></script>
     <script>
         const baseURL = <c:url value="/"/>;
     </script>
@@ -32,6 +34,7 @@
           </div>
         </div>
       </div>
+      <script src='<c:url value="/js/thongbao.js"/>'></script>
     <div class="wrapper">
 
   <!-- Preloader -->
@@ -128,7 +131,7 @@
               </p>
             </a>        
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="aside-kiem-duyet">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
@@ -139,13 +142,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href='<c:url value="/admin/phe-duyet-san-pham"/>' class="nav-link">
+                <a href='<c:url value="/admin/phe-duyet-san-pham"/>' class="nav-link" id="aside-kiem-duyet-san-pham">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sản phẩm</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href='<c:url value="/admin/phe-duyet-bao-cao"/>' class="nav-link">
+                <a href='<c:url value="/admin/phe-duyet-bao-cao"/>' class="nav-link" id="aside-kiem-duyet-bao-cao">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Báo cáo</p>
                 </a>

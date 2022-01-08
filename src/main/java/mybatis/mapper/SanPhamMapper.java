@@ -102,11 +102,10 @@ public interface SanPhamMapper {
 
     // Lấy sản phẩm theo mã khách hàng và mã sản phẩm để hiển thị chi tiết sản phẩm
     final String GET_SAN_PHAM_BY_MA_KH_AND_MA_SP = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, " +
-            "sp.gia, sp.status, kh.ma_khach_hang, kh.ten, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, " +
-            "sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "sp.gia, sp.status, lsp.ma_loai_sp, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, " +
+            "sp.so_luong_da_ban, AVG(dgsp.so_sao) AS xep_hang " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
-            "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "WHERE sp.ma_khach_hang = #{maKhachHang} " +
             "AND sp.ma_san_pham = #{maSanPham} " +
@@ -142,6 +141,22 @@ public interface SanPhamMapper {
     @Select(COUNT_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
     public int countSanPhamByMaKHAndTenSP(@Param("maKhachHang") int maKhachHang,
             @Param("tenSanPham") String tenSanPham);
+
+    // sửa sản phẩm
+    final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
+            "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} " +
+            " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang} ;";
+
+    @Update(UPDATE_SP_INFO)
+    public int updateSanPham(SanPham sanpham);
+
+    // lấy tình trạng của 1 sản phẩm
+    final String GET_STATUS_FROM_SAN_PHAM = "SELECT status FROM san_pham WHERE ma_san_pham = #{maSanPham} " +
+            "AND ma_khach_hang = #{maKhachHang}";
+
+    @Select(GET_STATUS_FROM_SAN_PHAM)
+    public Integer getStatusFromSanPham(@Param("maSanPham") String maSanPham,
+            @Param("maKhachHang") int maKhachHang);
 
     /* ==================== */
     /* dành cho trang store */
@@ -186,16 +201,32 @@ public interface SanPhamMapper {
     /* dành cho trang admin */
     /* ==================== */
 
-    // Lấy danh sách các sản phẩm theo status nào đó
+    // đếm số sản phẩm theo 1 status và search để phân trang
+    final String COUNT_SP_BY_STATUS = "SELECT COUNT(*) FROM san_pham sp " +
+            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "WHERE sp.status = #{status} AND " +
+            "(sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') OR kh.ten LIKE CONCAT('%', #{search}, '%'))";
+
+    @Select(COUNT_SP_BY_STATUS)
+    public int countSanPhamByStatus(@Param("status") int status, @Param("search") String search);
+
+    // Lấy danh sách các sản phẩm theo status và search nào đó
     final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ma_san_pham,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
             "sp.so_luong,sp.ngay_dang " +
             "FROM san_pham SP " +
             "RIGHT JOIN khach_hang KH ON SP.ma_khach_hang = KH.ma_khach_hang " +
             "RIGHT JOIN loai_san_pham LSP ON SP.ma_loai_san_pham = LSP.ma_loai_sp " +
-            "WHERE SP.status = #{status}; ";
+            "WHERE SP.status = #{status} AND " +
+            "(sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
+            "OR kh.ten LIKE CONCAT('%', #{search}, '%')) " +
+            "LIMIT #{offset}, #{rowsPerPage}";
 
     @Select(GET_SP_BY_STATUS)
-    public List<Map<String, Object>> getSP_ByStatus(int status);
+    public List<Map<String, Object>> getSP_ByStatus(
+            @Param("status") int status,
+            @Param("offset") int offset,
+            @Param("rowsPerPage") int rowsPerPage,
+            @Param("search") String search);
 
     // Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
     final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";
@@ -204,12 +235,4 @@ public interface SanPhamMapper {
     public int updateSP_Status(
             @Param("status") int status,
             @Param("maSanPham") String maSanPham);
-
-    // Khách hàng sửa thông tin của sản phẩm
-    final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
-            "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} " +
-            " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang} ;";
-
-    @Update(UPDATE_SP_INFO)
-    public int updateSP_info_admin(SanPham sanpham);
 }

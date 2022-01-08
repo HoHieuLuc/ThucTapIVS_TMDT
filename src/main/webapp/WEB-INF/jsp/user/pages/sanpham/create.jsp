@@ -42,7 +42,6 @@
         </div>
     </form>
 </div>
-<script src='<c:url value="/js/thongbao.js"/>'></script>
 <script src='<c:url value="/js/user/khohang/create.js"/>'></script>
 <script>
     document.getElementById('aside-them-san-pham').classList.add('active');

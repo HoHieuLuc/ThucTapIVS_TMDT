@@ -1,24 +1,32 @@
 //Đổi tiêu đề trang web
 document.title = "Trang phê duyệt sản phẩm "
 
+const searchFormDOM = document.querySelector(".searchForm");
+
 //Nút hiển thị sản phẩm mới vô kho,yêu cầu kiểm duyệt,đã duyệt, và bị xóa (hide)
 const listSPByStatusDOM = document.querySelector("#listSPByStatus");
 //Khu vực danh sách sản phẩm thẻ <div>
 const listSanPhamDOM = document.querySelector("#listSanPham");
+const phanTrangSanPhamDOM = document.querySelector("#phanTrangSanPham");
 
 //Render lại danh sách sản phẩm đúng với status  
 listSPByStatusDOM.addEventListener('change', async () => {
     const status = listSPByStatusDOM.value;
-    const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
-    renderData(sanphams);
-})
+    removeURLparam("page");
+    changeURLparam("status", status);
+    showSanPhams();
+});
+
+const changePage = (page) => {
+    changeURLparam("page", page);
+    showSanPhams();
+};
 
 //Hàm xuất table ra màn hình trang quản lý
-const renderData =  (datas) => {
+const renderData = (datas, totalPage, currentPage) => {
     const allSanPhams = datas.map(data => {
         //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, ten, ten_loai_sp } = data;
-
         return `
             <tr>
                 <td>${ten_san_pham}</td>
@@ -35,16 +43,32 @@ const renderData =  (datas) => {
             </tr>`;
     }).join('');
     listSanPhamDOM.innerHTML = allSanPhams;
+    phanTrangSanPhamDOM.innerHTML = buildPagination(currentPage, totalPage, 5, "changePage");
 }
 
-const firstTimeRun = async () => {
+const showSanPhams = async () => {
     const status = listSPByStatusDOM.value;
-    document.title = "Sản phẩm trong kho "
-    const { data: { sanphams } } = await axios.get(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`);
-    renderData(sanphams);
+    const newParams = window.location.search;
+    const search = new URLSearchParams(newParams).get("search") ?? "";
+    const _status = new URLSearchParams(newParams).get("status") ?? 1;
+    const page = new URLSearchParams(newParams).get("page") ?? 1;
+    const { data: {
+        sanphams, total_page
+    } } = await axios.get(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`, {
+        params: {
+            page,
+            status: _status,
+            search
+        }
+    });
+    renderData(sanphams, total_page, page);
 }
-firstTimeRun();
+showSanPhams();
 
-
-
-
+searchFormDOM.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(searchFormDOM);
+    removeURLparam("page");
+    changeURLparam("search", formData.get("search"));
+    showSanPhams();
+});

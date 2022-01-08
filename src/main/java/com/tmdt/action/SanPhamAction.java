@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
-import com.tmdt.errors.CustomError;
 import com.tmdt.utilities.JsonResponse;
 
 import org.apache.ibatis.session.SqlSession;
@@ -29,7 +28,6 @@ import mybatis.mapper.SanPhamMapper;
 public class SanPhamAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private String maSanPham;
-    private int status;
     private String search;
     private int page;
     private int rowsPerPage;
