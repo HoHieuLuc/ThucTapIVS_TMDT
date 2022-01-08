@@ -44,7 +44,7 @@ public interface SanPhamMapper {
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
-            "WHERE sp.ma_san_pham = #{maSanPham} " +
+            "WHERE sp.ma_san_pham = #{maSanPham} and sp.status = 2 " +
             "GROUP BY sp.ma_san_pham ";
 
     @Select(SAN_PHAM_DETAIL)
@@ -182,7 +182,7 @@ public interface SanPhamMapper {
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
-            "WHERE tk.username = #{username} " +
+            "WHERE tk.username = #{username} AND sp.status = 2 " +
             "AND sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
             "GROUP BY sp.ma_san_pham " +
             "ORDER BY ${orderBy} ${order} " +
