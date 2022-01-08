@@ -259,10 +259,11 @@ formBaoCaoDOM.addEventListener('click', async(event) => {
         console.log("Tiến hành gửi báo cáo");
         const formData = new FormData();
         formData.append('userName',username);
-        formData.append('password',noiDungBaoCaoDom.value);
+        formData.append('noiDung',noiDungBaoCaoDom.value);
         //Lấy tạm tên route vô hình để test formData trong Payload 
         try {
             await axios.post(`${baseURL}guiBaoCaoSubmit`,formData);
+            thongBao('Gửi báo cáo thành công');
             //Sau khi gửi, xóa nội dung trong noiDungBaoCaoDOM
             noiDungBaoCaoDom.value = "";
         }
