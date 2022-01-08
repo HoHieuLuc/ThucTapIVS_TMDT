@@ -50,10 +50,18 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // Xem danh sách loại sản phẩm
+    @Action(value = "/category", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/category/category.jsp")
+    })
+    public String listLoaiSanPhamPage() {
+        return SUCCESS;
+    }
+
     // Xem danh sách sản phẩm đã được lọc theo loại sản phẩm
     // src\main\webapp\WEB-INF\jsp\product-type\index.jsp
     @Action(value = "/category/{params}", results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/product-type/index.jsp")
+            @Result(name = "success", location = "/WEB-INF/jsp/category/category.jsp")
     })
     public String listSanPhamByProductType() {
         return SUCCESS;
