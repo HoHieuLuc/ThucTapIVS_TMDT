@@ -19,12 +19,15 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
+import mybatis.mapper.BaoCaoNguoiDungMapper;
+
 public class BaoCaoNguoiDungAction extends ActionSupport {
     // Respone hay dùng cho AJAX và JSON
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
     SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
+    
 
     private String userName;
     private String noiDung;
@@ -54,8 +57,33 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
     public String baoCaoNguoi() throws IOException {
         System.out.println("Username bị báo cáo là " + userName);
         System.out.println("Nội dung báo cáo là " + noiDung);
-        return SUCCESS;
         
+        //Lấy id người gửi
+        int idNguoiGui = (int) session.getAttribute("accountID");
+
+        // Lấy id người nhận
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
+        int idNguoiNhan = baoCaoNguoiDungMapper.getMaNguoiDungBiBaoCao(userName);
+
+        
+        //Chặn không cho mình tự báo cáo chính mình
+        if (idNguoiGui == idNguoiNhan)
+        {
+            sqlSession.close();
+            return CustomError.createCustomError("Bạn không thể tự báo cáo chính mình",403,response);
+        }
+
+        //Chặn khi nội dung quá ngắn
+        if (noiDung.length() <20 || noiDung.length() > 255)
+        {
+            sqlSession.close();
+            return CustomError.createCustomError("Nội dung phải từ 20 ký tự trở lên",403,response);
+        }
+
+        //Tiến hành gửi báo cáo
+        baoCaoNguoiDungMapper.guiBaoCaoNguoiDung(idNguoiNhan, idNguoiGui);
+        return SUCCESS;
     }
 
 
