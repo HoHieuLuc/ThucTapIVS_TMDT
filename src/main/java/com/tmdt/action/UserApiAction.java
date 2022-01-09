@@ -3,6 +3,7 @@ package com.tmdt.action;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,8 @@ public class UserApiAction extends ActionSupport {
     private String search;
     private int page;
     private int rowsPerPage;
+    private Date tuNgay;
+    private Date denNgay;
 
     // region Getter and Setter
     public String getMaSanPham() {
@@ -172,6 +175,22 @@ public class UserApiAction extends ActionSupport {
     public void setRowsPerPage(int rowsPerPage) {
         this.rowsPerPage = rowsPerPage;
     }
+
+    public Date getTuNgay() {
+        return tuNgay;
+    }
+
+    public void setTuNgay(Date tuNgay) {
+        this.tuNgay = tuNgay;
+    }
+
+    public Date getDenNgay() {
+        return denNgay;
+    }
+
+    public void setDenNgay(Date denNgay) {
+        this.denNgay = denNgay;
+    }
     // endregion
 
     /* validate */
@@ -207,11 +226,7 @@ public class UserApiAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    /* ========================= */
-    /* Các action cho khách hàng */
-    /* ========================= */
     // action lấy danh sách sản phẩm
-    // tiếp theo: phân trang
     @Action(value = "/api/v1/user/sanpham", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -359,5 +374,36 @@ public class UserApiAction extends ActionSupport {
         sqlSession.commit();
         sqlSession.close();
         return CustomError.createCustomError(message, 200, response);
+    }
+
+    // kiểm tra ngày thống kê
+    public boolean kiemTraNgayThongKe() {
+        return tuNgay != null && denNgay != null;
+    }
+
+    // thống kê số đơn đặt hàng của khách hàng
+    @Action(value = "/api/v1/user/thongke/dathang", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String thongKeDonDat() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        ThongKeMapper thongKeMapper = sqlSession.getMapper(ThongKeMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+        List<Map<String, Object>> thongKe = new ArrayList<>();
+
+        if (kiemTraNgayThongKe()) {
+            if (tuNgay.compareTo(denNgay) > 0){
+                return CustomError.createCustomError("Thời gian không hợp lệ", 400, response);
+            }
+            thongKe = thongKeMapper.thongKeSoDonDatHangChoKhachHangTuyChon(maKhachHang, tuNgay, denNgay);
+            jsonRes.put("trongThang", false);
+        } else {
+            thongKe = thongKeMapper.thongKeSoDonDatHangChoKhachHangTrongThang(maKhachHang);
+            jsonRes.put("trongThang", true);
+        }
+        sqlSession.close();
+        jsonRes.put("soDonDatHang", thongKe);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }
