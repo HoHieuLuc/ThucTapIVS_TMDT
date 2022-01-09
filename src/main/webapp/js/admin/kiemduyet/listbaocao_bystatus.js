@@ -25,8 +25,8 @@ const renderData = (datas) => {
         // formData.append('userName',unameSender);
         switch (status) {
             case '0' : chucNangElement = `
-                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}&userName=${unameSender}">Duyệt vi phạm</a>
-                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}&userName=${unameSender}">Duyệt không vi phạm</a>
+                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=-1&userName=${unameSender}">Duyệt vi phạm</a>
+                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=1&userName=${unameSender}">Duyệt không vi phạm</a>
             `;
         }
         return `

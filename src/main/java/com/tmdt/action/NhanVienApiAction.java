@@ -219,11 +219,13 @@ public class NhanVienApiAction {
         baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
 
         // Tăng số lần cảnh cáo lên 1 và đồng thời gửi thông báo cho người bị vi phạm
-        if (status == 1) {
+        if (status == -1) {
             baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
             // Gửi thông báo đến người bị báo cáo với nội dung
             ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
             thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "You are report");
+            sqlSession.commit();
+            sqlSession.close();
             return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
         }
 
