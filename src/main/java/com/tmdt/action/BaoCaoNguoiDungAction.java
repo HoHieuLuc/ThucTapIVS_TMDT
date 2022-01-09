@@ -100,35 +100,5 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
         return SUCCESS;
     }
 
-    // api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}
-    @Action(value = "/api/v1/nhanvien/baocao/changestatus", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "khachHangStack"),
-    })
-    public String duyetBaoCaoNguoiDung() throws IOException {
-        
-        //Debug 
-        System.out.println("Mã báo cáo: " + maBaoCao);
-        System.out.println("Status: " + status);
-        // Lấy id người nhận
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
-        TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
-        int idNguoiNhan = taiKhoanMapper.getTaiKhoanIdByUsername(userName);
 
-        // Duyệt báo cáo đó
-        baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
-
-        // Tăng số lần cảnh cáo lên 1 và đồng thời gửi thông báo cho người bị vi phạm
-        if (status == 1)
-        {
-            baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
-            return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
-        }
-
-        sqlSession.commit();
-        sqlSession.close();
-        return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
-    }
 }

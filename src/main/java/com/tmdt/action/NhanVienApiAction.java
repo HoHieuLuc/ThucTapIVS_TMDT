@@ -20,6 +20,7 @@ import org.apache.struts2.convention.annotation.*;
 
 import mybatis.mapper.BaoCaoNguoiDungMapper;
 import mybatis.mapper.SanPhamMapper;
+import mybatis.mapper.TaiKhoanMapper;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
     "namespace", "/",
@@ -31,6 +32,24 @@ public class NhanVienApiAction {
     private int page;
     private int rowsPerPage;
     private String search;
+    private String userName;
+    private int maBaoCao;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getMaBaoCao() {
+        return maBaoCao;
+    }
+
+    public void setMaBaoCao(int maBaoCao) {
+        this.maBaoCao = maBaoCao;
+    }
 
     public int getStatus() {
         return status;
@@ -161,6 +180,38 @@ public class NhanVienApiAction {
         jsonRes.put("list_baocaos",listBaoCao);
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes,200,response);
+    }
+
+        // api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}
+        @Action(value = "/api/v1/nhanvien/baocao/changestatus", results = {
+            @Result(name = "SUCCESS", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String duyetBaoCaoNguoiDung() throws IOException {
+        
+        //Debug 
+        System.out.println("Mã báo cáo: " + maBaoCao);
+        System.out.println("Status: " + status);
+        // Lấy id người nhận
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
+        TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
+        int idNguoiNhan = taiKhoanMapper.getTaiKhoanIdByUsername(userName);
+
+        // Duyệt báo cáo đó
+        baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+
+        // Tăng số lần cảnh cáo lên 1 và đồng thời gửi thông báo cho người bị vi phạm
+        if (status == 1)
+        {
+            baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
+            return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
+        }
+
+        sqlSession.commit();
+        sqlSession.close();
+        return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
     }
     
 
