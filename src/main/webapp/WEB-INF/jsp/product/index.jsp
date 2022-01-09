@@ -47,7 +47,7 @@
 </div>
 
 <!-- Khu vực đánh giá sản phẩm -->
-<div class="row w-50">
+<div class="container row w-50">
     <!--Form nhập bình luận-->
     <div class="col-12">
         <c:choose>
