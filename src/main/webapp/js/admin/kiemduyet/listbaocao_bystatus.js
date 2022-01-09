@@ -49,19 +49,19 @@ const renderData = (datas) => {
         //     `;
         // }
         //Tạo cái HTML DOM table rows collection đi #listBaoCaoTable
-        // return `
-        //     <tr>
-        //         <td>${ma_bao_cao}</td>
-        //         <td>${unameSender}</td>
-        //         <td><a href="${baseURL}store/${unameReceiver}">${unameReceiver}</a></td>
-        //         <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
-        //         <td>${noi_dung}</td>
-        //         <td>
-        //             <div class="d-flex justify-content-evenly">
-                  
-        //             </div>
-        //         </td>
-        //     </tr>`;
+        return `
+            <tr>
+                <td>${ma_bao_cao}</td>
+                <td>${unameSender}</td>
+                <td><a href="${baseURL}store/${unameReceiver}">${unameReceiver}</a></td>
+                <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
+                <td>${noi_dung}</td>
+                <td>
+                    <div class="d-flex justify-content-evenly">
+                        ${index}
+                    </div>
+                </td>
+            </tr>`;
     }).join('');
 
     listBaoCaoDOM.innerHTML = allBaoCaos;
