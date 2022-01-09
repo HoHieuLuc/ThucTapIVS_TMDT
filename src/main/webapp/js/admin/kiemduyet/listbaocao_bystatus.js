@@ -2,14 +2,21 @@
 const statusButtonDOM = document.querySelector('#listBaoCaoByStatus');
 const listBaoCaoDOM = document.querySelector('#baocao-list');
 
+// Expirement to catch data from table
+let tdNode;
+
 //Bắt sự kiện cho từng nút trong table
 listBaoCaoDOM.addEventListener('click', (event) => {
     const el = event.target;
     console.log(el.dataset.index);
+    const indexTD = el.dataset.index;
+    const maBaoCao = tdNode[(indexTD*6)].textContent;
+    const userName = tdNode[(indexTD*6) + 2].textContent;
+    console.log(maBaoCao);
+    console.log(userName);
 })
 
-// Expirement to catch data from table
-let tdNode;
+
 
 
 statusButtonDOM.addEventListener('change', async (event) => {
