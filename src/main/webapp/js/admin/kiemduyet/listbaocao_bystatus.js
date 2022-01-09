@@ -58,7 +58,7 @@ const renderData = (datas) => {
                 <td>${noi_dung}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                        ${index}
+                       <button class="btn btn-primary" data-index="${index}">Chức năng ${index}</button>
                     </div>
                 </td>
             </tr>`;
