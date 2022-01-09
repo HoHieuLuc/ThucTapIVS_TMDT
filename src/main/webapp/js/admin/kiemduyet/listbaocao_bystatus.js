@@ -11,18 +11,29 @@ statusButtonDOM.addEventListener('change',async(event) => {
 
 //Render data
 const renderData = (datas) => {
+    // Nếu xem báo cáo vi phạm thì không có chức năng gì
+    // Nếu xem báo cáo chưa duyệt thì có 2 chức năng, 1 là duyệt vi phạm, 2 là duyệt không vi phạm 
+    // Nếu xem báo cáo không vi phạm thì  không có chức năng gì
+    let chucNangElement = ``;
+    const status = statusButtonDOM.value;
     const allBaoCaos = datas.map(data => {
         const { ma_bao_cao, unameReceiver, unameSender, noi_dung, ngay_tao } = data;
+        switch (status) {
+            case '0' : chucNangElement = `
+                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}">Duyệt vi phạm</a>
+                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}">Duyệt không vi phạm</a>
+            `;
+        }
         return `
             <tr>
                 <td>${ma_bao_cao}</td>
                 <td>${unameSender}</td>
-                <td><a href="${baseURL}store/${unameReceiver}" class="">${unameReceiver}</a></td>
+                <td><a href="${baseURL}store/${unameReceiver}">${unameReceiver}</a></td>
                 <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
                 <td>${noi_dung}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                        <a href="${baseURL}${ma_bao_cao}" class="">Chi tiết</a>
+                        ${chucNangElement}
                     </div>
                 </td>
             </tr>`;
