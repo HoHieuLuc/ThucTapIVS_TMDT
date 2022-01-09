@@ -223,7 +223,7 @@ public class NhanVienApiAction {
             baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
             // Gửi thông báo đến người bị báo cáo với nội dung
             ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
-            thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "You are report");
+            thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "You are report, Chỗ này có phải là nội dung viết tay của nhân viên không ô, tui đang bí tưởng chỗ này");
             sqlSession.commit();
             sqlSession.close();
             return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
