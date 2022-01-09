@@ -21,6 +21,7 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.BaoCaoNguoiDungMapper;
 import mybatis.mapper.SanPhamMapper;
 import mybatis.mapper.TaiKhoanMapper;
+import mybatis.mapper.ThongBaoMapper;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
         "namespace", "/",
@@ -34,6 +35,16 @@ public class NhanVienApiAction {
     private String search;
     private String userName;
     private int maBaoCao;
+    private String noiDung;
+
+    /* Begin Getter and setter */
+    public String getNoiDung() {
+        return noiDung;
+    }
+
+    public void setNoiDung(String noiDung) {
+        this.noiDung = noiDung;
+    }
 
     public String getUserName() {
         return userName;
@@ -101,6 +112,7 @@ public class NhanVienApiAction {
     public void setSearch(String search) {
         this.search = search;
     }
+    /* End getter and setter */
 
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -165,6 +177,7 @@ public class NhanVienApiAction {
         return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
     }
 
+    // Lấy danh sách báo cáo cần phê duyệt
     @Action(value = "/api/v1/nhanvien/baocao/getbystatus/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -182,7 +195,6 @@ public class NhanVienApiAction {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    
     // api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}
     @Action(value = "/api/v1/nhanvien/baocao/changestatus", results = {
             @Result(name = "success", location = "/index.html")
@@ -200,6 +212,9 @@ public class NhanVienApiAction {
         TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
         int idNguoiNhan = taiKhoanMapper.getTaiKhoanIdByUsername(userName);
 
+        // Lấy id nhân viên đang duyệt
+        int idNguoiGui = (int) session.getAttribute("accountID");
+
         // Duyệt báo cáo đó
         baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
 
@@ -207,7 +222,8 @@ public class NhanVienApiAction {
         if (status == 1) {
             baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
             // Gửi thông báo đến người bị báo cáo với nội dung
-            System.out.println("You are report ");
+            ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+            thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "You are report");
             return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
         }
 
@@ -215,5 +231,7 @@ public class NhanVienApiAction {
         sqlSession.close();
         return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
     }
+
+
 
 }
