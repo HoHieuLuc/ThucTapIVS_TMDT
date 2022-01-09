@@ -20,7 +20,7 @@ const renderData = (datas) => {
         const { ma_bao_cao, unameReceiver, unameSender, noi_dung, ngay_tao } = data;
         switch (status) {
             case '0' : chucNangElement = `
-                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}">Duyệt vi phạm</a>
+                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}&userName=${unameSender}">Duyệt vi phạm</a>
                 <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}">Duyệt không vi phạm</a>
             `;
         }
@@ -38,6 +38,7 @@ const renderData = (datas) => {
                 </td>
             </tr>`;
     }).join('');
+
     listBaoCaoDOM.innerHTML = allBaoCaos;
 }
 

@@ -107,7 +107,10 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
             @InterceptorRef(value = "khachHangStack"),
     })
     public String duyetBaoCaoNguoiDung() throws IOException {
-
+        
+        //Debug 
+        System.out.println("Mã báo cáo: " + maBaoCao);
+        System.out.println("Status: " + status);
         // Lấy id người nhận
         SqlSession sqlSession = sqlSessionFactory.openSession();
         BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
@@ -121,11 +124,11 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
         if (status == 1)
         {
             baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
+            return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
         }
 
         sqlSession.commit();
         sqlSession.close();
-        return SUCCESS;
-
+        return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
     }
 }
