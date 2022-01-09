@@ -184,7 +184,7 @@ public class NhanVienApiAction {
 
         // api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}
         @Action(value = "/api/v1/nhanvien/baocao/changestatus", results = {
-            @Result(name = "SUCCESS", location = "/index.html")
+            @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "nhanVienStack"),
     })
