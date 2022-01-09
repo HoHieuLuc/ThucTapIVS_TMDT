@@ -3,8 +3,9 @@ const statusButtonDOM = document.querySelector('#listBaoCaoByStatus');
 const listBaoCaoDOM = document.querySelector('#baocao-list');
 
 //Bắt sự kiện cho từng nút trong table
-listBaoCaoDOM.addEventListener('click', (EventTarget) => {
-    console.log(EventTarget);
+listBaoCaoDOM.addEventListener('click', (event) => {
+    const el = event.target;
+    console.log(el.dataset.index);
 })
 
 // Expirement to catch data from table
