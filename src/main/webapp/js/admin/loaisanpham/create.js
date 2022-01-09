@@ -1,4 +1,4 @@
-const formDOM = document.querySelector("#them-san-pham-form");
+const formDOM = document.getElementById('formThemLoaiSP');
 const loaiSanPhamDOM = document.querySelector("#loaiSanPham");
 
 const buildLoaiSanPham = async (maLoai) => {
@@ -7,9 +7,9 @@ const buildLoaiSanPham = async (maLoai) => {
         if (loaiSanPhams.length === 0) {
             return '';
         }
-        const options = buildOptions(loaiSanPhams, "ma_loai_sp", "ten_loai_sp", 'Chọn loại sản phẩm');
+        const options = buildOptions(loaiSanPhams, "ma_loai_sp", "ten_loai_sp", 'Không');
         return `
-            <select name="maLoaiSanPham" class="form-select rounded">
+            <select name="maLoaiCha" class="form-select rounded">
                 ${options}
             </select>
         `;
@@ -36,23 +36,6 @@ const getLoaiSanPham = async (maLoai) => {
 
 getLoaiSanPham(0);
 
-const themSanPham = async () => {
-    const formData = new FormData(formDOM);
-    formData.set('maLoaiSanPham', formData.getAll('maLoaiSanPham').at(-1));
-    try {
-        await axios.post(`${baseURL}api/v1/user/sanpham/them`, formData);
-        alert('Thêm sản phẩm thành công');
-    } catch (error) {
-        console.log(error);
-        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
-    }
-}
-
-formDOM.addEventListener("submit", (event) => {
-    event.preventDefault();
-    themSanPham();
-});
-
 loaiSanPhamDOM.addEventListener('change', async (event) => {
     const eventTarget = event.target;
     const maLoai = eventTarget.value;
@@ -70,4 +53,33 @@ loaiSanPhamDOM.addEventListener('change', async (event) => {
         }
     }
     await getLoaiSanPham(maLoai);
+});
+
+const themLoaiSanPham = async () => {
+    const formData = new FormData(formDOM);
+    let maLoaiCha = formData.getAll('maLoaiCha');
+    // khi không chọn mã loại cha nào
+    if (maLoaiCha.length === 0) {
+        maLoaiCha = 0;
+    }
+    else{
+        maLoaiCha = formData.getAll('maLoaiCha').at(-1);
+    }
+    formData.set('maLoaiCha', maLoaiCha);
+    try {
+        await axios.post(`${baseURL}api/v1/admin/loaisanpham/them`, formData);
+        thongBao("Thêm loại sản phẩm thành công");
+        setInterval(() => {
+            window.location.reload();
+        }, 1000);
+    } catch (error) {
+        console.log(error);
+        const { data: { message } } = error.response;
+        thongBao(message ?? 'Có lỗi xảy ra', true);
+    }
+}
+
+formDOM.addEventListener('submit', (event) => {
+    event.preventDefault();
+    themLoaiSanPham();
 });

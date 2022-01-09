@@ -50,17 +50,20 @@ const showSanPhamDetail = async (skip = false) => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         // có avatar nữa
-        const { tenSanPham, tenKhachHang, moTa, gia, anhSanPhams, xepHang, username } = sanpham;
-        danhGiaDOM.textContent = xepHang ?? "Chưa có đánh giá";
+        const { ten_san_pham, ten, mo_ta, gia, anhSanPhams, xep_hang, username } = sanpham;
+        danhGiaDOM.textContent = xep_hang ?? "Chưa có đánh giá";
         if (skip) {
             return;
         }
         addToCartBtnDOM.dataset.masanpham = maSanPham;
         addToFavBtnDOM.dataset.masanpham = maSanPham;
-        tenSanPhamDOM.textContent = tenSanPham;
-        moTaSanPhamDOM.textContent = moTa;
-        giaDOM.innerHTML = gia;
-        nguoiDangSanPham.textContent = tenKhachHang;
+        tenSanPhamDOM.textContent = ten_san_pham;
+        moTaSanPhamDOM.textContent = mo_ta;
+        giaDOM.innerHTML = gia.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        });
+        nguoiDangSanPham.textContent = ten;
         nguoiDangSanPham.href = `${baseURL}store/${username}`;
         const anhSanPhamData = anhSanPhams.map((anhSanPham) => {
             return {

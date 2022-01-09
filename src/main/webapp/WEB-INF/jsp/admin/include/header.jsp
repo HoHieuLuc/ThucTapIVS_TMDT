@@ -155,41 +155,31 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="aside-lsp">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+              <i class="nav-icon fas fa-copy"></i>
               <p>
-                Charts
-                <i class="right fas fa-angle-left"></i>
+                Loại sản phẩm
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right">6</span>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+                <a href='<c:url value="/admin/loaisanpham"/>' class="nav-link" id="aside-lsp-list">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
+                  <p>Danh sách</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
+                <a href='<c:url value="/admin/loaisanpham/them"/>' class="nav-link" id="aside-lsp-them">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inline</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/uplot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>uPlot</p>
+                  <p>Thêm mới</p>
                 </a>
               </li>
             </ul>
           </li>
+          
           <li class="nav-item">
             <a href='<c:url value="/"/>' class="nav-link">
               <i class="nav-icon fas fa-th"></i>

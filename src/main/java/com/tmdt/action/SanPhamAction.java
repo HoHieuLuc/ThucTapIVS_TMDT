@@ -117,10 +117,20 @@ public class SanPhamAction extends ActionSupport {
         sanPham.put("anhSanPhams", listAnhSanPham);
 
         jsonRes.put("sanpham", sanPham);
-        System.out.println(sanPham);
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-   
+   // sản phẩm mới nhất
+   @Action(value="/api/v1/sanpham/new", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getNewSanPhams() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getNewestProducts();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sanphams", listSanPham);
+        return JsonResponse.createJsonResponse(map, 200, response);
+    }
 
 }

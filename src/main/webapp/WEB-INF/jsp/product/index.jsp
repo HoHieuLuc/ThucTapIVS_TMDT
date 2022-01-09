@@ -26,14 +26,14 @@
         <div class="row">
             <div class="col-md-6 border border-dark inline-gallery-container" id="anhSanPham">
             </div>
-            <div class="col-md-6 position-relative">
+            <div class="col-md-6">
                 <h3 class="" id="tenSanPham"></h3>
                 Cửa hàng <a href="" class="" id="nguoiDangSanPham"></a>
                 <div class="rating"></div>
                 Mức đánh giá trung bình của người dùng: <span id="danhGia"></span>
                 <p class="tlt-description" id="moTaSanPham"></p>
                 <h4 id="gia"></h4>
-                <div class="d-block tlt-bottom-of-div">
+                <div class="d-block">
                     <button type="button" id="addToCartBtn" class="add-to-cart-btn mb-3 w-75 btn btn-warning">
                         Thêm vào giỏ hàng <i class="fas fa-cart-plus"></i>
                     </button>
