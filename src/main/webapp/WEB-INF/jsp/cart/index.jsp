@@ -2,14 +2,22 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 
-<div class="container mt-3">
+<div class="mt-3">
 	<div class="row">
-		<div id="gioHangList" class="col-9">
+		<div id="gioHangList" class="col-sm-12 col-md-9 col-lg-9">
 
         </div>
-        <div class="col-3">
+        <div class="col-sm-12 col-md-3 col-lg-3">
 			<div class="container border border-1">
-				thanh toán
+				<a href="./dathang" class="btn btn-primary btn-lg w-100 my-3">Tới trang đặt hàng</a>
+				<div class="d-flex justify-content-between mb-3">
+					<div>Số sản phẩm</div>
+					<div id="tongSoSanPham"></div>
+				</div>
+				<div class="d-flex justify-content-between mb-3">
+					<div>Tổng tiền</div>
+					<div id="tongTien"></div>
+				</div>
 			</div>
 		</div>
 	</div>
