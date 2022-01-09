@@ -15,6 +15,13 @@ listBaoCaoDOM.addEventListener('click', (event) => {
     console.log(maBaoCao);
     console.log(userName);
     // Hiển thị modal cho phép nhiều sự lựa chọn (FormSelect)
+    // maBaoCao=${ma_bao_cao}&status=-1&userName=${unameSender}
+   const formData = new FormData();
+        formData.append('maBaoCao',ma_bao_cao);
+      //  formData.append('status',status);
+        formData.append('userName',unameSender);
+
+        //Hiển thị formSelect 
     
 })
 
@@ -71,7 +78,7 @@ const renderData = (datas) => {
                 <td>${noi_dung}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                       <button class="btn btn-primary" data-index="${index}">Chức năng ${index}</button>
+                       <button class="btn btn-primary" data-index="${index}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">>Chức năng ${index}</button>
                     </div>
                 </td>
             </tr>`;
