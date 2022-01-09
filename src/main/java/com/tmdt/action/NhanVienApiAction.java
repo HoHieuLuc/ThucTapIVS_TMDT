@@ -23,8 +23,8 @@ import mybatis.mapper.SanPhamMapper;
 import mybatis.mapper.TaiKhoanMapper;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
+        "namespace", "/",
+        "actionName", "bad-request"
 })
 public class NhanVienApiAction {
     private int status;
@@ -166,10 +166,10 @@ public class NhanVienApiAction {
     }
 
     @Action(value = "/api/v1/nhanvien/baocao/getbystatus/{status}", results = {
-        @Result(name = "success", location = "/index.html")
-        }, interceptorRefs = {
-                @InterceptorRef(value = "nhanVienStack"),
-        })
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
     public String getBaoCaoByStatus() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
@@ -177,20 +177,21 @@ public class NhanVienApiAction {
 
         List<Map<String, Object>> listBaoCao = baoCaoNguoiDungMapper.listBaoCaoByStatus(status);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
-        jsonRes.put("list_baocaos",listBaoCao);
+        jsonRes.put("list_baocaos", listBaoCao);
         sqlSession.close();
-        return JsonResponse.createJsonResponse(jsonRes,200,response);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-        // api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}
-        @Action(value = "/api/v1/nhanvien/baocao/changestatus", results = {
+    
+    // api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}
+    @Action(value = "/api/v1/nhanvien/baocao/changestatus", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
             @InterceptorRef(value = "nhanVienStack"),
     })
     public String duyetBaoCaoNguoiDung() throws IOException {
-        
-        //Debug 
+
+        // Debug
         System.out.println("Mã báo cáo: " + maBaoCao);
         System.out.println("Status: " + status);
         // Lấy id người nhận
@@ -203,10 +204,9 @@ public class NhanVienApiAction {
         baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
 
         // Tăng số lần cảnh cáo lên 1 và đồng thời gửi thông báo cho người bị vi phạm
-        if (status == 1)
-        {
+        if (status == 1) {
             baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
-            // Gửi thông báo đến người bị báo cáo với nội dung 
+            // Gửi thông báo đến người bị báo cáo với nội dung
             System.out.println("You are report ");
             return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
         }
@@ -215,9 +215,5 @@ public class NhanVienApiAction {
         sqlSession.close();
         return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
     }
-    
-
-
-
 
 }
