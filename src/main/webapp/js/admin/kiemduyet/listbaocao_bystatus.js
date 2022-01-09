@@ -4,7 +4,7 @@ const listBaoCaoDOM = document.querySelector('#baocao-list');
 
 //Bắt sự kiện cho từng nút trong table
 listBaoCaoDOM.addEventListener('click', (EventTarget) => {
-    console.log(EventTarget.textContent);
+    console.log(EventTarget);
 })
 
 // Expirement to catch data from table
@@ -16,6 +16,9 @@ statusButtonDOM.addEventListener('change', async (event) => {
     document.title = "Sản phẩm trong kho ";
     const { data: { list_baocaos } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`);
     renderData(list_baocaos);
+    tdNode = document.querySelectorAll('td');
+    console.log(tdNode);
+
 });
 
 //Render data
@@ -29,8 +32,8 @@ const renderData = (datas) => {
     //const status = statusButtonDOM.value;
     const allBaoCaos = datas.map((data,index) => {
         const { ma_bao_cao, unameReceiver, unameSender, noi_dung, ngay_tao } = data;
-         console.log(data);
-         console.log(index);
+//          console.log(data);
+//          console.log(index);
         // Không biết tạo nhiều formData nó có lag hay không, nên tui tạm comment
         // const formData = new FormData();
         // formData.append('maBaoCao',ma_bao_cao);
@@ -65,13 +68,17 @@ const renderData = (datas) => {
     }).join('');
 
     listBaoCaoDOM.innerHTML = allBaoCaos;
+    console.log("overhere");
     tdNode = document.querySelectorAll('td');
+    console.log(tdNode);
 }
 
 //Show list báo cáo lần đầu tiên
 const showListBaoCao = async () => {
     const { data: { list_baocaos } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/0`);
     renderData(list_baocaos);
+    
+  
 }
 
 showListBaoCao();
