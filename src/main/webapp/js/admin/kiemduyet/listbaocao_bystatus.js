@@ -42,8 +42,9 @@ const renderData = (datas) => {
 }
 
 //Show list báo cáo lần đầu tiên
-const showListBaoCao = () => {
-    renderData("Data from axios " + statusButtonDOM.value);
+const showListBaoCao = async () => {
+    const {data : {list_baocaos} } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/0`);
+    renderData(list_baocaos);
 }
 
 showListBaoCao();
