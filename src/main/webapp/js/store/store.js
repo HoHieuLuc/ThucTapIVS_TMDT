@@ -29,7 +29,7 @@ const baoCaoButtonDom = document.querySelector('#baoCaoButton');
 const formBaoCaoDOM = document.querySelector('#formBaoCao');
 const noiDungBaoCaoDom = document.querySelector('#noiDungBaoCao');
 
-const data = (myData, myLabels) => ({
+const dataList = (myData, myLabels) => ({
     labels: myLabels,
     datasets: [
         {
@@ -44,7 +44,7 @@ const data = (myData, myLabels) => ({
 
 const config = (myData, myLabels) => ({
     type: "bar",
-    data: data(myData, myLabels),
+    data: dataList(myData, myLabels),
     options: {
         scales: {
             y: {
@@ -111,7 +111,6 @@ const showStoreInfo = async (skip = false) => {
                 myData.push(0);
             }
         }
-        console.log(myData);
         const labels = ["5 sao", "4 sao", "3 sao", "2 sao", "1 sao"];
         const myConfig = config(myData, labels);
         new Chart(ratingChartDOM, myConfig);
@@ -133,10 +132,6 @@ const showProductList = async () => {
     try {
         const newParams = window.location.search;
         const page = new URLSearchParams(newParams).get("page") ?? 1;
-        // có thể sử dụng ${baseURL}api/v1/store/${username}/products${newParams}
-        // thay vì đống loằng ngoằng bên dưới nhưng nếu làm vậy thì
-        // biến trên thanh url phải giống biến trong action
-        // như vậy thì url nó dài ra và không còn hay nữa
         const rowsPerPage = new URLSearchParams(newParams).get("rpp") ?? 10;
         const search = new URLSearchParams(newParams).get("search") ?? "";
         const orderBy = new URLSearchParams(newParams).get("ob") ?? "ngay_dang";
