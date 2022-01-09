@@ -13,7 +13,7 @@
       <input type="submit" class="btn btn-outline-secondary" value="Tìm kiếm">
     </form>
   </div>
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover" id="listBaoCaoTable">
         <thead>
             <tr>
                 <th>Mã Báo Cáo</th>
