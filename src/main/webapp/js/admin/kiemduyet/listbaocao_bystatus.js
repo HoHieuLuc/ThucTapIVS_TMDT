@@ -14,6 +14,8 @@ listBaoCaoDOM.addEventListener('click', (event) => {
     const userName = tdNode[(indexTD*6) + 2].textContent;
     console.log(maBaoCao);
     console.log(userName);
+    // Hiển thị modal cho phép nhiều sự lựa chọn (FormSelect)
+    
 })
 
 
