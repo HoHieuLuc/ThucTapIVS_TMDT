@@ -108,7 +108,7 @@ const buildPagination = (page, totalPages, maxPages, callback) => {
 const buildOptions = (data, id, value, defaultOption = '') => {
     let defaultOptionHtml = '';
     if (defaultOption != '') {
-        defaultOptionHtml = `<option selected disabled class="form-control">${defaultOption}</option>`;
+        defaultOptionHtml = `<option value="" selected disabled class="form-control">${defaultOption}</option>`;
     }
     const optionHtml = data.map((item) => {
         return `<option value="${item[id]}" class="form-control">${item[value]}</option>`;

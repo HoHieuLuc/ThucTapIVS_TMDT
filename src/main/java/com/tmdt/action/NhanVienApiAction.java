@@ -21,6 +21,10 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.BaoCaoNguoiDungMapper;
 import mybatis.mapper.SanPhamMapper;
 
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
 public class NhanVienApiAction {
     private int status;
     private String maSanPham;

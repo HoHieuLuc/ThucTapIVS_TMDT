@@ -50,10 +50,18 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // Xem danh sách loại sản phẩm
+    @Action(value = "/category", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/category/category.jsp")
+    })
+    public String listLoaiSanPhamPage() {
+        return SUCCESS;
+    }
+
     // Xem danh sách sản phẩm đã được lọc theo loại sản phẩm
     // src\main\webapp\WEB-INF\jsp\product-type\index.jsp
     @Action(value = "/category/{params}", results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/product-type/index.jsp")
+            @Result(name = "success", location = "/WEB-INF/jsp/category/category.jsp")
     })
     public String listSanPhamByProductType() {
         return SUCCESS;
@@ -90,6 +98,22 @@ public class GlobalAction extends ActionSupport {
     public String pheDuyetBaoCao() {
         return "success";
     } 
+
+    // danh sách loại sản phẩm
+    @Action(value = "/admin/loaisanpham", results = {
+        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
+    public String listLoaiSanPham() {
+        return "success";
+    }
+
+    // thêm loại sản phẩm
+    @Action(value = "/admin/loaisanpham/them", results = {
+        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/create.jsp")
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
+    public String addLoaiSanPham() {
+        return "success";
+    }
 
     /* =========================================================================================== */
     /* route cho khách hàng */

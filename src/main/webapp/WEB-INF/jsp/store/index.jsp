@@ -14,6 +14,7 @@ prefix="c" %>
   #avatar {
     width: 15rem;
     height: 15rem;
+    object-fit: scale-down;
   }
 </style>
 <div class="container">
@@ -149,7 +150,6 @@ prefix="c" %>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src='<c:url value="/js/function.js"/>'></script>
 <script src='<c:url value="/js/store/store.js"/>'></script>
 
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />

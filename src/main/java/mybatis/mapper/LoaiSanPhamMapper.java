@@ -10,9 +10,9 @@ import org.apache.ibatis.annotations.*;
 public interface LoaiSanPhamMapper {
 
     // lấy tất cả loại sản phẩm cấp cao nhất
-    final String GET_ALL_LOAI_SAN_PHAM = "SELECT * FROM loai_san_pham WHERE ma_loai_cha IS NULL";
+    final String GET_ALL_LOAI_SAN_PHAM_CAP_CAO = "SELECT * FROM loai_san_pham WHERE ma_loai_cha IS NULL";
 
-    @Select(GET_ALL_LOAI_SAN_PHAM)
+    @Select(GET_ALL_LOAI_SAN_PHAM_CAP_CAO)
     public List<Map<String, Object>> getAllLoaiSanPhamCapCao();
 
     // lấy tất cả loại sản phẩm con của 1 loại sản phẩm cha
@@ -30,6 +30,26 @@ public interface LoaiSanPhamMapper {
     @Select(IS_LOAI_SAN_PHAM_CAP_THAP)
     public int isLoaiSanPhamCapThap(@Param("maLoaiSanPham") int maLoaiSanPham);
 
+    // lấy loại sản phẩm có cùng cha
+    final String GET_LOAI_SAN_PHAM_CUNG_CAP = "SELECT * FROM loai_san_pham WHERE ma_loai_cha = " +
+            "(SELECT ma_loai_cha FROM loai_san_pham WHERE ma_loai_sp = #{maLoaiSanPham})";
+
+    @Select(GET_LOAI_SAN_PHAM_CUNG_CAP)
+    public List<Map<String, Object>> getLoaiSanPhamCungCha(@Param("maLoaiSanPham") int maLoaiSanPham);
+
+    // lấy thông tin loại sản phẩm cha
+    final String GET_LOAI_SAN_PHAM_CHA = "SELECT * FROM loai_san_pham WHERE ma_loai_sp = " +
+            "(SELECT ma_loai_cha FROM loai_san_pham WHERE ma_loai_sp = #{maLoaiSanPham})";
+
+    @Select(GET_LOAI_SAN_PHAM_CHA)
+    public Map<String, Object> getLoaiSanPhamCha(@Param("maLoaiSanPham") int maLoaiSanPham);
+
+    // lấy thông tin 1 loại sản phẩm
+    final String GET_LOAI_SAN_PHAM = "SELECT * FROM loai_san_pham WHERE ma_loai_sp = #{maLoaiSanPham}";
+
+    @Select(GET_LOAI_SAN_PHAM)
+    public Map<String, Object> getLoaiSanPham(@Param("maLoaiSanPham") int maLoaiSanPham);
+
     // Mục đích hàm này là chỉ hiện những tên loại sản phẩm mà nó có ít nhất 1 sản
     // phẩm
     final String GET_TEN_LOAI_SAN_PHAM = "SELECT lsp.ma_loai_sp, lsp.ten_loai_sp FROM loai_san_pham lsp RIGHT JOIN " +
@@ -43,30 +63,48 @@ public interface LoaiSanPhamMapper {
     })
     public List<LoaiSanPham> getAllTenLoaiSanPham();
 
-    final String GET_SAN_PHAM_BY_LSP = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, sp.gia, sp.status, kh.ma_khach_hang, kh.ten, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
-            +
-            "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
-            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
-            "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
-            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham "
-            + " WHERE sp.ma_loai_san_pham = #{maLoaiSP} " +
-            "GROUP BY sp.ma_san_pham";
+    // thêm loại sản phẩm
+    final String ADD_LOAI_SAN_PHAM = "INSERT INTO loai_san_pham " +
+            "VALUES (null, #{tenLoaiSanPham}, #{anh}, #{maLoaiCha})";
 
-    @Select(GET_SAN_PHAM_BY_LSP)
-    @Results(value = {
-            @Result(property = "maSanPham", column = "ma_san_pham"),
-            @Result(property = "tenSanPham", column = "ten_san_pham"),
-            @Result(property = "moTa", column = "mo_ta"),
-            @Result(property = "gia", column = "gia"),
-            @Result(property = "status", column = "status"),
-            @Result(property = "maKhachHang", column = "ma_khach_hang"),
-            @Result(property = "tenKhachHang", column = "ten"),
-            @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
-            @Result(property = "soLuong", column = "so_luong"),
-            @Result(property = "ngayDang", column = "ngay_dang"),
-            @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
-            @Result(property = "anhSanPham", column = "anh"),
-            @Result(property = "xepHang", column = "xep_hang")
-    })
-    public List<Map<String, Object>> getAllSanPhamByLSP(int maLoaiSP);
+    @Insert(ADD_LOAI_SAN_PHAM)
+    public int addLoaiSanPham(LoaiSanPham loaiSanPham);
+
+    // đếm số loại sản phẩm để phân trang cho trang quản lý
+    final String COUNT_LOAI_SAN_PHAM = "SELECT COUNT(*) " +
+            "FROM `loai_san_pham` lsp_cha RIGHT JOIN loai_san_pham lsp_con ON lsp_con.ma_loai_cha = lsp_cha.ma_loai_sp "
+            +
+            "WHERE lsp_con.ten_loai_sp LIKE CONCAT('%', #{search}, '%') " +
+            "OR lsp_cha.ten_loai_sp LIKE CONCAT('%', #{search}, '%')";
+
+    @Select(COUNT_LOAI_SAN_PHAM)
+    public int countLoaiSanPham(String search);
+
+    // hiển thị danh sách loại sản phẩm cho trang quản lý
+    final String GET_ALL_LOAI_SAN_PHAM = "SELECT lsp_con.ma_loai_sp, lsp_con.ten_loai_sp, lsp_con.anh, " +
+            "lsp_cha.ma_loai_sp AS ma_loai_sp_cha , lsp_cha.ten_loai_sp AS ten_loai_sp_cha " +
+            "FROM `loai_san_pham` lsp_cha RIGHT JOIN loai_san_pham lsp_con ON lsp_con.ma_loai_cha = lsp_cha.ma_loai_sp "
+            +
+            "WHERE lsp_con.ten_loai_sp LIKE CONCAT('%', #{search}, '%') " +
+            "OR lsp_cha.ten_loai_sp LIKE CONCAT('%', #{search}, '%') " +
+            "LIMIT #{offset}, #{rowsPerPage}";
+
+    @Select(GET_ALL_LOAI_SAN_PHAM)
+    public List<Map<String, Object>> getLoaiSanPhamChoAdmin(
+            @Param("search") String search,
+            @Param("offset") int offset,
+            @Param("rowsPerPage") int rowsPerPage);
+
+    // trang chủ
+    // lấy loại sản phẩm phổ biến
+    final String GET_POPULAR_CATEGORY = "SELECT lsp.ma_loai_sp, lsp.ten_loai_sp, lsp.anh " +
+            "FROM loai_san_pham lsp JOIN san_pham sp ON lsp.ma_loai_sp = sp.ma_loai_san_pham " +
+            "LEFT JOIN chi_tiet_dat_hang ctdh ON ctdh.ma_san_pham = sp.ma_san_pham " +
+            "GROUP BY lsp.ma_loai_sp " +
+            "ORDER BY COUNT(ctdh.ma_san_pham) DESC " +
+            "LIMIT 6";
+
+    @Select(GET_POPULAR_CATEGORY)
+    public List<Map<String, Object>> getPopularCategory();
+
 }
