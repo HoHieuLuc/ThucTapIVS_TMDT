@@ -182,4 +182,4 @@
 
 
       <!-- Đừng thêm gì dưới đoạn này -->
-      <main role="main" class="container" id="main">
+      <main role="main" class="container-fluid" id="main">
