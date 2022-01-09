@@ -6,18 +6,21 @@ const datHangBtnDOM = document.querySelector('.dat-hang-btn');
 const params = window.location.pathname.split("/").slice(0);
 let sellerUsername = params[params.length - 1];
 
+if (sellerUsername === 'dathang') {
+    sellerUsername = null;
+}
+
 const showDatHang = async () => {
     try {
-        if (sellerUsername === 'dathang') {
-            sellerUsername = null;
-        }
         const { data: { gio_hangs } } = await axios.get(`${baseURL}api/v1/giohang`, {
             params: {
                 username: sellerUsername
             }
         });
         if (gio_hangs.length === 0) {
-            window.location.href = `${baseURL}/cart`;
+            datHangDOM.innerHTML = `
+                <div class="d-flex justify-content-center fs-2 text-danger">Không có sản phẩm nào</div>
+            `;
             return;
         }
         let tongTien = 0;
@@ -83,8 +86,15 @@ showDatHang();
 
 datHangBtnDOM.addEventListener('click', async () => {
     try {
-        window.location.href = `${baseURL}`;
+        const formData = new FormData;
+        formData.append('username', sellerUsername);
+        const { data: { message } } = await axios.post(`${baseURL}api/v1/dathang`, formData);
+        datHangDOM.innerHTML = `
+            <div class="d-flex justify-content-center fs-2 text-success">${message}</div>
+        `;
     } catch (error) {
         console.log(error);
+        const { response: { data: { message } } } = error;
+        thongBao(message ?? 'Có lỗi xảy ra', true);
     }
 });
