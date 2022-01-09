@@ -30,7 +30,7 @@
     <!-- Modal Cung cấp các chức năng duyệt báo cáo -->
   <div class="modal fade show" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-modal="true" role="dialog" style="display: block; padding-left: 0px;">
                 <div class="modal-dialog modal-dialog-centered">
-                  <form id="formDanhGiaKhachHang" class="modal-content">
+                  <form id="formDuyetBaoCao" class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="staticBackdropLabel">
                         Chọn hình thức kiểm duyệt báo cáo
@@ -38,7 +38,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <select class="form-select" size="5" aria-label="size 3" name="status">
+                      <select class="form-select" size="5" aria-label="size 3" name="statusDuyet">
                         <option value="-3">Khóa tài khoản</option>
                         <option value="-2">Cảnh cáo và gửi thông báo</option>
                         <option value="-1" selected="">Gửi thông báo nhắc nhở</option>

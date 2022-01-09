@@ -1,6 +1,7 @@
 
 const statusButtonDOM = document.querySelector('#listBaoCaoByStatus');
 const listBaoCaoDOM = document.querySelector('#baocao-list');
+const formDuyetBaoCaoDOM = document.querySelector('#formDuyetBaoCao');
 
 // Expirement to catch data from table
 let tdNode;
@@ -17,11 +18,20 @@ listBaoCaoDOM.addEventListener('click', (event) => {
     // Hiển thị modal cho phép nhiều sự lựa chọn (FormSelect)
     // maBaoCao=${ma_bao_cao}&status=-1&userName=${unameSender}
    const formData = new FormData();
-        formData.append('maBaoCao',ma_bao_cao);
+        formData.append('maBaoCao',maBaoCao);
       //  formData.append('status',status);
-        formData.append('userName',unameSender);
+        formData.append('userName',userName);
 
-        //Hiển thị formSelect 
+        //Còn cái status lấy trong form thôi
+        formDuyetBaoCaoDOM.addEventListener('submit',(event){
+            event.preventDefault();
+            formData.append('status',document.getElementsByName('statusDuyet').value);
+            //Log thử formData
+            for (var value of formData.values())
+            {
+                console.log(value);
+            }
+        })
     
 })
 
