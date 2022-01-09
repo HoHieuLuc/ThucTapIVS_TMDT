@@ -228,6 +228,7 @@ public class GioHangAction extends ActionSupport {
             // Điều chỉnh lại con số trong input số lượng của sản phẩm đó
             // Bằng JsonRes và hiện thông báo
             gioHangMapper.updateSoLuongSanPhamTrongGioHang(maKhachHang, maSanPham, soLuongSPHienCo);
+            sqlSession.commit();
             sqlSession.close();
             jsonRes.put("soLuong", soLuongSPHienCo);
             jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSPHienCo + " sản phẩm cho sản phẩm này");
