@@ -18,7 +18,7 @@
             <tr>
                 <th>Mã Báo Cáo</th>
                 <th>Username người gửi</th>
-                <th>Username người nhận</th>
+                <th>Username người bị báo cáo</th>
                 <th>Ngày tạo</th>
                 <th>Nội dung</th>
                 <th><div class="text-center">Chức năng</div></th>

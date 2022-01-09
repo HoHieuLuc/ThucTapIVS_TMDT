@@ -96,7 +96,7 @@ public interface LoaiSanPhamMapper {
             @Param("rowsPerPage") int rowsPerPage);
 
     // trang chủ
-    // lấy loại sản phẩm phổ biến
+    // lấy loại sản phẩm phổ biến dựa theo loại của những sản phẩm được đặt mua nhiều
     final String GET_POPULAR_CATEGORY = "SELECT lsp.ma_loai_sp, lsp.ten_loai_sp, lsp.anh " +
             "FROM loai_san_pham lsp JOIN san_pham sp ON lsp.ma_loai_sp = sp.ma_loai_san_pham " +
             "LEFT JOIN chi_tiet_dat_hang ctdh ON ctdh.ma_san_pham = sp.ma_san_pham " +

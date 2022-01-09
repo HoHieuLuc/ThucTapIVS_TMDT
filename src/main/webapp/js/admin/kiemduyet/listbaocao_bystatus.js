@@ -17,7 +17,7 @@ const renderData = (datas) => {
             <tr>
                 <td>${ma_bao_cao}</td>
                 <td>${unameSender}</td>
-                <td>${unameReceiver}</td>
+                <td><a href="${baseURL}store/${unameReceiver}" class="">${unameReceiver}</a></td>
                 <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
                 <td>${noi_dung}</td>
                 <td>
