@@ -206,6 +206,8 @@ public class NhanVienApiAction {
         if (status == 1)
         {
             baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
+            // Gửi thông báo đến người bị báo cáo với nội dung 
+            System.out.println("You are report ");
             return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
         }
 

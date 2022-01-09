@@ -18,10 +18,15 @@ const renderData = (datas) => {
     const status = statusButtonDOM.value;
     const allBaoCaos = datas.map(data => {
         const { ma_bao_cao, unameReceiver, unameSender, noi_dung, ngay_tao } = data;
+        // Không biết tạo nhiều formData nó có lag hay không, nên tui tạm comment
+        // const formData = new FormData();
+        // formData.append('maBaoCao',ma_bao_cao);
+        // formData.append('status',status);
+        // formData.append('userName',unameSender);
         switch (status) {
             case '0' : chucNangElement = `
                 <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}&userName=${unameSender}">Duyệt vi phạm</a>
-                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}">Duyệt không vi phạm</a>
+                <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}&userName=${unameSender}">Duyệt không vi phạm</a>
             `;
         }
         return `
