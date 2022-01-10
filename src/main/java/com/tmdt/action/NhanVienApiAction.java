@@ -258,7 +258,7 @@ public class NhanVienApiAction {
                     sqlSession.commit();
                     sqlSession.close();
                     return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 401, response);
-                } else {
+                } else if (soLanCanhCaoConLai > 0 && soLanCanhCaoConLai < 3) {
                     thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
                             "Nếu bị cảnh cáo " + soLanCanhCaoConLai + " thì bị khóa tài khoản vì" + noiDung);
                     sqlSession.commit();
