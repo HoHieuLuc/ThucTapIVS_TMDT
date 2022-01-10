@@ -268,8 +268,7 @@ public class NhanVienApiAction {
                 }
             case 1:
                 baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
-                thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
-                        "Dạo gần đây chúng tôi nhận thấy báo cáo về hành vi bán hàng lừa đảo của bạn, nếu tiếp tục vi phạm sẽ bị cảnh cáo và khóa tài khoản vì " + noiDung);
+                thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,noiDung + " .Nếu tiếp tục vi phạm sẽ bị cảnh cáo, quá 2 lần cảnh cáo sẽ khóa tài khoản");
                 sqlSession.commit();
                 sqlSession.close();
                 return CustomError.createCustomError("Đã duyệt báo cáo này, không tăng số lần cảnh báo", 401, response);
