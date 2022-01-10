@@ -29,23 +29,25 @@
           overflow-y: scroll;
           display: block;
         }
-
         .tlt-comment {
           max-height: 10rem;
           white-space: pre-line;
           overflow-y: scroll;
           display: block;
         }
-
         .tlt-thumbnail {
-          height:11rem; 
-          width:11rem; 
+          height: 15vh; 
+          width: 15vw; 
           object-fit: scale-down;
         }
         .tlt-thumbnail:hover {
           border: solid 1px gray;
         }
-
+        .tlt-overflow-eclipse {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         button>i {
           pointer-events: none;
         }
