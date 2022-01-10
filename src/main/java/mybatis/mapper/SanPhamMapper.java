@@ -38,7 +38,7 @@ public interface SanPhamMapper {
     // Xem chi tiết sản phẩm
     final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham, kh.ten, " +
             "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, " +
-            "tk.username, tk.avatar, AVG(dgsp.so_sao) AS xep_hang " +
+            "tk.username, tk.avatar, AVG(dgsp.so_sao) AS xep_hang, lsp.ma_loai_sp " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
@@ -257,7 +257,7 @@ public interface SanPhamMapper {
             "FROM san_pham sp LEFT JOIN anh_san_pham asp ON asp.ma_san_pham = sp.ma_san_pham " +
             "GROUP BY sp.ma_san_pham " +
             "ORDER BY ngay_dang DESC " +
-            "LIMIT 6";
+            "LIMIT 12";
 
     @Select(GET_NEWEST_PRODUCTS)
     public List<Map<String, Object>> getNewestProducts();
