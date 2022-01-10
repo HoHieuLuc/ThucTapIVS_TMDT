@@ -68,25 +68,26 @@ mainDOM.addEventListener('click', async (event) => {
         return;
     }
     if (target.classList.contains('tang-gio-hang') || target.classList.contains('giam-gio-hang')) {
-        const soLuongInputDOM = target.parentElement.querySelector('.so-luong-cart-input');
-        const tongTienDOM = target.parentElement.parentElement.parentElement.querySelector('.tong-tien-cart');
-        const donGia = soLuongInputDOM.dataset.dongia;
-        soLuongInputDOM.disabled = true;
+        const _soLuongInputDOM = target.parentElement.querySelector('.so-luong-cart-input');
+        const _tongTienDOM = target.parentElement.parentElement.parentElement.querySelector('.tong-tien-cart');
+        const _donGia = _soLuongInputDOM.dataset.dongia;
+        _soLuongInputDOM.disabled = true;
         target.disabled = true;
-        formData.append('maSanPham', soLuongInputDOM.dataset.masanpham);
+        formData.append('maSanPham', _soLuongInputDOM.dataset.masanpham);
         if (target.classList.contains('tang-gio-hang')) {
-            formData.append('soLuong', parseInt(soLuongInputDOM.value) + 1);
+            formData.append('soLuong', parseInt(_soLuongInputDOM.value) + 1);
         }
         else {
-            formData.append('soLuong', parseInt(soLuongInputDOM.value) - 1);
+            formData.append('soLuong', parseInt(_soLuongInputDOM.value) - 1);
         }
-        soLuongInputDOM.value = await updateCart(formData);
-        const tongTien = parseInt(soLuongInputDOM.value) * parseInt(donGia);
-        tongTienDOM.innerText = tongTien.toLocaleString("vi-VN", {
+        _soLuongInputDOM.value = await updateCart(formData);
+        const tongTien = parseInt(_soLuongInputDOM.value) * parseInt(_donGia);
+        _tongTienDOM.innerText = tongTien.toLocaleString("vi-VN", {
             style: "currency",
             currency: "VND",
         });
-        soLuongInputDOM.disabled = false;
+        await getTongTienVaSoLuong();
+        _soLuongInputDOM.disabled = false;
         target.disabled = false;
         return;
     }

@@ -125,6 +125,22 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // trang đặt hàng
+    @Action(value = "/dathang", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/dathang/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack") })
+    public String orderPage() {
+        return SUCCESS;
+    }
+
+    // đặt hàng theo người bán
+    @Action(value = "/dathang/{params}", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/dathang/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack") })
+    public String orderBySellerPage() {
+        return SUCCESS;
+    }
+
     // dashboard
     @Action(value = "/user/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/user/index.jsp")
