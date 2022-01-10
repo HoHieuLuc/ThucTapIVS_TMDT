@@ -125,7 +125,7 @@ public class NhanVienApiAction {
      * 
      * 
      */
-
+    /****** Kiểm duyệt sản phẩm ******/
     @Action(value = "/api/v1/nhanvien/sanpham/getbystatus/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -152,6 +152,7 @@ public class NhanVienApiAction {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    // Phê duyệt và Cập nhật trạng thái cho từng sản phẩm
     @Action(value = "/api/v1/nhanvien/sanpham/changestatus", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -177,6 +178,7 @@ public class NhanVienApiAction {
         return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
     }
 
+    /****** Kiểm duyệt báo cáo người dùng ******/
     // Lấy danh sách báo cáo cần phê duyệt
     @Action(value = "/api/v1/nhanvien/baocao/getbystatus/{status}", results = {
             @Result(name = "success", location = "/index.html")
@@ -223,7 +225,8 @@ public class NhanVienApiAction {
             baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
             // Gửi thông báo đến người bị báo cáo với nội dung
             ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
-            thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "You are report, Chỗ này có phải là nội dung viết tay của nhân viên không ô, tui đang bí tưởng chỗ này");
+            thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
+                    "You are report, Chỗ này có phải là nội dung viết tay của nhân viên không ô, tui đang bí tưởng chỗ này");
             sqlSession.commit();
             sqlSession.close();
             return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
@@ -234,6 +237,22 @@ public class NhanVienApiAction {
         return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
     }
 
+    // Lấy thông tin chi tiết  báo cáo cần phê duyệt
+    @Action(value = "/api/v1/nhanvien/baocao/{maBaoCao}", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String getChiTietBaoCao() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
 
+        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
+
+        List<Map<String, Object>> chiTietBaoCao = baoCaoNguoiDungMapper.detaiBaoCao(maBaoCao);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("chitiet_baocao", chiTietBaoCao);
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
 
 }
