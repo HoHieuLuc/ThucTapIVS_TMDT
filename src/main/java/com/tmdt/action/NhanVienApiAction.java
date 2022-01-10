@@ -18,11 +18,14 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
+import mybatis.mapper.BaoCaoNguoiDungMapper;
 import mybatis.mapper.SanPhamMapper;
+import mybatis.mapper.TaiKhoanMapper;
+import mybatis.mapper.ThongBaoMapper;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
+        "namespace", "/",
+        "actionName", "bad-request"
 })
 public class NhanVienApiAction {
     private int status;
@@ -30,6 +33,34 @@ public class NhanVienApiAction {
     private int page;
     private int rowsPerPage;
     private String search;
+    private String userName;
+    private int maBaoCao;
+    private String noiDung;
+
+    /* Begin Getter and setter */
+    public String getNoiDung() {
+        return noiDung;
+    }
+
+    public void setNoiDung(String noiDung) {
+        this.noiDung = noiDung;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getMaBaoCao() {
+        return maBaoCao;
+    }
+
+    public void setMaBaoCao(int maBaoCao) {
+        this.maBaoCao = maBaoCao;
+    }
 
     public int getStatus() {
         return status;
@@ -81,6 +112,7 @@ public class NhanVienApiAction {
     public void setSearch(String search) {
         this.search = search;
     }
+    /* End getter and setter */
 
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -93,7 +125,7 @@ public class NhanVienApiAction {
      * 
      * 
      */
-
+    /****** Kiểm duyệt sản phẩm ******/
     @Action(value = "/api/v1/nhanvien/sanpham/getbystatus/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -120,6 +152,7 @@ public class NhanVienApiAction {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    // Phê duyệt và Cập nhật trạng thái cho từng sản phẩm
     @Action(value = "/api/v1/nhanvien/sanpham/changestatus", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -144,4 +177,128 @@ public class NhanVienApiAction {
         sqlSession.close();
         return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
     }
+
+    /****** Kiểm duyệt báo cáo người dùng ******/
+    // Lấy danh sách báo cáo cần phê duyệt
+    @Action(value = "/api/v1/nhanvien/baocao/getbystatus/{status}", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String getBaoCaoByStatus() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
+
+        List<Map<String, Object>> listBaoCao = baoCaoNguoiDungMapper.listBaoCaoByStatus(status);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("list_baocaos", listBaoCao);
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=${status}
+    @Action(value = "/api/v1/nhanvien/baocao/changestatus", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String duyetBaoCaoNguoiDung() throws IOException {
+
+        // Debug
+        System.out.println("Mã báo cáo: " + maBaoCao);
+        System.out.println("Status: " + status);
+        // Lấy id người nhận
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
+        TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
+        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+
+        int idNguoiNhan = taiKhoanMapper.getTaiKhoanIdByUsername(userName);
+
+        // Lấy id nhân viên đang duyệt
+        int idNguoiGui = (int) session.getAttribute("accountID");
+
+        // Gán nội dung tùy chọn và lấy nội dung khác 
+        switch (noiDung) {
+            case "1":
+                noiDung = "Bạn bị tố cáo vì bán sản phẩm cấm";
+                break;
+            case "2":
+                noiDung = "Bạn bị tố cáo vì lừa đảo";
+                break;
+            case "3":
+                noiDung = "Bạn bị tố cáo vì bán hàng giả";
+                break;
+            default:
+                break;
+        }
+
+        // Duyệt báo cáo với trạng thái cụ thể và các hoạt động sau đó 
+        switch (status) {
+            // Nội dung của thông báo là nhân viên viết tay (Option: (có nhiều mục có sẵn
+            // nội dung, mục cuối là nội dung tự viết) để gửi cho người bị báo cáo)
+            case -2:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                // Set số lần cảnh cáo = 3 luôn, khóa tài khoản
+                baoCaoNguoiDungMapper.khoaTaiKhoan(idNguoiNhan);
+                thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,noiDung);
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 401, response);
+            case -1:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                // Cảnh cáo và tăng số lần cảnh cáo của tài khoản lên 1 đơn vị
+                baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan, 1);
+                // Lấy số lần cảnh cáo còn lại bao nhiêu thì mới bị khóa tài khoản
+                int soLanCanhCaoConLai = 3 - baoCaoNguoiDungMapper.getSoLanCanhCao(userName);
+
+                if (soLanCanhCaoConLai == 0) {
+                    thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Bạn bị khóa tài khoản vì " + noiDung);
+                    sqlSession.commit();
+                    sqlSession.close();
+                    return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 401, response);
+                } else if (soLanCanhCaoConLai > 0 && soLanCanhCaoConLai < 3) {
+                    thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
+                            "Nếu bị cảnh cáo " + soLanCanhCaoConLai + " thì bị khóa tài khoản vì" + noiDung);
+                    sqlSession.commit();
+                    sqlSession.close();
+                    return CustomError.createCustomError(
+                            "Đã duyệt báo cáo này và nhắc nhở số lần cảnh cáo cho người vi phạm", 401, response);
+                }
+            case 1:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,noiDung + " .Nếu tiếp tục vi phạm sẽ bị cảnh cáo, quá 2 lần cảnh cáo sẽ khóa tài khoản");
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đã duyệt báo cáo này, không tăng số lần cảnh báo", 401, response);
+            case 2:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đã duyệt báo cáo này không vi phạm", 200, response);
+            default:
+                return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
+        }
+
+    }
+
+    // Lấy thông tin chi tiết báo cáo cần phê duyệt
+    @Action(value = "/api/v1/nhanvien/baocao/{maBaoCao}", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String getChiTietBaoCao() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        System.out.println("This is chi tiet bao cao");
+        BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
+
+        Map<String, Object> chiTietBaoCao = baoCaoNguoiDungMapper.detaiBaoCao(maBaoCao);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("chitiet_baocao", chiTietBaoCao);
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
 }
