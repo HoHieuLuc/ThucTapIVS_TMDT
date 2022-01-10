@@ -23,7 +23,7 @@ listBaoCaoDOM.addEventListener('click', (event) => {
         formData.append('userName',userName);
 
         //Còn cái status lấy trong form thôi
-        formDuyetBaoCaoDOM.addEventListener('submit',(event){
+        formDuyetBaoCaoDOM.addEventListener('submit',(event)=>{
             event.preventDefault();
             formData.append('status',document.getElementsByName('statusDuyet').value);
             //Log thử formData
