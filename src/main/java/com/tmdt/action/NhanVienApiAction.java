@@ -241,7 +241,7 @@ public class NhanVienApiAction {
             case -2:
                 baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
                 // Set số lần cảnh cáo = 3 luôn, khóa tài khoản
-                baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan, 3);
+                baoCaoNguoiDungMapper.khoaTaiKhoan(idNguoiNhan);
                 thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,noiDung);
                 sqlSession.commit();
                 sqlSession.close();

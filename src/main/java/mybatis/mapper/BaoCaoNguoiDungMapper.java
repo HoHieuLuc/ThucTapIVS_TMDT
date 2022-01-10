@@ -38,7 +38,6 @@ public interface BaoCaoNguoiDungMapper {
         // Tăng số lần cảnh báo cho tài khoản bị cảnh báo ngay khi status được cập nhật
         // sang -1
         final String TANG_SO_LAN_CANH_BAO = "UPDATE `tai_khoan` SET `so_lan_canh_cao` = `so_lan_canh_cao` + #{number} WHERE `tai_khoan`.`id` = #{idNguoiNhan};";
-
         @Update(TANG_SO_LAN_CANH_BAO)
         //public int tangSoLanCanhBao(int idNguoiNhan);
         public int tangSoLanCanhBao(
@@ -59,5 +58,10 @@ public interface BaoCaoNguoiDungMapper {
         final String GET_SO_LAN_CANH_CAO = "SELECT so_lan_canh_cao FROM tai_khoan WHERE username = #{userName}";
         @Select(GET_SO_LAN_CANH_CAO)
         public int getSoLanCanhCao(String userName);
+
+        //Khóa tài khoản người vi phạm nặng 
+        final String KHOA_TAI_KHOAN = "UPDATE `tai_khoan` SET `so_lan_canh_cao` = 3 WHERE `tai_khoan`.`id` = #{idNguoiNhan};";
+        @Select(KHOA_TAI_KHOAN)
+        public int khoaTaiKhoan(int idNguoiNhan);
 
 }
