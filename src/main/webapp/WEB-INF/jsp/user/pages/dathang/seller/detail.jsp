@@ -10,7 +10,6 @@
 <hr>
 <div class="chiTietDatHang">
 
-    
 </div>
 
 <script>
