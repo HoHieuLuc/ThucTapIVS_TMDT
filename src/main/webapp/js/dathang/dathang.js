@@ -1,3 +1,4 @@
+const datHangDivDOM = document.querySelector('.datHangDiv');
 const datHangDOM = document.querySelector('#datHangList');
 const tongSoSanPhamDOM = document.querySelector('#tongSoSanPham');
 const tongTienDOM = document.querySelector('#tongTien');
@@ -14,9 +15,7 @@ const showDatHang = async () => {
             }
         });
         if (gio_hangs.length === 0) {
-            datHangDOM.innerHTML = `
-                <div class="d-flex justify-content-center fs-2 text-danger">Không có sản phẩm nào</div>
-            `;
+            window.location.href = `${baseURL}cart`;
             return;
         }
         let tongTien = 0;
@@ -85,8 +84,21 @@ datHangBtnDOM.addEventListener('click', async () => {
         const formData = new FormData;
         formData.append('username', sellerUsername);
         const { data: { message } } = await axios.post(`${baseURL}api/v1/dathang`, formData);
-        datHangDOM.innerHTML = `
+        datHangDivDOM.innerHTML = `
             <div class="d-flex justify-content-center fs-2 text-success">${message}</div>
+            <div class="row gy-2">
+                <div class="col-4"></div>
+                <a href="${baseURL}" class="col-4 btn btn-primary">
+                    Về trang chủ <i class="fas fa-home"></i>
+                </a>
+                <div class="col-4"></div>
+
+                <div class="col-4"></div>
+                <a href="${baseURL}user/buyer/dathang" class="col-4 btn btn-success">
+                    Theo dõi đơn hàng <i class="fas fa-cheese"></i>
+                </a>
+                <div class="col-4"></div>
+            </div>
         `;
     } catch (error) {
         console.log(error);
