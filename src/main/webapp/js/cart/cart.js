@@ -1,12 +1,18 @@
 const gioHangDOM = document.querySelector('#gioHangList');
 const tongSoSanPhamDOM = document.querySelector('#tongSoSanPham');
 const tongTienDOM = document.querySelector('#tongTien');
+const mainGioHangDOM = document.querySelector('.mainGioHang');
 
 const showGioHang = async () => {
     try {
         const { data: { gio_hangs } } = await axios.get(`${baseURL}api/v1/giohang`);
         if (gio_hangs.length === 0) {
-            gioHangDOM.innerHTML = '<p>Giỏ hàng trống</p>';
+            mainGioHangDOM.innerHTML = `
+                <div class="text-center">
+                    <h3>Giỏ hàng trống</h3>
+                    <a href="${baseURL}" class="btn btn-primary">Tiếp tục mua hàng</a>
+                </div>
+            `;
             return;
         }
         const allGioHangs = gio_hangs.map((gio_hang) => {
