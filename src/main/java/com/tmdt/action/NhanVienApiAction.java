@@ -223,14 +223,15 @@ public class NhanVienApiAction {
        // baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
 
         switch (status) {
-            case -3: 
+            // Nội dung của thông báo là nhân viên viết tay (Option: (có nhiều mục có sẵn nội dung, mục cuối là nội dung tự viết) để gửi cho người bị báo cáo)
+            case -2: 
                     baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
                     //Set số lần cảnh cáo = 3 luôn, khóa tài khoản
                     baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan,3);
                     sqlSession.commit();
                     sqlSession.close();
                     return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 200, response);
-            case -2:
+            case -1:
                     baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao); 
                     //Cảnh cáo và tăng số lần cảnh cáo của tài khoản lên 1 đơn vị
                     baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan, 1);
@@ -248,20 +249,16 @@ public class NhanVienApiAction {
                         sqlSession.close();
                         return CustomError.createCustomError("Đã duyệt báo cáo này và nhắc nhở số lần cảnh cáo cho người vi phạm", 200, response);
                 }
-            case 0:
+            case 1:
                     baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
                     thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Dạo gần đây chúng tôi nhận thấy báo cáo về hành vi bán hàng lừa đảo của bạn, nếu tiếp tục vi phạm sẽ bị cảnh cáo và khóa tài khoản");
                     sqlSession.commit();
                     sqlSession.close();
                     return CustomError.createCustomError("Đã duyệt báo cáo này, không tăng số lần cảnh báo", 200, response);
-            case 1: baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
-                    sqlSession.commit();
-                    sqlSession.close();
-                    return CustomError.createCustomError("Đã duyệt báo cáo này không vi phạm", 200, response);
             case 2: baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
                     sqlSession.commit();
                     sqlSession.close();
-                    return CustomError.createCustomError("Bỏ qua báo cáo này",200,response);
+                    return CustomError.createCustomError("Đã duyệt báo cáo này không vi phạm", 200, response);
                 
         }
 
@@ -278,7 +275,7 @@ public class NhanVienApiAction {
     })
     public String getChiTietBaoCao() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-
+        System.out.println("This is chi tiet bao cao");
         BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
 
         Map<String, Object> chiTietBaoCao = baoCaoNguoiDungMapper.detaiBaoCao(maBaoCao);

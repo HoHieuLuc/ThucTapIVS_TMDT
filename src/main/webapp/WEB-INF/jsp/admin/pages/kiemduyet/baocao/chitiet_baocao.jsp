@@ -20,7 +20,10 @@
                     <div class="col-8 border border-dark"> <p class="" id="ngayTao"></p></div>
                     <div class="col-4 border border-dark"><b>Trạng thái</b></div>
                     <div class="col-8 border border-dark"> <p class="" id="status"></p></div>
-                    <div class="col-6 pt-3" id="chucNang">   
+                    <form class="col-6 pt-3" id="chucNangForm"> 
+                        <div id="chucNang"></div>
+                        <input type="submit" value="Gửi"/>
+                  </form>
                 </div>
     </div>
 

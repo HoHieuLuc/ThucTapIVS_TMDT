@@ -15,14 +15,12 @@ statusButtonDOM.addEventListener('change', async () => {
 //Render data  api/v1/nhanvien/baocao/{maBaoCao}
 const renderData = (datas) => {
     const allBaoCaos = datas.map(data => {
-        const { ma_bao_cao, unameReceiver, unameSender, noi_dung, ngay_tao } = data;
+        const { unameReceiver, unameSender, ngay_tao,ma_bao_cao } = data;
         return `
             <tr>
-                <td>${ma_bao_cao}</td>
                 <td>${unameSender}</td>
                 <td><a href="${baseURL}store/${unameReceiver}">${unameReceiver}</a></td>
                 <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
-                <td>${noi_dung}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
                         <a href="${baseURL}admin/baocao/${ma_bao_cao}" class="">Chi tiết</a>

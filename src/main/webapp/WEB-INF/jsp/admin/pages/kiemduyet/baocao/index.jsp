@@ -6,24 +6,22 @@
     <form class="searchForm input-group mb-3">
       <input name="search" type="text" class="form-control w-50" placeholder="Tìm kiếm">
       <select id="listBaoCaoByStatus" name="status" class="form-select">
-        <option value="-3" selected>Vi phạm nặng nhất</option>
-        <option value="-2">Cảnh cáo/option>
-        <option value="-1">Chưa duyệt</option>
-        <option value="0" selected>Nhắc nhở</option>
-        <option value="1">Không vi phạm</option>
-        <option value="2">Bỏ qua</option>
+        <option value="-2">Vi phạm nặng nhất</option>
+        <option value="-1">Cảnh cáo</option>
+        <option value="0" selected>Chưa duyệt</option>
+        <option value="1">Nhắc nhở</option>
+        <option value="2">Không vi phạm</option>
       </select>
       <input type="submit" class="btn btn-outline-secondary" value="Tìm kiếm">
     </form>
   </div>
+
 <table class="table table-striped table-hover" id="listBaoCaoTable">
         <thead>
             <tr>
-                <th>Mã Báo Cáo</th>
                 <th>Username người gửi</th>
                 <th>Username người bị báo cáo</th>
                 <th>Ngày tạo</th>
-                <th>Nội dung</th>
                 <th><div class="text-center">Chức năng</div></th>
             </tr>
         </thead>
