@@ -212,24 +212,43 @@ public class NhanVienApiAction {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
         TaiKhoanMapper taiKhoanMapper = sqlSession.getMapper(TaiKhoanMapper.class);
+        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+
         int idNguoiNhan = taiKhoanMapper.getTaiKhoanIdByUsername(userName);
 
         // Lấy id nhân viên đang duyệt
         int idNguoiGui = (int) session.getAttribute("accountID");
 
         // Duyệt báo cáo đó
-        baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+       // baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
 
-        // Tăng số lần cảnh cáo lên 1 và đồng thời gửi thông báo cho người bị vi phạm
-        if (status == -1) {
-            baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan);
-            // Gửi thông báo đến người bị báo cáo với nội dung
-            ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
-            thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
-                    "You are report, Chỗ này có phải là nội dung viết tay của nhân viên không ô, tui đang bí tưởng chỗ này");
-            sqlSession.commit();
-            sqlSession.close();
-            return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
+        switch (status) {
+            case -3: //Set số lần cảnh cáo = 3 luôn, khóa tài khoản
+                baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan,3);
+                // Gửi thông báo đến người bị báo cáo với nội dung
+
+                thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
+                        "Bạn bị khóa tài khoản vì hành vi gian dối lừa đảo người mua hàng");
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
+            case -2: //Cảnh cáo và tăng số lần cảnh cáo của tài khoản lên 1 đơn vị
+                baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan, 1);
+                // Lấy số lần cảnh cáo còn lại bao nhiêu thì mới bị khóa tài khoản
+                int soLanCanhCaoConLai = 3 - baoCaoNguoiDungMapper.getSoLanCanhCao(userName);
+                if (soLanCanhCaoConLai == 0) {
+                    thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Bạn bị khóa tài khoản vì vi phạm nhiều lần");
+                    sqlSession.commit();
+                    sqlSession.close();
+                    return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
+                } else 
+                {
+                    thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Nếu bị cảnh cáo " + soLanCanhCaoConLai + " thì bị khóa tài khoản");
+                    sqlSession.commit();
+                    sqlSession.close();
+                    return CustomError.createCustomError("Đã duyệt 'vi phạm' cho báo cáo này", 200, response);
+                }
+                
         }
 
         sqlSession.commit();
@@ -237,7 +256,7 @@ public class NhanVienApiAction {
         return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
     }
 
-    // Lấy thông tin chi tiết  báo cáo cần phê duyệt
+    // Lấy thông tin chi tiết báo cáo cần phê duyệt
     @Action(value = "/api/v1/nhanvien/baocao/{maBaoCao}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -248,7 +267,7 @@ public class NhanVienApiAction {
 
         BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
 
-        List<Map<String, Object>> chiTietBaoCao = baoCaoNguoiDungMapper.detaiBaoCao(maBaoCao);
+        Map<String, Object> chiTietBaoCao = baoCaoNguoiDungMapper.detaiBaoCao(maBaoCao);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("chitiet_baocao", chiTietBaoCao);
         sqlSession.close();

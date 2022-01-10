@@ -19,7 +19,7 @@ const showBaoCaoDetail = async () => {
     try {
         const { data: { chitiet_baocao } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/${maBaoCao}`);
         // có avatar nữa
-        const { ma_bao_cao, unameReceiver, unameSender, noi_dung,status } = chitiet_baocao[0];
+        const { ma_bao_cao, unameReceiver, unameSender, noi_dung,status } = chitiet_baocao;
         maBaoCaoDOM.textContent = ma_bao_cao;
         unameReceiverDOM.textContent = unameReceiver;
         unameSenderDOM.textContent = unameSender;
@@ -29,38 +29,38 @@ const showBaoCaoDetail = async () => {
             case -3:
                 statusDOM.textContent = `Vi phạm nặng nhất (khóa tài khoản)`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger" data-status="-1">Xóa</button>
+                <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
             `;
                 break;
             case -2:
                 statusDOM.textContent = `Vi phạm nặng (Cảnh cáo)`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger" data-status="-1">Xóa</button>
+                <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
             `;
                 break;
             case 0:
                 statusDOM.textContent = `Chưa duyệt`;
                 chucNangDOM.innerHTML =`
-                    <button type="button" class="btn btn-primary" data-status="0">Phục hồi vào kho</button>
+                    <button type="button" class="btn btn-primary" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button>
                 `;
                 break;
             case -1:
                 statusDOM.textContent = `Vi phạm nhẹ (Chỉ nhắc nhở)`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger" data-status="-1">Xóa</button>
+                <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
             `;
                 break;
             case 1:
                 statusDOM.textContent = `Không vi phạm`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-success" data-status="2">Duyệt</button></div>
-                <button type="button" class="btn btn-danger" data-status="0">Từ chối duyệt</button></div>
+                <button type="button" class="btn btn-success" data-status="2">Sẽ làm khi xong bên NhanVienApiAction</button></div>
+                <button type="button" class="btn btn-danger" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
             `;
                 break;
             case 2:
                 statusDOM.textContent = `Bỏ qua`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-primary" data-status="0">Đưa vào kho</button></div>
+                <button type="button" class="btn btn-primary" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
             `;
                 break;
         }

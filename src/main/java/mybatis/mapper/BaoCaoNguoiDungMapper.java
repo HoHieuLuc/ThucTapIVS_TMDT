@@ -37,10 +37,14 @@ public interface BaoCaoNguoiDungMapper {
 
         // Tăng số lần cảnh báo cho tài khoản bị cảnh báo ngay khi status được cập nhật
         // sang -1
-        final String TANG_SO_LAN_CANH_BAO = "UPDATE `tai_khoan` SET `so_lan_canh_cao` = `so_lan_canh_cao` + 1 WHERE `tai_khoan`.`id` = #{idNguoiNhan};";
+        final String TANG_SO_LAN_CANH_BAO = "UPDATE `tai_khoan` SET `so_lan_canh_cao` = `so_lan_canh_cao` + #{number} WHERE `tai_khoan`.`id` = #{idNguoiNhan};";
 
         @Update(TANG_SO_LAN_CANH_BAO)
-        public int tangSoLanCanhBao(int idNguoiNhan);
+        //public int tangSoLanCanhBao(int idNguoiNhan);
+        public int tangSoLanCanhBao(
+                @Param("idNguoiNhan") int idNguoiNhan,
+                @Param("number") int number
+        );
 
         // Hiển thị chi tiết báo cáo cụ thể
         final String DETAIL_BAO_CAO = "SELECT bcnd.ma_bao_cao,tk2.username as 'unameSender',tk1.username as 'unameReceiver',bcnd.ngay_tao,bcnd.noi_dung,bcnd.status "
@@ -49,6 +53,11 @@ public interface BaoCaoNguoiDungMapper {
                         "LEFT JOIN tai_khoan tk2 ON tk2.id = bcnd.id_nguoi_gui WHERE bcnd.ma_bao_cao = #{maBaoCao};";
 
         @Select(DETAIL_BAO_CAO)
-        public List<Map<String, Object>> detaiBaoCao(int maBaoCao);
+        public Map<String, Object> detaiBaoCao(int maBaoCao);
+
+        //Lấy số lần cảnh cáo để nhắc nhở người bị báo cáo
+        final String GET_SO_LAN_CANH_CAO = "SELECT so_lan_canh_cao FROM tai_khoan WHERE username = #{userName}";
+        @Select(GET_SO_LAN_CANH_CAO)
+        public int getSoLanCanhCao(String userName);
 
 }
