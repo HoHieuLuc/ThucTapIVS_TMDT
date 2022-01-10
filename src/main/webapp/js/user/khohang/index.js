@@ -30,15 +30,9 @@ const showSanPhamList = async () => {
                 style: "currency",
                 currency: "VND",
             });
-            // chỗ text-overflow: ellipsis; display: block; overflow: hidden; chưa được
             return `
                 <tr>
-                    <td 
-                        style="text-overflow: ellipsis; display: block; overflow: hidden;"
-                        title="${ten_san_pham}"
-                    >
-                        ${ten_san_pham}
-                    </td>
+                    <td title="${ten_san_pham}">${ten_san_pham}</td>
                     <td>${giaVND}</td>
                     <td>${so_luong}</td>
                     <td>${so_luong_da_ban}</td>
@@ -52,12 +46,7 @@ const showSanPhamList = async () => {
                 </tr>`;
         }).join('');
         sanPhamListDOM.innerHTML = allSanPhams;
-        paginationDOM.innerHTML =  buildPagination(
-            page,
-            total_page,
-            5,
-            "changePage"
-        );
+        paginationDOM.innerHTML = buildPagination(page, total_page, 10, "changePage");
     }
     catch (error) {
         console.log(error);
