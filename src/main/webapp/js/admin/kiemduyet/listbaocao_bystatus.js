@@ -6,7 +6,7 @@ const listBaoCaoDOM = document.querySelector('#baocao-list');
 
 statusButtonDOM.addEventListener('change', async () => {
     const status = statusButtonDOM.value;
-    document.title = "Sản phẩm trong kho ";
+    document.title = "Kiểm duyệt báo cáo người dùng";
     const { data: { list_baocaos } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`);
     renderData(list_baocaos);
 
