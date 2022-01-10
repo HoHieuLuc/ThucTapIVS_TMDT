@@ -3,12 +3,8 @@ const tongSoSanPhamDOM = document.querySelector('#tongSoSanPham');
 const tongTienDOM = document.querySelector('#tongTien');
 const datHangBtnDOM = document.querySelector('.dat-hang-btn');
 
-const params = window.location.pathname.split("/").slice(0);
-let sellerUsername = params[params.length - 1];
-
-if (sellerUsername === 'dathang') {
-    sellerUsername = null;
-}
+const urlParams = window.location.search;
+const sellerUsername = new URLSearchParams(urlParams).get("seller") ?? null;
 
 const showDatHang = async () => {
     try {

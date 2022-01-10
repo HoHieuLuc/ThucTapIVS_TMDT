@@ -73,7 +73,7 @@ const showGioHang = async () => {
                     <div class="my-3 d-flex justify-content-between">
                         <h5>Người bán <a href="${baseURL}store/${username}" class="text-dark">${ten}</a></h5>
                         <a
-                            href="${baseURL}dathang/${username}"
+                            href="${baseURL}dathang?seller=${username}"
                             class="text-nowrap btn btn-link"
                         >
                             Chỉ đặt mua của người bán này
