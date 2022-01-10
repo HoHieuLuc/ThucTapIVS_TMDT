@@ -59,6 +59,9 @@ public class DatHangAction extends ActionSupport {
                 maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
                 sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
             }
+            if (sanPhams.isEmpty()){
+                return CustomError.createCustomError("Không có sản phẩm nào trong giỏ hàng", 404, response);
+            }
             for (Map<String, Object> sanPham : sanPhams) {
                 datHangMapper.themChiTietDatHang(
                         maKhachHang,
