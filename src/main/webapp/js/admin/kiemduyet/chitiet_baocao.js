@@ -27,41 +27,46 @@ const showBaoCaoDetail = async () => {
         //if status==0 statusDOM.textContent = `${status}`;
         switch (status) {
             case -3:
-                statusDOM.textContent = `Vi phạm nặng nhất (khóa tài khoản)`;
-                chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
-            `;
+                statusDOM.textContent = `Vi phạm nặng nhất (Khóa tài khoản)`;
+            //     chucNangDOM.innerHTML =`
+            //     <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
+            // `;
+                    chucNangDOM.innerHTML =`Xin vĩnh biệt cụ, đùa ấy tui phân vân có nên làm nút mở lại tài khoản ở đây hay không?`;
                 break;
             case -2:
-                statusDOM.textContent = `Vi phạm nặng (Cảnh cáo)`;
-                chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
-            `;
+                statusDOM.textContent = `Cảnh cáo`;
+            //     chucNangDOM.innerHTML =`
+            //     <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
+            // `;
                 break;
             case 0:
                 statusDOM.textContent = `Chưa duyệt`;
                 chucNangDOM.innerHTML =`
-                    <button type="button" class="btn btn-primary" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button>
+                  Empty
                 `;
                 break;
             case -1:
                 statusDOM.textContent = `Vi phạm nhẹ (Chỉ nhắc nhở)`;
                 chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
+                <button type="button" class="btn btn-danger" data-status="-3">Vi phạm nặng</button>
+                <button type="button" class="btn btn-warning" data-status="-2">Cảnh cáo</button>
+                <button type="button" class="btn btn-info" data-status="0">Nhắc nhở</button>
+                <button type="button" class="btn btn-success" data-status="1">Không vi phạm</button>
+                <button type="button" class="btn btn-primary" data-status="2">Bỏ qua</button>
             `;
                 break;
             case 1:
                 statusDOM.textContent = `Không vi phạm`;
-                chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-success" data-status="2">Sẽ làm khi xong bên NhanVienApiAction</button></div>
-                <button type="button" class="btn btn-danger" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
-            `;
+            //     chucNangDOM.innerHTML =`
+            //     <button type="button" class="btn btn-success" data-status="2">Sẽ làm khi xong bên NhanVienApiAction</button></div>
+            //     <button type="button" class="btn btn-danger" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
+            // `;
                 break;
             case 2:
                 statusDOM.textContent = `Bỏ qua`;
-                chucNangDOM.innerHTML =`
-                <button type="button" class="btn btn-primary" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
-            `;
+            //     chucNangDOM.innerHTML =`
+            //     <button type="button" class="btn btn-primary" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
+            // `;
                 break;
         }
     } catch (error) {
