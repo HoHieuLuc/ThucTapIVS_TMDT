@@ -25,7 +25,7 @@ const params = window.location.pathname.split("/").slice(0);
 const username = params[params.length - 1];
 
 // Báo cáo người dùng DOM
-const baoCaoButtonDom = document.querySelector('#baoCaoButton');
+const baoCaoButtonDOM = document.querySelector('#baoCaoButton');
 const formBaoCaoDOM = document.querySelector('#formBaoCao');
 const noiDungBaoCaoDom = document.querySelector('#noiDungBaoCao');
 
@@ -163,10 +163,12 @@ const showProductList = async () => {
             const xepHang = xep_hang === undefined ? "Chưa có đánh giá" : `${xep_hang} &#11088;`;
             return `
                 <div class="row mt-3">
-                    <a href="${baseURL}sanpham/${ma_san_pham}" class="col-md-3 position-relative bg-light rounded store-product-img-link">
-                        <img alt="" 
+                    <a href="${baseURL}sanpham/${ma_san_pham}" 
+                        class="col-md-3 d-flex justify-content-center store-product-img-link text-center rounded"
+                    >
+                        <img alt="${ten_san_pham}" 
                         src="${baseURL}images/product/${anh}"" 
-                        class="d-block position-absolute top-50 start-50 translate-middle img-fluid store-product-img">
+                        class="store-product-img img-fluid">
                     </a>
                     <div class="col-md-9">
                         <a 
@@ -226,48 +228,30 @@ rowsPerPageDOM.addEventListener("change", () => {
     showProductList();
 });
 
-if (formDanhGiaKhachHangDOM) {
-    formDanhGiaKhachHangDOM.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        try {
-            const formData = new FormData(formDanhGiaKhachHangDOM);
-            await axios.post(`${baseURL}api/v1/danhgia/store/${username}/submit`, formData);
-            thongBao('Đánh giá thành công');
-            await showStoreInfo(true);
-        } catch (error) {
-            thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
-        }
-    });
-}
-
-
-
 //Mở form báo cáo ng dùng
-baoCaoButtonDom.addEventListener('click', (event) => {
-    document.getElementById('formBaoCao').classList.remove("d-none");
-});
-
-//Bắt sự kiện xử lý form và lấy dữ liệu
-formBaoCaoDOM.addEventListener('click', async(event) => {
-    const el = event.target;
-    if (el.textContent == "Gửi"){
-        console.log("Tiến hành gửi báo cáo");
-        const formData = new FormData();
-        formData.append('userName',username);
-        formData.append('noiDung',noiDungBaoCaoDom.value);
-        //Lấy tạm tên route vô hình để test formData trong Payload 
-        try {
-            await axios.post(`${baseURL}api/v1/baocao/${username}/submit`,formData);
-            thongBao('Gửi báo cáo thành công');
-            //Sau khi gửi, xóa nội dung trong noiDungBaoCaoDOM
-            noiDungBaoCaoDom.value = "";
+if (baoCaoButtonDOM) {
+    baoCaoButtonDOM.addEventListener('click', (event) => {
+        document.getElementById('formBaoCao').classList.remove("d-none");
+    });
+    //Bắt sự kiện xử lý form và lấy dữ liệu
+    formBaoCaoDOM.addEventListener('click', async (event) => {
+        const el = event.target;
+        if (el.textContent == "Gửi") {
+            console.log("Tiến hành gửi báo cáo");
+            const formData = new FormData();
+            formData.append('userName', username);
+            formData.append('noiDung', noiDungBaoCaoDom.value);
+            //Lấy tạm tên route vô hình để test formData trong Payload 
+            try {
+                await axios.post(`${baseURL}api/v1/baocao/${username}/submit`, formData);
+                thongBao('Gửi báo cáo thành công');
+                //Sau khi gửi, xóa nội dung trong noiDungBaoCaoDOM
+                noiDungBaoCaoDom.value = "";
+            }
+            catch (error) {
+                thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+            }
         }
-        catch (error) {
-            thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
-        }
-
-        
-
-    }
-    if (el.textContent == "Đóng") document.getElementById('formBaoCao').classList.add("d-none");
-      })
+        if (el.textContent == "Đóng") document.getElementById('formBaoCao').classList.add("d-none");
+    })
+}

@@ -4,9 +4,9 @@ prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 <style>
   .store-product-img {
-    object-fit: cover;
-    height: 10rem;
-    width: 100%;
+    object-fit: scale-down;
+    height: 13rem;
+    width: 13rem;
   }
   .store-product-img-link:hover {
     border: solid 1px gray;
@@ -47,47 +47,6 @@ prefix="c" %>
           <p>Đánh giá: <span id="rating"></span></p>
           <c:choose>
             <c:when test="${sessionScope.level == 0}">
-              <!-- Nút đánh giá, hiện modal -->
-              <button type="button" class="btn btn-success" data-bs-toggle="modal"data-bs-target="#staticBackdrop">
-                Đánh giá
-              </button>
-              <!-- Modal, hiện form đánh giá -->
-              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <form id="formDanhGiaKhachHang" class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="staticBackdropLabel">
-                        Chọn mức đánh giá
-                      </h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="form-floating mb-1">
-                        <textarea class="form-control" id="floatingNoiDung" style="height: 100px;" name="noiDung"></textarea>
-                        <label for="floatingNoiDung">Nội dung</label>
-                      </div>
-                      <select class="form-select" size="5" aria-label="size 3" name="soSao">
-                        <option value="1">1. Không tốt</option>
-                        <option value="2">2. Tốt Vừa</option>
-                        <option value="3" selected>3. Tốt</option>
-                        <option value="4">4. Rất Tốt</option>
-                        <option value="5">5. Xuất sắc</option>
-                      </select>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary"data-bs-dismiss="modal">
-                        Thoát
-                      </button>
-                      <input type="submit" class="btn btn-primary" value="Xác nhận">
-                    </div>
-                  </form>
-                </div>
-              </div>
               <!-- Báo cáo người dùng -->
               <button type="button" id="baoCaoButton" class="btn btn-danger">Báo Cáo</button>
                 <div class="mb-3">
@@ -99,13 +58,6 @@ prefix="c" %>
                     <button class="btn btn-primary ms-2">Đóng</button>
                 </div>
            </c:when>
-            <c:when test="${sessionScope.level > 0}">
-              Bạn không phải là khách hàng
-            </c:when>
-            <c:otherwise>
-              Bạn phải <a id="loginDanhGia" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
-              được đánh giá cửa hàng
-            </c:otherwise>
           </c:choose>
         </div>
         <div class="col-md-4">
