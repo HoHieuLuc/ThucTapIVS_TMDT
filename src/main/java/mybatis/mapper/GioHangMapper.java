@@ -20,6 +20,17 @@ public interface GioHangMapper {
     @Select(SELLER_LIST)
     public List<Map<String, Object>> getSellerList(int maKhachHang);
 
+    // lấy info 1 người bán dùng khi khách hàng chỉ đặt hàng từ người này
+    // xài List để bên kia dễ xử lý hơn
+    final String GET_SELLER_INFO = "SELECT tk.username, kh.ten " +
+            "FROM tai_khoan tk JOIN khach_hang kh on tk.id = kh.id_tai_khoan " +
+            "WHERE tk.username = #{username}";
+
+    @Select(GET_SELLER_INFO)
+    public List<Map<String, Object>> getSellerInfo(String username);
+
+    // lấy thông tin 1 người bán
+
     // ví dụ mã người bán = {15,16,6} trong bảng sản phẩm , mã khách hàng người mua
     // trong bảng giỏ hàng = {1}
     // Từ danh sách người bán, chạy vòng lặp in ra các sản phẩm vừa có trong giỏ
@@ -34,7 +45,7 @@ public interface GioHangMapper {
             " WHERE gh.ma_khach_hang = #{maNguoiMua} and tk.username = #{userNameNguoiBan} GROUP by gh.ma_san_pham ";
 
     @Select(GET_GH_INFO_BY_SELLER_ID)
-    public List<Map<String, Object>> getGH_Info_By_Seller_ID(@Param("maNguoiMua") int maNguoiMua,
+    public List<Map<String, Object>> getGioHangBySeller(@Param("maNguoiMua") int maNguoiMua,
             @Param("userNameNguoiBan") String userNaneNguoiBan);
 
     // Hàm lấy giỏ hàng của khách đang đăng nhập
@@ -50,7 +61,7 @@ public interface GioHangMapper {
             "VALUES (#{maKhachHang},#{maSanPham},'1')";
 
     @Insert(THEM_SP_VAO_GIO_HANG)
-    public void themSP_GioHang(@Param("maKhachHang") int maKhachHang, @Param("maSanPham") String maSanPham);
+    public void themSanPhamVaoGioHang(@Param("maKhachHang") int maKhachHang, @Param("maSanPham") String maSanPham);
 
     // cập nhật số lượng sản phẩm trong giỏ hàng, khi người dùng bấm nút thêm giỏ
     // hàng nhiều lần
@@ -68,7 +79,7 @@ public interface GioHangMapper {
             "WHERE `gio_hang`.`ma_khach_hang` = #{maKhachHang} AND `gio_hang`.`ma_san_pham` = #{maSanPham};";
 
     @Update(UPDATE_SO_LUONG_SP)
-    public int updateSoLuongSP_In_GioHang(
+    public int updateSoLuongSanPhamTrongGioHang(
             @Param("maKhachHang") int maKhachHang,
             @Param("maSanPham") String maSanPham,
             @Param("soLuong") int soLuong);
@@ -78,7 +89,7 @@ public interface GioHangMapper {
             "AND `gio_hang`.`ma_san_pham` = #{maSanPham}";
 
     @Delete(DELETE_SP_GIO_HANG)
-    public int deleteSP(@Param("maKhachHang") int maKhachHang, @Param("maSanPham") String maSanPham);
+    public int deleteSanPhamTrongGioHang(@Param("maKhachHang") int maKhachHang, @Param("maSanPham") String maSanPham);
 
     /*
      * Trước khi cập nhật trong trang giỏ hàng, hoặc tăng số lượng khi click chuột
@@ -108,7 +119,7 @@ public interface GioHangMapper {
     final String GET_SO_LUONG_SP_TRONG_GIO_HANG = "SELECT so_luong FROM `gio_hang` WHERE ma_khach_hang = #{maKhachHang} "
             +
             "AND ma_san_pham = #{maSanPham}";
-    
+
     @Select(GET_SO_LUONG_SP_TRONG_GIO_HANG)
     public int getSoLuongSPTrongGioHang(@Param("maKhachHang") int maKhachHang, @Param("maSanPham") String maSanPham);
 
@@ -118,4 +129,13 @@ public interface GioHangMapper {
 
     @Select(GET_MA_KHACH_HANG_BY_MA_SP)
     public int getMaKhachHangByMaSP(String maSanPham);
+
+    // tính tổng tiền và tổng số lượng 1 giỏ hàng
+    final String GET_TONG_GIO_HANG = "SELECT SUM(gh.so_luong) AS so_luong, " +
+            "SUM(gh.so_luong * sp.gia) AS tong_tien FROM gio_hang gh " +
+            "JOIN san_pham sp ON sp.ma_san_pham = gh.ma_san_pham " +
+            "WHERE gh.ma_khach_hang = #{maKhachHang}";
+
+    @Select(GET_TONG_GIO_HANG)
+    public Map<String, Object> getTongTienVaSoLuongGioHang(@Param("maKhachHang") int maKhachHang);
 }

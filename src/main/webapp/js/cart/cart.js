@@ -1,4 +1,6 @@
-const gioHangDOM = document.getElementById('gioHangList');
+const gioHangDOM = document.querySelector('#gioHangList');
+const tongSoSanPhamDOM = document.querySelector('#tongSoSanPham');
+const tongTienDOM = document.querySelector('#tongTien');
 
 const showGioHang = async () => {
     try {
@@ -70,18 +72,33 @@ const showGioHang = async () => {
                 <div class="container border border-1 mb-2">
                     <div class="my-3 d-flex justify-content-between">
                         <h5>Người bán <a href="${baseURL}store/${username}" class="text-dark">${ten}</a></h5>
-                        <button 
-                            data-username=${username} 
-                            class="only-pay-this-seller-btn text-nowrap btn btn-link"
+                        <a
+                            href="${baseURL}dathang/${username}"
+                            class="text-nowrap btn btn-link"
                         >
                             Chỉ đặt mua của người bán này
-                        </button>
+                        </a>
                     </div>
             ` + sanPhamsHTML;
         }).join('');
         gioHangDOM.innerHTML = allGioHangs;
+        getTongTienVaSoLuong();
     } catch (error) {
         console.log(error);
     }
 }
 showGioHang();
+
+const getTongTienVaSoLuong = async () => {
+    try {
+        const { data: { gioHang } } = await axios.get(`${baseURL}api/v1/giohang/sum`);
+        const {so_luong, tong_tien} = gioHang;
+        tongSoSanPhamDOM.textContent = so_luong
+        tongTienDOM.textContent = tong_tien.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
