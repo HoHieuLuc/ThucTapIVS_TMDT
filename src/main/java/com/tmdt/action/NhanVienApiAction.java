@@ -219,52 +219,69 @@ public class NhanVienApiAction {
         // Lấy id nhân viên đang duyệt
         int idNguoiGui = (int) session.getAttribute("accountID");
 
-        // Duyệt báo cáo đó
-       // baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
-
-        switch (status) {
-            // Nội dung của thông báo là nhân viên viết tay (Option: (có nhiều mục có sẵn nội dung, mục cuối là nội dung tự viết) để gửi cho người bị báo cáo)
-            case -2: 
-                    baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
-                    //Set số lần cảnh cáo = 3 luôn, khóa tài khoản
-                    baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan,3);
-                    sqlSession.commit();
-                    sqlSession.close();
-                    return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 200, response);
-            case -1:
-                    baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao); 
-                    //Cảnh cáo và tăng số lần cảnh cáo của tài khoản lên 1 đơn vị
-                    baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan, 1);
-                    // Lấy số lần cảnh cáo còn lại bao nhiêu thì mới bị khóa tài khoản
-                    int soLanCanhCaoConLai = 3 - baoCaoNguoiDungMapper.getSoLanCanhCao(userName);
-
-                    if (soLanCanhCaoConLai == 0) {
-                        thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Bạn bị khóa tài khoản vì vi phạm nhiều lần");
-                        sqlSession.commit();
-                        sqlSession.close();
-                        return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 200, response);
-                }  else {
-                        thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Nếu bị cảnh cáo " + soLanCanhCaoConLai + " thì bị khóa tài khoản");
-                        sqlSession.commit();
-                        sqlSession.close();
-                        return CustomError.createCustomError("Đã duyệt báo cáo này và nhắc nhở số lần cảnh cáo cho người vi phạm", 200, response);
-                }
-            case 1:
-                    baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
-                    thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Dạo gần đây chúng tôi nhận thấy báo cáo về hành vi bán hàng lừa đảo của bạn, nếu tiếp tục vi phạm sẽ bị cảnh cáo và khóa tài khoản");
-                    sqlSession.commit();
-                    sqlSession.close();
-                    return CustomError.createCustomError("Đã duyệt báo cáo này, không tăng số lần cảnh báo", 200, response);
-            case 2: baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
-                    sqlSession.commit();
-                    sqlSession.close();
-                    return CustomError.createCustomError("Đã duyệt báo cáo này không vi phạm", 200, response);
-                
+        // Gán nội dung tùy chọn và lấy nội dung khác 
+        switch (noiDung) {
+            case "1":
+                noiDung = "Bạn bị tố cáo vì bán sản phẩm cấm";
+                break;
+            case "2":
+                noiDung = "Bạn bị tố cáo vì lừa đảo";
+                break;
+            case "3":
+                noiDung = "Bạn bị tố cáo vì bán hàng giả";
+                break;
+            default:
+                break;
         }
 
-        sqlSession.commit();
-        sqlSession.close();
-        return CustomError.createCustomError("SUCCESS cuối cùng", 200, response);
+        // Duyệt báo cáo với trạng thái cụ thể và các hoạt động sau đó 
+        switch (status) {
+            // Nội dung của thông báo là nhân viên viết tay (Option: (có nhiều mục có sẵn
+            // nội dung, mục cuối là nội dung tự viết) để gửi cho người bị báo cáo)
+            case -2:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                // Set số lần cảnh cáo = 3 luôn, khóa tài khoản
+                baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan, 3);
+                thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,noiDung);
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 401, response);
+            case -1:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                // Cảnh cáo và tăng số lần cảnh cáo của tài khoản lên 1 đơn vị
+                baoCaoNguoiDungMapper.tangSoLanCanhBao(idNguoiNhan, 1);
+                // Lấy số lần cảnh cáo còn lại bao nhiêu thì mới bị khóa tài khoản
+                int soLanCanhCaoConLai = 3 - baoCaoNguoiDungMapper.getSoLanCanhCao(userName);
+
+                if (soLanCanhCaoConLai == 0) {
+                    thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui, "Bạn bị khóa tài khoản vì " + noiDung);
+                    sqlSession.commit();
+                    sqlSession.close();
+                    return CustomError.createCustomError("Đã duyệt báo cáo này và khóa tài khoản", 401, response);
+                } else {
+                    thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
+                            "Nếu bị cảnh cáo " + soLanCanhCaoConLai + " thì bị khóa tài khoản vì" + noiDung);
+                    sqlSession.commit();
+                    sqlSession.close();
+                    return CustomError.createCustomError(
+                            "Đã duyệt báo cáo này và nhắc nhở số lần cảnh cáo cho người vi phạm", 401, response);
+                }
+            case 1:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                thongBaoMapper.taoThongBao(idNguoiNhan, idNguoiGui,
+                        "Dạo gần đây chúng tôi nhận thấy báo cáo về hành vi bán hàng lừa đảo của bạn, nếu tiếp tục vi phạm sẽ bị cảnh cáo và khóa tài khoản vì " + noiDung);
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đã duyệt báo cáo này, không tăng số lần cảnh báo", 401, response);
+            case 2:
+                baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đã duyệt báo cáo này không vi phạm", 401, response);
+            default:
+                return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
+        }
+
     }
 
     // Lấy thông tin chi tiết báo cáo cần phê duyệt

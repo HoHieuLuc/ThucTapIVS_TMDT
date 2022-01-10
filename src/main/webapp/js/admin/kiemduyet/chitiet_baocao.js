@@ -12,7 +12,7 @@ const noiDungDOM = document.querySelector('#noiDung');
 
 //Tạo chức năng tùy theo trạng Thái
 const chucNangDOM = document.querySelector('#chucNang');
-const formDOM = document.querySelector('#chucNangForm');
+const chucNangFormDOM = document.querySelector('#chucNangForm');
 
 //Show báo cáo xong thì mới chạy mấy lệnh này 
 // Các biến DOM của duyệt và xử lý báo cáo 
@@ -31,20 +31,15 @@ const showBaoCaoDetail = async () => {
         unameReceiverDOM.textContent = unameReceiver;
         unameSenderDOM.textContent = unameSender;
         noiDungDOM.textContent = noi_dung;
+        
+        
         //if status==0 statusDOM.textContent = `${status}`;
         switch (status) {
             case -2:
                 statusDOM.textContent = `Vi phạm nặng nhất (Khóa tài khoản)`;
-                //     chucNangDOM.innerHTML =`
-                //     <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
-                // `;
-                chucNangDOM.innerHTML = `Xin vĩnh biệt cụ, đùa ấy tui phân vân có nên làm nút mở lại tài khoản ở đây hay không?`;
                 break;
             case -1:
                 statusDOM.textContent = `Cảnh cáo`;
-                //     chucNangDOM.innerHTML =`
-                //     <button type="button" class="btn btn-danger" data-status="-1">Sẽ làm khi xong bên NhanVienApiAction</button>
-                // `;
                 break;
             case 0:
                 statusDOM.textContent = `Chưa duyệt`;
@@ -82,16 +77,9 @@ const showBaoCaoDetail = async () => {
                 break;
             case 1:
                 statusDOM.textContent = `Nhắc nhở`;
-                //     chucNangDOM.innerHTML =`
-                //     <button type="button" class="btn btn-success" data-status="2">Sẽ làm khi xong bên NhanVienApiAction</button></div>
-                //     <button type="button" class="btn btn-danger" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
-                // `;
                 break;
             case 2:
                 statusDOM.textContent = `Bỏ qua`;
-                //     chucNangDOM.innerHTML =`
-                //     <button type="button" class="btn btn-primary" data-status="0">Sẽ làm khi xong bên NhanVienApiAction</button></div>
-                // `;
                 break;
         }
     } catch (error) {
@@ -106,7 +94,7 @@ showBaoCaoDetail();
 
 
 //Bắt sự kiện của từng nút để duyệt
-formDOM.addEventListener('submit', async (event) => {
+chucNangFormDOM.addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append('maBaoCao', maBaoCao);
@@ -114,10 +102,15 @@ formDOM.addEventListener('submit', async (event) => {
     formData.append('userName', unameReceiverDOM.textContent);
     formData.append('status', hinhThucDuyetDOM.value);
 
-    if (noiDungGuiDOM.value == '4')
-        formData.append('noiDung', noiDungGuiKhacDOM.textContent);
-    else
-        formData.append('noiDung', noiDungGuiDOM.textContent)
+    if (noiDungGuiDOM.value == '4') {
+        formData.append('noiDung', noiDungGuiKhacDOM.value);
+    }
+        
+    else {
+        // Cần xử lý số thành nội dung đã định nghĩa sẵn
+        formData.append('noiDung', noiDungGuiDOM.value)
+    }
+        
     // Display the key/value pairs
     for (var pair of formData.entries()) {
         console.log(pair[0] + ', ' + pair[1]);
@@ -131,6 +124,7 @@ formDOM.addEventListener('submit', async (event) => {
     }
     //Reload lại data chi tiết sản phẩm
     showBaoCaoDetail();
+    chucNangFormDOM.remove();
 })
 
 
