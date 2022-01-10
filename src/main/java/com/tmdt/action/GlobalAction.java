@@ -118,7 +118,7 @@ public class GlobalAction extends ActionSupport {
         return "success";
     }
 
-    // Xem chi tiết báo cáo để kiểm duyệt 
+    // Xem chi tiết báo cáo để kiểm duyệt
     @Action(value = "/admin/baocao/{params}", results = {
             @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/baocao/chitiet_baocao.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
@@ -191,7 +191,7 @@ public class GlobalAction extends ActionSupport {
     }
 
     @Action(value = "/user/seller/dathang/{params}", results = {
-        @Result(name = "success", location = "/WEB-INF/jsp/user/pages/dathang/seller/detail.jsp")
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/dathang/seller/detail.jsp")
     }, interceptorRefs = { @InterceptorRef("khachHangStack")
     })
     public String userSellerChiTietDatHang() {
@@ -204,6 +204,15 @@ public class GlobalAction extends ActionSupport {
     }, interceptorRefs = { @InterceptorRef("khachHangStack")
     })
     public String userBuyerDatHang() {
+        return SUCCESS;
+    }
+
+    // Trang xem chi tiết 1 đơn hàng mình đặt
+    @Action(value = "/user/buyer/dathang/{params}/{params}", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/dathang/buyer/detail.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack")
+    })
+    public String userBuyerChiTietDatHang() {
         return SUCCESS;
     }
 }
