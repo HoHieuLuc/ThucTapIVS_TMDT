@@ -88,9 +88,9 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
         }
 
         // Chặn khi nội dung quá ngắn
-        if (noiDung.length() < 20 || noiDung.length() > 255) {
+        if (noiDung.length() <= 20 || noiDung.length() > 1000) {
             sqlSession.close();
-            return CustomError.createCustomError("Nội dung phải từ 20 ký tự trở lên", 403, response);
+            return CustomError.createCustomError("Nội dung phải từ 20 đến 1000 ký tự", 403, response);
         }
 
         // Tiến hành gửi báo cáo
