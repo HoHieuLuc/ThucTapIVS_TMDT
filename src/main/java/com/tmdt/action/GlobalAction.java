@@ -67,7 +67,10 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
-    /* ========================================================================================== */
+    /*
+     * =============================================================================
+     * =============
+     */
     /* route cho nhân viên */
     @Action(value = "/admin/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/admin/index.jsp")
@@ -78,7 +81,7 @@ public class GlobalAction extends ActionSupport {
 
     // phê duyệt sản phẩm
     @Action(value = "/admin/phe-duyet-san-pham", results = {
-        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/kiemduyet/sanpham/list.jsp")
+            @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/kiemduyet/sanpham/list.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
     public String pheDuyetSanPham() {
         return "success";
@@ -93,15 +96,15 @@ public class GlobalAction extends ActionSupport {
     }
 
     @Action(value = "/admin/phe-duyet-bao-cao", results = {
-        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/kiemduyet/baocao/index.jsp")
+            @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/kiemduyet/baocao/index.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
     public String pheDuyetBaoCao() {
         return "success";
-    } 
+    }
 
     // danh sách loại sản phẩm
     @Action(value = "/admin/loaisanpham", results = {
-        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/index.jsp")
+            @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/index.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
     public String listLoaiSanPham() {
         return "success";
@@ -109,13 +112,24 @@ public class GlobalAction extends ActionSupport {
 
     // thêm loại sản phẩm
     @Action(value = "/admin/loaisanpham/them", results = {
-        @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/create.jsp")
+            @Result(name = "success", location = "/WEB-INF/jsp/admin/pages/loaisanpham/create.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
     public String addLoaiSanPham() {
         return "success";
     }
 
-    /* =========================================================================================== */
+    // Xem chi tiết báo cáo để kiểm duyệt 
+    @Action(value = "/admin/baocao/{params}", results = {
+            @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/baocao/chitiet_baocao.jsp")
+    }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
+    public String viewChiTietBaoCaoAdmin() {
+        return "SUCCESS";
+    }
+
+    /*
+     * =============================================================================
+     * ==============
+     */
     /* route cho khách hàng */
     // giỏ hàng
     @Action(value = "/cart", results = {

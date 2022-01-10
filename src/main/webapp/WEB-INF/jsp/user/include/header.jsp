@@ -32,6 +32,11 @@
       </div>
       <div class="toast-body" id="toastNoiDung">
 
+          </div>
+        </div>
+      </div>
+      <div class="toast-body" id="toastNoiDung">
+
       </div>
     </div>
   </div>
