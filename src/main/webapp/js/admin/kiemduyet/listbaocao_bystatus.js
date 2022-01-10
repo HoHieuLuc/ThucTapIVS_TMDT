@@ -1,84 +1,21 @@
 
 const statusButtonDOM = document.querySelector('#listBaoCaoByStatus');
 const listBaoCaoDOM = document.querySelector('#baocao-list');
-const formDuyetBaoCaoDOM = document.querySelector('#formDuyetBaoCao');
-
-// Expirement to catch data from table
-let tdNode;
-
-//Bắt sự kiện cho từng nút trong table
-listBaoCaoDOM.addEventListener('click', (event) => {
-    const el = event.target;
-    console.log(el.dataset.index);
-    const indexTD = el.dataset.index;
-    const maBaoCao = tdNode[(indexTD*6)].textContent;
-    const userName = tdNode[(indexTD*6) + 2].textContent;
-    console.log(maBaoCao);
-    console.log(userName);
-    // Hiển thị modal cho phép nhiều sự lựa chọn (FormSelect)
-    // maBaoCao=${ma_bao_cao}&status=-1&userName=${unameSender}
-   const formData = new FormData();
-        formData.append('maBaoCao',maBaoCao);
-      //  formData.append('status',status);
-        formData.append('userName',userName);
-
-        //Còn cái status lấy trong form thôi
-        formDuyetBaoCaoDOM.addEventListener('submit',(event)=>{
-            event.preventDefault();
-            formData.append('status',document.getElementsByName('statusDuyet').value);
-            //Log thử formData
-            for (var value of formData.values())
-            {
-                console.log(value);
-            }
-        })
-    
-})
 
 
 
-
-statusButtonDOM.addEventListener('change', async (event) => {
+statusButtonDOM.addEventListener('change', async () => {
     const status = statusButtonDOM.value;
     document.title = "Sản phẩm trong kho ";
     const { data: { list_baocaos } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`);
     renderData(list_baocaos);
-    tdNode = document.querySelectorAll('td');
-    console.log(tdNode);
 
 });
 
-//Render data
+//Render data  api/v1/nhanvien/baocao/{maBaoCao}
 const renderData = (datas) => {
-    //console.log(datas.length);
-    const countRows = datas.length;
-    // Nếu xem báo cáo vi phạm thì không có chức năng gì
-    // Nếu xem báo cáo chưa duyệt thì có 2 chức năng, 1 là duyệt vi phạm, 2 là duyệt không vi phạm 
-    // Nếu xem báo cáo không vi phạm thì  không có chức năng gì
-    let chucNangElements = [];
-    //const status = statusButtonDOM.value;
-    const allBaoCaos = datas.map((data,index) => {
+    const allBaoCaos = datas.map(data => {
         const { ma_bao_cao, unameReceiver, unameSender, noi_dung, ngay_tao } = data;
-//          console.log(data);
-//          console.log(index);
-        // Không biết tạo nhiều formData nó có lag hay không, nên tui tạm comment
-        // const formData = new FormData();
-        // formData.append('maBaoCao',ma_bao_cao);
-        // formData.append('status',status);
-        // formData.append('userName',unameSender);
-        //Status =0 là chưa duyệt,
-        // = 1 là duyệt nhưng không tăng cảnh báo chỉ nhắc nhở qua thông báo
-        // 2 là duyệt và tăng cảnh báo, gửi thông báo cho người bị cảnh cáo,
-        // cần làm modal hiển thị lên 
-        // bây giờ học css selector, lấy các node trong cùng 1 div hoặc 1 thẻ tr ---Dùng HTML NodeList-, để lấy mã báo cáo, unameReceiver, và nội dung
-        //dị thì chuc năng elment là 1 modal 
-        // switch (status) {
-        //     case '0' : chucNangElement = `
-        //         <button href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=-1&userName=${unameSender}">Duyệt vi phạm</a>
-        //         <a href="${baseURL}api/v1/nhanvien/baocao/changestatus?maBaoCao=${ma_bao_cao}&status=1&userName=${unameSender}">Duyệt không vi phạm</a>
-        //     `;
-        // }
-        //Tạo cái HTML DOM table rows collection đi #listBaoCaoTable
         return `
             <tr>
                 <td>${ma_bao_cao}</td>
@@ -88,16 +25,12 @@ const renderData = (datas) => {
                 <td>${noi_dung}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                       <button class="btn btn-primary" data-index="${index}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">>Chức năng ${index}</button>
+                        <a href="${baseURL}api/v1/nhanvien/baocao/${ma_bao_cao}" class="">Chi tiết</a>
                     </div>
                 </td>
             </tr>`;
     }).join('');
-
     listBaoCaoDOM.innerHTML = allBaoCaos;
-    console.log("overhere");
-    tdNode = document.querySelectorAll('td');
-    console.log(tdNode);
 }
 
 //Show list báo cáo lần đầu tiên
@@ -105,7 +38,6 @@ const showListBaoCao = async () => {
     const { data: { list_baocaos } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/0`);
     renderData(list_baocaos);
     
-  
 }
 
 showListBaoCao();
