@@ -277,7 +277,7 @@ public class NhanVienApiAction {
                 baoCaoNguoiDungMapper.updateBaoCaoStatus(status, maBaoCao);
                 sqlSession.commit();
                 sqlSession.close();
-                return CustomError.createCustomError("Đã duyệt báo cáo này không vi phạm", 401, response);
+                return CustomError.createCustomError("Đã duyệt báo cáo này không vi phạm", 200, response);
             default:
                 return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
         }
