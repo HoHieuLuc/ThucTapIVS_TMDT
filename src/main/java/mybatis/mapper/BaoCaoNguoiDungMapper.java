@@ -43,7 +43,7 @@ public interface BaoCaoNguoiDungMapper {
         public int tangSoLanCanhBao(int idNguoiNhan);
 
         // Hiển thị chi tiết báo cáo cụ thể
-        final String DETAIL_BAO_CAO = "SELECT bcnd.ma_bao_cao,tk2.username as 'unameSender',tk1.username as 'unameReceiver',bcnd.ngay_tao,bcnd.noi_dung "
+        final String DETAIL_BAO_CAO = "SELECT bcnd.ma_bao_cao,tk2.username as 'unameSender',tk1.username as 'unameReceiver',bcnd.ngay_tao,bcnd.noi_dung,bcnd.status "
                         +
                         "FROM bao_cao_nguoi_dung bcnd LEFT JOIN tai_khoan tk1 ON tk1.id = bcnd.id_nguoi_nhan " +
                         "LEFT JOIN tai_khoan tk2 ON tk2.id = bcnd.id_nguoi_gui WHERE bcnd.ma_bao_cao = #{maBaoCao};";

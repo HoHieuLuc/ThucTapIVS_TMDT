@@ -18,6 +18,8 @@
                                                 display: block;"></p></div>
                     <div class="col-4 border border-dark"><b>Ngày tạo</b></div>
                     <div class="col-8 border border-dark"> <p class="" id="ngayTao"></p></div>
+                    <div class="col-4 border border-dark"><b>Trạng thái</b></div>
+                    <div class="col-8 border border-dark"> <p class="" id="status"></p></div>
                     <div class="col-6 pt-3" id="chucNang">   
                 </div>
     </div>

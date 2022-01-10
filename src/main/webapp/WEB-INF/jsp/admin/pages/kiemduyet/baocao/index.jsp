@@ -6,9 +6,12 @@
     <form class="searchForm input-group mb-3">
       <input name="search" type="text" class="form-control w-50" placeholder="Tìm kiếm">
       <select id="listBaoCaoByStatus" name="status" class="form-select">
-        <option value="0" selected>Chưa duyệt</option>
-        <option value="-1">Vi Phạm</option>
+        <option value="-3" selected>Vi phạm nặng nhất</option>
+        <option value="-2">Cảnh cáo/option>
+        <option value="-1">Chưa duyệt</option>
+        <option value="0" selected>Nhắc nhở</option>
         <option value="1">Không vi phạm</option>
+        <option value="2">Bỏ qua</option>
       </select>
       <input type="submit" class="btn btn-outline-secondary" value="Tìm kiếm">
     </form>
