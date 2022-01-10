@@ -25,7 +25,7 @@ const renderData = (datas) => {
                 <td>${noi_dung}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                        <a href="${baseURL}api/v1/nhanvien/baocao/${ma_bao_cao}" class="">Chi tiết</a>
+                        <a href="${baseURL}admin/baocao/${ma_bao_cao}" class="">Chi tiết</a>
                     </div>
                 </td>
             </tr>`;

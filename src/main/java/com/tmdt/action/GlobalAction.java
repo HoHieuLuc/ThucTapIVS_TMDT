@@ -118,7 +118,7 @@ public class GlobalAction extends ActionSupport {
         return "success";
     }
 
-    // Xem chi tiết báo cáo để kiểm duyệt
+    // Xem chi tiết báo cáo để kiểm duyệt 
     @Action(value = "/admin/baocao/{params}", results = {
             @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/baocao/chitiet_baocao.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })

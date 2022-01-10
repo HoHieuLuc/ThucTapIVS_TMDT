@@ -17,9 +17,9 @@ const chucNangDOM = document.querySelector('#chucNang');
 
 const showBaoCaoDetail = async () => {
     try {
-        const { data: { chitiet_baocao } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
+        const { data: { chitiet_baocao } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/${maBaoCao}`);
         // có avatar nữa
-        const { ma_bao_cao, unameReceiver, unameSender, noi_dung,status } = chitiet_baocao;
+        const { ma_bao_cao, unameReceiver, unameSender, noi_dung,status } = chitiet_baocao[0];
         maBaoCaoDOM.textContent = ma_bao_cao;
         unameReceiverDOM.textContent = unameReceiver;
         unameSenderDOM.textContent = unameSender;
