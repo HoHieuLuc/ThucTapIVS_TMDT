@@ -52,7 +52,7 @@ document.querySelector("#listAll").addEventListener('click', () => {
     showThongBao(-1);
 })
 
-//bootstrap-keep-dropdown-open-after-click
+//Giữ cho dropdown menu không bị đóng khi nhấn vô mấy button
 $('body > div.wrapper > nav > ul.navbar-nav.ml-auto > li.nav-item.dropdown.me-2 > ul').on({
 	"click":function(e){
       e.stopPropagation();
