@@ -100,22 +100,21 @@ public class ThongBaoAction extends ActionSupport {
             case -9999:
                 thongBaoMapper.danhDauAllDaDoc(idNguoiNhan);
                 jsonRes.put("message", "Đánh dấu toàn bộ thông báo đã đọc thành công");
-                break;
+                sqlSession.commit();
+                sqlSession.close();
+                return CustomError.createCustomError("Đánh dấu toàn bộ thông báo đã đọc thành công", 200, response);
 
             default:
                 // Đánh dấu đã đọc cho một thông báo cụ thể nào đó
                 int validate = thongBaoMapper.danhDauDaDoc(id);
                 if (validate == 0) {
-                    return CustomError.createCustomError("Thông báo không tồn tại",403,response);
+                    return CustomError.createCustomError("Thông báo không tồn tại", 403, response);
                 } else {
                     jsonRes.put("message", "Đánh dấu đã đọc thông báo thành công");
+                    sqlSession.commit();
+                    sqlSession.close();
+                    return CustomError.createCustomError("Đánh dấu đã đọc thông báo thành công", 200, response);
                 }
-                break;
         }
-
-        sqlSession.commit();
-        sqlSession.close();
-        return JsonResponse.createJsonResponse(jsonRes, 200, response);
-
     }
 }

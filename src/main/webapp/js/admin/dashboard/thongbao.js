@@ -56,7 +56,7 @@ document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
     try {
         // -9999 đánh dấu toàn bộ đã đọc
        const {data : message} = await axios.get( `${baseURL}api/v1/thongbao/seen/-9999`);
-        thongBao(message.message,false);
+        thongBao(message,false);
         
     } catch (error) {
         console.log(error);
@@ -88,7 +88,7 @@ listThongBaoDOM.addEventListener('click', async (event) => {
     const id = target.dataset.id;
     try {
         const {data : message} = await axios.get( `${baseURL}api/v1/thongbao/seen/${id}`);
-         thongBao(message.message,false);
+         thongBao(message,false);
          
      } catch (error) {
          console.log(error);
