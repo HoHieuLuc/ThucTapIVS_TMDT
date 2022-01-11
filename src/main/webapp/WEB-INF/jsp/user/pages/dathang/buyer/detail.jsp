@@ -32,7 +32,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row mb-3">
     <div class="col-2">
         <img src="" alt=""
             class="anhSanPham tlt-thumbnail rounded mx-auto d-block img-fluid"
