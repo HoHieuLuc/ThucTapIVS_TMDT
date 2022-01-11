@@ -595,7 +595,7 @@ public class UserApiAction extends ActionSupport {
         if (listThongBao.size() == 0) {
             jsonRes.put("message", "Không có thông báo nào");
             sqlSession.close();
-            return JsonResponse.createJsonResponse(jsonRes,400, response);
+            return JsonResponse.createJsonResponse(jsonRes,200, response);
         }
         jsonRes.put("thong_baos", listThongBao);
         sqlSession.close();
