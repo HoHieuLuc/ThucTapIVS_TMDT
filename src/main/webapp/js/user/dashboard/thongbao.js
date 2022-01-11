@@ -13,13 +13,15 @@ const showThongBao = async (status) => {
 
             const { noi_dung, nguoi_gui, ngay_tao, status,ma_tb } = data;
             //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
-            if (status.includes("text-white")) danhDauDaDoc = `<button type="button" class="btn btn-outline-success"  data-id="${ma_tb}" >Đã đọc</button>`;
+            if (status.includes("text-white")) danhDauDaDoc = `<button type="button" class="btn btn-primary"  data-id="${ma_tb}" >Đã đọc</button>`;
+                else danhDauDaDoc = ``;
             return `
                 <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
                     <div class="ms-2 me-auto">
                     <div class="fw-bold">${nguoi_gui}</div>
                         ${noi_dung}
                     </div>
+                    ${danhDauDaDoc}
                     <span class="badge bg-warning rounded-pill">
                         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
                     </span>
