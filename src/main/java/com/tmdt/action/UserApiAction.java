@@ -592,11 +592,6 @@ public class UserApiAction extends ActionSupport {
                 listThongBao = thongBaoMapper.getAllThongBao(idNguoiNhan);
                 break;
         }
-        if (listThongBao.size() == 0) {
-            jsonRes.put("message", "Không có thông báo nào");
-            sqlSession.close();
-            return JsonResponse.createJsonResponse(jsonRes,200, response);
-        }
         jsonRes.put("thong_baos", listThongBao);
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);

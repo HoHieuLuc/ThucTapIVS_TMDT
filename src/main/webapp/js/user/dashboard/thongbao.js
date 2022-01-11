@@ -4,9 +4,14 @@ const soThongBaoDOM = document.querySelector("#soThongBao");
 const showThongBao = async (status) => {
     try {
         const { data: { thong_baos } } = await axios.get(`${baseURL}api/v1/user/thongbao/${status}`);
-        listThongBaoDOM.innerHTML ="Không có thông báo nào";
-         const allThongBaos = thong_baos.map(data => {
-            const { noi_dung, nguoi_gui, ngay_tao,status } = data;
+        if (thong_baos.length === 0) {
+            listThongBaoDOM.innerHTML = `Không có thông báo nào`;
+            return;
+        }
+        const allThongBaos = thong_baos.map(data => {
+
+            const { noi_dung, nguoi_gui, ngay_tao, status } = data;
+
             return `
                 <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
                     <div class="ms-2 me-auto">
@@ -17,7 +22,7 @@ const showThongBao = async (status) => {
                         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
                     </span>
                 </li>`;
-            
+
         }).join('');
         listThongBaoDOM.innerHTML = allThongBaos;
     }
@@ -28,7 +33,7 @@ const showThongBao = async (status) => {
 }
 
 // Hiển thị số thông báo , status = 999
-const showSoThongBao = async() => {
+const showSoThongBao = async () => {
     try {
         const { data: { chua_doc } } = await axios.get(`${baseURL}api/v1/user/thongbao/${999}`);
         document.querySelector("#soThongBao").innerHTML = chua_doc;
@@ -43,14 +48,14 @@ showSoThongBao();
 // Cho tạm số bất kì khác 0,999 để hiện tất cả thông báo
 showThongBao(-1);
 
-document.querySelector("#danhDauDaDoc").addEventListener('click', async() => {
+document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
     try {
         await axios.get(
             `${baseURL}api/v1/user/seenall`
         )
     } catch (error) {
         console.log(error);
-       thongBao(error.response.data.message, true);
+        thongBao(error.response.data.message, true);
     }
     showThongBao(-1);
     showSoThongBao();
@@ -68,8 +73,8 @@ document.querySelector("#listAll").addEventListener('click', () => {
 
 //Giữ cho dropdown menu không bị đóng khi nhấn vô mấy button
 $('body > div.wrapper > nav > ul.navbar-nav.ml-auto > li.nav-item.dropdown.me-2 > ul').on({
-	"click":function(e){
-      e.stopPropagation();
+    "click": function (e) {
+        e.stopPropagation();
     }
 });
 
