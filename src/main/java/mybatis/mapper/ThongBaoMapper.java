@@ -17,12 +17,12 @@ public interface ThongBaoMapper {
             @Param("noiDung") String noiDung);
 
     // Lấy tất cả thông báo của khách hàng có id 
-    final String GET_ALL_THONG_BAO ="SELECT*FROM`thong_bao`WHERE`id_nguoi_nhan`=#{idNguoiNhan};";
+    final String GET_ALL_THONG_BAO ="SELECT * FROM `thong_bao` WHERE `id_nguoi_nhan` = #{idNguoiNhan};";
     @Select(GET_ALL_THONG_BAO)
     public List<Map<String, Object>> getAllThongBao(int idNguoiNhan); 
 
     // Lấy tất cả thông báo chưa đọc của khách hàng có id 
-    final String GET_ALL_THONG_BAO_CHUA_DOC =  "SELECT*FROM`thong_bao`WHERE`id_nguoi_nhan`=#{idNguoiNhan} AND`status`=0";
+    final String GET_ALL_THONG_BAO_CHUA_DOC =  "SELECT * FROM `thong_bao` WHERE `id_nguoi_nhan` = #{idNguoiNhan} AND `status`=0";
     @Select(GET_ALL_THONG_BAO_CHUA_DOC)
     public List<Map<String, Object>> getAllThongBaoChuaDocs(int idNguoiNhan);
 
@@ -30,5 +30,10 @@ public interface ThongBaoMapper {
     final String DANH_DAU_ALL_DA_DOC = "UPDATE thong_bao SET status = 1 WHERE id_nguoi_nhan = #{idNguoiNhan} AND status = 0;";
     @Update(DANH_DAU_ALL_DA_DOC)
     public int danhDauAllDaDoc(int idNguoiNhan);
+
+    //Đếm số thông báo chưa đọc 
+    final String DEM_SO_THONG_BAO_CHUA_DOC = "SELECT COUNT(*) FROM `thong_bao` WHERE id_nguoi_nhan = #{idNguoiNhan} AND status = 0";
+    @Select(DEM_SO_THONG_BAO_CHUA_DOC)
+    public int demSoThongBaoChuaDoc(int idNguoiNhan);
    
 }
