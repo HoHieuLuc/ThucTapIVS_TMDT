@@ -60,20 +60,33 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
     <%-- nút hiện thông báo nhanh --%>
-	  <li class="nav-item dropdown me-2">
-          <a class="nav-link dropdown position-relative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="far fa-bell"></i> 
-			<span class="badge position-absolute top-20 start-100 translate-middle rounded-pill bg-danger">
-				10
-			</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
+  <li class="nav-item dropdown me-2">
+              <a class="nav-link dropdown position-relative" href="#" id="navbarDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="far fa-bell"></i>
+                <span class="badge position-absolute top-20 start-100 translate-middle  rounded-pill bg-danger" id="soThongBao">
+                  0
+                </span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <div class=" d-flex justify-content-start p-2">
+                  <div class="p-1">
+                    <button type="button" class="btn btn-outline-primary" id="listAll" >Tất cả</button>
+                  </div>
+
+                  <div class="p-1">
+                    <button type="button" class="btn btn-outline-danger" id="listChuaDoc">Chưa đọc</button>
+                  </div>
+
+                </div>
+
+              <li class="list-group list-group-numbered" id="listThongBao">
+                  Danh sách thông báo đang trống
+            </li>
+            <div class=" d-flex justify-content-end p-2">
+              <button type="button" class="btn btn-outline-primary"  id="danhDauDaDoc" >Đánh dấu tất cả đã đọc</button>
+            </div>
+        </ul>
     <%-- chưa biết để làm gì nhưng sau này chắc cần --%>
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
