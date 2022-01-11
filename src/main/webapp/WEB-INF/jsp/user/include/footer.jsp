@@ -20,6 +20,6 @@
 <!-- AdminLTE App -->
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 <!-- Script xử lý thông báo -->
-<script src='<c:url value="/js/user/dashboard/thongbao.js"/>'></script>
+<script src='<c:url value="/js/listThongBao.js"/>'></script>
 </body>
 </html>
