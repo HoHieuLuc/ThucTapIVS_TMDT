@@ -30,7 +30,7 @@ const showThongBao = async (status) => {
 showThongBao(-1);
 
 //Đánh dấu tất cả đã đọc
-document.querySelector("#danhDauDaDoc").addEventListener('click', async() => {
+const danhDauDaDoc = async() => {
     try {
         await axios.get(
             `${baseURL}api/v1/user/thongbao_seen`
@@ -39,14 +39,14 @@ document.querySelector("#danhDauDaDoc").addEventListener('click', async() => {
         console.log(error);
        thongBao(error.response.data.message, true);
     }
-})
+}
 
 //Mở list thông báo chưa đọc
-document.querySelector("#listChuaDoc").addEventListener('click', () => {
+const listThongBaoChuaDoc =() => {
     showThongBao(0);
-})
+}
 
 //Mở list tất cả thông báo 
-document.querySelector("#listAll").addEventListener('click', () => {
+const listAllThongBao = () => {
     showThongBao(-1);
-})
+}
