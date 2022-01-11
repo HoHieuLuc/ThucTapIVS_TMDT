@@ -13,7 +13,7 @@ const showChiTietDatHang = async (skip = false) => {
         } = thongTinNguoiDat;
 
         const allChiTietDatHang = chiTietDatHang.map((item) => {
-            const { ma_san_pham, so_luong_dat, anh,
+            const { ma_san_pham, so_luong_dat, anh, ma_nhan_hang,
                 status, don_gia, ten_san_pham, tong_tien, so_luong,
             } = item;
             let chucNangHtml = "";
@@ -100,6 +100,12 @@ const showChiTietDatHang = async (skip = false) => {
                             </div>
                             <div class="col-10">
                                 ${tongTienVND}
+                            </div>
+                            <div class="col-2">
+                                Mã nhận hàng
+                            </div>
+                            <div class="col-10">
+                                ${ma_nhan_hang}
                             </div>
                             <div class="col-8 d-flex gap-2">
                                 ${chucNangHtml}
