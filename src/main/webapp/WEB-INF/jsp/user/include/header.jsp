@@ -104,13 +104,7 @@
                 </div>
 
               <li class="list-group list-group-numbered" id="listThongBao">
-                <li class="list-group-item d-flex justify-content-between align-items-start bg-secondary text-white dropdown-item">
-                  <div class="ms-2 me-auto">
-                    <div class="fw-bold">Admin - Hồ Hiểu Lực</div>
-                    Chú ý bạn bị cảnh cáo vì lừa, nếu bị cảnh cáo 2 lần nữa sẽ bị khóa tài khoản
-                  </div>
-                  <span class="badge bg-warning rounded-pill">14/11/2021 </span>
-                </li>
+                <!-- xử lý bên thongbao.js và từ case when của sql -->
             </li>
             <div class=" d-flex justify-content-end p-2">
               <button type="button" class="btn btn-outline-primary">Đánh dấu tất cả đã đọc</button>
