@@ -36,7 +36,7 @@ public interface ThongBaoMapper {
     "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' " +
     "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) " +
     " END AS nguoi_gui, " +
-    " 'bg-light text-black' AS status " +
+    " 'bg-body text-black' AS status " +
     " FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan} AND `status` = 0;";
     @Select(GET_ALL_THONG_BAO_CHUA_DOC)
     public List<Map<String, Object>> getAllThongBaoChuaDocs(int idNguoiNhan);
