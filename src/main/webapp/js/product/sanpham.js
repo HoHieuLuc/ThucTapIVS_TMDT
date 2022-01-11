@@ -233,6 +233,9 @@ if (formDanhGiaDOM) {
     });
     huyDanhGiaBtnDOM.addEventListener('click', () => {
         formDanhGiaDOM.classList.add('d-none');
+        // nút hủy đánh giá button chỉ được bấm khi người dùng đang sửa đánh giá
+        // câu dưới sẽ select cá đánh giá đầu tiên, và sẽ hiện lại cái đánh giá đó
+        // vì khi mình ấn nút sửa thì cái đánh giá đầu tiên bị ẩn, cái form hiện ra
         danhGiaSPListDom.querySelector('.danh-gia-div').classList.remove('d-none');
     });
 }
@@ -266,7 +269,6 @@ const submitPhanHoiDanhGiaSP = async (_formDOM, ma_danh_gia) => {
         await axios.post(`${baseURL}api/v1/phanhoi/submit`, formDanhGiaSanPham, {
             params: { maDanhGia: ma_danh_gia }
         });
-        formDanhGiaDOM.style.display = 'none';
         thongBao(`Gửi phản hồi thành công`);
         return true;
     } catch (error) {
@@ -438,7 +440,7 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
         if (!kiemTraFormPhanHoi) {
             return;
         }
-        formNode.style.display = 'none';
+        formNode.classList.add('d-none');
         // xử lý hiện thị phản hồi vừa tạo
         const html = await buildListPhanHoi(ma_danh_gia); // fetch lại tất cả phản hồi
         // thẻ cha của thẻ form là thẻ div chứa cả đánh giá và phản hồi
@@ -487,6 +489,11 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
     if (eventTarget.classList.contains('xoa-danh-gia-btn')) {
         const ma_danh_gia = eventTarget.dataset.ma_danh_gia;
         xoaDanhGiaSP(ma_danh_gia);
+        formDanhGiaDOM.querySelector('textarea').value = '';
+        formDanhGiaDOM.querySelector('select').value = 1;
+        huyDanhGiaBtnDOM.classList.remove('d-block');
+        huyDanhGiaBtnDOM.classList.add('d-none');
+        danhGiaBtnDOM.value = 'Đánh giá';
         return;
     }
     // sửa xóa phản hồi
