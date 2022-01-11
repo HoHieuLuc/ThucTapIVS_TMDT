@@ -27,7 +27,7 @@ public interface DatHangMapper {
 
     // Thêm chi tiết đặt hàng
     final String THEM_CHI_TIET_DH = "INSERT INTO chi_tiet_dat_hang " +
-            "VALUES (#{maDatHang},#{maSanPham},#{soLuong}, 0); " +
+            "VALUES (#{maDatHang},#{maSanPham},#{soLuong}, 0, UPPER(LEFT(MD5(RAND()), 6))); " +
             "DELETE FROM `gio_hang` WHERE ma_khach_hang = #{maKhachHang} and ma_san_pham = #{maSanPham}";
 
     @Insert(THEM_CHI_TIET_DH)
@@ -134,7 +134,7 @@ public interface DatHangMapper {
 
     // lấy chi tiết 1 phiếu đặt mà người bán được đặt
     final String GET_CHI_TIET_DON_DAT_HANG_DUOC_DAT = "SELECT ctdh.ma_dat_hang, ctdh.ma_san_pham, " +
-            "ctdh.so_luong AS so_luong_dat, ctdh.status, " +
+            "ctdh.so_luong AS so_luong_dat, ctdh.status, ctdh.ma_nhan_hang, " +
             "sp.gia AS don_gia, " +
             "sp.ten_san_pham, (ctdh.so_luong * sp.gia) AS tong_tien, " +
             "sp.so_luong, asp.anh " +
@@ -162,12 +162,27 @@ public interface DatHangMapper {
     @Select(GET_THONG_TIN_NGUOI_DAT_HANG)
     public Map<String, Object> getThongTinNguoiDatHang(@Param("maDatHang") int maDatHang);
 
+    // lấy tình trạng 1 chi tiết đơn đặt hàng của người bán hàng
+    // để người bán không thể hủy vận chuyển đối với những đơn đã được giao xong
+    final String GET_CURRENT_STATUS_CHI_TIET_DAT_HANG_SELLER = "SELECT ctdh.status " +
+            "FROM chi_tiet_dat_hang ctdh " +
+            "JOIN san_pham sp ON sp.ma_san_pham = ctdh.ma_san_pham " +
+            "AND ctdh.ma_dat_hang = #{maDatHang} " +
+            "AND ctdh.ma_san_pham = #{maSanPham} " +
+            "AND sp.ma_khach_hang = #{maNguoiBan} ";
+
+    @Select(GET_CURRENT_STATUS_CHI_TIET_DAT_HANG_SELLER)
+    public Integer getCurrentStatusChiTietDatHangSeller(
+            @Param("maDatHang") int maDatHang,
+            @Param("maSanPham") String maSanPham,
+            @Param("maNguoiBan") int maNguoiBan);
+
     // cập nhật tình trạng chi tiết đơn đặt hàng của người bán hàng
-    final String CAP_NHAT_TINH_TRANG_CTDH_SELLER = "UPDATE chi_tiet_dat_hang ctdh SET status = #{status} " +
-            "WHERE ctdh.ma_dat_hang = #{maDatHang} AND ctdh.ma_san_pham = #{maSanPham}" +
-            "AND EXISTS (SELECT * FROM san_pham sp " +
-            "WHERE sp.ma_san_pham = ctdh.ma_san_pham " +
-            "AND sp.ma_khach_hang = #{maNguoiBan})";
+    final String CAP_NHAT_TINH_TRANG_CTDH_SELLER = "UPDATE chi_tiet_dat_hang ctdh " +
+            "LEFT JOIN san_pham sp ON sp.ma_san_pham = ctdh.ma_san_pham " +
+            "SET ctdh.status = #{status} WHERE ctdh.ma_dat_hang = #{maDatHang} " +
+            "AND ctdh.ma_san_pham = #{maSanPham} " +
+            "AND sp.ma_khach_hang = #{maNguoiBan}";
 
     @Update(CAP_NHAT_TINH_TRANG_CTDH_SELLER)
     public int capNhatTinhTrangChiTietDatHangNguoiBan(
@@ -256,15 +271,15 @@ public interface DatHangMapper {
             @Param("status") int status);
 
     // lấy tình trạng hiện tại của 1 chi tiết đặt hàng
-    final String GET_STATUS_CURRENT_CHI_TIET_DON_DAT_HANG = "SELECT ctdh.status " +
+    final String GET_STATUS_AND_MA_NHAN_HANG_CTDH_BUYER = "SELECT ctdh.status, ctdh.ma_nhan_hang " +
             "FROM chi_tiet_dat_hang ctdh " +
             "JOIN dat_hang dh ON dh.ma_dat_hang = ctdh.ma_dat_hang " +
             "WHERE dh.ma_khach_hang = #{maNguoiMua} " +
             "AND dh.ma_dat_hang = #{maDatHang} " +
             "AND ctdh.ma_san_pham = #{maSanPham}";
 
-    @Select(GET_STATUS_CURRENT_CHI_TIET_DON_DAT_HANG)
-    public Integer getStatusCurrentChiTietDonDatHang(
+    @Select(GET_STATUS_AND_MA_NHAN_HANG_CTDH_BUYER)
+    public Map<String, Object> getStatusAndMaNhanHangCTDHNguoiMua(
             @Param("maNguoiMua") int maNguoiMua,
             @Param("maDatHang") int maDatHang,
             @Param("maSanPham") String maSanPham);
