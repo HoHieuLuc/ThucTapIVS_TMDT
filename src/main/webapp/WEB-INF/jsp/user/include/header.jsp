@@ -6,12 +6,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang quản lý</title>
+    <title>Trang cá nhân</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Theme style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <style>
+      .tlt-fixed-table{
+        table-layout: fixed;
+        width: 100%;
+      }
+      .tlt-fixed-table > tbody > tr > td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
 
     <%-- js --%>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -24,19 +36,13 @@
     <script src='<c:url value="/js/function.js"/>'></script>
 </head>
 <body>
- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 99999">
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 99999">
     <div id="toastThongBao" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header text-white" id="toastHeader">
         <strong class="me-auto">Thông báo</strong>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body" id="toastNoiDung">
-
-          </div>
-        </div>
-      </div>
-      <div class="toast-body" id="toastNoiDung">
-
       </div>
     </div>
   </div>
@@ -137,9 +143,10 @@
               </p>
             </a>        
           </li>
+
           <li class="nav-item" id="aside-kho-hang">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
+              <i class="nav-icon fas fa-warehouse"></i>
               <p>
                 Kho hàng
                 <i class="fas fa-angle-left right"></i>
@@ -161,9 +168,32 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item" id="aside-menu-dat-hang">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-box-open"></i>
+              <p>
+                Đặt hàng
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href='<c:url value="/user/seller/dathang"/>' class="nav-link" id="aside-seller-dat-hang">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Hàng được đặt</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href='<c:url value="/user/buyer/dathang"/>' class="nav-link" id="aside-buyer-dat-hang">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Đơn đặt hàng của tôi</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item">
             <a href='<c:url value="/"/>' class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
                 Trang chủ
               </p>
@@ -171,7 +201,7 @@
           </li>
           <li class="nav-item">
               <a href='<c:url value="/logout"/>' class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
                 Đăng xuất
               </p>
@@ -212,5 +242,5 @@
 
 
     <!-- Đừng thêm gì dưới đoạn này -->
-    <main role="main" class="container">
+    <main role="main" class="container-fluid">
 

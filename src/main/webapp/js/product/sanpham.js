@@ -12,6 +12,7 @@ const danhGiaDOM = document.querySelector('#danhGia');
 const moTaSanPhamDOM = document.querySelector('#moTaSanPham');
 const giaDOM = document.querySelector('#gia');
 const anhSanPhamDOM = document.querySelector('#anhSanPham');
+const loaiSanPhamDOM = document.querySelector('#loaiSanPham');
 const addToCartBtnDOM = document.querySelector('#addToCartBtn');
 const addToFavBtnDOM = document.querySelector('#addToFavBtn');
 
@@ -50,7 +51,9 @@ const showSanPhamDetail = async (skip = false) => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         // có avatar nữa
-        const { ten_san_pham, ten, mo_ta, gia, anhSanPhams, xep_hang, username } = sanpham;
+        const { ten_san_pham, ten, ten_loai_sp, ma_loai_sp, mo_ta,
+            gia, anhSanPhams, xep_hang, username
+        } = sanpham;
         danhGiaDOM.textContent = xep_hang ?? "Chưa có đánh giá";
         if (skip) {
             return;
@@ -58,6 +61,8 @@ const showSanPhamDetail = async (skip = false) => {
         addToCartBtnDOM.dataset.masanpham = maSanPham;
         addToFavBtnDOM.dataset.masanpham = maSanPham;
         tenSanPhamDOM.textContent = ten_san_pham;
+        loaiSanPhamDOM.href = `${baseURL}category/${ma_loai_sp}`;
+        loaiSanPhamDOM.textContent = ten_loai_sp;
         moTaSanPhamDOM.textContent = mo_ta;
         giaDOM.innerHTML = gia.toLocaleString("vi-VN", {
             style: "currency",

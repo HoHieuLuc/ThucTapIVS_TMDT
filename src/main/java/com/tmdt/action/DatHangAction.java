@@ -49,26 +49,25 @@ public class DatHangAction extends ActionSupport {
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
         // Thêm đơn đặt hàng mới
         try {
-            if (username != null) {
-                int maDonDatHang = datHangMapper.themDonDHTheoSeller(maKhachHang, username);
-                List<Map<String, Object>> sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
-                for (Map<String, Object> sanPham : sanPhams) {
-                    datHangMapper.themChiTietDatHang(
-                            maKhachHang,
-                            maDonDatHang,
-                            (String) sanPham.get("ma_san_pham"),
-                            (Integer) sanPham.get("so_luong"));
-                }
-            } else {
-                int maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
-                List<Map<String, Object>> sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
-                for (Map<String, Object> sanPham : sanPhams) {
-                    datHangMapper.themChiTietDatHang(
-                            maKhachHang,
-                            maDonDatHang,
-                            (String) sanPham.get("ma_san_pham"),
-                            (Integer) sanPham.get("so_luong"));
-                }
+            int maDonDatHang;
+            List<Map<String, Object>> sanPhams;
+            // đặt theo người bán
+            if (!username.equals("null")) {
+                maDonDatHang = datHangMapper.themDonDHTheoSeller(maKhachHang, username);
+                sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
+            } else { // đặt tất cả
+                maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
+                sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
+            }
+            if (sanPhams.isEmpty()){
+                return CustomError.createCustomError("Không có sản phẩm nào trong giỏ hàng", 404, response);
+            }
+            for (Map<String, Object> sanPham : sanPhams) {
+                datHangMapper.themChiTietDatHang(
+                        maKhachHang,
+                        maDonDatHang,
+                        (String) sanPham.get("ma_san_pham"),
+                        (Integer) sanPham.get("so_luong"));
             }
             // Khi sai mã sản phẩm ở câu querry thứ 2
             // Thì câu query thứ nhất không commit được dữ liệu vào database, dù nó chạy

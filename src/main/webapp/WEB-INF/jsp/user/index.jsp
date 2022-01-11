@@ -2,8 +2,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/user/include/header.jsp" />
 <button class="debug-button">reload</button>
-<div class="mt-3">
-    <div class="container">
+<div class="container-fluid mt-3">
+    <div>
         <div class="row g-3">
             <label class="col-auto col-form-label">Thống kê</label>
             <div class="col-auto">
@@ -29,7 +29,7 @@
             </form>
         </div>
     </div>
-    <div class="container w-75">
+    <div class="container">
         <div class="text-center fs-5">
             Số lượng đơn đặt hàng
         </div>

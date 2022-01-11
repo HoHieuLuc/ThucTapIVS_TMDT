@@ -21,49 +21,48 @@
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/css/lightgallery-bundle.min.css" integrity="sha512-91yJwfiGTCo9TM74ZzlAIAN4Eh5EWHpQJUfvo/XhpH6lzQtiRFkFRW1W+JSg4ch4XW3/xzh+dY4TOw/ILpavQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<div class="container">
-    <div class="row">
-        <div class="col-6 inline-gallery-container" id="anhSanPham">
+<div class="row">
+    <div class="col-6 inline-gallery-container" id="anhSanPham">
+    </div>
+    <div class="col-6">
+        <div>
+            Tên sản phẩm: <span id="ten"></span>
         </div>
-        <div class="col-6">
-            <div>
-                Tên sản phẩm: <span id="ten"></span>
-            </div>
-            <div>
-                Loại sản phẩm: <span id="loaiSanPham"></span>
-            </div>
-            <div>
-                Ngày đăng: <span id="ngayDang"></span>
-            </div>
-            <div>
-                Mô tả: <p id="moTa" style="white-space: pre-line;" class="tlt-description"></p>
-            </div>
-            <div>
-                Giá: <span id="gia"></span>
-            </div>
-            <div>
-                Xếp hạng: <span id="xepHang"></span>
-            </div>
-            <div>
-                Số lượng: <span id="soLuong"></span>
-            </div>
-            <div>
-                Số lượng đã bán: <span id="soLuongDaBan"></span>
-            </div>
-            <div>
-                Tình trạng: <span id="tinhTrang"></span>
-            </div>
+        <div>
+            Loại sản phẩm: <span id="loaiSanPham"></span>
         </div>
-        <div class="col-12">
-            <div class="d-flex justify-content-center">
-                <div class="d-flex w-50 gap-2" id="chucNang">
+        <div>
+            Ngày đăng: <span id="ngayDang"></span>
+        </div>
+        <div>
+            Mô tả: <p id="moTa" style="white-space: pre-line;" class="tlt-description"></p>
+        </div>
+        <div>
+            Giá: <span id="gia"></span>
+        </div>
+        <div>
+            Xếp hạng: <span id="xepHang"></span>
+        </div>
+        <div>
+            Số lượng: <span id="soLuong"></span>
+        </div>
+        <div>
+            Số lượng đã bán: <span id="soLuongDaBan"></span>
+        </div>
+        <div>
+            Tình trạng: <span id="tinhTrang"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="d-flex justify-content-center">
+            <div class="d-flex w-50 gap-2" id="chucNang">
 
 
-                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     document.getElementById('aside-san-pham').classList.add('active');

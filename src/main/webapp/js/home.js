@@ -9,12 +9,12 @@ const showLoaiSanPhamPhoBien = async () => {
         const allPopularCategory = popularCategory.map((category) => {
             const { ma_loai_sp, ten_loai_sp, anh } = category;
             return `
-                <div class="col-2">
+                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-3">
                     <a href="${baseURL}category/${ma_loai_sp}" 
                         class="text-decoration-none text-dark text-center" 
                     >
                         <img src="${baseURL}images/category/${anh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten_loai_sp}">
-                        <div>${ten_loai_sp}</div>
+                        <div class="tlt-overflow-eclipse" title="${ten_loai_sp}">${ten_loai_sp}</div>
                     </a>
                 </div>
             `;
@@ -31,12 +31,12 @@ const showTopStore = async () => {
         const allTopStores = topStores.map((store) => {
             const { username, ten, avatar, xep_hang } = store;
             return `
-                <div class="col-2">
+                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-2">
                     <a href="${baseURL}store/${username}" 
                         class="text-decoration-none text-dark text-center" 
                     >
                         <img src="${baseURL}images/user/${avatar}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten}">
-                        <div>${ten}</div>
+                        <div class="tlt-overflow-eclipse" title="${ten}">${ten}</div>
                         <div>${xep_hang} &#9733;</div>
                     </a>
                 </div>
@@ -58,12 +58,14 @@ const showNewestProduct = async () => {
                 currency: "VND",
             });
             return `
-                <div class="col-2">
+                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-2">
                     <a href="${baseURL}sanpham/${ma_san_pham}" 
                         class="text-decoration-none text-dark text-center" 
                     >
                         <img src="${baseURL}images/product/${anh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten_san_pham}">
-                        <div>${ten_san_pham}</div>
+                        <div class="tlt-overflow-eclipse" title="${ten_san_pham}">
+                            ${ten_san_pham}
+                        </div>
                         <div>${giaVND}</div>
                     </a>
                     <button type="button" data-masanpham="${ma_san_pham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">

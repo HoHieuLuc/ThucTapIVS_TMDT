@@ -118,7 +118,7 @@ public class GlobalAction extends ActionSupport {
         return "success";
     }
 
-    // Xem chi tiết báo cáo để kiểm duyệt 
+    // Xem chi tiết báo cáo để kiểm duyệt
     @Action(value = "/admin/baocao/{params}", results = {
             @Result(name = "SUCCESS", location = "/WEB-INF/jsp/admin/pages/kiemduyet/baocao/chitiet_baocao.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
@@ -144,14 +144,6 @@ public class GlobalAction extends ActionSupport {
             @Result(name = "success", location = "/WEB-INF/jsp/dathang/index.jsp")
     }, interceptorRefs = { @InterceptorRef("khachHangStack") })
     public String orderPage() {
-        return SUCCESS;
-    }
-
-    // đặt hàng theo người bán
-    @Action(value = "/dathang/{params}", results = {
-            @Result(name = "success", location = "/WEB-INF/jsp/dathang/index.jsp")
-    }, interceptorRefs = { @InterceptorRef("khachHangStack") })
-    public String orderBySellerPage() {
         return SUCCESS;
     }
 
@@ -186,6 +178,41 @@ public class GlobalAction extends ActionSupport {
     }, interceptorRefs = { @InterceptorRef("khachHangStack")
     })
     public String userSanPhamAdd() {
+        return SUCCESS;
+    }
+
+    // Trang theo dõi các đơn đặt hàng được đặt
+    @Action(value = "/user/seller/dathang", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/dathang/seller/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack")
+    })
+    public String userDatHang() {
+        return SUCCESS;
+    }
+
+    @Action(value = "/user/seller/dathang/{params}", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/dathang/seller/detail.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack")
+    })
+    public String userSellerChiTietDatHang() {
+        return SUCCESS;
+    }
+
+    // Trang theo dõi các đơn đặt hàng mình đặt
+    @Action(value = "/user/buyer/dathang", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/dathang/buyer/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack")
+    })
+    public String userBuyerDatHang() {
+        return SUCCESS;
+    }
+
+    // Trang xem chi tiết 1 đơn hàng mình đặt
+    @Action(value = "/user/buyer/dathang/{params}/{params}", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/user/pages/dathang/buyer/detail.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack")
+    })
+    public String userBuyerChiTietDatHang() {
         return SUCCESS;
     }
 }

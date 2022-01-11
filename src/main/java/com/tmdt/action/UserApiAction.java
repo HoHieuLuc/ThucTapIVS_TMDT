@@ -51,6 +51,7 @@ public class UserApiAction extends ActionSupport {
     private int rowsPerPage;
     private Date tuNgay;
     private Date denNgay;
+    private int id;
 
     // region Getter and Setter
     public String getMaSanPham() {
@@ -168,7 +169,7 @@ public class UserApiAction extends ActionSupport {
             case 30:
                 return rowsPerPage;
             default:
-                return 5;
+                return 10;
         }
     }
 
@@ -190,6 +191,14 @@ public class UserApiAction extends ActionSupport {
 
     public void setDenNgay(Date denNgay) {
         this.denNgay = denNgay;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     // endregion
 
@@ -393,7 +402,7 @@ public class UserApiAction extends ActionSupport {
         List<Map<String, Object>> thongKe = new ArrayList<>();
 
         if (kiemTraNgayThongKe()) {
-            if (tuNgay.compareTo(denNgay) > 0){
+            if (tuNgay.compareTo(denNgay) > 0) {
                 return CustomError.createCustomError("Thời gian không hợp lệ", 400, response);
             }
             thongKe = thongKeMapper.thongKeSoDonDatHangChoKhachHangTuyChon(maKhachHang, tuNgay, denNgay);
@@ -404,6 +413,159 @@ public class UserApiAction extends ActionSupport {
         }
         sqlSession.close();
         jsonRes.put("soDonDatHang", thongKe);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // SELLER
+    // lấy danh sách đặt hàng mà người khác đặt của user này
+    @Action(value = "/api/v1/user/seller/dathang", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String hangDuocDat() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maNguoiBan = (int) session.getAttribute("maNguoiDung");
+
+        int _page = getPage();
+        int _rowsPerPage = getRowsPerPage();
+        String _search = getSearch();
+        int _status = getStatus();
+
+        int countDatHang = datHangMapper.countDonDatHangDuocDat(maNguoiBan, _status, _search);
+        int offset = (_page - 1) * _rowsPerPage;
+        int totalPage = (int) Math.ceil(countDatHang / (double) _rowsPerPage);
+
+        List<Map<String, Object>> danhSachDatHang = datHangMapper.getDonDatHangDuocDat(maNguoiBan,
+                _status, _search, offset, _rowsPerPage);
+        sqlSession.close();
+        jsonRes.put("danhSachDatHang", danhSachDatHang);
+        jsonRes.put("totalPages", totalPage);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // lấy chi tiết đơn đặt hàng
+    @Action(value = "/api/v1/user/seller/dathang/{id}", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String chiTietDonDatHang() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maNguoiBan = (int) session.getAttribute("maNguoiDung");
+        Map<String, Object> thongTinNguoiDat = datHangMapper.getThongTinNguoiDatHang(id);
+        List<Map<String, Object>> chiTietDatHang = datHangMapper.getChiTietDonDatHangDuocDat(maNguoiBan, id);
+        if (chiTietDatHang.isEmpty()) {
+            return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
+        }
+        sqlSession.close();
+        jsonRes.put("thongTinNguoiDat", thongTinNguoiDat);
+        jsonRes.put("chiTietDatHang", chiTietDatHang);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // cập nhật tình trạng đơn đặt hàng cho người bán hàng
+    @Action(value = "/api/v1/user/seller/dathang/{id}/capnhat", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String capNhatTinhTrangDonDatHang() throws IOException {
+        // người bán hàng ko thể cập nhật status thành 2
+        // status 2 là người mua đã nhận hàng, người mua sẽ cập nhật
+        if (status < -1 || status > 1) {
+            return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
+        }
+        // TODO: nếu status = 1 (đang ship) thì cập nhật lại số lượng sản phẩm luôn
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maNguoiBan = (int) session.getAttribute("maNguoiDung");
+        int update = datHangMapper.capNhatTinhTrangChiTietDatHangNguoiBan(status, id, maSanPham, maNguoiBan);
+        if (update == 0) {
+            return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
+        }
+        // TODO: sau khi cập nhật đơn đặt hàng thành công sẽ gửi thông báo đến người mua
+        sqlSession.commit();
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // BUYER
+    // lấy danh sách đơn đặt hàng cho người mua
+    @Action(value = "/api/v1/user/buyer/dathang", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String hangDaDat() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maNguoiMua = (int) session.getAttribute("maNguoiDung");
+
+        int _page = getPage();
+        int _rowsPerPage = getRowsPerPage();
+        String _search = getSearch();
+        int _status = getStatus();
+
+        int countDatHang = datHangMapper.countDonDatHangChoNguoiMua(maNguoiMua, _status, _search);
+        int offset = (_page - 1) * _rowsPerPage;
+        int totalPage = (int) Math.ceil(countDatHang / (double) _rowsPerPage);
+
+        List<Map<String, Object>> danhSachDatHang = datHangMapper.getDonDatHangChoNguoiMua(maNguoiMua,
+                _status, _search, offset, _rowsPerPage);
+        sqlSession.close();
+        jsonRes.put("danhSachDatHang", danhSachDatHang);
+        jsonRes.put("totalPages", totalPage);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // lấy chi tiết 1 đơn đặt hàng
+    @Action(value = "/api/v1/user/buyer/dathang/{id}/{maSanPham}", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String chiTietDonDatHangChoNguoiMua() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maNguoiMua = (int) session.getAttribute("maNguoiDung");
+        Map<String, Object> chiTietDatHang = datHangMapper.getChiTietDonDatHangChoNguoiMua(
+                maNguoiMua, id, maSanPham);
+        if (chiTietDatHang == null) {
+            return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
+        }
+        sqlSession.close();
+        jsonRes.put("chiTietDatHang", chiTietDatHang);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // thay đổi tình trạng đơn hàng cho người mua
+    @Action(value = "/api/v1/user/buyer/dathang/{id}/{maSanPham}/capnhat", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String capNhatTinhTrangDonDatHangChoNguoiMua() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maNguoiMua = (int) session.getAttribute("maNguoiDung");
+        Integer currentStatus = datHangMapper.getStatusCurrentChiTietDonDatHang(maNguoiMua, id, maSanPham);
+        // không tìm thấy status tức là chi tiết đặt hàng ko tồn tại
+        // hoặc chi tiết đặt hàng đó ko phải của người mua
+        // status hiện tại = 1 là đang vận chuyển, mình chỉ cho 1 nút duy nhất là "đã nhận được hàng"
+        // suy ra cập nhật status = 2
+        // status hiện tại là 0 là đang chờ, lúc này mình có thể hủy
+        if (currentStatus == null) {
+            return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
+        } else if (currentStatus == 1) {
+            status = 2;
+        } else if (currentStatus == 0) {
+            status = -1;
+        }
+        int update = datHangMapper.capNhatTinhTrangChiTietDatHangNguoiMua(maNguoiMua, id, maSanPham, status);
+        // cái này kiểm tra luôn cho chắc
+        if (update == 0) {
+            return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
+        }
+        // TODO: sau khi cập nhật đơn đặt hàng thành công sẽ gửi thông báo đến người bán
+        sqlSession.commit();
+        sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }
