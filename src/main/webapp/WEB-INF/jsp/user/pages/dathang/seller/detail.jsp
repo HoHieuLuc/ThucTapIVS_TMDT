@@ -8,7 +8,7 @@
 <div class="thongTinNguoiDat row">
 </div>
 <hr>
-<div class="chiTietDatHang">
+<div class="chiTietDatHang mb-3">
 
 </div>
 
