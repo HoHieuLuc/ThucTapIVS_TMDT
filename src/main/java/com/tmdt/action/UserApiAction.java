@@ -548,7 +548,8 @@ public class UserApiAction extends ActionSupport {
         Integer currentStatus = datHangMapper.getStatusCurrentChiTietDonDatHang(maNguoiMua, id, maSanPham);
         // không tìm thấy status tức là chi tiết đặt hàng ko tồn tại
         // hoặc chi tiết đặt hàng đó ko phải của người mua
-        // status hiện tại = 1 là đang vận chuyển, mình chỉ cho 1 nút duy nhất là "đã nhận được hàng"
+        // status hiện tại = 1 là đang vận chuyển, mình chỉ cho 1 nút duy nhất là "đã
+        // nhận được hàng"
         // suy ra cập nhật status = 2
         // status hiện tại là 0 là đang chờ, lúc này mình có thể hủy
         if (currentStatus == null) {
@@ -567,5 +568,29 @@ public class UserApiAction extends ActionSupport {
         sqlSession.commit();
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // Lấy danh sách tất cả thông báo hoặc danh sách thông báo chưa đọc
+    @Action(value = "/api/v1/user/thongbao/{status}", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getThongBao() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int idNguoiNhan = (int) session.getAttribute("accountID");
+         List<Map<String, Object>> listThongBao;
+         switch (status) {
+             case 0:
+                 listThongBao = thongBaoMapper.getAllThongBaoChuaDocs(idNguoiNhan);
+                 break;
+         
+             default:
+                listThongBao = thongBaoMapper.getAllThongBao(idNguoiNhan);
+                 break;
+         }
+        jsonRes.put("thong_baos",listThongBao);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+
     }
 }
