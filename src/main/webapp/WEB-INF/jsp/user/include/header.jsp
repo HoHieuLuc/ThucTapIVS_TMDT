@@ -43,6 +43,8 @@
           const baseURL = <c:url value="/" />;
         </script>
         <script src='<c:url value="/js/function.js"/>'></script>
+        <!-- Script xử lý thông báo -->
+        <script src='<c:url value="/js/user/dashboard/thongbao.js"/>'></script>
     </head>
 
     <body>
@@ -102,7 +104,7 @@
 
                 </div>
 
-                <li class="list-group list-group-numbered">
+              <li class="list-group list-group-numbered" id="listThongBao">
                 <li class="list-group-item d-flex justify-content-between align-items-start bg-secondary text-white dropdown-item">
                   <div class="ms-2 me-auto">
                     <div class="fw-bold">Admin - Hồ Hiểu Lực</div>
@@ -110,18 +112,19 @@
                   </div>
                   <span class="badge bg-warning rounded-pill">14/11/2021 </span>
                 </li>
-                <div class=" d-flex justify-content-end p-2">
-                  <button type="button" class="btn btn-outline-primary">Đánh dấu tất cả đã đọc</button>
-                </div>
-              </ul>
             </li>
-            <%-- chưa biết để làm gì nhưng sau này chắc cần --%>
-              <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                  <i class="fas fa-th-large"></i>
-                </a>
-              </li>
+            <div class=" d-flex justify-content-end p-2">
+              <button type="button" class="btn btn-outline-primary">Đánh dấu tất cả đã đọc</button>
+            </div>
         </ul>
+
+        <%-- chưa biết để làm gì nhưng sau này chắc cần --%>
+          <li class="nav-item">
+            <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+              <i class="fas fa-th-large"></i>
+            </a>
+          </li>
+          </ul>
       </nav>
       <!-- /.navbar -->
 

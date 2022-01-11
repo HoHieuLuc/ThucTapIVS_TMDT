@@ -1,0 +1,1 @@
+const listThongBaoDOM = document.querySelector('#listThongBao');
