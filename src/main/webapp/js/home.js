@@ -37,7 +37,7 @@ const showTopStore = async () => {
                     >
                         <img src="${baseURL}images/user/${avatar}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten}">
                         <div class="tlt-overflow-eclipse" title="${ten}">${ten}</div>
-                        <div>${xep_hang} &#9733;</div>
+                        <div>${(Math.round(xep_hang * 10) / 10)} &#9733;</div>
                     </a>
                 </div>
             `;
