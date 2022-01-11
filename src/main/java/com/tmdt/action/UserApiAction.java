@@ -579,18 +579,40 @@ public class UserApiAction extends ActionSupport {
         ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         int idNguoiNhan = (int) session.getAttribute("accountID");
-         List<Map<String, Object>> listThongBao;
-         switch (status) {
-             case 0:
-                 listThongBao = thongBaoMapper.getAllThongBaoChuaDocs(idNguoiNhan);
-                 break;
-         
-             default:
+        List<Map<String, Object>> listThongBao;
+        switch (status) {
+            case 0:
+                listThongBao = thongBaoMapper.getAllThongBaoChuaDocs(idNguoiNhan);
+                break;
+
+            default:
                 listThongBao = thongBaoMapper.getAllThongBao(idNguoiNhan);
-                 break;
-         }
-        jsonRes.put("thong_baos",listThongBao);
+                break;
+        }
+        jsonRes.put("thong_baos", listThongBao);
+        sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
 
     }
+
+    // Đánh dấu thông báo đó đã đọc '
+    @Action(value = "/api/v1/user/thongbao_seen", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String updateThongBaoStatus() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int idNguoiNhan = (int) session.getAttribute("accountID");
+        
+        thongBaoMapper.danhDauAllDaDoc(idNguoiNhan);
+        sqlSession.commit();
+        sqlSession.close();
+        
+        jsonRes.put("message", "Đánh dấu toàn bộ thông báo đã đọc thành công");
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+
+    }
+
 }
