@@ -502,7 +502,8 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
         const phanHoiDivDOM = eventTarget.closest('.phan-hoi-div');
         const phanHoiDivConDOM = eventTarget.closest('.phan-hoi-div-con');
         phanHoiDivConDOM.classList.add('d-none');
-        const { ma_phan_hoi, noi_dung } = phanHoiDivDOM.dataset;
+        const { ma_phan_hoi } = phanHoiDivDOM.dataset;
+        const noi_dung = phanHoiDivDOM.querySelector('.tlt-comment').innerText;
         phanHoiDivDOM.innerHTML += `
             <form class="form-sua-phan-hoi">
                 <div class="form-group">
