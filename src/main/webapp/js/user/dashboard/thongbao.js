@@ -5,9 +5,9 @@ const showThongBao = async (status) => {
     try {
         const { data: { thong_baos } } = await axios.get(`${baseURL}api/v1/user/thongbao/${status}`);
         const allThongBaos = thong_baos.map(data => {
-            const { noi_dung, nguoi_gui, ngay_tao } = data;
+            const { noi_dung, nguoi_gui, ngay_tao,status } = data;
             return `
-                <li class="list-group-item d-flex justify-content-between align-items-start bg-secondary text-white dropdown-item">
+                <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
                     <div class="ms-2 me-auto">
                     <div class="fw-bold">${nguoi_gui}</div>
                         ${noi_dung}

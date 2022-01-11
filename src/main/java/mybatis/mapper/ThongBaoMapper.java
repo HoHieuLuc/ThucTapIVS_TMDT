@@ -21,7 +21,7 @@ public interface ThongBaoMapper {
     "CASE " +
     "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' " +
     "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) " +
-    " END AS nguoi_gui " +
+    " END AS nguoi_gui, " +
     " CASE " + 
 	" WHEN tb.status = 0 THEN 'bg-secondary text-white' " +
     " ELSE  'bg-light text-black' " +
