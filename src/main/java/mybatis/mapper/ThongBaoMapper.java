@@ -17,7 +17,7 @@ public interface ThongBaoMapper {
             @Param("noiDung") String noiDung);
 
     // Lấy tất cả thông báo của khách hàng có id 
-    final String GET_ALL_THONG_BAO ="SELECT tb.noi_dung,tb.ngay_tao, " +
+    final String GET_ALL_THONG_BAO ="SELECT tb.ma_tb, tb.noi_dung,tb.ngay_tao, " +
     "CASE " +
     "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' " +
     "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) " +
