@@ -74,16 +74,13 @@ public class LoginAction extends ActionSupport {
 
         TaiKhoan account = taiKhoanMapper.getTaiKhoanByUsername(username);
         if (account != null) {
-            // Kiểm tra số lần cảnh cáo 
-            if (account.getSoLanCanhCao() == 3 )
-            {
-                sqlSession.close();
-                // Thông báo sai tài khoản
-                return CustomError.createCustomError("Tài khoản bị khóa vì bị cảnh cáo 3 lần", 401, response);
-            }
             // Kiểm tra mật khẩu
             if (BCrypt.checkpw(password, account.getPassword())) {
-                System.out.println("account: " + account.toString());
+                // Kiểm tra số lần cảnh cáo
+                if (account.getSoLanCanhCao() == 3) {
+                    sqlSession.close();
+                    return CustomError.createCustomError("Tài khoản bị khóa vì bị cảnh cáo 3 lần", 403, response);
+                }
                 Map<String, Object> loginInfo;
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("permission", account.getMaQuyen());
