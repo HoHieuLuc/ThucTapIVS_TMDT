@@ -1,6 +1,6 @@
 const listThongBaoDOM = document.querySelector("#listThongBao");
 const soThongBaoDOM = document.querySelector("#soThongBao");
-let danhDauDaDoc;
+let danhDauDaDocCuThe;
 
 const showThongBao = async (status) => {
     try {
@@ -13,15 +13,15 @@ const showThongBao = async (status) => {
 
             const { noi_dung, nguoi_gui, ngay_tao, status,ma_tb } = data;
             //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
-            if (status.includes("bg-secondary") || status.includes("bg-body")) danhDauDaDoc = `<button type="button" class="btn btn-primary"  data-id="${ma_tb}" >Đã đọc</button>`;
-                else danhDauDaDoc = ``;
+            if (status.includes("bg-secondary") || status.includes("bg-body")) danhDauDaDocCuThe = `<button type="button" class="btn btn-primary"  data-id="${ma_tb}" >Đã đọc</button>`;
+                else danhDauDaDocCuThe = ``;
             return `
                 <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
                     <div class="ms-2 me-auto">
                     <div class="fw-bold">${nguoi_gui}</div>
                         ${noi_dung}
                     </div>
-                    ${danhDauDaDoc}
+                    ${danhDauDaDocCuThe}
                     <span class="badge bg-warning rounded-pill">
                         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
                     </span>
@@ -54,7 +54,8 @@ showThongBao(-1);
 
 document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
     try {
-       const {data : message} = await axios.get( `${baseURL}api/v1/thongbao/seen/${id}`);
+        // -9999 đánh dấu toàn bộ đã đọc
+       const {data : message} = await axios.get( `${baseURL}api/v1/thongbao/seen/-9999`);
         thongBao(message,false);
         
     } catch (error) {
@@ -81,5 +82,20 @@ $('body > div.wrapper > nav > ul.navbar-nav.ml-auto > li.nav-item.dropdown.me-2 
     }
 });
 
+// Thêm sự kiện cập nhật đã đọc cho từng thông báo trong dropdown menu
+listThongBaoDOM.addEventListener('click', async (event) => {
+    const target = event.target;
+    const id = target.dataset.id;
+    try {
+        const {data : message} = await axios.get( `${baseURL}api/v1/thongbao/seen/${id}`);
+         thongBao(message,false);
+         
+     } catch (error) {
+         console.log(error);
+         thongBao(error.response.data.message,true);
+     }
+     showThongBao(-1);
+     showSoThongBao();
+})
 
 
