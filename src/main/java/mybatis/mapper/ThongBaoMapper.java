@@ -50,5 +50,10 @@ public interface ThongBaoMapper {
     final String DEM_SO_THONG_BAO_CHUA_DOC = "SELECT COUNT(*) FROM `thong_bao` WHERE id_nguoi_nhan = #{idNguoiNhan} AND status = 0";
     @Select(DEM_SO_THONG_BAO_CHUA_DOC)
     public int demSoThongBaoChuaDoc(int idNguoiNhan);
+
+    // Đánh dấu đã đọc cho từng thông báo cụ thể 
+    final String DANH_DAU_DA_DOC = "UPDATE thong_bao SET status = 1 WHERE ma_tb = #{maThongBao} AND status = 0;";
+    @Update(DANH_DAU_DA_DOC)
+    public int danhDauDaDoc(int maThongBao);
    
 }

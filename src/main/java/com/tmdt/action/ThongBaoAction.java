@@ -25,6 +25,7 @@ import mybatis.mapper.ThongBaoMapper;
 
 public class ThongBaoAction extends ActionSupport {
     private int status;
+    private int id;
     
     public int getStatus() {
         return status;
@@ -34,12 +35,19 @@ public class ThongBaoAction extends ActionSupport {
         this.status = status;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
-
 
     // Lấy danh sách tất cả thông báo hoặc danh sách thông báo chưa đọc
     @Action(value = "/api/v1/thongbao/{status}", results = {
@@ -76,7 +84,7 @@ public class ThongBaoAction extends ActionSupport {
     }
 
     // Đánh dấu thông báo đó đã đọc '
-    @Action(value = "/api/v1/thongbao/seenall", results = {
+    @Action(value = "/api/v1/thongbao/seen/{id}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String updateThongBaoStatus() throws IOException {
