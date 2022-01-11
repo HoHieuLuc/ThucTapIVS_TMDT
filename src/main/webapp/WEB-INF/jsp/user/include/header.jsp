@@ -43,8 +43,7 @@
           const baseURL = <c:url value="/" />;
         </script>
         <script src='<c:url value="/js/function.js"/>'></script>
-        <!-- Script xử lý thông báo -->
-        <script src='<c:url value="/js/user/dashboard/thongbao.js"/>'></script>
+
     </head>
 
     <body>
@@ -88,8 +87,8 @@
               <a class="nav-link dropdown position-relative" href="#" id="navbarDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="far fa-bell"></i>
-                <span class="badge position-absolute top-20 start-100 translate-middle  rounded-pill bg-danger">
-                  <! -- Số lượng thông báo chưa đọc -->
+                <span class="badge position-absolute top-20 start-100 translate-middle  rounded-pill bg-danger" id="soThongBao">
+                  0
                 </span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
