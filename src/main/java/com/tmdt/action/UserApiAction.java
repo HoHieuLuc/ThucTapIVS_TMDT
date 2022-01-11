@@ -584,7 +584,10 @@ public class UserApiAction extends ActionSupport {
             case 0:
                 listThongBao = thongBaoMapper.getAllThongBaoChuaDocs(idNguoiNhan);
                 break;
-
+            case 999:
+                int soThongBaoChuaDoc = thongBaoMapper.demSoThongBaoChuaDoc(idNguoiNhan);
+                jsonRes.put("chua_doc",soThongBaoChuaDoc);
+                return JsonResponse.createJsonResponse(jsonRes, 200, response);
             default:
                 listThongBao = thongBaoMapper.getAllThongBao(idNguoiNhan);
                 break;
