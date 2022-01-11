@@ -55,9 +55,9 @@ const showSanPhamDetail = async (skip = false) => {
             gia, anhSanPhams, xep_hang, username
         } = sanpham;
         if (typeof xep_hang === 'number') {
-            danhGiaDOM.innerHTML = `<span class="badge badge-pill badge-success">${(Math.round(xep_hang * 10) / 10) + " &#9733;"}</span>`;
+            danhGiaDOM.innerHTML = `<span>${(Math.round(xep_hang * 10) / 10) + " &#9733;"}</span>`;
         } else {
-            danhGiaDOM.innerHTML = `<span class="badge badge-pill badge-danger">Chưa đánh giá</span>`;
+            danhGiaDOM.innerHTML = `<span>Chưa có đánh giá</span>`;
         }
         if (skip) {
             return;
