@@ -4,7 +4,8 @@ const soThongBaoDOM = document.querySelector("#soThongBao");
 const showThongBao = async (status) => {
     try {
         const { data: { thong_baos } } = await axios.get(`${baseURL}api/v1/user/thongbao/${status}`);
-        const allThongBaos = thong_baos.map(data => {
+        listThongBaoDOM.innerHTML ="Không có thông báo nào";
+         const allThongBaos = thong_baos.map(data => {
             const { noi_dung, nguoi_gui, ngay_tao,status } = data;
             return `
                 <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
@@ -16,6 +17,7 @@ const showThongBao = async (status) => {
                         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
                     </span>
                 </li>`;
+            
         }).join('');
         listThongBaoDOM.innerHTML = allThongBaos;
     }
@@ -29,8 +31,7 @@ const showThongBao = async (status) => {
 // Cho tạm số bất kì khác 0,999 để hiện tất cả thông báo
 showThongBao(-1);
 
-//Đánh dấu tất cả đã đọc
-const danhDauDaDoc = async() => {
+document.querySelector("#danhDauDaDoc").addEventListener('click', async() => {
     try {
         await axios.get(
             `${baseURL}api/v1/user/thongbao_seen`
@@ -39,14 +40,22 @@ const danhDauDaDoc = async() => {
         console.log(error);
        thongBao(error.response.data.message, true);
     }
-}
+})
 
 //Mở list thông báo chưa đọc
-const listThongBaoChuaDoc =() => {
+document.querySelector("#listChuaDoc").addEventListener('click', () => {
     showThongBao(0);
-}
+})
 
 //Mở list tất cả thông báo 
-const listAllThongBao = () => {
+document.querySelector("#listAll").addEventListener('click', () => {
     showThongBao(-1);
-}
+})
+
+//bootstrap-keep-dropdown-open-after-click
+$('body > div.wrapper > nav > ul.navbar-nav.ml-auto > li.nav-item.dropdown.me-2 > ul').on({
+	"click":function(e){
+      e.stopPropagation();
+    }
+});
+

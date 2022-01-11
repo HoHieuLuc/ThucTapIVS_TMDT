@@ -94,20 +94,20 @@
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <div class=" d-flex justify-content-start p-2">
                   <div class="p-1">
-                    <button type="button" class="btn btn-outline-primary" id="listAll" onclick="listAllThongBao()">Tất cả</button>
+                    <button type="button" class="btn btn-outline-primary" id="listAll" >Tất cả</button>
                   </div>
 
                   <div class="p-1">
-                    <button type="button" class="btn btn-outline-danger" id="listChuaDoc" onclick="listThongBaoChuaDoc()">Chưa đọc</button>
+                    <button type="button" class="btn btn-outline-danger" id="listChuaDoc">Chưa đọc</button>
                   </div>
 
                 </div>
 
               <li class="list-group list-group-numbered" id="listThongBao">
-                <!-- xử lý bên thongbao.js và từ case when của sql -->
+                  Danh sách thông báo đang trống
             </li>
             <div class=" d-flex justify-content-end p-2">
-              <button type="button" class="btn btn-outline-primary"  id="danhDauDaDoc" onclick="danhDauDaDoc()">Đánh dấu tất cả đã đọc</button>
+              <button type="button" class="btn btn-outline-primary"  id="danhDauDaDoc" >Đánh dấu tất cả đã đọc</button>
             </div>
         </ul>
 
