@@ -23,9 +23,22 @@ const showThongBao = async (status) => {
     }
     catch (error) {
         console.log(error);
-        thongBao(error.response.data.message, true);
+        //thongBao(error.response.data.message, true);
+        listThongBaoDOM.innerHTML = error.response.data.message;
     }
 }
+
+// Hiển thị số thông báo , status = 999
+const showSoThongBao = async() => {
+    try {
+        const { data: { chua_doc } } = await axios.get(`${baseURL}api/v1/user/thongbao/${999}`);
+        document.querySelector("#soThongBao").innerHTML = chua_doc;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+showSoThongBao();
 
 
 // Cho tạm số bất kì khác 0,999 để hiện tất cả thông báo
@@ -40,9 +53,11 @@ document.querySelector("#danhDauDaDoc").addEventListener('click', async() => {
         console.log(error);
        thongBao(error.response.data.message, true);
     }
+    showThongBao(-1);
+    showSoThongBao();
 })
 
-//Mở list thông báo chưa đọc
+//Mở list thông báo chưa đọc, status = 0
 document.querySelector("#listChuaDoc").addEventListener('click', () => {
     showThongBao(0);
 })
@@ -58,4 +73,6 @@ $('body > div.wrapper > nav > ul.navbar-nav.ml-auto > li.nav-item.dropdown.me-2 
       e.stopPropagation();
     }
 });
+
+
 
