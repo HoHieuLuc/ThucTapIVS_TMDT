@@ -30,8 +30,8 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.*;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-        "namespace", "/",
-        "actionName", "bad-request"
+    "namespace", "/",
+    "actionName", "bad-request"
 })
 @InterceptorRef("khachHangStack")
 public class UserApiAction extends ActionSupport {
@@ -570,52 +570,6 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // Lấy danh sách tất cả thông báo hoặc danh sách thông báo chưa đọc
-    @Action(value = "/api/v1/user/thongbao/{status}", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    })
-    public String getThongBao() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
-        Map<String, Object> jsonRes = new HashMap<String, Object>();
-        int idNguoiNhan = (int) session.getAttribute("accountID");
-        List<Map<String, Object>> listThongBao;
-        switch (status) {
-            case 0:
-                listThongBao = thongBaoMapper.getAllThongBaoChuaDocs(idNguoiNhan);
-                break;
-            case 999:
-                int soThongBaoChuaDoc = thongBaoMapper.demSoThongBaoChuaDoc(idNguoiNhan);
-                jsonRes.put("chua_doc",soThongBaoChuaDoc);
-                return JsonResponse.createJsonResponse(jsonRes, 200, response);
-            default:
-                listThongBao = thongBaoMapper.getAllThongBao(idNguoiNhan);
-                break;
-        }
-        jsonRes.put("thong_baos", listThongBao);
-        sqlSession.close();
-        return JsonResponse.createJsonResponse(jsonRes, 200, response);
-
-    }
-
-    // Đánh dấu thông báo đó đã đọc '
-    @Action(value = "/api/v1/user/seenall", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    })
-    public String updateThongBaoStatus() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
-
-        Map<String, Object> jsonRes = new HashMap<String, Object>();
-        int idNguoiNhan = (int) session.getAttribute("accountID");
-        
-        thongBaoMapper.danhDauAllDaDoc(idNguoiNhan);
-        sqlSession.commit();
-        sqlSession.close();
-        
-        jsonRes.put("message", "Đánh dấu toàn bộ thông báo đã đọc thành công");
-        return JsonResponse.createJsonResponse(jsonRes, 200, response);
-
-    }
+  
 
 }

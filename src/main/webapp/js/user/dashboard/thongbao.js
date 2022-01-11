@@ -3,7 +3,7 @@ const soThongBaoDOM = document.querySelector("#soThongBao");
 
 const showThongBao = async (status) => {
     try {
-        const { data: { thong_baos } } = await axios.get(`${baseURL}api/v1/user/thongbao/${status}`);
+        const { data: { thong_baos } } = await axios.get(`${baseURL}api/v1/thongbao/${status}`);
         if (thong_baos.length === 0) {
             listThongBaoDOM.innerHTML = `Không có thông báo nào`;
             return;
@@ -35,7 +35,7 @@ const showThongBao = async (status) => {
 // Hiển thị số thông báo , status = 999
 const showSoThongBao = async () => {
     try {
-        const { data: { chua_doc } } = await axios.get(`${baseURL}api/v1/user/thongbao/${999}`);
+        const { data: { chua_doc } } = await axios.get(`${baseURL}api/v1/thongbao/${999}`);
         document.querySelector("#soThongBao").innerHTML = chua_doc;
     }
     catch (error) {
@@ -51,7 +51,7 @@ showThongBao(-1);
 document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
     try {
         await axios.get(
-            `${baseURL}api/v1/user/seenall`
+            `${baseURL}api/v1/thongbao/seenall`
         )
     } catch (error) {
         console.log(error);
