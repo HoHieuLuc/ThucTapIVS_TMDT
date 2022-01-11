@@ -48,9 +48,10 @@ const showChiTietDatHang = async (skip = false) => {
         }
         else if (status === 1) {
             chucNangHtml = `
-                <button class="cap-nhat-btn d-block w-50 btn btn-success">
-                    Đã nhận được hàng
-                </button>
+                <div class="input-group mb-3">
+                    <input id="maNhanHang" type="text" class="form-control border border-success" placeholder="Mã nhận hàng">
+                    <button class="cap-nhat-btn btn btn-success w-50" type="button">Đã nhận được hàng</button>
+                </div>
             `;
         } else if (status === 2) {
             chucNangHtml = `
@@ -100,9 +101,16 @@ showChiTietDatHang();
 chucNangDOM.addEventListener('click', async (event) => {
     const eventTarget = event.target;
     const { classList } = eventTarget;
+    const maNhanHangDOM = document.querySelector('#maNhanHang');
+    let maNhanHang = "";
+    if (maNhanHangDOM){
+        maNhanHang = maNhanHangDOM.value;
+    }
     if (classList.contains('cap-nhat-btn')) {
         try {
-            await axios.post(`${baseURL}api/v1/user/buyer/dathang/${id}/${maSanPham}/capnhat`);
+            const formData = new FormData();
+            formData.append('maNhanHang', maNhanHang);
+            await axios.post(`${baseURL}api/v1/user/buyer/dathang/${id}/${maSanPham}/capnhat`, formData);
             showChiTietDatHang(true);
         } catch (error) {
             console.log(error);
