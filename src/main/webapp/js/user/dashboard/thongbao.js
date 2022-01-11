@@ -1,121 +1,101 @@
-package com.tmdt.action;
+const listThongBaoDOM = document.querySelector("#listThongBao");
+const soThongBaoDOM = document.querySelector("#soThongBao");
+let danhDauDaDocCuThe;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.tmdt.db.ConnectDB;
-import com.tmdt.errors.CustomError;
-import com.tmdt.utilities.JsonResponse;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.*;
-
-import mybatis.mapper.ThongBaoMapper;
-
-public class ThongBaoAction extends ActionSupport {
-    private int status;
-    private int id;
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    HttpServletResponse response = ServletActionContext.getResponse();
-    HttpServletRequest request = ServletActionContext.getRequest();
-    HttpSession session = request.getSession();
-
-    private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
-
-    // Lấy danh sách tất cả thông báo hoặc danh sách thông báo chưa đọc
-    @Action(value = "/api/v1/thongbao/{status}", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    })
-    public String getThongBao() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
-        Map<String, Object> jsonRes = new HashMap<String, Object>();
-        Integer idNguoiNhan = (Integer) session.getAttribute("accountID");
-
-        // Kiểm tra đăng Nhập
-        if (idNguoiNhan == null) {
-            return CustomError.createCustomError("Bạn chưa đăng nhập", 403, response);
+const showThongBao = async (status) => {
+    try {
+        const { data: { thong_baos } } = await axios.get(`${baseURL}api/v1/thongbao/${status}`);
+        if (thong_baos.length === 0) {
+            listThongBaoDOM.innerHTML = `Không có thông báo nào`;
+            return;
         }
+        const allThongBaos = thong_baos.map(data => {
 
-        List<Map<String, Object>> listThongBao;
-        switch (status) {
-            case 0:
-                listThongBao = thongBaoMapper.getAllThongBaoChuaDocs(idNguoiNhan);
-                break;
-            case 999:
-                int soThongBaoChuaDoc = thongBaoMapper.demSoThongBaoChuaDoc(idNguoiNhan);
-                jsonRes.put("chua_doc", soThongBaoChuaDoc);
-                return JsonResponse.createJsonResponse(jsonRes, 200, response);
-            default:
-                listThongBao = thongBaoMapper.getAllThongBao(idNguoiNhan);
-                break;
-        }
-        jsonRes.put("thong_baos", listThongBao);
-        sqlSession.close();
-        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+            const { noi_dung, nguoi_gui, ngay_tao, status,ma_tb } = data;
+            //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
+            if (status.includes("bg-secondary") || status.includes("bg-body")) danhDauDaDocCuThe = `<button type="button" class="btn btn-primary"  data-id="${ma_tb}" >Đã đọc</button>`;
+                else danhDauDaDocCuThe = ``;
+            return `
+                <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
+                    <div class="ms-2 me-auto">
+                    <div class="fw-bold">${nguoi_gui}</div>
+                        ${noi_dung}
+                    </div>
+                    ${danhDauDaDocCuThe}
+                    <span class="badge bg-warning rounded-pill">
+                        ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
+                    </span>
+                </li>`;
 
+        }).join('');
+        listThongBaoDOM.innerHTML = allThongBaos;
     }
-
-    // Đánh dấu thông báo đó đã đọc '
-    @Action(value = "/api/v1/thongbao/seen/{id}", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    })
-    public String updateThongBaoStatus() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
-        Integer idNguoiNhan = (Integer) session.getAttribute("accountID");
-        Map<String, Object> jsonRes = new HashMap<String, Object>();
-
-        // Kiểm tra đăng Nhập
-        if (idNguoiNhan == null) {
-            return CustomError.createCustomError("Bạn chưa đăng nhập", 403, response);
-        }
-        switch (id) {
-            // -9999 là đánh dấu toàn bộ đã đọc
-            case -9999:
-                thongBaoMapper.danhDauAllDaDoc(idNguoiNhan);
-                jsonRes.put("message", "Đánh dấu toàn bộ thông báo đã đọc thành công");
-                break;
-
-            default:
-                // Đánh dấu đã đọc cho một thông báo cụ thể nào đó
-                int validate = thongBaoMapper.danhDauDaDoc(id);
-                if (validate == 0) {
-                    return CustomError.createCustomError("Thông báo không tồn tại",403,response);
-                } else {
-                    jsonRes.put("message", "Đánh dấu đã đọc thông báo thành công");
-                }
-                break;
-        }
-
-        sqlSession.commit();
-        sqlSession.close();
-        return JsonResponse.createJsonResponse(jsonRes, 200, response);
-
+    catch (error) {
+        console.log(error);
+        //thongBao(error.response.data.message, true);
     }
 }
+
+// Hiển thị số thông báo , status = 999
+const showSoThongBao = async () => {
+    try {
+        const { data: { chua_doc } } = await axios.get(`${baseURL}api/v1/thongbao/${999}`);
+        document.querySelector("#soThongBao").innerHTML = chua_doc;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+showSoThongBao();
+
+
+// Cho tạm số bất kì khác 0,999 để hiện tất cả thông báo
+showThongBao(-1);
+
+document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
+    try {
+        // -9999 đánh dấu toàn bộ đã đọc
+       const {data : {message} } = await axios.get( `${baseURL}api/v1/thongbao/seen/-9999`);
+        thongBao(message,false);
+        
+    } catch (error) {
+        console.log(error);
+    }
+    showThongBao(-1);
+    showSoThongBao();
+})
+
+//Mở list thông báo chưa đọc, status = 0
+document.querySelector("#listChuaDoc").addEventListener('click', () => {
+    showThongBao(0);
+})
+
+//Mở list tất cả thông báo 
+document.querySelector("#listAll").addEventListener('click', () => {
+    showThongBao(-1);
+})
+
+//Giữ cho dropdown menu không bị đóng khi nhấn vô mấy button
+$('body > div.wrapper > nav > ul.navbar-nav.ml-auto > li.nav-item.dropdown.me-2 > ul').on({
+    "click": function (e) {
+        e.stopPropagation();
+    }
+});
+
+// Thêm sự kiện cập nhật đã đọc cho từng thông báo trong dropdown menu
+listThongBaoDOM.addEventListener('click', async (event) => {
+    const target = event.target;
+    const id = target.dataset.id;
+    try {
+        const {data : {message} } = await axios.get( `${baseURL}api/v1/thongbao/seen/${id}`);
+         thongBao(message,false);
+         
+     } catch (error) {
+         console.log(error);
+         thongBao(error.response.data.message,true);
+     }
+     showThongBao(-1);
+     showSoThongBao();
+})
+
+
