@@ -23,8 +23,30 @@ const showThongBao = async (status) => {
         console.log(error);
         thongBao(error.response.data.message, true);
     }
-
-   
 }
+
+
 // Cho tạm số bất kì khác 0,999 để hiện tất cả thông báo
 showThongBao(-1);
+
+//Đánh dấu tất cả đã đọc
+document.querySelector("#danhDauDaDoc").addEventListener('click', async() => {
+    try {
+        await axios.get(
+            `${baseURL}api/v1/user/thongbao_seen`
+        )
+    } catch (error) {
+        console.log(error);
+       thongBao(error.response.data.message, true);
+    }
+})
+
+//Mở list thông báo chưa đọc
+document.querySelector("#listChuaDoc").addEventListener('click', () => {
+    showThongBao(0);
+})
+
+//Mở list tất cả thông báo 
+document.querySelector("#listAll").addEventListener('click', () => {
+    showThongBao(-1);
+})
