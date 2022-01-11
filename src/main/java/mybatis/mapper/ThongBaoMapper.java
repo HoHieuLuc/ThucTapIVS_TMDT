@@ -17,7 +17,12 @@ public interface ThongBaoMapper {
             @Param("noiDung") String noiDung);
 
     // Lấy tất cả thông báo của khách hàng có id 
-    final String GET_ALL_THONG_BAO ="SELECT * FROM `thong_bao` WHERE `id_nguoi_nhan` = #{idNguoiNhan};";
+    final String GET_ALL_THONG_BAO ="SELECT tb.noi_dung,tb.ngay_tao, " +
+    "CASE " +
+    "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' " +
+    "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) " +
+    " END AS nguoi_gui " +
+    " FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan};";
     @Select(GET_ALL_THONG_BAO)
     public List<Map<String, Object>> getAllThongBao(int idNguoiNhan); 
 
