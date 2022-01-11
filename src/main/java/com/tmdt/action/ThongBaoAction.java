@@ -21,12 +21,10 @@ import org.apache.struts2.convention.annotation.*;
 
 import mybatis.mapper.ThongBaoMapper;
 
-
-
 public class ThongBaoAction extends ActionSupport {
     private int status;
     private int id;
-    
+
     public int getStatus() {
         return status;
     }
@@ -61,7 +59,7 @@ public class ThongBaoAction extends ActionSupport {
 
         // Kiểm tra đăng Nhập
         if (idNguoiNhan == null) {
-            return CustomError.createCustomError("Bạn chưa đăng nhập",403, response);
+            return CustomError.createCustomError("Bạn chưa đăng nhập", 403, response);
         }
 
         List<Map<String, Object>> listThongBao;
@@ -91,19 +89,32 @@ public class ThongBaoAction extends ActionSupport {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
         Integer idNguoiNhan = (Integer) session.getAttribute("accountID");
-
-             // Kiểm tra đăng Nhập
-             if (idNguoiNhan == null) {
-                return CustomError.createCustomError("Bạn chưa đăng nhập",403, response);
-            }
-
         Map<String, Object> jsonRes = new HashMap<String, Object>();
 
-        thongBaoMapper.danhDauAllDaDoc(idNguoiNhan);
+        // Kiểm tra đăng Nhập
+        if (idNguoiNhan == null) {
+            return CustomError.createCustomError("Bạn chưa đăng nhập", 403, response);
+        }
+        switch (id) {
+            // -9999 là đánh dấu toàn bộ đã đọc
+            case -9999:
+                thongBaoMapper.danhDauAllDaDoc(idNguoiNhan);
+                jsonRes.put("message", "Đánh dấu toàn bộ thông báo đã đọc thành công");
+                break;
+
+            default:
+                // Đánh dấu đã đọc cho một thông báo cụ thể nào đó
+                int validate = thongBaoMapper.danhDauDaDoc(id);
+                if (validate == 0) {
+                    return CustomError.createCustomError("Thông báo không tồn tại",403,response);
+                } else {
+                    jsonRes.put("message", "Đánh dấu đã đọc thông báo thành công");
+                }
+                break;
+        }
+
         sqlSession.commit();
         sqlSession.close();
-
-        jsonRes.put("message", "Đánh dấu toàn bộ thông báo đã đọc thành công");
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
 
     }

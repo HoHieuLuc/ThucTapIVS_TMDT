@@ -1,5 +1,6 @@
 const listThongBaoDOM = document.querySelector("#listThongBao");
 const soThongBaoDOM = document.querySelector("#soThongBao");
+let danhDauDaDoc;
 
 const showThongBao = async (status) => {
     try {
@@ -10,8 +11,9 @@ const showThongBao = async (status) => {
         }
         const allThongBaos = thong_baos.map(data => {
 
-            const { noi_dung, nguoi_gui, ngay_tao, status } = data;
-
+            const { noi_dung, nguoi_gui, ngay_tao, status,ma_tb } = data;
+            //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
+            if (status.includes("text-white")) danhDauDaDoc = `<button type="button" class="btn btn-outline-success"  data-id="${ma_tb}" >Đã đọc</button>`;
             return `
                 <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
                     <div class="ms-2 me-auto">
@@ -50,12 +52,11 @@ showThongBao(-1);
 
 document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
     try {
-        await axios.get(
-            `${baseURL}api/v1/thongbao/seen/${id}`
-        )
+       const {data : message} = await axios.get( `${baseURL}api/v1/thongbao/seen/${id}`);
+        thongBao(message,false);
+        
     } catch (error) {
         console.log(error);
-        thongBao(error.response.data.message, true);
     }
     showThongBao(-1);
     showSoThongBao();
