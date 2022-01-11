@@ -604,7 +604,7 @@ public class UserApiAction extends ActionSupport {
     }
 
     // Đánh dấu thông báo đó đã đọc '
-    @Action(value = "/api/v1/user/thongbao_seen", results = {
+    @Action(value = "/api/v1/user/seenall", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String updateThongBaoStatus() throws IOException {

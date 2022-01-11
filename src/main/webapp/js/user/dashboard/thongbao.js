@@ -47,7 +47,7 @@ showThongBao(-1);
 document.querySelector("#danhDauDaDoc").addEventListener('click', async() => {
     try {
         await axios.get(
-            `${baseURL}api/v1/user/thongbao_seen`
+            `${baseURL}api/v1/user/seenall`
         )
     } catch (error) {
         console.log(error);
