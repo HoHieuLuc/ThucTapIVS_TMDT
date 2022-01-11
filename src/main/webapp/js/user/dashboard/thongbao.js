@@ -24,7 +24,6 @@ const showThongBao = async (status) => {
     catch (error) {
         console.log(error);
         //thongBao(error.response.data.message, true);
-        listThongBaoDOM.innerHTML = error.response.data.message;
     }
 }
 
