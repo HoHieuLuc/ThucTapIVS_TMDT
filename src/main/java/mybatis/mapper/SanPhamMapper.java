@@ -132,9 +132,9 @@ public interface SanPhamMapper {
             @Param("maSanPham") String maSanPham);
 
     // Thêm sản phẩm vô kho
-    final String ADD_SAN_PHAM = "INSERT INTO `san_pham`(`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) "
-            +
-            "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, #{maLoaiSanPham}, #{soLuong}, now(), #{soLuongDaBan})";
+    final String ADD_SAN_PHAM = "INSERT INTO san_pham " +
+            "VALUES (UUID(), #{maKhachHang}, #{tenSanPham}, #{moTa}, #{gia}, #{status}, " +
+            "#{maLoaiSanPham}, #{soLuong}, now(), #{soLuongDaBan})";
 
     @Insert(ADD_SAN_PHAM)
     @Options(useGeneratedKeys = true, keyProperty = "maSanPham")
@@ -142,7 +142,7 @@ public interface SanPhamMapper {
 
     // lấy id từ sản phẩm vừa tạo để insert ảnh sản phẩm
     final String GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP = "SELECT ma_san_pham FROM san_pham " +
-            "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham}" +
+            "WHERE ma_khach_hang = #{maKhachHang} AND ten_san_pham = #{tenSanPham} " +
             "LIMIT 1";
 
     @Select(GET_ID_SAN_PHAM_BY_MA_KH_AND_TEN_SP)
@@ -160,7 +160,7 @@ public interface SanPhamMapper {
     // sửa sản phẩm
     final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
             "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} " +
-            " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang} ;";
+            " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang};";
 
     @Update(UPDATE_SP_INFO)
     public int updateSanPham(SanPham sanpham);
@@ -247,7 +247,7 @@ public interface SanPhamMapper {
     final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";
 
     @Update(UPDATE_SP_STATUS)
-    public int updateSP_Status(
+    public int updateSanPhamStatus(
             @Param("status") int status,
             @Param("maSanPham") String maSanPham);
 

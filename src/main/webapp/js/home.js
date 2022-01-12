@@ -1,4 +1,4 @@
-const sanPhamDaXemDOM = document.querySelector('#sanPhamDaXem');
+const sanPhamVuaXemDOM = document.querySelector('#sanPhamVuaXem');
 const loaiSanPhamPhoBienDOM = document.querySelector('#loaiSanPhamPhoBien');
 const storePhoBienDOM = document.querySelector('#storeDuocDanhGiaCao');
 const sanPhamMoiDOM = document.querySelector('#sanPhamMoi');
@@ -80,6 +80,45 @@ const showNewestProduct = async () => {
     }
 }
 
+const showRecentlyViewedProduct = () => {
+    const danhSachSanPhamVuaXem = JSON.parse(localStorage.getItem('danhSachSanPhamVuaXem'));
+    if (danhSachSanPhamVuaXem) {
+        const allRecentlyViewedProduct = danhSachSanPhamVuaXem.map((sanpham) => {
+            const { maSanPham, tenSanPham, donGia, hinhAnh } = sanpham;
+            const giaVND = donGia.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+            });
+            return `
+                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-2">
+                    <a href="${baseURL}sanpham/${maSanPham}" 
+                        class="text-decoration-none text-dark text-center" 
+                    >
+                        <img src="${baseURL}images/product/${hinhAnh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${tenSanPham}">
+                        <div class="tlt-overflow-eclipse" title="${tenSanPham}">
+                            ${tenSanPham}
+                        </div>
+                        <div>${giaVND}</div>
+                    </a>
+                    <button type="button" data-masanpham="${maSanPham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
+                        <i class="fas fa-cart-plus"></i>
+                    </button>
+                </div>
+            `;
+        }).join('');
+        const sanPhamVuaXemHtml = `
+            <div class="d-flex">
+                <h4>Sản phẩm vừa xem </h4>
+            </div>
+            <div class="row">
+                ${allRecentlyViewedProduct}
+            </div>
+        `;
+        sanPhamVuaXemDOM.innerHTML = sanPhamVuaXemHtml;
+    }
+}
+
+showRecentlyViewedProduct();
 showLoaiSanPhamPhoBien();
 showTopStore();
 showNewestProduct();

@@ -370,7 +370,7 @@ public class UserApiAction extends ActionSupport {
         // nếu status hiện tại = 0 (còn trong kho)
         // và status người dùng đưa qua là -1 hoặc 1 thì mới cập nhật
         if (statusHienTai == 0 && status != 0) {
-            sanPhamMapper.updateSP_Status(status, maSanPham);
+            sanPhamMapper.updateSanPhamStatus(status, maSanPham);
             if (status == 1) {
                 message = "Bạn đã gửi yêu cầu duyệt sản phẩm";
             } else {
@@ -380,14 +380,14 @@ public class UserApiAction extends ActionSupport {
         // đang yêu cầu duyệt thì nút duy nhất là hủy yêu cầu
         // tức chuyển status về lại 0
         else if (statusHienTai == 1) {
-            sanPhamMapper.updateSP_Status(0, maSanPham);
+            sanPhamMapper.updateSanPhamStatus(0, maSanPham);
             message = "Bạn đã hủy yêu cầu duyệt sản phẩm";
         }
         // đang bán thì nút duy nhất là hủy bán
         // tức chuyển status về lại 0
         else if (statusHienTai == 2) {
             message = "Bạn đã ngừng bán sản phẩm";
-            sanPhamMapper.updateSP_Status(0, maSanPham);
+            sanPhamMapper.updateSanPhamStatus(0, maSanPham);
         }
         sqlSession.commit();
         sqlSession.close();
