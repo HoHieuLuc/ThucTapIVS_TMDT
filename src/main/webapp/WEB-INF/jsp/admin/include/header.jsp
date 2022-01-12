@@ -187,7 +187,7 @@
             </ul>
           </li>
           <li class="nav-item">
-                <a href='<c:url value="/thongbao"/>' class="nav-link">
+                <a href='<c:url value="/thongbao"/>' class="nav-link" id="aside-thong-bao">
                   <i class="nav-icon fas fa-bell"></i>
                   <p>
                     Thông báo

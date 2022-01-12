@@ -70,7 +70,7 @@ public class GlobalAction extends ActionSupport {
     // Xem danh sách thông báo
     @Action(value = "/thongbao", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/thongbao/index.jsp")
-    })
+    }, interceptorRefs = { @InterceptorRef("authStack") })
     public String viewThongBaoChuaDoc() {
         return SUCCESS;
     }

@@ -209,11 +209,11 @@
                       <i class="far fa-circle nav-icon"></i>
                       <p>Đơn đặt hàng của tôi</p>
                     </a>
-                  </li>p
+                  </li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a href='<c:url value="/thongbao"/>' class="nav-link">
+                <a href='<c:url value="/thongbao"/>' class="nav-link" id="aside-thong-bao">
                   <i class="nav-icon fas fa-bell"></i>
                   <p>
                     Thông báo

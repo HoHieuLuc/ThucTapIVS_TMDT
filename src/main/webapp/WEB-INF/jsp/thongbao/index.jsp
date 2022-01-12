@@ -15,7 +15,7 @@
 <div>
         <select name="status" class="form-select" id="thongbao-filter">
             <option value="0">Chưa đọc</option>
-            <option value="-1">Tất cả</option>
+            <option value="-1" selected>Tất cả</option>
         </select>
 </div>
 <table class="tlt-fixed-table table table-striped table-hover">
@@ -33,8 +33,7 @@
 
 
 <script>
-    document.getElementById('aside-san-pham').classList.add('active');
-    document.getElementById('aside-kho-hang').classList.add('menu-is-opening', 'menu-open');
+    document.getElementById('aside-thong-bao').classList.add('active');
 </script>
 
 <%-- Kiểm tra footer cho từng đối tượng user hoặc admin --%>

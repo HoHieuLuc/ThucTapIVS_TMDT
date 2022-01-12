@@ -131,12 +131,13 @@ if (thongbaoTableDOM) {
         }
     }
     showThongBaoTable(-1);
-}
 
-// Nếu phát hiện có #thongbao-filter 
-if (thongBaoFilterDOM) {
+    // Bộ lọc thông báo
     thongBaoFilterDOM.addEventListener('change', () => {
         showThongBaoTable(thongBaoFilterDOM.value);
     })
 }
+
+
+
 
