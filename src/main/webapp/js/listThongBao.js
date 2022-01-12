@@ -65,15 +65,8 @@ document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
     showSoThongBao();
 })
 
-//Mở list thông báo chưa đọc, status = 0
-document.querySelector("#listChuaDoc").addEventListener('click', () => {
-    showThongBao(0);
-})
 
-//Mở list tất cả thông báo 
-document.querySelector("#listAll").addEventListener('click', () => {
-    showThongBao(-1);
-})
+
 
 //Giữ cho dropdown menu không bị đóng khi nhấn vô mấy button
 $('body > div.wrapper > nav > ul.navbar-nav.ml-auto > li.nav-item.dropdown.me-2 > ul').on({

@@ -69,17 +69,6 @@
                 </span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <div class=" d-flex justify-content-start p-2">
-                  <div class="p-1">
-                    <button type="button" class="btn btn-outline-primary" id="listAll" >Tất cả</button>
-                  </div>
-
-                  <div class="p-1">
-                    <button type="button" class="btn btn-outline-danger" id="listChuaDoc">Chưa đọc</button>
-                  </div>
-
-                </div>
-
               <li class="list-group list-group-numbered" id="listThongBao">
                   Danh sách thông báo đang trống
             </li>
@@ -192,6 +181,27 @@
               </li>
             </ul>
           </li>
+                       <li class="nav-item" id="aside-menu-thong-bao">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-bell"></i>
+                  <p>
+                    Thông Báo
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href='<c:url value="/user/seller/dathang"/>' class="nav-link" id="aside-thong-bao-all">
+                      <i class="far fa-th-list nav-icon "></i>
+                      <p>Tất cả</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href='<c:url value="/user/buyer/dathang"/>' class="nav-link" id="aside-thong-bao-unseen">
+                      <i class="far fa-eye-slash nav-icon"></i>
+                      <p>Chưa đọc</p>
+                    </a>
+                  </li>
           
           <li class="nav-item">
             <a href='<c:url value="/"/>' class="nav-link">
