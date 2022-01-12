@@ -78,7 +78,7 @@
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
-          <section class="col-lg-7 connectedSortable ui-sortable bg-danger">
+          <section class="col-lg-7 connectedSortable ui-sortable">
           <!-- Demo trải nghiệm sơ đồ pie -->
               <div class="card">
                 <canvas id="pieChart" width="400" height="400"></canvas>
@@ -86,7 +86,7 @@
           </section>
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-5 connectedSortable ui-sortable bg-success">
+          <section class="col-lg-5 connectedSortable ui-sortable">
             <!-- /.card -->
           </section>
 
