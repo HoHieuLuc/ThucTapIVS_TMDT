@@ -136,7 +136,7 @@ if (thongbaoTableDOM) {
 // Nếu phát hiện có #thongbao-filter 
 if (thongBaoFilterDOM) {
     thongBaoFilterDOM.addEventListener('change', () => {
-        showThongBao(thongBaoFilterDOM.value);
+        showThongBaoTable(thongBaoFilterDOM.value);
     })
 }
 
