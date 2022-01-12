@@ -21,6 +21,8 @@
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 <!-- Script xử lý thông báo -->
 <script src='<c:url value="/js/listThongBao.js"/>'></script>
+<!-- Script vẽ sơ đồ  -->
+ <script src='<c:url value="/js/admin/thongke/thongke.js"/>'></script>
 
 </body>
 </html>
