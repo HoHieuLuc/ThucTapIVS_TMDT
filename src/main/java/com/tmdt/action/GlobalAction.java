@@ -68,7 +68,7 @@ public class GlobalAction extends ActionSupport {
     }
 
     // Xem danh sách thông báo
-    @Action(value = "/thongbao/", results = {
+    @Action(value = "/thongbao", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/thongbao/index.jsp")
     })
     public String viewThongBaoChuaDoc() {
