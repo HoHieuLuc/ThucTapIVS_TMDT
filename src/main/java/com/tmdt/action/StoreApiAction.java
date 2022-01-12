@@ -22,6 +22,10 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.KhachHangMapper;
 import mybatis.mapper.SanPhamMapper;
 
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
 public class StoreApiAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private String username;
@@ -30,6 +34,9 @@ public class StoreApiAction extends ActionSupport {
     private String order;
     private int page;
     private int rowsPerPage;
+    private String maSanPham;
+    private int maLoaiSanPham;
+    private Integer maLoaiCha;
 
     // region Getter and Setter
     public String getUsername() {
@@ -107,6 +114,33 @@ public class StoreApiAction extends ActionSupport {
 
     public void setRowsPerPage(int rowsPerPage) {
         this.rowsPerPage = rowsPerPage;
+    }
+
+    public String getMaSanPham() {
+        return maSanPham;
+    }
+
+    public void setMaSanPham(String maSanPham) {
+        this.maSanPham = maSanPham;
+    }
+
+    public int getMaLoaiSanPham() {
+        return maLoaiSanPham;
+    }
+
+    public void setMaLoaiSanPham(int maLoaiSanPham) {
+        this.maLoaiSanPham = maLoaiSanPham;
+    }
+
+    public Integer getMaLoaiCha() {
+        if (maLoaiCha == null){
+            return 0;
+        }
+        return maLoaiCha;
+    }
+
+    public void setMaLoaiCha(Integer maLoaiCha) {
+        this.maLoaiCha = maLoaiCha;
     }
     // endregion
 
@@ -193,6 +227,26 @@ public class StoreApiAction extends ActionSupport {
         List<Map<String, Object>> listStore = khachHangMapper.getTopStore();
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("topStores", listStore);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // api lấy sản phẩm cùng store để gợi ý cho người dùng
+    @Action(value = "/api/v1/store/{username}/products/suggested", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getSameStoreProducts() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        Integer _maLoaiCha = getMaLoaiCha();
+        System.out.println("ma loai cha: " + _maLoaiCha);
+        System.out.println("ma loai san pham: " + maLoaiSanPham);
+        System.out.println("username: " + username);
+        System.out.println("ma san pham: " + maSanPham);
+        List<Map<String, Object>> sanPhamGoiYCungStore = sanPhamMapper.getSanPhamGoiYCungStore(
+            username, maSanPham, maLoaiSanPham, _maLoaiCha);
+        sqlSession.close();
+        jsonRes.put("products", sanPhamGoiYCungStore);
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }
