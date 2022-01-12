@@ -12,11 +12,11 @@
 				<a href="./dathang" class="btn btn-primary btn-lg w-100 my-3">Tới trang đặt hàng</a>
 				<div class="d-flex justify-content-between mb-3">
 					<div>Số sản phẩm</div>
-					<div id="tongSoSanPham"></div>
+					<div id="tongSoSanPham">0</div>
 				</div>
 				<div class="d-flex justify-content-between mb-3">
 					<div>Tổng tiền</div>
-					<div id="tongTien"></div>
+					<div id="tongTien">0</div>
 				</div>
 			</div>
 		</div>

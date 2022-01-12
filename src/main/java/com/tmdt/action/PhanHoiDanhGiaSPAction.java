@@ -21,11 +21,23 @@ import org.apache.struts2.convention.annotation.*;
 
 import mybatis.mapper.PhanHoiDanhGiaSPMapper;
 
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+        "namespace", "/",
+        "actionName", "bad-request"
+})
 public class PhanHoiDanhGiaSPAction extends ActionSupport {
+    private int maPhanHoi;
     private int maDanhGia;
     private String noiDung;
 
-    // Begin region setter getttẻr
+    // region Getter and Setter
+    public int getMaPhanHoi() {
+        return maPhanHoi;
+    }
+
+    public void setMaPhanHoi(int maPhanHoi) {
+        this.maPhanHoi = maPhanHoi;
+    }
 
     public int getMaDanhGia() {
         return maDanhGia;
@@ -42,8 +54,7 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
     public void setNoiDung(String noiDung) {
         this.noiDung = noiDung;
     }
-
-    // End region Setter getter
+    // endregion
 
     // Khởi tạo Session, Session SQL, Connect DB
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -59,17 +70,22 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
 
     // Kiểm tra hợp lệ các trường nhập liệu
     public boolean isValid() {
-        return between(noiDung, 2, 255);
+        return noiDung != null && between(noiDung, 2, 255);
     }
 
     // Action thêm đánh giá sản phẩm
-    @Action(value = "/api/v1/phanhoi/sanpham/submit", results = {
+    @Action(value = "/api/v1/phanhoi/submit", results = {
             @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "khachHangStack"),
     })
     public String danhGiaSPSubmit() throws IOException {
-        // Mã khách hàng lưu vô session
+        // Kiểm tra đã đăng nhập chưa
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        if (loggedIn == null || !loggedIn) {
+            return CustomError.createCustomError("Bạn chưa đăng nhập", 401, response);
+        }
+        if ((int) session.getAttribute("level") > 0) {
+            return CustomError.createCustomError("Bạn không thể làm điều này", 403, response);
+        }
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
         if (!isValid()) {
             return CustomError.createCustomError("Nội dung phải từ 2 đến 255 kí tự", 400, response);
@@ -89,7 +105,6 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String getPhanHoiDGSP() throws IOException {
-        System.out.println("maDanhGia la " + maDanhGia);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         PhanHoiDanhGiaSPMapper phanHoiDanhGiaSpMapper = sqlSession.getMapper(PhanHoiDanhGiaSPMapper.class);
 
@@ -104,4 +119,78 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    @Action(value = "/api/v1/phanhoi/{maPhanHoi}/action", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getPhanHoiDGSPByMaDanhGia() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        PhanHoiDanhGiaSPMapper phanHoiDanhGiaSpMapper = sqlSession.getMapper(PhanHoiDanhGiaSPMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        Integer level = (Integer) session.getAttribute("level");
+        boolean yours = false;
+
+        if (loggedIn != null && loggedIn && level == 0) {
+            int maKhachHang = (int) session.getAttribute("maNguoiDung");
+            if (phanHoiDanhGiaSpMapper.laPhanHoiCuaKhachHang(maPhanHoi, maKhachHang) == 1) {
+                yours = true;
+            }
+        }
+        sqlSession.close();
+        jsonRes.put("yours", yours);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // cập nhật phản hồi
+    @Action(value = "/api/v1/phanhoi/{maPhanHoi}/update", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+    public String updatePhanHoiDGSP() throws IOException {
+        if (!isValid()) {
+            return CustomError.createCustomError("Nội dung phải từ 2 đến 255 kí tự", 400, response);
+        }
+        System.out.println(noiDung);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        PhanHoiDanhGiaSPMapper phanHoiDanhGiaSpMapper = sqlSession.getMapper(PhanHoiDanhGiaSPMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+
+        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+
+        int numb = phanHoiDanhGiaSpMapper.capNhatPhanHoi(maPhanHoi, noiDung, maKhachHang);
+        if (numb == 0) {
+            return CustomError.createCustomError("Bạn không được phép làm điều này", 403, response);
+        }
+
+        sqlSession.commit();
+        sqlSession.close();
+        jsonRes.put("message", "Cập nhật phản hồi thành công");
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // xóa phản hồi
+    @Action(value = "/api/v1/phanhoi/{maPhanHoi}/delete", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+    public String deletePhanHoiDGSP() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        PhanHoiDanhGiaSPMapper phanHoiDanhGiaSpMapper = sqlSession.getMapper(PhanHoiDanhGiaSPMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+
+        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+
+        int numb = phanHoiDanhGiaSpMapper.xoaPhanHoi(maPhanHoi, maKhachHang);
+        if (numb == 0) {
+            return CustomError.createCustomError("Bạn không được phép làm điều này", 403, response);
+        }
+
+        sqlSession.commit();
+        sqlSession.close();
+        jsonRes.put("message", "Xóa phản hồi thành công");
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
 }

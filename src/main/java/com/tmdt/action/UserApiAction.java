@@ -52,6 +52,7 @@ public class UserApiAction extends ActionSupport {
     private Date tuNgay;
     private Date denNgay;
     private int id;
+    private String maNhanHang;
 
     // region Getter and Setter
     public String getMaSanPham() {
@@ -199,6 +200,14 @@ public class UserApiAction extends ActionSupport {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getMaNhanHang() {
+        return maNhanHang;
+    }
+
+    public void setMaNhanHang(String maNhanHang) {
+        this.maNhanHang = maNhanHang;
     }
     // endregion
 
@@ -479,6 +488,9 @@ public class UserApiAction extends ActionSupport {
         DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         int maNguoiBan = (int) session.getAttribute("maNguoiDung");
+        if (datHangMapper.getCurrentStatusChiTietDatHangSeller(id, maSanPham, maNguoiBan) == 2) {
+            return CustomError.createCustomError("Đơn đặt hàng đã được nhận", 403, response);
+        }
         int update = datHangMapper.capNhatTinhTrangChiTietDatHangNguoiBan(status, id, maSanPham, maNguoiBan);
         if (update == 0) {
             return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
@@ -545,7 +557,7 @@ public class UserApiAction extends ActionSupport {
         DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         int maNguoiMua = (int) session.getAttribute("maNguoiDung");
-        Integer currentStatus = datHangMapper.getStatusCurrentChiTietDonDatHang(maNguoiMua, id, maSanPham);
+        Map<String, Object> currentStatus = datHangMapper.getStatusAndMaNhanHangCTDHNguoiMua(maNguoiMua, id, maSanPham);
         // không tìm thấy status tức là chi tiết đặt hàng ko tồn tại
         // hoặc chi tiết đặt hàng đó ko phải của người mua
         // status hiện tại = 1 là đang vận chuyển, mình chỉ cho 1 nút duy nhất là "đã
@@ -554,9 +566,12 @@ public class UserApiAction extends ActionSupport {
         // status hiện tại là 0 là đang chờ, lúc này mình có thể hủy
         if (currentStatus == null) {
             return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
-        } else if (currentStatus == 1) {
+        } else if ((int) currentStatus.get("status") == 1) {
+            if (!maNhanHang.equals(currentStatus.get("ma_nhan_hang"))) {
+                return CustomError.createCustomError("Mã nhận hàng không chính xác", 401, response);
+            }
             status = 2;
-        } else if (currentStatus == 0) {
+        } else if ((int) currentStatus.get("status") == 0) {
             status = -1;
         }
         int update = datHangMapper.capNhatTinhTrangChiTietDatHangNguoiMua(maNguoiMua, id, maSanPham, status);

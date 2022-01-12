@@ -23,6 +23,12 @@
       </script>
 
       <style>
+        .tlt-product-description {
+          max-height: 20em;
+          white-space: pre-line;
+          overflow-y: scroll;
+          display: block;
+        }
         .tlt-description {
           max-height: 4rem;
           white-space: pre-line;
@@ -83,7 +89,7 @@
       </div>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href='<c:url value="/" />'>
             <img src='<c:url value="/images/brand_logo.png" />' alt="" width="50" height="25" class="d-inline-block align-text-top">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -175,13 +181,5 @@
           </div>
         </div>
       </nav>
-
-      <hr>
-
-      </div>
-      </nav>
-
-
-
-      <!-- Đừng thêm gì dưới đoạn này -->
-      <main role="main" class="container-fluid" id="main">
+    <!-- Đừng thêm gì dưới đoạn này -->
+  <main role="main" class="container-fluid mt-3" id="main">

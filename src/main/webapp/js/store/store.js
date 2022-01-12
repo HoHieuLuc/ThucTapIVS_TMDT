@@ -56,7 +56,7 @@ const config = (myData, myLabels) => ({
     },
 });
 
-const showStoreInfo = async (skip = false) => {
+const showStoreInfo = async () => {
     try {
         const {
             data: { store_info, product_rating },
@@ -65,20 +65,14 @@ const showStoreInfo = async (skip = false) => {
             so_dien_thoai, avatar, twitter_link, facebook_link,
             personal_link, rating, so_danh_gia,
         } = store_info;
-        if (skip) {
-            ratingDOM.innerHTML =
-                rating === undefined
-                    ? "Chưa có đánh giá"
-                    : `${rating} &#11088; (${so_danh_gia} đánh giá)`;
-            return;
-        }
-        avatarDOM.src = `${baseURL}images/user/${avatar}`;
-        tenNguoiBanDOM.textContent = ten;
-        gioiThieuDOM.textContent = gioi_thieu;
+
         ratingDOM.innerHTML =
             rating === undefined
                 ? "Chưa có đánh giá"
-                : `${rating} &#11088; (${so_danh_gia} đánh giá)`;
+                : `${(Math.round(rating * 10) / 10)} &#9733; (${so_danh_gia} đánh giá)`;
+        avatarDOM.src = `${baseURL}images/user/${avatar}`;
+        tenNguoiBanDOM.textContent = ten;
+        gioiThieuDOM.textContent = gioi_thieu;
         ngayThamGiaDOM.textContent = `${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}`;
         soDienThoaiDOM.textContent = so_dien_thoai;
         emailDOM.textContent = email;
@@ -160,7 +154,7 @@ const showProductList = async () => {
                 style: "currency",
                 currency: "VND",
             });
-            const xepHang = xep_hang === undefined ? "Chưa có đánh giá" : `${xep_hang} &#11088;`;
+            const xepHang = xep_hang === undefined ? "Chưa có đánh giá" : `${(Math.round(xep_hang * 10) / 10)} &#9733;`;
             return `
                 <div class="row mt-3">
                     <a href="${baseURL}sanpham/${ma_san_pham}" 
