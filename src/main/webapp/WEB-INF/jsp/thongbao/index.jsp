@@ -3,14 +3,10 @@
 <jsp:include page="/WEB-INF/jsp/user/include/header.jsp" />
 
 <div>
-    <form class="searchForm input-group mb-3">
-        <input name="search" type="text" class="form-control w-50" placeholder="Tìm kiếm">
-        <select name="status" class="form-select">
+        <select name="status" class="form-select" id="thongbao-filter">
             <option value="0">Chưa đọc</option>
             <option value="-1">Tất cả</option>
         </select>
-        <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
-    </form>
 </div>
 <table class="tlt-fixed-table table table-striped table-hover">
     <thead>

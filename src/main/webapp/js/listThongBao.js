@@ -2,6 +2,7 @@ const listThongBaoDOM = document.querySelector("#listThongBao");
 const soThongBaoDOM = document.querySelector("#soThongBao");
 let danhDauDaDocCuThe;
 const thongbaoTableDOM = document.querySelector("#thongbao-table");
+const thongBaoFilterDOM = document.querySelector("#thongbao-filter");
 
 const showThongBao = async (status) => {
     try {
@@ -130,5 +131,12 @@ if (thongbaoTableDOM) {
         }
     }
     showThongBaoTable(-1);
+}
+
+// Nếu phát hiện có #thongbao-filter 
+if (thongBaoFilterDOM) {
+    thongBaoFilterDOM.addEventListener('change', () => {
+        showThongBao(thongBaoFilterDOM.value);
+    })
 }
 
