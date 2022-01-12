@@ -212,28 +212,13 @@
                   </li>p
                 </ul>
               </li>
-              <li class="nav-item" id="aside-menu-thong-bao">
-                <a href="#" class="nav-link">
+              <li class="nav-item">
+                <a href='<c:url value="/thongbao"/>' class="nav-link">
                   <i class="nav-icon fas fa-bell"></i>
                   <p>
-                    Thông Báo
-                    <i class="fas fa-angle-left right"></i>
+                    Thông báo
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href='<c:url value="/thongbao/all"/>' class="nav-link" id="aside-thong-bao-all">
-                      <i class="fas fa-stream nav-icon "></i>
-                      <p>Tất cả</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href='<c:url value="/thongbao/unseen"/>' class="nav-link" id="aside-thong-bao-unseen">
-                      <i class="far fa-eye-slash nav-icon"></i>
-                      <p>Chưa đọc</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
               <li class="nav-item">
                 <a href='<c:url value="/"/>' class="nav-link">

@@ -29,7 +29,7 @@
 </table>
 <div id="pagination" class="d-flex justify-content-center"></div>
 
-<script src='<c:url value="/js/user/khohang/index.js"/>'></script>
+<script src='<c:url value="/js/listThongBao.js"/>'></script>
 <script>
     document.getElementById('aside-san-pham').classList.add('active');
     document.getElementById('aside-kho-hang').classList.add('menu-is-opening', 'menu-open');
