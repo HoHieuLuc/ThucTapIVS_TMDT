@@ -69,6 +69,11 @@
                 </span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <div class=" d-flex justify-content-start p-2">
+                  <div class="p-1">
+                 <h3>   Thông báo gần đây </h3>
+                  </div>
+                </div>
               <li class="list-group list-group-numbered" id="listThongBao">
                   Danh sách thông báo đang trống
             </li>
@@ -192,7 +197,7 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href='<c:url value="/user/seller/dathang"/>' class="nav-link" id="aside-thong-bao-all">
-                      <i class="far fa-th-list nav-icon "></i>
+                      <i class="fas fa-stream nav-icon "></i>
                       <p>Tất cả</p>
                     </a>
                   </li>
