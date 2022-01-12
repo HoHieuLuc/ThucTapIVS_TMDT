@@ -222,13 +222,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href='<c:url value="/user/seller/dathang"/>' class="nav-link" id="aside-thong-bao-all">
+                    <a href='<c:url value="/thongbao/all"/>' class="nav-link" id="aside-thong-bao-all">
                       <i class="fas fa-stream nav-icon "></i>
                       <p>Tất cả</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href='<c:url value="/user/buyer/dathang"/>' class="nav-link" id="aside-thong-bao-unseen">
+                    <a href='<c:url value="/thongbao/unseen"/>' class="nav-link" id="aside-thong-bao-unseen">
                       <i class="far fa-eye-slash nav-icon"></i>
                       <p>Chưa đọc</p>
                     </a>

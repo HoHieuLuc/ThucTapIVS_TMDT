@@ -67,6 +67,22 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // Xem danh sách thông báo chưa đọc
+    @Action(value = "/thongbao/unseen", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/thongbao/unseen.jsp")
+    })
+    public String viewThongBaoChuaDoc() {
+        return SUCCESS;
+    }
+
+    // Xem danh sách tất cả thông báo
+    @Action(value = "/thongbao/all", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/thongbao/all.jsp")
+    })
+    public String viewThongBaoAll() {
+        return SUCCESS;
+    }
+
     /*
      * =============================================================================
      * =============
