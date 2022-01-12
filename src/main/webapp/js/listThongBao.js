@@ -1,6 +1,7 @@
 const listThongBaoDOM = document.querySelector("#listThongBao");
 const soThongBaoDOM = document.querySelector("#soThongBao");
 let danhDauDaDocCuThe;
+const thongbaoTableDOM = document.querySelector("#thongbao-table");
 
 const showThongBao = async (status) => {
     try {
@@ -9,6 +10,7 @@ const showThongBao = async (status) => {
             listThongBaoDOM.innerHTML = `Không có thông báo nào`;
             return;
         }
+        //Map cho thông báo gần đây
         const allThongBaos = thong_baos.map(data => {
 
             const { noi_dung, nguoi_gui, ngay_tao, status,ma_tb } = data;
