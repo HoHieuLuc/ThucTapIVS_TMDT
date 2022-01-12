@@ -32,8 +32,22 @@ public interface ThongKeMapper {
 
     @Select(THONG_KE_SO_DON_DAT_HANG_CHO_KHACH_HANG_TUY_CHON)
     public List<Map<String, Object>> thongKeSoDonDatHangChoKhachHangTuyChon(
-        @Param("maKhachHang") int maKhachHang,
-        @Param("tuNgay") Date tuNgay,
-        @Param("denNgay") Date denNgay
-    );
+            @Param("maKhachHang") int maKhachHang,
+            @Param("tuNgay") Date tuNgay,
+            @Param("denNgay") Date denNgay);
+
+    // 4 truy vấn để lấy tổng số đánh giá sản phẩm, tổng số sản phẩm, tổng số thành
+    // viên, tổng số đơn đặt hàng
+    final String GET_4_DATA_THONG_KE = "SELECT 	CASE WHEN (1=1) THEN " +
+            "(SELECT COUNT(ma_danh_gia) FROM danh_gia_san_pham) END AS so_danh_gia, " +
+            "	CASE WHEN (1=1) THEN " +
+            "(SELECT COUNT(ma_san_pham) FROM san_pham) END AS so_san_pham, " +
+            "    	CASE WHEN (1=1) THEN " +
+            "(SELECT COUNT(ma_quyen) FROM `tai_khoan`  WHERE ma_quyen = 'KH') END AS so_thanh_vien, " +
+            "   	CASE WHEN (1=1) THEN  " +
+            "(SELECT COUNT(ma_dat_hang) FROM dat_hang) END AS so_don_dat_hang; ";
+
+    @Select(GET_4_DATA_THONG_KE)
+    public Map<String, Object> get4DataThongKe();
+
 }
