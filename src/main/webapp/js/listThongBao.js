@@ -13,10 +13,10 @@ const showThongBao = async (status) => {
         //Map cho thông báo gần đây
         const allThongBaos = thong_baos.map(data => {
 
-            const { noi_dung, nguoi_gui, ngay_tao, status,ma_tb } = data;
+            const { noi_dung, nguoi_gui, ngay_tao, status, ma_tb } = data;
             //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
             if (status.includes("bg-secondary") || status.includes("bg-body")) danhDauDaDocCuThe = `<button type="button" class="btn btn-primary"  data-id="${ma_tb}" >Đã đọc</button>`;
-                else danhDauDaDocCuThe = ``;
+            else danhDauDaDocCuThe = ``;
             return `
                 <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
                     <div class="ms-2 me-auto">
@@ -57,9 +57,9 @@ showThongBao(-1);
 document.querySelector("#danhDauDaDoc").addEventListener('click', async () => {
     try {
         // -9999 đánh dấu toàn bộ đã đọc
-       const {data : {message} } = await axios.get( `${baseURL}api/v1/thongbao/seen/-9999`);
-        thongBao(message,false);
-        
+        const { data: { message } } = await axios.get(`${baseURL}api/v1/thongbao/seen/-9999`);
+        thongBao(message, false);
+
     } catch (error) {
         console.log(error);
     }
@@ -82,15 +82,53 @@ listThongBaoDOM.addEventListener('click', async (event) => {
     const target = event.target;
     const id = target.dataset.id;
     try {
-        const {data : {message} } = await axios.get( `${baseURL}api/v1/thongbao/seen/${id}`);
-         thongBao(message,false);
-         
-     } catch (error) {
-         console.log(error);
-         thongBao(error.response.data.message,true);
-     }
-     showThongBao(-1);
-     showSoThongBao();
+        const { data: { message } } = await axios.get(`${baseURL}api/v1/thongbao/seen/${id}`);
+        thongBao(message, false);
+
+    } catch (error) {
+        console.log(error);
+        thongBao(error.response.data.message, true);
+    }
+    showThongBao(-1);
+    showSoThongBao();
 })
 
+
+//Nếu phát hiện element có id="thongbao-table"
+if (thongbaoTableDOM) {
+    const showThongBaoTable = async (status) => {
+        try {
+            const { data: { thong_baos } } = await axios.get(`${baseURL}api/v1/thongbao/${status}`);
+            if (thong_baos.length === 0) {
+                thongbaoTableDOM.innerHTML = `Không có thông báo nào`;
+                return;
+            }
+
+            const allThongBaos = thong_baos.map(data => {
+
+                const { noi_dung, nguoi_gui, ngay_tao, status, ma_tb } = data;
+
+                //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
+                if (status.includes("bg-secondary") || status.includes("bg-body")) danhDauDaDocCuThe = `<button type="button" class="btn btn-primary"  data-id="${ma_tb}" >Đã đọc</button>`;
+                else danhDauDaDocCuThe = ``;
+
+                return `
+                    <tr>
+                            <td>${noi_dung}</td>
+                            <td>${nguoi_gui}</td>
+                            <td>${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} </td>
+                            <td>${danhDauDaDocCuThe}</td>
+                    </tr>
+                    `;
+
+            }).join('');
+            thongbaoTableDOM.innerHTML = allThongBaos;
+        }
+        catch (error) {
+            console.log(error);
+            //thongBao(error.response.data.message, true);
+        }
+    }
+    showThongBaoTable(-1);
+}
 
