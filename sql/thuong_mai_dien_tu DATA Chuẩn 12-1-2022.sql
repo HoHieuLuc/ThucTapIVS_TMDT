@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2022 at 04:58 AM
+-- Generation Time: Jan 12, 2022 at 05:15 AM
 -- Server version: 8.0.27
 -- PHP Version: 8.1.1
 
@@ -401,27 +401,27 @@ INSERT INTO `loai_san_pham` (`ma_loai_sp`, `ten_loai_sp`, `anh`, `ma_loai_cha`) 
 (3, 'Thời Trang Nữ', '3.png', NULL),
 (4, 'Máy tính & Laptop', '4.png', NULL),
 (5, 'Phương tiện di chuyển', '5.png', NULL),
-(10, 'Điện thoại', '', 1),
-(11, 'Máy tính bảng', '', 1),
-(12, 'Sạc dự phòng', '', 1),
-(13, 'Áo vest', '', 2),
-(14, 'Quần Jeans', '', 2),
-(15, 'Áo ba lỗ', '', 2),
-(16, 'Thắt lưng', '', 2),
-(17, 'Váy/Đầm', '', 3),
-(18, 'Đồ lót', '', 3),
-(19, 'Đồ bầu', '', 3),
-(20, 'Máy tính bàn', '', 4),
-(21, 'Laptop', '', 4),
-(22, 'Phụ kiện máy tính', '', 4),
-(23, 'Ô tô', '', 5),
-(24, 'Xe máy', '', 5),
-(25, 'Xe đạp', '', 5),
-(27, 'Cha', '', NULL),
-(28, 'Con', '', 27),
-(29, 'Cháu', '', 28),
-(30, 'Cháu 2', '', 28),
-(31, 'Con 2', '', 27);
+(10, 'Điện thoại', '6.png', 1),
+(11, 'Máy tính bảng', '7.png', 1),
+(12, 'Sạc dự phòng', '8.png', 1),
+(13, 'Áo vest', '9.png', 2),
+(14, 'Quần Jeans', '10.png', 2),
+(15, 'Áo ba lỗ', '11.png', 2),
+(16, 'Thắt lưng', '12.png', 2),
+(17, 'Váy/Đầm', '13.png', 3),
+(18, 'Đồ lót', '14.png', 3),
+(19, 'Đồ bầu', '15.png', 3),
+(20, 'Máy tính bàn', '16.png', 4),
+(21, 'Laptop', '17.png', 4),
+(22, 'Phụ kiện máy tính', '18.png', 4),
+(23, 'Ô tô', '19.png', 5),
+(24, 'Xe máy', '20.png', 5),
+(25, 'Xe đạp', '21.png', 5),
+(27, 'Hoa củ quả', '22.png', NULL),
+(28, 'Sầu Riêng', '23.png', 27),
+(29, 'Thơm', '24.png', 28),
+(30, 'Dú Sữa', '25.png', 28),
+(31, 'Mận', '26.png', 27);
 
 -- --------------------------------------------------------
 
