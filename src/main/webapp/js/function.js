@@ -12,9 +12,11 @@ const removeURLparam = (key) => {
 
 const buildPagination = (page, totalPages, maxPages, callback) => {
     // maxPages là số nút điều hướng tối đa sẽ hiển thị
-    // chôm bên bài php qua
     if (totalPages <= 1) {
         return "";
+    }
+    if(page === undefined){
+        page = 1;
     }
     page = parseInt(page);
     let paginationHTML = "";
