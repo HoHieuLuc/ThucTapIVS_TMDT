@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2022 at 05:29 AM
+-- Generation Time: Jan 12, 2022 at 05:32 AM
 -- Server version: 8.0.27
 -- PHP Version: 8.1.1
 
@@ -365,7 +365,6 @@ INSERT INTO `khach_hang` (`ma_khach_hang`, `ten`, `dia_chi`, `id_tai_khoan`, `ti
 (2, 'Hồ Hiểu Lực', 'Newyork', 5, 0, 'Đây là giới thiệu store Hồ Hiểu Lực'),
 (6, 'Quang Thế Bảo', 'Cam Ranh', 10, 0, 'Đây là giới thiệu store của Quang Thế Bảo'),
 (8, 'Trường Gia Minh', 'Ninh Diêm', 13, 0, 'Đây là giới thiệu store của Trường Gia Minh'),
-(9, 'Hạ Châu Minh', 'Ninh Trung', 16, 0, 'Đây là giới thiệu của Hạ Châu Minh'),
 (10, 'Vũ Trọng Nghĩa', 'Ninh Phước', 18, 0, 'Đây là giới thiệu store của '),
 (11, 'fafafaf afa faf', 'Ninh Hà', 19, 0, 'This is present text'),
 (15, 'Nguyễn Thị Test', 'Ninh Đông', 23, 0, 'This is present text'),
@@ -614,7 +613,6 @@ INSERT INTO `tai_khoan` (`id`, `username`, `password`, `email`, `ngay_tao`, `so_
 (7, 'admin', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'kingofika123@gmail.com', '2021-12-23 00:00:00', '5226262626', '2021-12-15', 0, 0, 0, 'admin', '3.png'),
 (10, 'trantest', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'x@x.x', '2021-12-23 00:00:00', '0987654321', '2021-12-23', 1, 0, 0, 'KH', '4.png'),
 (13, 'hohieuluc', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', '525ffa@ga.q', '2021-12-23 00:00:00', '636372726', '2021-12-08', 0, 0, 0, 'KH', '6.png'),
-(16, 'testtran', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'ggggg@ggg.ggg', '2021-12-23 00:00:00', '6374848363', '2021-12-15', 1, 0, 1, 'KH', '7.png'),
 (18, 'test1234', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', '52ddad5ffa@ga.q', '2021-12-24 00:00:00', '5252626262', '2021-12-15', 1, 0, 1, 'KH', '9.png'),
 (19, 'testtest123', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', '5hfhfha@ghaaf.fafaf', '2021-12-24 00:00:00', '526377262', '2021-12-08', 1, 0, 1, 'KH', '8.png'),
 (23, 'nguyenthitest', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'gakgag@gahgag.agag', '2021-12-24 00:00:00', '526372626', '2021-12-01', 0, 0, 1, 'KH', '10.png'),
@@ -651,9 +649,7 @@ INSERT INTO `thong_bao` (`ma_tb`, `id_nguoi_nhan`, `id_nguoi_gui`, `noi_dung`, `
 (4, 4, 7, 'Vì \"nội dung\" nên bạn bị nhắc nhở mà không tăng số lần cảnh cáo. Nếu tái phạm sẽ bị cảnh cáo', '2022-01-12 18:32:11', 1),
 (5, 4, 5, 'abc', '2022-01-11 10:19:16', 1),
 (6, 4, 10, '412412', '2022-01-11 10:19:34', 1),
-(8, 4, 16, 'xyz', '2022-01-11 10:19:58', 1),
-(9, 7, 32, 'aaaaa', '2022-01-11 15:45:13', 1),
-(10, 7, 16, 'abbb', '2022-01-11 15:45:13', 1);
+(9, 7, 32, 'aaaaa', '2022-01-11 15:45:13', 1);
 
 -- --------------------------------------------------------
 
