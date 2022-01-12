@@ -63,6 +63,8 @@ public class ThongBaoAction extends ActionSupport {
         }
 
         List<Map<String, Object>> listThongBao;
+        // mặc định  là toàn bộ thông báo, 0 là thông báo chưa đọc, -999 là 5 thông báo gần
+        // đây,999 là đếm số thông báo chưa đọc
         switch (status) {
             case 0:
                 listThongBao = thongBaoMapper.getAllThongBaoChuaDocs(idNguoiNhan);
@@ -71,6 +73,9 @@ public class ThongBaoAction extends ActionSupport {
                 int soThongBaoChuaDoc = thongBaoMapper.demSoThongBaoChuaDoc(idNguoiNhan);
                 jsonRes.put("chua_doc", soThongBaoChuaDoc);
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
+            case -999:
+                listThongBao = thongBaoMapper.getRecentlyThongBao(idNguoiNhan);
+                break;
             default:
                 listThongBao = thongBaoMapper.getAllThongBao(idNguoiNhan);
                 break;
@@ -104,9 +109,9 @@ public class ThongBaoAction extends ActionSupport {
 
             default:
                 // Đánh dấu đã đọc cho một thông báo cụ thể nào đó
-                int validate = thongBaoMapper.danhDauDaDoc(id,idNguoiNhan);
+                int validate = thongBaoMapper.danhDauDaDoc(id, idNguoiNhan);
                 if (validate == 0) {
-                    return CustomError.createCustomError("Thông báo không tồn tại",403,response);
+                    return CustomError.createCustomError("Thông báo không tồn tại", 403, response);
                 } else {
                     jsonRes.put("message", "Đánh dấu đã đọc thông báo thành công");
                 }
