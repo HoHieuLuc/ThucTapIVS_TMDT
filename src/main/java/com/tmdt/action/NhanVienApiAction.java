@@ -326,7 +326,7 @@ public class NhanVienApiAction {
                 thongKe = thongKeMapper.get4DataThongKe();
                 break;
             case 1:
-                thongKeMapper.getDataTrangThaiDatHang();
+                thongKe = thongKeMapper.getDataTrangThaiDatHang();
                 break;
             default:
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ",403,response);
