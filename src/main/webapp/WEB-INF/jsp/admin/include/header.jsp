@@ -69,17 +69,11 @@
                 </span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <div class=" d-flex justify-content-start p-2">
+              <div class=" d-flex justify-content-start p-2">
                   <div class="p-1">
-                    <button type="button" class="btn btn-outline-primary" id="listAll" >Tất cả</button>
+                 <h3>   Thông báo gần đây </h3>
                   </div>
-
-                  <div class="p-1">
-                    <button type="button" class="btn btn-outline-danger" id="listChuaDoc">Chưa đọc</button>
-                  </div>
-
                 </div>
-
               <li class="list-group list-group-numbered" id="listThongBao">
                   Danh sách thông báo đang trống
             </li>
@@ -191,6 +185,14 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+                <a href='<c:url value="/thongbao"/>' class="nav-link" id="aside-thong-bao">
+                  <i class="nav-icon fas fa-bell"></i>
+                  <p>
+                    Thông báo
+                  </p>
+                </a>
           </li>
           
           <li class="nav-item">
