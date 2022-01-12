@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="/WEB-INF/jsp/user/include/header.jsp" />
-
+<%-- Kiểm tra header cho từng đối tượng user hoặc admin --%>
+    <c:choose>
+        <%-- nhân viên --%>
+        <c:when test="${sessionScope.level > 0}">
+            <jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
+        </c:when>
+        <%-- khách hàng--%>
+        <c:otherwise>
+            <jsp:include page="/WEB-INF/jsp/user/include/header.jsp" />
+        </c:otherwise>
+    </c:choose>
+                    
 <div>
         <select name="status" class="form-select" id="thongbao-filter">
             <option value="0">Chưa đọc</option>
@@ -26,4 +36,16 @@
     document.getElementById('aside-san-pham').classList.add('active');
     document.getElementById('aside-kho-hang').classList.add('menu-is-opening', 'menu-open');
 </script>
-<jsp:include page="/WEB-INF/jsp/user/include/footer.jsp" />
+
+<%-- Kiểm tra footer cho từng đối tượng user hoặc admin --%>
+    <c:choose>
+        <%-- nhân viên --%>
+        <c:when test="${sessionScope.level > 0}">
+            <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
+        </c:when>
+        <%-- khách hàng--%>
+        <c:otherwise>
+            <jsp:include page="/WEB-INF/jsp/user/include/footer.jsp" />
+        </c:otherwise>
+    </c:choose>
+
