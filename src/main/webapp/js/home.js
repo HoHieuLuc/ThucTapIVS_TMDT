@@ -13,8 +13,14 @@ const showLoaiSanPhamPhoBien = async () => {
                     <a href="${baseURL}category/${ma_loai_sp}" 
                         class="text-decoration-none text-dark text-center" 
                     >
-                        <img src="${baseURL}images/category/${anh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten_loai_sp}">
-                        <div class="tlt-overflow-eclipse" title="${ten_loai_sp}">${ten_loai_sp}</div>
+                        <div class="d-flex">
+                            <img 
+                                src="${baseURL}images/category/${anh}" 
+                                class="tlt-thumbnail img-fluid rounded mx-auto my-auto" 
+                                alt="${ten_loai_sp}"
+                            >
+                        </div>
+                        <div class="tlt-overflow-ellipsis" title="${ten_loai_sp}">${ten_loai_sp}</div>
                     </a>
                 </div>
             `;
@@ -35,10 +41,15 @@ const showTopStore = async () => {
                     <a href="${baseURL}store/${username}" 
                         class="text-decoration-none text-dark text-center" 
                     >
-                        <img src="${baseURL}images/user/${avatar}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten}">
-                        <div class="tlt-overflow-eclipse" title="${ten}">${ten}</div>
-                        <div>${(Math.round(xep_hang * 10) / 10)} &#9733;</div>
+                        <div class="d-flex">
+                            <img 
+                                src="${baseURL}images/user/${avatar}" 
+                                class="tlt-thumbnail img-fluid rounded my-auto mx-auto" alt="${ten}"
+                            >
+                        </div>
+                        <div class="tlt-overflow-ellipsis" title="${ten}">${ten}</div>
                     </a>
+                    <div>${(Math.round(xep_hang * 10) / 10)} &#9733;</div>
                 </div>
             `;
         }).join('');
@@ -62,12 +73,17 @@ const showNewestProduct = async () => {
                     <a href="${baseURL}sanpham/${ma_san_pham}" 
                         class="text-decoration-none text-dark text-center" 
                     >
-                        <img src="${baseURL}images/product/${anh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten_san_pham}">
-                        <div class="tlt-overflow-eclipse" title="${ten_san_pham}">
+                        <div class="d-flex">
+                            <img 
+                                src="${baseURL}images/product/${anh}" 
+                                class="tlt-thumbnail img-fluid rounded my-auto mx-auto" alt="${ten_san_pham}"
+                            >
+                        </div>
+                        <div class="tlt-overflow-ellipsis" title="${ten_san_pham}">
                             ${ten_san_pham}
                         </div>
-                        <div>${giaVND}</div>
                     </a>
+                    <div class="text-center">${giaVND}</div>
                     <button type="button" data-masanpham="${ma_san_pham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
                         <i class="fas fa-cart-plus"></i>
                     </button>
@@ -81,32 +97,42 @@ const showNewestProduct = async () => {
 }
 
 const showRecentlyViewedProduct = () => {
-    const danhSachSanPhamVuaXem = JSON.parse(localStorage.getItem('danhSachSanPhamVuaXem'));
-    if (danhSachSanPhamVuaXem) {
-        const allRecentlyViewedProduct = danhSachSanPhamVuaXem.map((sanpham) => {
-            const { maSanPham, tenSanPham, donGia, hinhAnh } = sanpham;
-            const giaVND = donGia.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-            });
-            return `
+    try {
+        const danhSachSanPhamVuaXem = JSON.parse(localStorage.getItem('danhSachSanPhamVuaXem'));
+        if (danhSachSanPhamVuaXem) {
+            const allRecentlyViewedProduct = danhSachSanPhamVuaXem.map((sanpham) => {
+                const { maSanPham, tenSanPham, donGia, hinhAnh } = sanpham;
+                if (!maSanPham || !tenSanPham || !donGia || !hinhAnh) {
+                    return ``;
+                }
+                const giaVND = donGia.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                });
+                return `
                 <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-2">
                     <a href="${baseURL}sanpham/${maSanPham}" 
                         class="text-decoration-none text-dark text-center" 
                     >
-                        <img src="${baseURL}images/product/${hinhAnh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${tenSanPham}">
-                        <div class="tlt-overflow-eclipse" title="${tenSanPham}">
+                        <div class="d-flex">
+                            <img 
+                                src="${baseURL}images/product/${hinhAnh}" 
+                                class="tlt-thumbnail img-fluid rounded mx-auto my-auto" 
+                                alt="${tenSanPham}"
+                            >
+                        </div>
+                        <div class="tlt-overflow-ellipsis" title="${tenSanPham}">
                             ${tenSanPham}
                         </div>
-                        <div>${giaVND}</div>
                     </a>
+                    <div class="text-center">${giaVND}</div>
                     <button type="button" data-masanpham="${maSanPham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
                         <i class="fas fa-cart-plus"></i>
                     </button>
                 </div>
             `;
-        }).join('');
-        const sanPhamVuaXemHtml = `
+            }).join('');
+            const sanPhamVuaXemHtml = `
             <div class="d-flex">
                 <h4>Sản phẩm vừa xem </h4>
             </div>
@@ -114,7 +140,12 @@ const showRecentlyViewedProduct = () => {
                 ${allRecentlyViewedProduct}
             </div>
         `;
-        sanPhamVuaXemDOM.innerHTML = sanPhamVuaXemHtml;
+            sanPhamVuaXemDOM.innerHTML = sanPhamVuaXemHtml;
+        }
+    }
+    catch (error) {
+        localStorage.removeItem('danhSachSanPhamVuaXem');
+        return;
     }
 }
 if (sanPhamVuaXemDOM) {
