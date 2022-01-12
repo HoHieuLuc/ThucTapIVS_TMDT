@@ -68,27 +68,35 @@ mainDOM.addEventListener('click', async (event) => {
         return;
     }
     if (target.classList.contains('tang-gio-hang') || target.classList.contains('giam-gio-hang')) {
-        const _soLuongInputDOM = target.parentElement.querySelector('.so-luong-cart-input');
-        const _tongTienDOM = target.parentElement.parentElement.parentElement.querySelector('.tong-tien-cart');
-        const _donGia = _soLuongInputDOM.dataset.dongia;
-        _soLuongInputDOM.disabled = true;
-        target.disabled = true;
-        formData.append('maSanPham', _soLuongInputDOM.dataset.masanpham);
+        const cartDivDOM = target.closest('.cart-div');
+        const soLuongInputDOM = cartDivDOM.querySelector('.so-luong-cart-input');
+        const tangGioHangDOM = cartDivDOM.querySelector('.tang-gio-hang');
+        const giamGioHangDOM = cartDivDOM.querySelector('.giam-gio-hang');
+        const tongTienThisCartDOM = cartDivDOM.querySelector('.tong-tien-cart');
+        const donGia = soLuongInputDOM.dataset.dongia;
+
+        soLuongInputDOM.disabled = true;
+        tangGioHangDOM.disabled = true;
+        giamGioHangDOM.disabled = true;
+
+        formData.append('maSanPham', soLuongInputDOM.dataset.masanpham);
         if (target.classList.contains('tang-gio-hang')) {
-            formData.append('soLuong', parseInt(_soLuongInputDOM.value) + 1);
+            formData.append('soLuong', parseInt(soLuongInputDOM.value) + 1);
         }
         else {
-            formData.append('soLuong', parseInt(_soLuongInputDOM.value) - 1);
+            formData.append('soLuong', parseInt(soLuongInputDOM.value) - 1);
         }
-        _soLuongInputDOM.value = await updateCart(formData);
-        const tongTien = parseInt(_soLuongInputDOM.value) * parseInt(_donGia);
-        _tongTienDOM.innerText = tongTien.toLocaleString("vi-VN", {
+
+        soLuongInputDOM.value = await updateCart(formData);
+        const tongTien = parseInt(soLuongInputDOM.value) * parseInt(donGia);
+        tongTienThisCartDOM.innerText = tongTien.toLocaleString("vi-VN", {
             style: "currency",
             currency: "VND",
         });
         await getTongTienVaSoLuong();
-        _soLuongInputDOM.disabled = false;
-        target.disabled = false;
+        soLuongInputDOM.disabled = false;
+        tangGioHangDOM.disabled = false;
+        giamGioHangDOM.disabled = false;
         return;
     }
     if (target.classList.contains('add-to-fav-btn')) {

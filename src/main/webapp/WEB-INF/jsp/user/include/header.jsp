@@ -46,7 +46,7 @@
 
     </head>
 
-    <body>
+    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
       <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 99999">
         <div id="toastThongBao" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header text-white" id="toastHeader">

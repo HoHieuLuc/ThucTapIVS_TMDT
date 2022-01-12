@@ -10,7 +10,7 @@
         </div>
         <div class="mb-1">
             <label class="">Mô tả</label>
-            <textarea type="text" class="form-control rounded" name="moTa"></textarea>
+            <textarea type="text" style="height: 15em" class="form-control rounded" name="moTa"></textarea>
         </div>
         <div class="mb-1">
             <label class="">Giá</label>
