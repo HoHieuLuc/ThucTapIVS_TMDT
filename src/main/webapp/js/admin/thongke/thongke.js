@@ -1,8 +1,8 @@
 
 
-const testSodo = () => {
+const thongKeTinhTrangDonHang = async () => {
 
-    const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('pieChart').getContext('2d');
 
     //Dữ liệu
     const data = {
@@ -28,6 +28,6 @@ const testSodo = () => {
         type: 'pie',
         data: data,
       };
-    const myChart = new Chart(ctx,config);
+    const pieChart = new Chart(ctx,config);
 }
-testSodo();
+thongKeTinhTrangDonHang();

@@ -81,7 +81,7 @@
           <section class="col-lg-7 connectedSortable ui-sortable bg-danger">
           <!-- Demo trải nghiệm sơ đồ pie -->
               <div class="card">
-                <canvas id="myChart" width="400" height="400"></canvas>
+                <canvas id="pieChart" width="400" height="400"></canvas>
               </div>
           </section>
           <!-- /.Left col -->
