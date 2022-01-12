@@ -46,11 +46,11 @@ const showSanPhamDetail = async () => {
     try {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         // có avatar nữa
-        const { tenSanPham, tenKhachHang, moTa, gia, anhSanPhams,username,status } = sanpham;
-        tenSanPhamDOM.textContent = tenSanPham;
-        moTaSanPhamDOM.textContent = moTa;
+        const { ten_san_pham, ten, mo_ta, gia, anhSanPhams,status } = sanpham;
+        tenSanPhamDOM.textContent = ten_san_pham;
+        moTaSanPhamDOM.textContent = mo_ta;
         giaDOM.innerHTML = gia;
-        nguoiDangSanPham.textContent = tenKhachHang;
+        nguoiDangSanPham.textContent = ten;
         //if status==0 statusDOM.textContent = `${status}`;
         switch (status) {
             case -1:
