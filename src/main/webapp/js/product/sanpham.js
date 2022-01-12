@@ -83,13 +83,8 @@ const showSanPhamDetail = async (skip = false) => {
             currency: "VND",
         });
         // danh sách sản phẩm vừa xem lưu trong localstorage
-        const danhSachSanPhamVuaXem = JSON.parse(localStorage.getItem('danhSachSanPhamVuaXem')) || [];
-        if (!danhSachSanPhamVuaXem.some(sp => sp.maSanPham === maSanPham)) {
-            danhSachSanPhamVuaXem.unshift(new SanPhamVuaXem(maSanPham, ten_san_pham, gia, anhSanPhams[0]));
-            localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem));
-        }
-        if (danhSachSanPhamVuaXem.length > 6){
-            localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem.slice(0, 6)));
+        if (formDanhGiaDOM || document.querySelector('#loginDanhGia')) {
+            luuSanPhamVuaXem(ten_san_pham, gia, anhSanPhams[0]);
         }
         nguoiDangSanPham.textContent = ten;
         nguoiDangSanPham.href = `${baseURL}store/${username}`;
@@ -413,6 +408,18 @@ const getPhanHoiAction = async (maPhanHoi, dropdown) => {
         dropdown.innerHTML = html;
     } catch (error) {
         console.log(error);
+    }
+}
+
+// lưu sản phẩm vừa xem
+const luuSanPhamVuaXem = (tenSanPham, gia, anhSanPham) => {
+    const danhSachSanPhamVuaXem = JSON.parse(localStorage.getItem('danhSachSanPhamVuaXem')) || [];
+    if (!danhSachSanPhamVuaXem.some(sp => sp.maSanPham === maSanPham)) {
+        danhSachSanPhamVuaXem.unshift(new SanPhamVuaXem(maSanPham, tenSanPham, gia, anhSanPham));
+        localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem));
+    }
+    if (danhSachSanPhamVuaXem.length > 6) {
+        localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem.slice(0, 6)));
     }
 }
 

@@ -4,9 +4,14 @@
 
 
 <div class="container-fluid">
-    <div class="mb-3" id="sanPhamVuaXem">
+    <c:choose>
+        <c:when test="${sessionScope.level == 0 || sessionScope.loggedIn == null || !sessionScope.loggedIn}">
+            <div class="mb-3" id="sanPhamVuaXem">
         
-    </div>
+            </div>
+        </c:when>
+    </c:choose>
+    
     <div class="mb-3">
         <div class="d-flex">
             <h4>Những loại mặt hàng phổ biến
