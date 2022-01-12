@@ -1,6 +1,7 @@
 package com.tmdt.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import mybatis.mapper.BaoCaoNguoiDungMapper;
 import mybatis.mapper.SanPhamMapper;
 import mybatis.mapper.TaiKhoanMapper;
 import mybatis.mapper.ThongBaoMapper;
+import mybatis.mapper.ThongKeMapper;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
         "namespace", "/",
@@ -299,6 +301,35 @@ public class NhanVienApiAction {
         Map<String, Object> chiTietBaoCao = baoCaoNguoiDungMapper.detaiBaoCao(maBaoCao);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("chitiet_baocao", chiTietBaoCao);
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // Dùng 1 action cho thống kê 
+    @Action(value = "/api/v1/nhanvien/thongke/{status}", results = {
+            @Result(name = "success", location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "nhanVienStack"),
+    })
+    public String xuLyThongKe() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        System.out.println("Status Thống kê  = " + status);
+        ThongKeMapper thongKeMapper = sqlSession.getMapper(ThongKeMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        Map<String, Object> thongKe = thongKeMapper.get4DataThongKe();
+
+        /* 0 là thống kê 4 loại dữ liệu đơn giản 
+         */
+        switch (status) {
+            case 0:
+                thongKe = thongKeMapper.get4DataThongKe();
+                break;
+        
+            default:
+                return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ",403,response);
+        }
+
+        jsonRes.put("thong_ke", thongKe);
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
