@@ -25,7 +25,7 @@ const showGioHang = async () => {
                 });
                 return `
                     <hr>
-                    <div class="row mb-3 position-relative">
+                    <div class="row mb-3 position-relative cart-div">
                         <div class="col-3">
                             <img class="img-fluid" style="object-fit: contain; width: 100%; height: 12rem;" src="${baseURL}images/product/${anh}" alt="${ten_san_pham}">
                         </div>
@@ -98,7 +98,7 @@ showGioHang();
 const getTongTienVaSoLuong = async () => {
     try {
         const { data: { gioHang } } = await axios.get(`${baseURL}api/v1/giohang/sum`);
-        const {so_luong, tong_tien} = gioHang;
+        const { so_luong, tong_tien } = gioHang;
         tongSoSanPhamDOM.textContent = so_luong
         tongTienDOM.textContent = tong_tien.toLocaleString("vi-VN", {
             style: "currency",
@@ -108,3 +108,36 @@ const getTongTienVaSoLuong = async () => {
         console.log(error);
     }
 }
+
+gioHangDOM.addEventListener('focusout', async (event) => {
+    const eventTarget = event.target;
+    if (eventTarget.classList.contains('so-luong-cart-input')) {
+        const cartDivDOM = eventTarget.closest('.cart-div');
+        const tangGioHangDOM = cartDivDOM.querySelector('.tang-gio-hang');
+        const giamGioHangDOM = cartDivDOM.querySelector('.giam-gio-hang');
+        const tongTienThisCartDOM = cartDivDOM.querySelector('.tong-tien-cart');
+
+        tangGioHangDOM.disabled = true;
+        giamGioHangDOM.disabled = true;
+        eventTarget.disabled = true;
+
+        const soluong = parseInt(eventTarget.value);
+        const { masanpham, dongia } = eventTarget.dataset;
+        const formData = new FormData();
+
+        formData.append('maSanPham', masanpham);
+        formData.append('soLuong', soluong);
+
+        eventTarget.value = await updateCart(formData);
+        const tongTien = parseInt(eventTarget.value) * parseInt(dongia);
+        tongTienThisCartDOM.innerText = tongTien.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        });
+        await getTongTienVaSoLuong();
+
+        tangGioHangDOM.disabled = false;
+        giamGioHangDOM.disabled = false;
+        eventTarget.disabled = false;
+    }
+});

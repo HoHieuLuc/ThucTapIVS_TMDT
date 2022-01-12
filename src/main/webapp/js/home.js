@@ -117,8 +117,9 @@ const showRecentlyViewedProduct = () => {
         sanPhamVuaXemDOM.innerHTML = sanPhamVuaXemHtml;
     }
 }
-
-showRecentlyViewedProduct();
+if (sanPhamVuaXemDOM) {
+    showRecentlyViewedProduct();
+}
 showLoaiSanPhamPhoBien();
 showTopStore();
 showNewestProduct();

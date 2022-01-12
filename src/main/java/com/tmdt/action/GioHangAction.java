@@ -22,6 +22,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
 public class GioHangAction extends ActionSupport {
     // Respone hay dùng cho AJAX và JSON
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -30,7 +34,7 @@ public class GioHangAction extends ActionSupport {
     SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
     private String maSanPham;
-    private int soLuong;
+    private Integer soLuong;
     private String username;
 
     // region Getter and Setter
@@ -42,11 +46,11 @@ public class GioHangAction extends ActionSupport {
         this.maSanPham = maSanPham;
     }
 
-    public int getSoLuong() {
+    public Integer getSoLuong() {
         return soLuong;
     }
 
-    public void setSoLuong(int soLuong) {
+    public void setSoLuong(Integer soLuong) {
         this.soLuong = soLuong;
     }
 
@@ -213,7 +217,7 @@ public class GioHangAction extends ActionSupport {
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
 
         // Cập nhật lại giỏ hàng
-        if (soLuong < 1) {
+        if (soLuong == null || soLuong < 1) {
             sqlSession.close();
             jsonRes.put("soLuong", 1);
             jsonRes.put("message", "Số lượng không hợp lệ");
@@ -234,7 +238,6 @@ public class GioHangAction extends ActionSupport {
             jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSPHienCo + " sản phẩm cho sản phẩm này");
             return JsonResponse.createJsonResponse(jsonRes, 403, response);
         }
-
         gioHangMapper.updateSoLuongSanPhamTrongGioHang(maKhachHang, maSanPham, soLuong);
         sqlSession.commit();
         sqlSession.close();
