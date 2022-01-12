@@ -37,7 +37,7 @@
                         Thêm vào giỏ hàng <i class="fas fa-cart-plus"></i>
                     </button>
                     <button type="button" id="addToFavBtn" class="add-to-fav-btn col-12 col-md-5 btn btn-danger">
-                        Thêm vào mục yêu tích <i class="far fa-heart"></i>
+                        Thêm vào mục yêu thích <i class="far fa-heart"></i>
                     </button>
                 </div>
             </div>

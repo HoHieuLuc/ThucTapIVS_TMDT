@@ -16,6 +16,16 @@ const loaiSanPhamDOM = document.querySelector('#loaiSanPham');
 const addToCartBtnDOM = document.querySelector('#addToCartBtn');
 const addToFavBtnDOM = document.querySelector('#addToFavBtn');
 
+//
+class SanPhamVuaXem {
+    constructor(_maSanPham, _tenSanPham, _donGia, _hinhAnh) {
+        this.maSanPham = _maSanPham;
+        this.tenSanPham = _tenSanPham;
+        this.donGia = _donGia;
+        this.hinhAnh = _hinhAnh;
+    }
+}
+
 //Các biến của đánh giá sản phẩm
 const danhGiaSPListDom = document.querySelector('#danhGiaSPListDom');
 const errorMsg = document.querySelector('#errorMsg');
@@ -72,6 +82,15 @@ const showSanPhamDetail = async (skip = false) => {
             style: "currency",
             currency: "VND",
         });
+        // danh sách sản phẩm vừa xem lưu trong localstorage
+        const danhSachSanPhamVuaXem = JSON.parse(localStorage.getItem('danhSachSanPhamVuaXem')) || [];
+        if (!danhSachSanPhamVuaXem.some(sp => sp.maSanPham === maSanPham)) {
+            danhSachSanPhamVuaXem.unshift(new SanPhamVuaXem(maSanPham, ten_san_pham, gia, anhSanPhams[0]));
+            localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem));
+        }
+        if (danhSachSanPhamVuaXem.length > 6){
+            localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem.slice(0, 6)));
+        }
         nguoiDangSanPham.textContent = ten;
         nguoiDangSanPham.href = `${baseURL}store/${username}`;
         const anhSanPhamData = anhSanPhams.map((anhSanPham) => {
