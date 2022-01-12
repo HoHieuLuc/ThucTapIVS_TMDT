@@ -17,7 +17,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3 id="soDonHang">Loading...</h3>
 
                 <p>Đơn Hàng</p>
               </div>
@@ -32,7 +32,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>65</h3>
+                <h3 id="soSanPham">Loading..</h3>
 
                 <p>Sản phẩm</p>
               </div>
@@ -47,7 +47,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3 id="soNguoiDung">Loading...</h3>
 
                 <p>Người Dùng</p>
               </div>
@@ -62,7 +62,7 @@
             <!-- small box -->
             <div class="small-box bg-primary">
               <div class="inner">
-                <h3>65</h3>
+                <h3  id="soDanhGia">Loading...</h3>
 
                 <p>Đánh Giá</p>
               </div>

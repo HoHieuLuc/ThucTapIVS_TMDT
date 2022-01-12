@@ -36,6 +36,10 @@ const thongKeDonGian = async () => {
   try {
     const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/0`);
     console.log(thong_ke.so_thanh_vien);
+    document.querySelector("#soDonHang").innerHTML = thong_ke.so_don_dat_hang ;
+    document.querySelector("#soSanPham").innerHTML = thong_ke.so_san_pham ;
+    document.querySelector("#soNguoiDung").innerHTML =thong_ke.so_thanh_vien ;
+    document.querySelector("#soDanhGia").innerHTML = thong_ke.so_danh_gia ;
   }
   catch (error) {
     thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
