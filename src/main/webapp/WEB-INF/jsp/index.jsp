@@ -4,6 +4,9 @@
 
 
 <div class="container-fluid">
+    <div class="mb-3" id="sanPhamVuaXem">
+        
+    </div>
     <div class="mb-3">
         <div class="d-flex">
             <h4>Những loại mặt hàng phổ biến
@@ -48,11 +51,6 @@
 
         </div>
     </div>
-
-    <div id="sanPhamDaXem">
-        
-    </div>
-
 </div>
 
 
