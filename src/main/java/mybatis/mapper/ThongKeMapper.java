@@ -50,4 +50,16 @@ public interface ThongKeMapper {
     @Select(GET_4_DATA_THONG_KE)
     public Map<String, Object> get4DataThongKe();
 
+    // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
+    final String GET_DATA_TRANG_THAI_DAT_HANG = "SELECT 	CASE WHEN (1=1) THEN " +
+            "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang WHERE status = -1) END AS bi_huy, " +
+            "	CASE WHEN (1=1) THEN " +
+            "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang WHERE status = 0) END AS dang_cho, " +
+            "    	CASE WHEN (1=1) THEN  " +
+            "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang WHERE status = 1) END AS dang_van_chuyen, " +
+            "   	CASE WHEN (1=1) THEN " +
+            "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang WHERE status = 2) END AS da_nhan_hang; ";
+    @Select(GET_DATA_TRANG_THAI_DAT_HANG)
+    public Map<String, Object> getDataTrangThaiDatHang(); 
+
 }

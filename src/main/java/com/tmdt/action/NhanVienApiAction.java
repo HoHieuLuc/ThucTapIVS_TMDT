@@ -319,12 +319,15 @@ public class NhanVienApiAction {
         Map<String, Object> thongKe = thongKeMapper.get4DataThongKe();
 
         /* 0 là thống kê 4 loại dữ liệu đơn giản 
+            1 là đếm số lượng đơn đặt hàng theo 4 trạng thái (bị hủy, đang chờ tiếp nhận, đang giao, đã giao)
          */
         switch (status) {
             case 0:
                 thongKe = thongKeMapper.get4DataThongKe();
                 break;
-        
+            case 1:
+                thongKeMapper.getDataTrangThaiDatHang();
+                break;
             default:
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ",403,response);
         }
