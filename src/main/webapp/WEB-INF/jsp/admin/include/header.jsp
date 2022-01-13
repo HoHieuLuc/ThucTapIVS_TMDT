@@ -41,6 +41,9 @@
         min-width: 20em;
         max-width: 20em;
       }
+      button>i {
+        pointer-events: none;
+      }
     </style>
 </head>
 
@@ -176,7 +179,7 @@
               <p>
                 Kiểm duyệt
                 <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
+                <%-- <span class="badge badge-info right">6</span> --%>
               </p>
             </a>
             <ul class="nav nav-treeview">
@@ -201,7 +204,7 @@
               <p>
                 Loại sản phẩm
                 <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
+               <%--  <span class="badge badge-info right">6</span> --%>
               </p>
             </a>
             <ul class="nav nav-treeview">
@@ -280,4 +283,4 @@
 
 
         <!-- Đừng thêm gì dưới đoạn này -->
-        <main role="main" class="container">
+        <main role="main" class="container-fluid">
