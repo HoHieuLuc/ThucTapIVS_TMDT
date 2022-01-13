@@ -310,7 +310,7 @@ public interface SanPhamMapper {
             "LIMIT #{offset}, #{rowsPerPage}";
 
     @Select(GET_SP_BY_STATUS)
-    public List<Map<String, Object>> getSP_ByStatus(
+    public List<Map<String, Object>> getSanPhamByStatus(
             @Param("status") int status,
             @Param("offset") int offset,
             @Param("rowsPerPage") int rowsPerPage,

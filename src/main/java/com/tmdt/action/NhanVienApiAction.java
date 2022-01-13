@@ -176,7 +176,7 @@ public class NhanVienApiAction {
         int offset = (_page - 1) * _rowsPerPage;
         int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
 
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(_status, offset, _rowsPerPage, _search);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSanPhamByStatus(_status, offset, _rowsPerPage, _search);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("sanphams", listSanPham);
         jsonRes.put("total_page", totalPage);
