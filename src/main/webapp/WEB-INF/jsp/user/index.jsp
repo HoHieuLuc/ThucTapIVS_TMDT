@@ -79,7 +79,7 @@
           <section class="col-lg-7 connectedSortable ui-sortable">
             <div>
               <div class="row g-3">
-                <label class="col-auto col-form-label">Thống kê</label>
+                <label class="col-auto col-form-label">Sơ đồ thống kê</label>
                 <div class="col-auto">
                   <select class="tuyChonThongKe form-select">
                     <option value="thang" selected>Trong tháng</option>
