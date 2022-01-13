@@ -131,10 +131,6 @@ formThongKeDOM.addEventListener('submit', async (event) => {
   }
 });
 
-thongKeTinhTrangDonHangAll();
-thongKeDonGian();
-showTop10SanPhamBanChay();
-
 const showTop10SanPhamBanChay = async () => {
   try {
     const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/3`);
@@ -160,6 +156,8 @@ const showTop10SanPhamBanChay = async () => {
     console.log(error);
     thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
   }
-
 }
 
+thongKeTinhTrangDonHangAll();
+thongKeDonGian();
+showTop10SanPhamBanChay();
