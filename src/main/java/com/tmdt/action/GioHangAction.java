@@ -268,13 +268,15 @@ public class GioHangAction extends ActionSupport {
     // thêm sản phẩm yêu thích
     @Action(value = "/api/v1/fav/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "authStack"),
     })
     public String themSanPhamYeuThich() throws IOException {
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        if (loggedIn == null || !loggedIn) {
+            return CustomError.createCustomError("Bạn chưa đăng nhập", 401, response);
+        }
         Integer level = (Integer) session.getAttribute("level");
-        if (level > 0){
-            return CustomError.createCustomError("Bạn không thể làm điều này", 403, response);
+        if (level > 0) {
+            return CustomError.createCustomError("Nhân viên không thể thêm vào giỏ hàng", 403, response);
         }
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamYeuThichMapper sanPhamYeuThichMapper = sqlSession.getMapper(SanPhamYeuThichMapper.class);
