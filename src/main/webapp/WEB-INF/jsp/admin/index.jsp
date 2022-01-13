@@ -128,17 +128,6 @@
               <!-- /.card-header -->
               <div class="card-body p-0" style="display: block;">
                 <ul class="products-list product-list-in-card pl-2 pr-2" id="topSanPhamBanChay">
-                  <li class="item">
-                    
-                    <div class="product">
-                            <h6>Điện Thoại</h6>
-                        <span class="badge badge-warning float-right">$1800</span>
-                      <span class="product-description">
-                        Samsung 32" 1080p 60Hz LED Smart HDTV.
-                      </span>
-                    </div>
-                  </li>
-
                   <!-- /.item -->
                 </ul>
               </div>
