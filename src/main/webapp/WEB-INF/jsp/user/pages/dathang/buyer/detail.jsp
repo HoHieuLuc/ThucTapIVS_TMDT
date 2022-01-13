@@ -45,8 +45,6 @@
             <div class="col-12">
                 <a class="tenSanPham text-decoration-none text-dark fw-bold"></a>
             </div>
-            <div class="col-4 fw-bold">Mô tả: </div>
-            <div class="moTa col-12" style="white-space: pre-line;"></div>
             <div class="col-4 fw-bold">Đơn giá</div>
             <div class="donGia col-8"></div>
 
