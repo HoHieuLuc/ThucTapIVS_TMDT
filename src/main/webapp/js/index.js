@@ -61,6 +61,9 @@ const addToFav = async (formData, khongThongBao = false) => {
         if (khongThongBao) {
             return true;
         }
+        if (message === undefined){
+            thongBao("Bạn không thể làm điều này", true);
+        }
         thongBao(message);
     } catch (error) {
         console.log(error);
