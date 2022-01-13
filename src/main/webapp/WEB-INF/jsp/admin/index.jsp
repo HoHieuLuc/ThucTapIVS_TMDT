@@ -146,4 +146,5 @@
     <script>
       document.getElementById('dashboard').classList.add('active');
     </script>
+    <script src='<c:url value="/js/admin/thongke/thongke.js"/>'></script>
     <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
