@@ -58,9 +58,10 @@ public interface ThongKeMapper {
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         // theo tháng cụ thể
-        final String GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM_USER = "SELECT COUNT(*) FROM chi_tiet_dat_hang  ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang  "
-                        +
-                        "WHERE DATE(dh.ngay_dat) BETWEEN #{tuNgay} AND #{denNgay}  GROUP BY STATUS;";
+        final String GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM_USER = "SELECT COUNT(*) FROM chi_tiet_dat_hang  ctdh JOIN san_pham sp ON " +
+                        " ctdh.ma_san_pham = sp.ma_san_pham " +
+                        " JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang  " +
+                        "WHERE sp.ma_khach_hang = #{maNguoiBan} AND DATE(dh.ngay_dat) BETWEEN #{tuNgay} AND #{denNgay}  GROUP BY ctdh.status;";
 
         @Select(GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM_USER)
         public ArrayList<Integer> getDataTrangThaiDatHangCustomUser(
