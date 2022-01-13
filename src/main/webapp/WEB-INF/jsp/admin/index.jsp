@@ -2,16 +2,6 @@
   <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
   <jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
-
-  <%-- loggedIn ${sessionScope.loggedIn}<br>
-    username ${sessionScope.username}<br>
-    tên ${sessionScope.ten}<br>
-    accountID ${sessionScope.accountID}<br>
-    permission ${sessionScope.permission}<br>
-    mã người dùng ${sessionScope.maNguoiDung}<br>
-    cấp độ ${sessionScope.level}<br>
-    avatar ${sessionScope.avatar}<br> --%>
-
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
