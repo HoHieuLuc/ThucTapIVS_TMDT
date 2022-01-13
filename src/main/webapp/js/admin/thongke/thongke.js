@@ -1,6 +1,7 @@
+const formThongKeDOM = document.querySelector('.formThongKe');
+const tuyChonThongKeDOM = document.querySelector('.tuyChonThongKe');
 
-
-const thongKeTinhTrangDonHang = async () => {
+const thongKeTinhTrangDonHangAll = async () => {
 
   const ctx = document.getElementById('pieChart').getContext('2d');
 
@@ -43,7 +44,7 @@ const thongKeTinhTrangDonHang = async () => {
 
 
 }
-thongKeTinhTrangDonHang();
+thongKeTinhTrangDonHangAll();
 
 const thongKeDonGian = async () => {
   try {
@@ -60,3 +61,23 @@ const thongKeDonGian = async () => {
 }
 
 thongKeDonGian();
+
+tuyChonThongKeDOM.addEventListener('change', (event) => {
+  if (event.target.value === 'tuychinh') {
+      formThongKeDOM.classList.remove('d-none');
+  } else {
+      formThongKeDOM.classList.add('d-none');
+      //Bình thường sẽ thống kê toàn thời gian
+      thongKeTinhTrangDonHangAll();
+  }
+});
+
+formThongKeDOM.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const formData = new FormData(formThongKeDOM);
+  const tuNgay = formData.get('tuNgay');
+  const denNgay = formData.get('denNgay');
+  console.log(tuNgay);
+  console.log(denNgay);
+  //getSoDonDatHangThongKe(tuNgay, denNgay);
+});

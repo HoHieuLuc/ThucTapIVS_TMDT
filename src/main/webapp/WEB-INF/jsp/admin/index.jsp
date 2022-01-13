@@ -62,7 +62,7 @@
             <!-- small box -->
             <div class="small-box bg-primary">
               <div class="inner">
-                <h3  id="soDanhGia">Loading...</h3>
+                <h3 id="soDanhGia">Loading...</h3>
 
                 <p>Đánh Giá</p>
               </div>
@@ -79,10 +79,35 @@
         <div class="row">
           <!-- Left col -->
           <section class="col-lg-7 connectedSortable ui-sortable">
-          <!-- Demo trải nghiệm sơ đồ pie -->
-              <div class="card">
-                <canvas id="pieChart" width="400" height="400"></canvas>
+            <!-- Demo trải nghiệm sơ đồ pie -->
+            <div class="card">
+              <div>
+                <div class="row g-3">
+                  <div class="col-auto">
+                    <select class="tuyChonThongKe form-select">
+                      <option value="all" selected="">Toàn bộ thời gian</option>
+                      <option value="tuychinh">Tùy chỉnh</option>
+                    </select>
+                  </div>
+                  <form class="formThongKe col-auto d-none">
+                    <div class="row">
+                      <label class="col-auto col-form-label">Từ</label>
+                      <div class="col-auto">
+                        <input name="tuNgay" type="date" class="form-control">
+                      </div>
+                      <label class="col-auto col-form-label">đến</label>
+                      <div class="col-auto">
+                        <input name="denNgay" type="date" class="form-control">
+                      </div>
+                      <div class="col-auto">
+                        <input type="submit" class="form-control" value="Xác nhận">
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
+              <canvas id="pieChart" width="400" height="400"></canvas>
+            </div>
           </section>
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
