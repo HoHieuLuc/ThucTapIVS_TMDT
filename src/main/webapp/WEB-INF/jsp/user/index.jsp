@@ -141,16 +141,18 @@
                   <!-- /.item -->
                 </ul>
               </div>
-              <!-- Kết thúc top sản phẩm bán chạy -->
-              <div class="card">
-                <div class="text-center fs-5">
-                  Số lượng đơn đặt hàng
-                </div>
-                <canvas class="soDonDatHangChart">
 
-                </canvas>
+
+
+            </div>
+            <!-- Kết thúc top sản phẩm bán chạy -->
+            <div class="card">
+              <div class="text-center fs-5">
+                Số lượng đơn đặt hàng
               </div>
+              <canvas class="soDonDatHangChart">
 
+              </canvas>
             </div>
           </section>
 
