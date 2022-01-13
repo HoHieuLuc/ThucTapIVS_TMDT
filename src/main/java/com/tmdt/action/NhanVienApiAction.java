@@ -380,6 +380,11 @@ public class NhanVienApiAction {
                     thongKe = thongKeMapper.getDataTrangThaiDatHangByMonth(tuNgay, denNgay);
                 }
                 break;
+            case 3: 
+                List<Map<String, Object>> thongKes = thongKeMapper.top10SPDuocMuaNhieuNhat();
+                jsonRes.put("thong_kes",thongKes);
+                sqlSession.close();
+                return JsonResponse.createJsonResponse(jsonRes, 200, response);
             default:
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
         }

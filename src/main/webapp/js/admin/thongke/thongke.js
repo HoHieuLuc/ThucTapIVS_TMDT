@@ -1,6 +1,7 @@
 const formThongKeDOM = document.querySelector('.formThongKe');
 const tuyChonThongKeDOM = document.querySelector('.tuyChonThongKe');
 let pieChart;
+const topSanPhamBanChayDOM = document.querySelector('#topSanPhamBan');
 
 const thongKeTinhTrangDonHangAll = async () => {
 
@@ -123,3 +124,7 @@ formThongKeDOM.addEventListener('submit', async(event) => {
     thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
   }
 });
+
+showTop10SanPhamBanChay = async() => {
+  
+}
