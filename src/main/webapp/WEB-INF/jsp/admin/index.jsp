@@ -113,7 +113,7 @@
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable ui-sortable">
             <div class="card" style="display: block;">
-              <div class="card-header">
+              <div class="card-header bg-success">
                 <h3 class="card-title">Top 10 sản phẩm bán chạy</h3>
 
                 <div class="card-tools">
