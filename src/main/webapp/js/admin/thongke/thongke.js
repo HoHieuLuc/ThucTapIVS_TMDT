@@ -72,7 +72,7 @@ tuyChonThongKeDOM.addEventListener('change', (event) => {
   }
 });
 
-formThongKeDOM.addEventListener('submit', (event) => {
+formThongKeDOM.addEventListener('submit', async(event) => {
   event.preventDefault();
   const formData = new FormData(formThongKeDOM);
   const tuNgay = formData.get('tuNgay');
