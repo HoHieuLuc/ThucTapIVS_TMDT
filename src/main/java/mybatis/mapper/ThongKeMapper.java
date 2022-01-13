@@ -53,19 +53,22 @@ public interface ThongKeMapper {
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         // theo tháng cụ thể
         final String GET_DATA_TRANG_THAI_DAT_HANG_BY_MONTH = "SELECT 	CASE WHEN (1=1) THEN " +
-                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = -1 AND MONTH(dh.ngay_dat) = #{thang}) END AS bi_huy, "
+                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = -1 AND DATE(dh.ngay_dat) BETWEEN #{tuNgay} AND #{denNgay}) END AS bi_huy, "
                         +
                         "	CASE WHEN (1=1) THEN " +
-                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = 0 AND MONTH(dh.ngay_dat) = #{thang}) END AS dang_cho, "
+                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = 0 AND DATE(dh.ngay_dat) = BETWEEN #{tuNgay} AND #{denNgay}) END AS dang_cho, "
                         +
                         "    	CASE WHEN (1=1) THEN  " +
-                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = 1 AND MONTH(dh.ngay_dat) = #{thang}) END AS dang_van_chuyen, "
+                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = 1 AND DATE(dh.ngay_dat) = BETWEEN #{tuNgay} AND #{denNgay}) END AS dang_van_chuyen, "
                         +
                         "   	CASE WHEN (1=1) THEN " +
-                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = 2 AND MONTH(dh.ngay_dat) = #{thang}) END AS da_nhan_hang; ";
+                        "(SELECT COUNT(ma_san_pham) FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang WHERE ctdh.status = 2 AND DATE(dh.ngay_dat) = BETWEEN #{tuNgay} AND #{denNgay}) END AS da_nhan_hang; ";
 
         @Select(GET_DATA_TRANG_THAI_DAT_HANG_BY_MONTH)
-        public Map<String, Object> getDataTrangThaiDatHangByMonth(int Thang);
+        public Map<String, Object> getDataTrangThaiDatHangByMonth(
+                @Param("tuNgay") Date tuNgay,
+                @Param("denNgay") Date denNgay);
+
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         final String GET_DATA_TRANG_THAI_DAT_HANG = "SELECT 	CASE WHEN (1=1) THEN " +

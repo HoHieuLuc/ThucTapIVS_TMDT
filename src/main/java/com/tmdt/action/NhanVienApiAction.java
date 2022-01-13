@@ -41,6 +41,7 @@ public class NhanVienApiAction {
     private String noiDung;
     private Date tuNgay;
     private Date denNgay;
+    private int thang;
 
     /* Begin Getter and setter */
     public String getNoiDung() {
@@ -135,6 +136,16 @@ public class NhanVienApiAction {
     public void setDenNgay(Date denNgay) {
         this.denNgay = denNgay;
     }
+
+    public int getThang() {
+        return thang;
+    }
+
+    public void setThang(int thang) {
+        this.thang = thang;
+    }
+
+
 
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -343,7 +354,7 @@ public class NhanVienApiAction {
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         Map<String, Object> thongKe = thongKeMapper.get4DataThongKe();
 
-        
+
 
         /*
          * 0 là thống kê 4 loại dữ liệu đơn giản
@@ -357,6 +368,7 @@ public class NhanVienApiAction {
             case 1:
                 thongKe = thongKeMapper.getDataTrangThaiDatHang();
                 break;
+            case 2:
             default:
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
         }
