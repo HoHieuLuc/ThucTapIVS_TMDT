@@ -45,7 +45,7 @@ public interface ThongKeMapper {
                         "    	CASE WHEN (1=1) THEN " +
                         "(SELECT COUNT(ma_quyen) FROM `tai_khoan`  WHERE ma_quyen = 'KH') END AS so_thanh_vien, " +
                         "   	CASE WHEN (1=1) THEN  " +
-                        "(SELECT COUNT(ma_dat_hang) FROM dat_hang) END AS so_don_dat_hang; ";
+                        "(SELECT COUNT(ma_dat_hang) FROM chi_tiet_dat_hang) END AS so_don_dat_hang; ";
 
         @Select(GET_4_DATA_THONG_KE)
         public Map<String, Object> get4DataThongKe();
