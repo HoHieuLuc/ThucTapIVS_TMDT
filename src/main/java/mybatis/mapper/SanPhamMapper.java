@@ -8,36 +8,77 @@ import com.tmdt.model.SanPham;
 import org.apache.ibatis.annotations.*;
 
 public interface SanPhamMapper {
+    // đếm số sản phẩm để phân trang cho trang tìm tiếm
+    final String COUNT_ALL_SAN_PHAM = "SELECT COUNT(*) " +
+            "FROM san_pham " +
+            "WHERE ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
+            "AND gia BETWEEN #{minPrice} AND #{maxPrice}";
+
+    @Select(COUNT_ALL_SAN_PHAM)
+    int countAllSanPham(@Param("search") String search,
+            @Param("minPrice") Integer minPrice,
+            @Param("maxPrice") Integer maxPrice);
+
     // lấy tất cả sản phẩm và 1 ảnh đầu tiên để làm ảnh đại diện cho từng sản phẩm
-    final String GET_ALL_SANPHAM = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.mo_ta, sp.gia, sp.status, kh.ma_khach_hang, kh.ten, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang "
-            +
-            "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
-            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+    // dùng cho tìm kiếm sản phẩm
+    final String GET_ALL_SAN_PHAM = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, " +
+            "sp.so_luong, " +
+            "sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "FROM san_pham sp " +
             "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
-            "GROUP BY sp.ma_san_pham";
+            "WHERE sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
+            "AND sp.gia BETWEEN #{minPrice} AND #{maxPrice} " +
+            "GROUP BY sp.ma_san_pham " +
+            "${order} " +
+            "LIMIT #{offset}, #{rowsPerPage}";
 
-    @Select(GET_ALL_SANPHAM)
-    @Results(value = {
-            @Result(property = "maSanPham", column = "ma_san_pham"),
-            @Result(property = "tenSanPham", column = "ten_san_pham"),
-            @Result(property = "moTa", column = "mo_ta"),
-            @Result(property = "gia", column = "gia"),
-            @Result(property = "status", column = "status"),
-            @Result(property = "maKhachHang", column = "ma_khach_hang"),
-            @Result(property = "tenKhachHang", column = "ten"),
-            @Result(property = "tenLoaiSanPham", column = "ten_loai_sp"),
-            @Result(property = "soLuong", column = "so_luong"),
-            @Result(property = "ngayDang", column = "ngay_dang"),
-            @Result(property = "soLuongDaBan", column = "so_luong_da_ban"),
-            @Result(property = "anhSanPham", column = "anh"),
-            @Result(property = "xepHang", column = "xep_hang")
-    })
-    public List<Map<String, Object>> getAllSanPham();
+    @Select(GET_ALL_SAN_PHAM)
+    public List<Map<String, Object>> searchSanPham(
+            @Param("search") String search,
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice,
+            @Param("order") String order,
+            @Param("offset") int offset,
+            @Param("rowsPerPage") int rowsPerPage);
+
+    // đếm số sản phẩm để phân trang khi tìm kiếm fulltext
+    final String COUNT_ALL_SAN_PHAM_FULLTEXT = "SELECT COUNT(*) " +
+            "FROM san_pham " +
+            "WHERE MATCH(ten_san_pham) AGAINST(#{search}) " +
+            "AND gia BETWEEN #{minPrice} AND #{maxPrice}";
+
+    @Select(COUNT_ALL_SAN_PHAM_FULLTEXT)
+    int countAllSanPhamFulltext(@Param("search") String search,
+            @Param("minPrice") Integer minPrice,
+            @Param("maxPrice") Integer maxPrice);
+
+    // dành cho khi không tìm thấy sản phẩm thì tìm kiếm fulltext
+    final String GET_ALL_SAN_PHAM_FULLTEXT = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, " +
+            "sp.so_luong, " +
+            "sp.so_luong_da_ban, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "FROM san_pham sp " +
+            "JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
+            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
+            "WHERE MATCH(sp.ten_san_pham) AGAINST (#{search}) " +
+            "AND sp.gia BETWEEN #{minPrice} AND #{maxPrice} " +
+            "GROUP BY sp.ma_san_pham " +
+            "ORDER BY MATCH(sp.ten_san_pham) AGAINST (#{search}) DESC ${order} " +
+            "LIMIT #{offset}, #{rowsPerPage}";
+
+    @Select(GET_ALL_SAN_PHAM_FULLTEXT)
+    public List<Map<String, Object>> searchSanPhamFulltext(
+            @Param("search") String search,
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice,
+            @Param("order") String order,
+            @Param("offset") int offset,
+            @Param("rowsPerPage") int rowsPerPage);
 
     // Xem chi tiết sản phẩm
     final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham, kh.ten, " +
-            "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, " +
+            "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, "
+            +
             "tk.username, tk.avatar, AVG(dgsp.so_sao) AS xep_hang, lsp.ma_loai_sp, lsp.ma_loai_cha " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
@@ -158,8 +199,10 @@ public interface SanPhamMapper {
             @Param("tenSanPham") String tenSanPham);
 
     // sửa sản phẩm
-    final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, " +
-            "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} " +
+    final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, "
+            +
+            "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} "
+            +
             " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang};";
 
     @Update(UPDATE_SP_INFO)
@@ -232,7 +275,7 @@ public interface SanPhamMapper {
             "GROUP BY sp.ma_san_pham " +
             "ORDER BY FIELD(lsp.ma_loai_sp, #{maLoaiSanPham}) DESC, " +
             "FIELD(lsp.ma_loai_cha, #{maLoaiCha}) DESC, " +
-            "sp.ngay_dang DESC "+
+            "sp.ngay_dang DESC " +
             "LIMIT 12";
 
     @Select(GET_SAN_PHAM_GOI_Y_CUNG_STORE)
@@ -255,7 +298,8 @@ public interface SanPhamMapper {
     public int countSanPhamByStatus(@Param("status") int status, @Param("search") String search);
 
     // Lấy danh sách các sản phẩm theo status và search nào đó
-    final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ma_san_pham,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, " +
+    final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ma_san_pham,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, "
+            +
             "sp.so_luong,sp.ngay_dang " +
             "FROM san_pham SP " +
             "RIGHT JOIN khach_hang KH ON SP.ma_khach_hang = KH.ma_khach_hang " +
@@ -266,7 +310,7 @@ public interface SanPhamMapper {
             "LIMIT #{offset}, #{rowsPerPage}";
 
     @Select(GET_SP_BY_STATUS)
-    public List<Map<String, Object>> getSP_ByStatus(
+    public List<Map<String, Object>> getSanPhamByStatus(
             @Param("status") int status,
             @Param("offset") int offset,
             @Param("rowsPerPage") int rowsPerPage,

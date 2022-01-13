@@ -13,6 +13,6 @@ public class ErrorAction {
     @Action(value = "/bad-request", results = { @Result(location = "/index.html") })
     public String badRequest() throws IOException {
         HttpServletResponse response = ServletActionContext.getResponse();
-        return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response);
+        return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
     }
 }

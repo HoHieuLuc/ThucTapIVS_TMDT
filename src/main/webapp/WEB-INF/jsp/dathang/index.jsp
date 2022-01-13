@@ -3,6 +3,7 @@
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 
 <div class="mt-3">
+	<jsp:include page="/WEB-INF/jsp/include/searchbar.jsp" />
 	<div class="datHangDiv row">
 		<div id="datHangList" class="col-sm-12 col-md-9 col-lg-9">
 

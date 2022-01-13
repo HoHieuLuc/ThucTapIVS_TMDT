@@ -244,6 +244,9 @@ public class LoaiSanPhamAction extends ActionSupport {
         // = 0 tức là vẫn cần phân nhỏ ra nhiều loại nữa
         if (loaiSanPhamMapper.isLoaiSanPhamCapThap(maLoaiSanPham) == 0) {
             Map<String, Object> loaiSanPhamHienTai = loaiSanPhamMapper.getLoaiSanPham(maLoaiSanPham);
+            if (loaiSanPhamHienTai == null) {
+                return CustomError.createCustomError("Loại sản phẩm không tồn tại", 404, response);
+            }
             loaiSanPhams = loaiSanPhamMapper.getAllLoaiSanPhamCon(maLoaiSanPham);
             jsonRes.put("loaiSanPhams", loaiSanPhams);
             jsonRes.put("loaiSanPhamHienTai", loaiSanPhamHienTai);

@@ -1,7 +1,6 @@
 package com.tmdt.action;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -177,7 +176,7 @@ public class NhanVienApiAction {
         int offset = (_page - 1) * _rowsPerPage;
         int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
 
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(_status, offset, _rowsPerPage, _search);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSanPhamByStatus(_status, offset, _rowsPerPage, _search);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("sanphams", listSanPham);
         jsonRes.put("total_page", totalPage);
@@ -365,7 +364,7 @@ public class NhanVienApiAction {
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
             case 1:
-                ArrayList<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHang();
+                List<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHang();
                 jsonRes.put("thong_ke", thongKeTrangThaiDH);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
@@ -379,7 +378,7 @@ public class NhanVienApiAction {
                         return CustomError.createCustomError("Thời gian không hợp lệ",400,response);
                     }
                     // Đủ 2 điều kiện,truy vấn dữ liệu
-                     ArrayList<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustom(tuNgay, denNgay);
+                     List<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustom(tuNgay, denNgay);
                      jsonRes.put("thong_ke", thongKeCustom);
                      sqlSession.close();
                      return JsonResponse.createJsonResponse(jsonRes, 200, response);

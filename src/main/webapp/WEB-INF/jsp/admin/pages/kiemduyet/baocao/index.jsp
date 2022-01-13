@@ -16,7 +16,7 @@
     </form>
   </div>
 
-<table class="table table-striped table-hover" id="listBaoCaoTable">
+<table class="tlt-fixed-table table table-striped table-hover" id="listBaoCaoTable">
         <thead>
             <tr>
                 <th>Username người gửi</th>
@@ -26,7 +26,7 @@
             </tr>
         </thead>
         <tbody id="baocao-list">
-                </tbody>
+        </tbody>
     </table>
 
 <script>

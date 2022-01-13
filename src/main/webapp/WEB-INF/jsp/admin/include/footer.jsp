@@ -22,7 +22,6 @@
 <!-- Script xử lý thông báo -->
 <script src='<c:url value="/js/listThongBao.js"/>'></script>
 <!-- Script vẽ sơ đồ  -->
- <script src='<c:url value="/js/admin/thongke/thongke.js"/>'></script>
 
 </body>
 </html>

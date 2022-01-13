@@ -14,7 +14,7 @@
       <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
     </form>
   </div>
-  <table class="table table-striped table-hover">
+  <table class="tlt-fixed-table table table-striped table-hover">
     <thead>
       <tr>
         <th>Tên sản phẩm</th>

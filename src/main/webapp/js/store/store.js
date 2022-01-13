@@ -29,6 +29,20 @@ const baoCaoButtonDOM = document.querySelector('#baoCaoButton');
 const formBaoCaoDOM = document.querySelector('#formBaoCao');
 const noiDungBaoCaoDom = document.querySelector('#noiDungBaoCao');
 
+const init = () => {
+    const newParams = window.location.search;
+    const search = new URLSearchParams(newParams).get("search") ?? "";
+    const orderBy = new URLSearchParams(newParams).get("ob") ?? "date";
+    const order = new URLSearchParams(newParams).get("o") ?? "desc";
+    const rowsPerPage = new URLSearchParams(newParams).get("rpp") ?? 10;
+    searchFormDOM.querySelector("input[name=search]").value = search;
+    searchFormDOM.querySelector("select[name=orderBy]").value = orderBy;
+    searchFormDOM.querySelector("select[name=order]").value = order;
+    rowsPerPageDOM.value = rowsPerPage;
+}
+
+init();
+
 const dataList = (myData, myLabels) => ({
     labels: myLabels,
     datasets: [
@@ -129,10 +143,10 @@ const showProductList = async () => {
         const page = new URLSearchParams(newParams).get("page") ?? 1;
         const rowsPerPage = new URLSearchParams(newParams).get("rpp") ?? 10;
         const search = new URLSearchParams(newParams).get("search") ?? "";
-        const orderBy = new URLSearchParams(newParams).get("ob") ?? "ngay_dang";
+        const orderBy = new URLSearchParams(newParams).get("ob") ?? "date";
         const order = new URLSearchParams(newParams).get("o") ?? "desc";
         const {
-            data: { products, total_page },
+            data: { products, totalPages },
         } = await axios.get(`${baseURL}api/v1/store/${username}/products`, {
             params: {
                 page: page,
@@ -192,7 +206,7 @@ const showProductList = async () => {
                                     type="button" data-masanpham="${ma_san_pham}" 
                                     class="w-100 add-to-fav-btn btn btn-block btn-danger"
                                 >
-                                    Thêm vào mục yêu tích <i class="far fa-heart"></i>
+                                    Thêm vào mục yêu thích <i class="far fa-heart"></i>
                                 </button>
                             </div>
                         </div>
@@ -204,7 +218,7 @@ const showProductList = async () => {
         productListDOM.innerHTML = sanPhamsHTML;
         phanTrangProductDOM.innerHTML = buildPagination(
             page,
-            total_page,
+            totalPages,
             5,
             "changePage"
         );

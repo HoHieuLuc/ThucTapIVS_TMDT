@@ -4,6 +4,7 @@
 
 
 <div class="container-fluid">
+    <jsp:include page="/WEB-INF/jsp/include/searchbar.jsp" />
     <c:choose>
         <c:when test="${sessionScope.level == 0 || sessionScope.loggedIn == null || !sessionScope.loggedIn}">
             <div class="mb-3" id="sanPhamVuaXem">
@@ -46,7 +47,7 @@
         <div class="d-flex">
             <h4>Sản phẩm mới
                 <i class="text-muted fas fa-grip-lines-vertical"></i>
-                <a class="text-decoration-none text-dark" href="#">
+                <a class="text-decoration-none text-dark" href='<c:url value="/search"/>'>
                     Xem tất cả
                     <i class="fas fa-angle-double-right"></i>
                 </a>

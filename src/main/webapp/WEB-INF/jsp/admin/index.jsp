@@ -1,14 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-  <jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
-  <%-- loggedIn ${sessionScope.loggedIn}<br>
-    username ${sessionScope.username}<br>
-    tên ${sessionScope.ten}<br>
-    accountID ${sessionScope.accountID}<br>
-    permission ${sessionScope.permission}<br>
-    mã người dùng ${sessionScope.maNguoiDung}<br>
-    cấp độ ${sessionScope.level}<br>
-    avatar ${sessionScope.avatar}<br> --%>
+  <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+  <jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
@@ -128,17 +121,6 @@
               <!-- /.card-header -->
               <div class="card-body p-0" style="display: block;">
                 <ul class="products-list product-list-in-card pl-2 pr-2" id="topSanPhamBanChay">
-                  <li class="item">
-                    
-                    <div class="product">
-                            <h6>Điện Thoại</h6>
-                        <span class="badge badge-warning float-right">$1800</span>
-                      <span class="product-description">
-                        Samsung 32" 1080p 60Hz LED Smart HDTV.
-                      </span>
-                    </div>
-                  </li>
-
                   <!-- /.item -->
                 </ul>
               </div>
@@ -157,4 +139,5 @@
     <script>
       document.getElementById('dashboard').classList.add('active');
     </script>
+    <script src='<c:url value="/js/admin/thongke/thongke.js"/>'></script>
     <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
