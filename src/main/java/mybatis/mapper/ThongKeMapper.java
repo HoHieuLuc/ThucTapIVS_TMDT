@@ -9,6 +9,10 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 public interface ThongKeMapper {
+        /*****
+         * 
+         * Dành cho khách hàng
+         */
         // thống kê số lượng đơn đặt hàng cho khách hàng
         final String THONG_KE_SO_DON_DAT_HANG_CHO_KHACH_HANG_TRONG_THANG = "SELECT " +
                         "COUNT(DISTINCT dh.ma_dat_hang) AS so_luong, DATE(dh.ngay_dat) AS ngay " +
@@ -37,6 +41,51 @@ public interface ThongKeMapper {
                         @Param("tuNgay") Date tuNgay,
                         @Param("denNgay") Date denNgay);
 
+        // Note để nhớ vị trí
+          // 4 truy vấn để lấy tổng số đánh giá sản phẩm, tổng số sản phẩm, tổng số thành
+        // viên, tổng số đơn đặt hàng
+        final String GET_4_DATA_THONG_KE_USER = "SELECT 	CASE WHEN (1=1) THEN " +
+                        "(SELECT COUNT(ma_danh_gia) FROM danh_gia_san_pham) END AS so_danh_gia, " +
+                        "	CASE WHEN (1=1) THEN " +
+                        "(SELECT COUNT(ma_san_pham) FROM san_pham) END AS so_san_pham, " +
+                        "    	CASE WHEN (1=1) THEN " +
+                        "(SELECT COUNT(ma_quyen) FROM `tai_khoan`  WHERE ma_quyen = 'KH') END AS so_thanh_vien, " +
+                        "   	CASE WHEN (1=1) THEN  " +
+                        "(SELECT COUNT(ma_dat_hang) FROM chi_tiet_dat_hang) END AS so_don_dat_hang; ";
+
+        @Select(GET_4_DATA_THONG_KE_USER)
+        public Map<String, Object> get4DataThongKeUser();
+
+        // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
+        // theo tháng cụ thể
+        final String GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM_USER = "SELECT COUNT(*) FROM chi_tiet_dat_hang  ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang  " +
+        "WHERE DATE(dh.ngay_dat) BETWEEN #{tuNgay} AND #{denNgay}  GROUP BY STATUS;";
+
+        @Select(GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM_USER)
+        public ArrayList<Integer> getDataTrangThaiDatHangCustomUser(
+                        @Param("tuNgay") Date tuNgay,
+                        @Param("denNgay") Date denNgay);
+
+        // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
+        final String GET_DATA_TRANG_THAI_DAT_HANG_USER = "SELECT COUNT(*) FROM chi_tiet_dat_hang  GROUP BY STATUS;";
+        @Select(GET_DATA_TRANG_THAI_DAT_HANG_USER)
+        public ArrayList<Integer> getDataTrangThaiDatHangUser();
+
+        // Top 10 sản phẩm được mua nhiều nhất
+        final String TOP_10_SP_DUOC_MUA_NHIEU_NHAT_USER = "SELECT lsp.ten_loai_sp,sp.ten_san_pham ,COUNT((ctdh.ma_san_pham)) as 'so_luot_mua', sp.gia FROM "
+                        + "loai_san_pham lsp JOIN san_pham sp ON lsp.ma_loai_sp = sp.ma_loai_san_pham " +
+                        "LEFT JOIN chi_tiet_dat_hang ctdh ON ctdh.ma_san_pham = sp.ma_san_pham " +
+                        "GROUP BY sp.ten_san_pham,lsp.ten_loai_sp " +
+                        "ORDER BY COUNT(ctdh.ma_san_pham) DESC LIMIT 10; ";
+        @Select(TOP_10_SP_DUOC_MUA_NHIEU_NHAT_USER)
+        public List<Map<String,Object>> top10SPDuocMuaNhieuNhatUser();
+
+
+        /*****
+         * 
+         * Dành cho nhân viên
+         * 
+         */
         // 4 truy vấn để lấy tổng số đánh giá sản phẩm, tổng số sản phẩm, tổng số thành
         // viên, tổng số đơn đặt hàng
         final String GET_4_DATA_THONG_KE = "SELECT 	CASE WHEN (1=1) THEN " +

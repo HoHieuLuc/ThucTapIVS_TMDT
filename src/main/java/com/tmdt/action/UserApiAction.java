@@ -586,7 +586,7 @@ public class UserApiAction extends ActionSupport {
     }
 
         // Dùng 1 action cho thống kê 4 loại dữ liệu đơn giản và thống kê tình trạng đặt hàng
-        @Action(value = "/api/v1/nhanvien/thongke/{status}", results = {
+        @Action(value = "/api/v1/user/thongke/{status}", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String xuLyThongKe() throws IOException {
@@ -600,14 +600,15 @@ public class UserApiAction extends ActionSupport {
          * 1 là đếm số lượng đơn đặt hàng theo 4 trạng thái (bị hủy, đang chờ tiếp nhận,
          * đang giao, đã giao)
          */
+        
         switch (status) {
             case 0:
-                Map<String, Object> thongKe_4Data = thongKeMapper.get4DataThongKe();
+                Map<String, Object> thongKe_4Data = thongKeMapper.get4DataThongKeUser();
                 jsonRes.put("thong_ke", thongKe_4Data);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
             case 1:
-                ArrayList<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHang();
+                ArrayList<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHangUser();
                 jsonRes.put("thong_ke", thongKeTrangThaiDH);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
@@ -621,14 +622,14 @@ public class UserApiAction extends ActionSupport {
                         return CustomError.createCustomError("Thời gian không hợp lệ",400,response);
                     }
                     // Đủ 2 điều kiện,truy vấn dữ liệu
-                     ArrayList<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustom(tuNgay, denNgay);
+                     ArrayList<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustomUser(tuNgay, denNgay);
                      jsonRes.put("thong_ke", thongKeCustom);
                      sqlSession.close();
                      return JsonResponse.createJsonResponse(jsonRes, 200, response);
                 }
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
             case 3: 
-                List<Map<String, Object>> thongKes = thongKeMapper.top10SPDuocMuaNhieuNhat();
+                List<Map<String, Object>> thongKes = thongKeMapper.top10SPDuocMuaNhieuNhatUser();
                 jsonRes.put("thong_kes",thongKes);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);

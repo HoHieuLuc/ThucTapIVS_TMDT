@@ -134,19 +134,18 @@ formThongKeDOM.addEventListener('submit', async(event) => {
     // Tiếp đến là sơ đồ tròn
     const ctx = document.getElementById('pieChart').getContext('2d');
     try {
-        let { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/2`, {
+        let { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/user/thongke/2`, {
             params: {
                 tuNgay,
                 denNgay,
             }
         });
-       // console.log(thong_ke);
+        console.log(thong_ke);
         //Trường hợp khoảng ngày đó không có dữ liệu, đưa data array về  [0,0,0,0]
         if (thong_ke.length == 0) {
-            // thongBao("Không có dữ liệu thống kê trong khoảng thời gian này", true);
+             thongBao("Tình trạng đặt hàng không có dữ liệu thống kê trong khoảng thời gian này", true);
             // return;
-            thong_ke = [0,0,0,0];
-            console.log(thong_ke);
+            thong_ke = [0,0,0,0]
         }
 
 
@@ -192,7 +191,7 @@ const thongKeTinhTrangDonHangAll = async () => {
     const ctx = document.getElementById('pieChart').getContext('2d');
 
     try {
-        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/1`);
+        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/user/thongke/1`);
         console.log(thong_ke);
 
         //Dữ liệu
@@ -234,7 +233,7 @@ thongKeTinhTrangDonHangAll();
 
 const thongKeDonGian = async () => {
     try {
-        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/0`);
+        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/user/thongke/0`);
         console.log(thong_ke.so_thanh_vien);
         document.querySelector("#soDonHang").innerHTML = thong_ke.so_don_dat_hang;
         document.querySelector("#soSanPham").innerHTML = thong_ke.so_san_pham;
@@ -251,7 +250,7 @@ thongKeDonGian();
 
 showTop10SanPhamBanChay = async () => {
     try {
-        const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/3`);
+        const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/user/thongke/3`);
         console.log(thong_kes);
         const listThongKe = thong_kes.map((thong_kes) => {
             const { ten_san_pham, gia, ten_loai_sp, so_luot_mua } = thong_kes;
