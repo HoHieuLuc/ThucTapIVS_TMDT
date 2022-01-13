@@ -80,6 +80,8 @@ public class GlobalAction extends ActionSupport {
      * =============
      */
     /* route cho nhân viên */
+
+    //Dashboard (Thống kê bên admin)
     @Action(value = "/admin/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/admin/index.jsp")
     }, interceptorRefs = { @InterceptorRef("nhanVienStack") })
@@ -155,13 +157,14 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
-    // dashboard
+    // dashboard (Thống kê bên khách hàng)
     @Action(value = "/user/index", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/user/index.jsp")
     }, interceptorRefs = { @InterceptorRef("khachHangStack") })
     public String userPage() {
         return SUCCESS;
     }
+
 
     // danh sách sản phẩm
     @Action(value = "/user/sanpham", results = {

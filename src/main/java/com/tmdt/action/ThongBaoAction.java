@@ -111,7 +111,7 @@ public class ThongBaoAction extends ActionSupport {
                 // Đánh dấu đã đọc cho một thông báo cụ thể nào đó
                 int validate = thongBaoMapper.danhDauDaDoc(id, idNguoiNhan);
                 if (validate == 0) {
-                    return CustomError.createCustomError("Thông báo không tồn tại", 403, response);
+                    return CustomError.createCustomError("Thông báo không tồn tại", 404, response);
                 } else {
                     jsonRes.put("message", "Đánh dấu đã đọc thông báo thành công");
                 }
