@@ -24,13 +24,13 @@ const showLoaiSanPham = async () => {
         const allLoaiSanPham = loaiSanPhams.map((loaiSanPham) => {
             const { ma_loai_sp, ten_loai_sp, ma_loai_sp_cha, ten_loai_sp_cha } = loaiSanPham;
             const loaiSPCha = ma_loai_sp_cha
-                ? `<a href="${baseURL}admin/loaisanpham/${ma_loai_sp_cha}"><i class="fas fa-external-link-alt"></i></a>
+                ? `<a href="${baseURL}category/${ma_loai_sp_cha}"><i class="fas fa-external-link-alt"></i></a>
                     ${ten_loai_sp_cha}`
                 : 'Không';
             return `
                 <tr>
                     <td>
-                        <a href="${baseURL}admin/loaisanpham/${ma_loai_sp}"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="${baseURL}category/${ma_loai_sp}"><i class="fas fa-external-link-alt"></i></a>
                         ${ten_loai_sp}
                     </td>
                     <td>${loaiSPCha}</td>
