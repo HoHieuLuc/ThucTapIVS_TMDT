@@ -1,7 +1,6 @@
 const soDonDatHangChartDOM = document.querySelector('.soDonDatHangChart');
 const formThongKeDOM = document.querySelector('.formThongKe');
 const tuyChonThongKeDOM = document.querySelector('.tuyChonThongKe');
-const debugButton = document.querySelector('.debug-button');
 let donDatHangChart;
 let pieChart;
 const topSanPhamBanChayDOM = document.querySelector('#topSanPhamBanChay');
@@ -109,10 +108,6 @@ const getSoDonDatHangThongKe = async (tuNgay, denNgay) => {
 
 getSoDonDatHangThongKe(null, null);
 
-debugButton.addEventListener('click', () => {
-    getSoDonDatHangThongKe();
-});
-
 tuyChonThongKeDOM.addEventListener('change', (event) => {
     if (event.target.value === 'tuychinh') {
         formThongKeDOM.classList.remove('d-none');
@@ -124,7 +119,7 @@ tuyChonThongKeDOM.addEventListener('change', (event) => {
     }
 });
 
-formThongKeDOM.addEventListener('submit', async(event) => {
+formThongKeDOM.addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData(formThongKeDOM);
     const tuNgay = formData.get('tuNgay');
@@ -143,9 +138,9 @@ formThongKeDOM.addEventListener('submit', async(event) => {
         console.log(thong_ke);
         //Trường hợp khoảng ngày đó không có dữ liệu, đưa data array về  [0,0,0,0]
         if (thong_ke.length == 0) {
-             thongBao("Tình trạng đặt hàng không có dữ liệu thống kê trong khoảng thời gian này", true);
+            thongBao("Tình trạng đặt hàng không có dữ liệu thống kê trong khoảng thời gian này", true);
             // return;
-            thong_ke = [0,0,0,0]
+            thong_ke = [0, 0, 0, 0]
         }
 
 
@@ -179,7 +174,7 @@ formThongKeDOM.addEventListener('submit', async(event) => {
                     title: {
                         display: true,
                         text: 'Tình Trạng Chi Tiết Đặt Hàng',
-                        fontSize : 15
+                        fontSize: 15
                     }
                 }
             }
@@ -233,7 +228,7 @@ const thongKeTinhTrangDonHangAll = async () => {
                     title: {
                         display: true,
                         text: 'Tình Trạng Chi Tiết Đặt Hàng',
-                        fontSize : 15
+                        fontSize: 15
                     }
                 }
             }
@@ -265,24 +260,23 @@ const thongKeDonGian = async () => {
 thongKeDonGian();
 
 
-showTop10SanPhamBanChay = async () => {
+const showTop10SanPhamBanChay = async () => {
     try {
         const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/user/thongke/3`);
         console.log(thong_kes);
-        const listThongKe = thong_kes.map((thong_kes) => {
-            const { ten_san_pham, gia, ten_loai_sp, so_luot_mua } = thong_kes;
+        const listThongKe = thong_kes.map((thong_ke) => {
+            const { ten_san_pham, /*gia,*/ ten_loai_sp, so_luot_mua } = thong_ke;
             return `
-          <li class="item">
-                        
-          <div class="product">
-                  <h6>${ten_loai_sp}</h6>
-              <span class="badge badge-success float-right m-1">${so_luot_mua} lượt mua</span>
-            <span class="product-description">
-              ${ten_san_pham}
-            </span>
-          </div>
-        </li>
-        `
+                <li class="item">
+                    <div class="product">
+                        <h6>${ten_loai_sp}</h6>
+                        <span class="badge badge-success float-right m-1">${so_luot_mua} lượt mua</span>
+                        <span class="product-description">
+                            ${ten_san_pham}
+                        </span>
+                    </div>
+                </li>
+            `;
         }).join(' ');
         topSanPhamBanChayDOM.innerHTML = listThongKe;
     }
