@@ -44,7 +44,7 @@ public interface ThongKeMapper {
         // Note để nhớ vị trí
         // 4 truy vấn để lấy tổng số đánh giá sản phẩm, tổng số sản phẩm, tổng số thành
         // viên, tổng số đơn đặt hàng
-        final String GET_4_DATA_THONG_KE_USER = "SELECT 	CASE WHEN (1=1) THEN " +
+        final String GET_3_DATA_THONG_KE_USER = "SELECT 	CASE WHEN (1=1) THEN " +
                         "(SELECT COUNT(ma_danh_gia) FROM danh_gia_san_pham dgsp JOIN san_pham sp on dgsp.ma_san_pham = sp.ma_san_pham WHERE sp.ma_khach_hang = #{maNguoiBan}) END AS so_danh_gia, "
                         +
                         "	CASE WHEN (1=1) THEN " +
@@ -53,8 +53,8 @@ public interface ThongKeMapper {
                         "   	CASE WHEN (1=1) THEN  " +
                         "(SELECT COUNT(ctdh.ma_dat_hang) FROM chi_tiet_dat_hang ctdh JOIN san_pham sp ON ctdh.ma_san_pham = sp.ma_san_pham WHERE sp.ma_khach_hang = #{maNguoiBan}) END AS so_don_dat_hang; ";
 
-        @Select(GET_4_DATA_THONG_KE_USER)
-        public Map<String, Object> get4DataThongKeUser(int maNguoiBan);
+        @Select(GET_3_DATA_THONG_KE_USER)
+        public Map<String, Object> ge3DataThongKeUser(int maNguoiBan);
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         // theo tháng cụ thể

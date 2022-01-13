@@ -604,7 +604,7 @@ public class UserApiAction extends ActionSupport {
 
         switch (status) {
             case 0:
-                Map<String, Object> thongKe_4Data = thongKeMapper.get4DataThongKeUser(maNguoiBan);
+                Map<String, Object> thongKe_4Data = thongKeMapper.ge3DataThongKeUser(maNguoiBan);
                 jsonRes.put("thong_ke", thongKe_4Data);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
@@ -617,7 +617,7 @@ public class UserApiAction extends ActionSupport {
                 // Check null cho 2 giá trị ngày
                 if ( kiemTraNgayThongKe() ){
 
-                    // Kiểm tra ngày trước phải nhỏ hơn ngày sau
+                    // Kiểm tra ngày trước phải nhỏ  hơn ngày sau
                     if (tuNgay.compareTo(denNgay) > 0){ //>0 là khoảng thời gian không hợp lệ
                         sqlSession.close();
                         return CustomError.createCustomError("Thời gian không hợp lệ",400,response);
