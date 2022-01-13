@@ -118,7 +118,6 @@ public class NhanVienApiAction {
         this.search = search;
     }
 
-    
     /* End getter and setter */
 
     public Date getTuNgay() {
@@ -136,7 +135,6 @@ public class NhanVienApiAction {
     public void setDenNgay(Date denNgay) {
         this.denNgay = denNgay;
     }
-
 
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -327,7 +325,12 @@ public class NhanVienApiAction {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // Dùng 1 action cho thống kê 
+    // kiểm tra ngày thống kê
+    public boolean kiemTraNgayThongKe() {
+        return tuNgay != null && denNgay != null;
+    }
+
+    // Dùng 1 action cho thống kê
     @Action(value = "/api/v1/nhanvien/thongke/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -340,10 +343,12 @@ public class NhanVienApiAction {
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         Map<String, Object> thongKe = thongKeMapper.get4DataThongKe();
 
+        
 
-
-        /* 0 là thống kê 4 loại dữ liệu đơn giản 
-            1 là đếm số lượng đơn đặt hàng theo 4 trạng thái (bị hủy, đang chờ tiếp nhận, đang giao, đã giao)
+        /*
+         * 0 là thống kê 4 loại dữ liệu đơn giản
+         * 1 là đếm số lượng đơn đặt hàng theo 4 trạng thái (bị hủy, đang chờ tiếp nhận,
+         * đang giao, đã giao)
          */
         switch (status) {
             case 0:
@@ -353,7 +358,7 @@ public class NhanVienApiAction {
                 thongKe = thongKeMapper.getDataTrangThaiDatHang();
                 break;
             default:
-                return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ",403,response);
+                return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
         }
 
         jsonRes.put("thong_ke", thongKe);
