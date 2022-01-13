@@ -44,9 +44,6 @@ const thongKeTinhTrangDonHangAll = async () => {
   }
 }
 
-
-thongKeTinhTrangDonHangAll();
-
 const thongKeDonGian = async () => {
   try {
     const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/0`);
@@ -61,7 +58,7 @@ const thongKeDonGian = async () => {
   }
 }
 
-thongKeDonGian();
+
 
 tuyChonThongKeDOM.addEventListener('change', (event) => {
   if (event.target.value === 'tuychinh') {
@@ -134,13 +131,16 @@ formThongKeDOM.addEventListener('submit', async (event) => {
   }
 });
 
+thongKeTinhTrangDonHangAll();
+thongKeDonGian();
+showTop10SanPhamBanChay();
 
-showTop10SanPhamBanChay = async () => {
+const showTop10SanPhamBanChay = async () => {
   try {
     const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/3`);
     console.log(thong_kes);
-    const listThongKe = thong_kes.map((thong_kes) => {
-      const { ten_san_pham, gia, ten_loai_sp, so_luot_mua } = thong_kes;
+    const listThongKe = thong_kes.map((thong_ke) => {
+      const { ten_san_pham, ten_loai_sp, so_luot_mua } = thong_ke;
       return `
         <li class="item">
                       
@@ -163,4 +163,3 @@ showTop10SanPhamBanChay = async () => {
 
 }
 
-showTop10SanPhamBanChay();
