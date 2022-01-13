@@ -13,10 +13,10 @@
     </c:choose>
                     
 <div>
-        <select name="status" class="form-select" id="thongbao-filter">
-            <option value="0">Chưa đọc</option>
-            <option value="-1" selected>Tất cả</option>
-        </select>
+    <select name="status" class="form-select" id="thongbao-filter">
+        <option value="0">Chưa đọc</option>
+        <option value="-1" selected>Tất cả</option>
+    </select>
 </div>
 <table class="tlt-fixed-table table table-striped table-hover">
     <thead>
