@@ -1,7 +1,7 @@
 const formThongKeDOM = document.querySelector('.formThongKe');
 const tuyChonThongKeDOM = document.querySelector('.tuyChonThongKe');
 let pieChart;
-const topSanPhamBanChayDOM = document.querySelector('#topSanPhamBan');
+const topSanPhamBanChayDOM = document.querySelector('#topSanPhamBanChay');
 
 const thongKeTinhTrangDonHangAll = async () => {
 
@@ -130,15 +130,14 @@ showTop10SanPhamBanChay = async () => {
   try {
     const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/3`);
     console.log(thong_kes);
-    const listThongKe = thong_kes.map(thong_kes => {
+    const listThongKe = thong_kes.map((thong_kes) => {
       const { ten_san_pham, gia, ten_loai_sp, so_luot_mua } = thong_kes;
       return `
         <li class="item">
                       
         <div class="product">
                 <h6>${ten_loai_sp}</h6>
-            <span class="badge badge-warning float-right">${gia} đ</span>
-            <span class="badge badge-success float-right">${so_luot_mua} đ</span>
+            <span class="badge badge-success float-right m-1">${so_luot_mua} lượt mua</span>
           <span class="product-description">
             ${ten_san_pham}
           </span>
@@ -149,6 +148,7 @@ showTop10SanPhamBanChay = async () => {
     topSanPhamBanChayDOM.innerHTML = listThongKe;
   }
   catch (error) {
+    console.log(error);
     thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
   }
 
