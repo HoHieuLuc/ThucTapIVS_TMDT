@@ -345,7 +345,8 @@ public interface SanPhamMapper {
             "AND ctdh.ma_san_pham != #{maSanPham} " +
             "GROUP BY ctdh.ma_san_pham " +
             "HAVING COUNT(ctdh.ma_san_pham) > 1 " +
-            "ORDER BY COUNT(ctdh.ma_san_pham) DESC";
+            "ORDER BY COUNT(ctdh.ma_san_pham) DESC " +
+            "LIMIT 12";
 
     @Select(GET_PEOPLE_WHO_BOUGHT_THIS_ALSO_BOUGHT)
     public List<Map<String, Object>> getPeopleWhoBoughtThisAlsoBought(@Param("maSanPham") String maSanPham);
