@@ -2,6 +2,7 @@ package com.tmdt.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class NhanVienApiAction {
     private String userName;
     private int maBaoCao;
     private String noiDung;
+    private Date tuNgay;
+    private Date denNgay;
 
     /* Begin Getter and setter */
     public String getNoiDung() {
@@ -114,7 +117,26 @@ public class NhanVienApiAction {
     public void setSearch(String search) {
         this.search = search;
     }
+
+    
     /* End getter and setter */
+
+    public Date getTuNgay() {
+        return tuNgay;
+    }
+
+    public void setTuNgay(Date tuNgay) {
+        this.tuNgay = tuNgay;
+    }
+
+    public Date getDenNgay() {
+        return denNgay;
+    }
+
+    public void setDenNgay(Date denNgay) {
+        this.denNgay = denNgay;
+    }
+
 
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -317,6 +339,8 @@ public class NhanVienApiAction {
         ThongKeMapper thongKeMapper = sqlSession.getMapper(ThongKeMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         Map<String, Object> thongKe = thongKeMapper.get4DataThongKe();
+
+
 
         /* 0 là thống kê 4 loại dữ liệu đơn giản 
             1 là đếm số lượng đơn đặt hàng theo 4 trạng thái (bị hủy, đang chờ tiếp nhận, đang giao, đã giao)
