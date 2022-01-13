@@ -174,6 +174,15 @@ formThongKeDOM.addEventListener('submit', async(event) => {
         const config = {
             type: 'pie',
             data: data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Tình Trạng Chi Tiết Đặt Hàng',
+                        fontSize : 15
+                    }
+                }
+            }
         };
         pieChart.destroy();
         pieChart = new Chart(ctx, config);
@@ -219,6 +228,15 @@ const thongKeTinhTrangDonHangAll = async () => {
         const config = {
             type: 'pie',
             data: data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Tình Trạng Chi Tiết Đặt Hàng',
+                        fontSize : 15
+                    }
+                }
+            }
         };
         pieChart = new Chart(ctx, config);
     }
