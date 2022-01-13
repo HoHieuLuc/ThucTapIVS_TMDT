@@ -111,6 +111,16 @@
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable ui-sortable">
+            <!--Số lượng đơn đặt hàng -->
+            <div class="card">
+              <div class="text-center fs-5">
+                Số lượng đơn đặt hàng
+              </div>
+              <canvas class="soDonDatHangChart">
+
+              </canvas>
+            </div>
+            <!-- Top Sản phẩm bán chạy -->
             <div class="card" style="display: block;">
               <div class="card-header bg-success">
                 <h3 class="card-title">Top 10 sản phẩm bán chạy</h3>
@@ -124,7 +134,8 @@
                   </button>
                 </div>
               </div>
-              <!-- Top Sản phẩm bán chạy -->
+
+
               <div class="card-body p-0" style="display: block;">
                 <ul class="products-list product-list-in-card pl-2 pr-2" id="topSanPhamBanChay">
                   <li class="item">
@@ -146,14 +157,6 @@
 
             </div>
             <!-- Kết thúc top sản phẩm bán chạy -->
-            <div class="card">
-              <div class="text-center fs-5">
-                Số lượng đơn đặt hàng
-              </div>
-              <canvas class="soDonDatHangChart">
-
-              </canvas>
-            </div>
           </section>
 
         </div>
