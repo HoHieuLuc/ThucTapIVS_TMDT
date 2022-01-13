@@ -32,6 +32,9 @@
       min-width: 20em;
       max-width: 20em;
     }
+    button>i {
+      pointer-events: none;
+    }
   </style>
 
   <%-- js --%>
