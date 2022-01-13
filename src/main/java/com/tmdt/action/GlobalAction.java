@@ -149,6 +149,14 @@ public class GlobalAction extends ActionSupport {
      * ==============
      */
     /* route cho khách hàng */
+    // sản phẩm yêu thích
+    @Action(value = "/fav", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/fav/index.jsp")
+    }, interceptorRefs = { @InterceptorRef("khachHangStack") })
+    public String sanPhamYeuThich() {
+        return SUCCESS;
+    }
+
     // giỏ hàng
     @Action(value = "/cart", results = {
             @Result(name = "success", location = "/WEB-INF/jsp/cart/index.jsp")

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import mybatis.mapper.GioHangMapper;
+import mybatis.mapper.SanPhamYeuThichMapper;
+
 import com.tmdt.errors.CustomError;
 import com.tmdt.utilities.JsonResponse;
 
@@ -23,8 +25,8 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.*;
 
 @Result(name = "input", location = "/index", type = "redirectAction", params = {
-    "namespace", "/",
-    "actionName", "bad-request"
+        "namespace", "/",
+        "actionName", "bad-request"
 })
 public class GioHangAction extends ActionSupport {
     // Respone hay dùng cho AJAX và JSON
@@ -242,6 +244,74 @@ public class GioHangAction extends ActionSupport {
         sqlSession.commit();
         sqlSession.close();
         jsonRes.put("soLuong", soLuong);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    @Action(value = "/api/v1/fav", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+    public String getSanPhamYeuThich() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamYeuThichMapper sanPhamYeuThichMapper = sqlSession.getMapper(SanPhamYeuThichMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        // Lấy mã khách hàng từ session
+        Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
+
+        List<Map<String, Object>> sanPhamYeuThich = sanPhamYeuThichMapper.getSPYeuThich(maKhachHang);
+        sqlSession.close();
+        jsonRes.put("sanPhamYeuThich", sanPhamYeuThich);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // thêm sản phẩm yêu thích
+    @Action(value = "/api/v1/fav/them", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+    public String themSanPhamYeuThich() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamYeuThichMapper sanPhamYeuThichMapper = sqlSession.getMapper(SanPhamYeuThichMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        // Lấy mã khách hàng từ session
+        Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
+        try {
+            sanPhamYeuThichMapper.themSPYeuThich(maKhachHang, maSanPham);
+        } catch (PersistenceException e) {
+            sqlSession.close();
+            jsonRes.put("message", "Sản phẩm đã tồn tại trong danh sách yêu thích");
+            return JsonResponse.createJsonResponse(jsonRes, 403, response);
+        }
+        sqlSession.commit();
+        sqlSession.close();
+        jsonRes.put("message", "Thêm sản phẩm yêu thích thành công");
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // xóa sản phẩm yêu thích
+    @Action(value = "/api/v1/fav/xoa", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+    public String xoaSanPhamYeuThich() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamYeuThichMapper sanPhamYeuThichMapper = sqlSession.getMapper(SanPhamYeuThichMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        // Lấy mã khách hàng từ session
+        Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
+
+        int numb = sanPhamYeuThichMapper.xoaSPYeuThich(maKhachHang, maSanPham);
+        if (numb == 0){
+            sqlSession.close();
+            jsonRes.put("message", "Sản phẩm không tồn tại trong danh sách yêu thích");
+            return JsonResponse.createJsonResponse(jsonRes, 404, response);
+        }
+        sqlSession.commit();
+        sqlSession.close();
+        jsonRes.put("message", "Xóa sản phẩm yêu thích thành công");
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }

@@ -16,7 +16,12 @@ public interface SanPhamYeuThichMapper {
             @Param("maSanPham") String maSanPham);
 
     // Lấy danh sách sản phẩm yêu thích
-    final String GET_SP_YEU_THICH = "SELECT * FROM `san_pham_yeu_thich` WHERE ma_khach_hang = #{maKhachHang};";
+    final String GET_SP_YEU_THICH = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, asp.anh " +
+            "FROM san_pham_yeu_thich spyt " +
+            "JOIN san_pham sp ON sp.ma_san_pham = spyt.ma_san_pham " +
+            "LEFT JOIN anh_san_pham asp ON asp.ma_san_pham = sp.ma_san_pham " +
+            "WHERE spyt.ma_khach_hang = #{maKhachHang} " +
+            "GROUP BY spyt.ma_san_pham";
 
     @Select(GET_SP_YEU_THICH)
     public List<Map<String, Object>> getSPYeuThich(int maKhachHang);

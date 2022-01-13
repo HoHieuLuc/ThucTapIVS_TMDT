@@ -124,6 +124,11 @@
                   <c:choose>
                     <c:when test="${sessionScope.level == 0}">
                       <li class="nav-item">
+                        <a class="nav-link" href='<c:url value="/fav" />'>
+                          Sản phẩm yêu thích <i class="fas fa-heart"></i>
+                        </a>
+                      </li>
+                      <li class="nav-item">
                         <a class="nav-link" href='<c:url value="/cart" />'>
                           Giỏ hàng <i class="fas fa-shopping-cart"></i>
                         </a>

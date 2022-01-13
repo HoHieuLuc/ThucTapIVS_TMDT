@@ -33,9 +33,12 @@ const addToCart = async (formData) => {
     }
 }
 
-const removeFromCart = async (formData) => {
+const removeFromCart = async (formData, khongThongBao = false) => {
     try {
         await axios.post(`${baseURL}api/v1/giohang/xoa`, formData);
+        if (khongThongBao) {
+            return;
+        }
         thongBao('Xóa khỏi giỏ hàng thành công');
     } catch (error) {
         thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
@@ -52,6 +55,30 @@ const updateCart = async (formData) => {
     }
 }
 
+const addToFav = async (formData, khongThongBao = false) => {
+    try {
+        const { data: { message } } = await axios.post(`${baseURL}api/v1/fav/them`, formData);
+        if (khongThongBao) {
+            return true;
+        }
+        thongBao(message);
+    } catch (error) {
+        console.log(error);
+        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+        return false;
+    }
+}
+
+const removeFromFav = async (formData) => {
+    try {
+        const { data: { message } } = await axios.post(`${baseURL}api/v1/fav/xoa`, formData);
+        thongBao(message);
+        showSanPhamYeuThich();
+    } catch (error) {
+        console.log(error);
+        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+    }
+}
 
 mainDOM.addEventListener('click', async (event) => {
     const target = event.target;
@@ -100,11 +127,23 @@ mainDOM.addEventListener('click', async (event) => {
         return;
     }
     if (target.classList.contains('add-to-fav-btn')) {
-        console.log("add to favorite");
+        formData.append('maSanPham', target.dataset.masanpham);
+        await addToFav(formData);
+        return;
+    }
+    if (target.classList.contains('remove-from-fav-btn')) {
+        formData.append('maSanPham', target.dataset.masanpham);
+        await removeFromFav(formData);
         return;
     }
     if (target.classList.contains('move-to-fav-btn')) {
-        console.log("move to favorite");
+        formData.append('maSanPham', target.dataset.masanpham);
+        const check = await addToFav(formData, true);
+        if (check) {
+            await removeFromCart(formData, true);
+            showGioHang();
+            thongBao('Đã chuyển sang danh sách yêu thích');
+        }
     }
 });
 

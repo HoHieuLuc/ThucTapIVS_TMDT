@@ -639,7 +639,5 @@ public class UserApiAction extends ActionSupport {
             default:
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
         }
-
     }
-
 }
