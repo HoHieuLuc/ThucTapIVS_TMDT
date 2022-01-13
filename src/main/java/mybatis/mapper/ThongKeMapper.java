@@ -45,16 +45,14 @@ public interface ThongKeMapper {
           // 4 truy vấn để lấy tổng số đánh giá sản phẩm, tổng số sản phẩm, tổng số thành
         // viên, tổng số đơn đặt hàng
         final String GET_4_DATA_THONG_KE_USER = "SELECT 	CASE WHEN (1=1) THEN " +
-                        "(SELECT COUNT(ma_danh_gia) FROM danh_gia_san_pham) END AS so_danh_gia, " +
+                        "(SELECT COUNT(ma_danh_gia) FROM danh_gia_san_pham dgsp JOIN san_pham sp on dgsp.ma_san_pham = sp.ma_san_pham WHERE sp.ma_khach_hang = #{maNguoiBan}) END AS so_danh_gia, " +
                         "	CASE WHEN (1=1) THEN " +
-                        "(SELECT COUNT(ma_san_pham) FROM san_pham) END AS so_san_pham, " +
-                        "    	CASE WHEN (1=1) THEN " +
-                        "(SELECT COUNT(ma_quyen) FROM `tai_khoan`  WHERE ma_quyen = 'KH') END AS so_thanh_vien, " +
+                        "(SELECT COUNT(ma_san_pham) FROM san_pham sp JOIN khach_hang kh ON sp.ma_khach_hang = kh.ma_khach_hang WHERE kh.ma_khach_hang = #{maNguoiBan}) END AS so_san_pham, " +
                         "   	CASE WHEN (1=1) THEN  " +
                         "(SELECT COUNT(ma_dat_hang) FROM chi_tiet_dat_hang) END AS so_don_dat_hang; ";
 
         @Select(GET_4_DATA_THONG_KE_USER)
-        public Map<String, Object> get4DataThongKeUser();
+        public Map<String, Object> get4DataThongKeUser(int maNguoiBan);
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         // theo tháng cụ thể
@@ -64,12 +62,14 @@ public interface ThongKeMapper {
         @Select(GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM_USER)
         public ArrayList<Integer> getDataTrangThaiDatHangCustomUser(
                         @Param("tuNgay") Date tuNgay,
-                        @Param("denNgay") Date denNgay);
+                        @Param("denNgay") Date denNgay,
+                        @Param("maNguoiBan") int maNguoiBan
+        );
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         final String GET_DATA_TRANG_THAI_DAT_HANG_USER = "SELECT COUNT(*) FROM chi_tiet_dat_hang  GROUP BY STATUS;";
         @Select(GET_DATA_TRANG_THAI_DAT_HANG_USER)
-        public ArrayList<Integer> getDataTrangThaiDatHangUser();
+        public ArrayList<Integer> getDataTrangThaiDatHangUser(int maNguoiBan);
 
         // Top 10 sản phẩm được mua nhiều nhất
         final String TOP_10_SP_DUOC_MUA_NHIEU_NHAT_USER = "SELECT lsp.ten_loai_sp,sp.ten_san_pham ,COUNT((ctdh.ma_san_pham)) as 'so_luot_mua', sp.gia FROM "
@@ -78,7 +78,7 @@ public interface ThongKeMapper {
                         "GROUP BY sp.ten_san_pham,lsp.ten_loai_sp " +
                         "ORDER BY COUNT(ctdh.ma_san_pham) DESC LIMIT 10; ";
         @Select(TOP_10_SP_DUOC_MUA_NHIEU_NHAT_USER)
-        public List<Map<String,Object>> top10SPDuocMuaNhieuNhatUser();
+        public List<Map<String,Object>> top10SPDuocMuaNhieuNhatUser(int maNguoiBan);
 
 
         /*****

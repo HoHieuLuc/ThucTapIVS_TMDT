@@ -237,7 +237,6 @@ const thongKeDonGian = async () => {
         console.log(thong_ke.so_thanh_vien);
         document.querySelector("#soDonHang").innerHTML = thong_ke.so_don_dat_hang;
         document.querySelector("#soSanPham").innerHTML = thong_ke.so_san_pham;
-        document.querySelector("#soNguoiDung").innerHTML = thong_ke.so_thanh_vien;
         document.querySelector("#soDanhGia").innerHTML = thong_ke.so_danh_gia;
     }
     catch (error) {
