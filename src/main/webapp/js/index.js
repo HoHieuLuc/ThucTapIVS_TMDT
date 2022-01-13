@@ -107,3 +107,44 @@ mainDOM.addEventListener('click', async (event) => {
         console.log("move to favorite");
     }
 });
+
+
+const loaiSPListDOM = document.querySelector('.loaiSanPham');
+const showLoaiSPList = async () => {
+
+    try {
+        const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/category_have_product`);
+        loaiSPListDOM.innerHTML = buildOptions(
+            loaiSanPhams,
+            'maLoaiSanPham',
+            'tenLoaiSanPham',
+            'Tất cả',
+            false
+        );
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const tltMainSearchFormDOM = document.querySelector('.tlt-main-search-form');
+
+if (tltMainSearchFormDOM) {
+    showLoaiSPList();
+    const params = window.location.search;
+    const search = new URLSearchParams(params).get('q') ?? "";
+    tltMainSearchFormDOM.querySelector('input[name="q"]').value = search;
+    tltMainSearchFormDOM.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(tltMainSearchFormDOM);
+        const q = formData.get('q');
+        const cat = formData.get('cat');
+        if (formData.get('q') === "") {
+            return;
+        }
+        if (cat === "") {
+            window.location.href = `${baseURL}search?q=${q}`;
+        } else {
+            window.location.href = `${baseURL}category/${cat}?search=${q}`;
+        }
+    })
+}
