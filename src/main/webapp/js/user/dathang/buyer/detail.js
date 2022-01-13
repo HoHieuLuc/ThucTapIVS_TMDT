@@ -8,7 +8,6 @@ const storeLinkDOM = document.querySelector('.storeLink');
 
 const anhSanPhamDOM = document.querySelector('.anhSanPham');
 const tenSanPhamDOM = document.querySelector('.tenSanPham');
-const moTaDOM = document.querySelector('.moTa');
 const soLuongDatDOM = document.querySelector('.soLuongDat');
 const donGiaDOM = document.querySelector('.donGia');
 const tongTienDOM = document.querySelector('.tongTien');
@@ -26,7 +25,7 @@ const showChiTietDatHang = async (skip = false) => {
         } } = await axios.get(`${baseURL}api/v1/user/buyer/dathang/${id}/${maSanPham}`);
         const {
             username, email, so_dien_thoai, avatar, ten, so_luong_dat, status,
-            tong_tien, ten_san_pham, mo_ta, ngay_dat, don_gia, anh
+            tong_tien, ten_san_pham, ngay_dat, don_gia, anh
         } = chiTietDatHang;
         let chucNangHtml = "";
         if (status === -1){
@@ -83,7 +82,6 @@ const showChiTietDatHang = async (skip = false) => {
         anhSanPhamDOM.src = `${baseURL}images/product/${anh}`;
         tenSanPhamDOM.innerText = ten_san_pham;
         tenSanPhamDOM.href = `${baseURL}sanpham/${maSanPham}`;
-        moTaDOM.innerText = mo_ta;
         soLuongDatDOM.innerText = so_luong_dat;
         donGiaDOM.innerText = donGiaVND;
         tongTienDOM.innerText = tongTienVND;
