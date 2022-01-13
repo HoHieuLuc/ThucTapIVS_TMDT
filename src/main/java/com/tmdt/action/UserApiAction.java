@@ -630,7 +630,7 @@ public class UserApiAction extends ActionSupport {
                 }
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
             case 3: 
-                List<Map<String, Object>> thongKes = thongKeMapper.top10SPDuocMuaNhieuNhatUser(maNguoiBan);
+                List<Map<String, Object>> thongKes = thongKeMapper.top10SPDuocMuaNhieuNhatUserByMonth(maNguoiBan);
                 jsonRes.put("thong_kes",thongKes);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
