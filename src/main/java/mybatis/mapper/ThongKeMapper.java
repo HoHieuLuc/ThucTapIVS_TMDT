@@ -67,7 +67,8 @@ public interface ThongKeMapper {
         );
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
-        final String GET_DATA_TRANG_THAI_DAT_HANG_USER = "SELECT COUNT(*) FROM chi_tiet_dat_hang  GROUP BY STATUS;";
+        final String GET_DATA_TRANG_THAI_DAT_HANG_USER = "SELECT COUNT(*) FROM chi_tiet_dat_hang ctdh JOIN san_pham sp " +
+        " ON ctdh.ma_san_pham = sp.ma_san_pham WHERE sp.ma_khach_hang = #{maNguoiBan} GROUP BY ctdh.status; ";
         @Select(GET_DATA_TRANG_THAI_DAT_HANG_USER)
         public ArrayList<Integer> getDataTrangThaiDatHangUser(int maNguoiBan);
 
