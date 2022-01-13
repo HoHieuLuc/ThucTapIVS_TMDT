@@ -112,7 +112,40 @@
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable ui-sortable">
-            <!-- /.card -->
+            <div class="card" style="display: block;">
+              <div class="card-header">
+                <h3 class="card-title">Top 10 sản phẩm bán chạy</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0" style="display: block;">
+                <ul class="products-list product-list-in-card pl-2 pr-2" id="topSanPhamBanChay">
+                  <li class="item">
+                    
+                    <div class="product">
+                            <h6>Điện Thoại</h6>
+                        <span class="badge badge-warning float-right">$1800</span>
+                      <span class="product-description">
+                        Samsung 32" 1080p 60Hz LED Smart HDTV.
+                      </span>
+                    </div>
+                  </li>
+
+                  <!-- /.item -->
+                </ul>
+              </div>
+              <!-- /.card-body -->
+              
+              <!-- /.card-footer -->
+            </div>
           </section>
 
         </div>
