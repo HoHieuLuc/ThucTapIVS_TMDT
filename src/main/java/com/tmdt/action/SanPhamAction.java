@@ -11,12 +11,14 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
+import com.tmdt.errors.CustomError;
 import com.tmdt.utilities.JsonResponse;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Result;
 
 import mybatis.mapper.AnhSanPhamMapper;
 import mybatis.mapper.SanPhamMapper;
@@ -31,6 +33,9 @@ public class SanPhamAction extends ActionSupport {
     private String search;
     private int page;
     private int rowsPerPage;
+    private Integer minPrice;
+    private Integer maxPrice;
+    private String order;
 
     // region Getter and Setter
     public String getMaSanPham() {
@@ -42,7 +47,7 @@ public class SanPhamAction extends ActionSupport {
     }
 
     public String getSearch() {
-        return search;
+        return search == null ? "" : search;
     }
 
     public void setSearch(String search) {
@@ -66,6 +71,8 @@ public class SanPhamAction extends ActionSupport {
             case 10:
             case 20:
             case 30:
+            case 50:
+            case 100:
                 return rowsPerPage;
             default:
                 return 5;
@@ -74,6 +81,44 @@ public class SanPhamAction extends ActionSupport {
 
     public void setRowsPerPage(int rowsPerPage) {
         this.rowsPerPage = rowsPerPage;
+    }
+
+    public Integer getMinPrice() {
+        return minPrice == null ? 0 : minPrice;
+    }
+
+    public void setMinPrice(Integer minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public Integer getMaxPrice() {
+        return maxPrice == null ? 0 : maxPrice;
+    }
+
+    public void setMaxPrice(Integer maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    public String getOrder() {
+        if (order == null) {
+            return "";
+        }
+        switch (order) {
+            case "date-desc":
+                return "sp.ngay_dang desc";
+            case "date-asc":
+                return "sp.ngay_dang asc";
+            case "rating-desc":
+                return "xep_hang desc";
+            case "rating-asc":
+                return "xep_hang asc";
+            default:
+                return "";
+        }
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
     // endregion
 
@@ -84,16 +129,51 @@ public class SanPhamAction extends ActionSupport {
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
     // Danh sách sản phẩm
-    @Action(value = "/api/v1/sanpham/getall", results = {
+    @Action(value = "/api/v1/sanpham", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String getAllSanPhams() throws IOException {
+        int _minPrice = getMinPrice();
+        int _maxPrice = getMaxPrice();
+        if (_minPrice > _maxPrice || _minPrice < 0 || _maxPrice < 0) {
+            return CustomError.createCustomError("Giá không hợp lệ", 400, response);
+        }
+        if (_minPrice == 0 && _maxPrice == 0) {
+            _minPrice = 0;
+            _maxPrice = Integer.MAX_VALUE;
+        }
+        String _order = getOrder();
+        if (!_order.equals("")) {
+            _order = "ORDER BY " + _order;
+        }
+
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getAllSanPham();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sanphams", listSanPham);
-        return JsonResponse.createJsonResponse(map, 200, response);
+        String _search = getSearch();
+
+        int countSanPham = sanPhamMapper.countAllSanPham(_search, _minPrice, _maxPrice);
+        int _page = getPage();
+        int _rowsPerPage = 20;
+
+        int offset = (_page - 1) * _rowsPerPage;
+        int totalPages = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
+
+        List<Map<String, Object>> listSanPham = sanPhamMapper.searchSanPham(
+                _search, _minPrice, _maxPrice, _order, offset, _rowsPerPage);
+
+        if (listSanPham.isEmpty()) {
+            if (!_order.equals("")) {
+                _order = _order.replace("ORDER BY", ", ");
+            }
+            countSanPham = sanPhamMapper.countAllSanPhamFulltext(_search, _minPrice, _maxPrice);
+            totalPages = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
+            listSanPham = sanPhamMapper.searchSanPhamFulltext(
+                    _search, _minPrice, _maxPrice, _order, offset, _rowsPerPage);
+        }
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("sanphams", listSanPham);
+        jsonRes.put("totalPages", totalPages);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
     // Chi tiết sản phẩm
@@ -120,8 +200,8 @@ public class SanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-   // sản phẩm mới nhất
-   @Action(value="/api/v1/sanpham/new", results = {
+    // sản phẩm mới nhất
+    @Action(value = "/api/v1/sanpham/new", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String getNewSanPhams() throws IOException {
@@ -132,5 +212,4 @@ public class SanPhamAction extends ActionSupport {
         map.put("sanphams", listSanPham);
         return JsonResponse.createJsonResponse(map, 200, response);
     }
-
 }
