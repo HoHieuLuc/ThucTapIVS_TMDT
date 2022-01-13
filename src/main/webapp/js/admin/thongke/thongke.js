@@ -37,7 +37,7 @@ const thongKeTinhTrangDonHangAll = async () => {
       type: 'pie',
       data: data,
     };
-     pieChart = new Chart(ctx, config);
+    pieChart = new Chart(ctx, config);
   }
   catch (error) {
     thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
@@ -73,7 +73,7 @@ tuyChonThongKeDOM.addEventListener('change', (event) => {
   }
 });
 
-formThongKeDOM.addEventListener('submit', async(event) => {
+formThongKeDOM.addEventListener('submit', async (event) => {
   event.preventDefault();
   const formData = new FormData(formThongKeDOM);
   const tuNgay = formData.get('tuNgay');
@@ -83,12 +83,12 @@ formThongKeDOM.addEventListener('submit', async(event) => {
   const ctx = document.getElementById('pieChart').getContext('2d');
 
   try {
-    const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/2`,{
+    const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/2`, {
       params: {
-          tuNgay,
-          denNgay,
+        tuNgay,
+        denNgay,
       }
-  });
+    });
     console.log(thong_ke);
 
     //Dữ liệu
@@ -118,13 +118,40 @@ formThongKeDOM.addEventListener('submit', async(event) => {
       data: data,
     };
     pieChart.destroy();
-     pieChart = new Chart(ctx, config);
+    pieChart = new Chart(ctx, config);
   }
   catch (error) {
     thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
   }
 });
 
-showTop10SanPhamBanChay = async() => {
-  
+
+showTop10SanPhamBanChay = async () => {
+  try {
+    const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/3`);
+    console.log(thong_kes);
+    const listThongKe = thong_kes.map(thong_kes => {
+      const { ten_san_pham, gia, ten_loai_sp, so_luot_mua } = thong_kes;
+      return `
+        <li class="item">
+                      
+        <div class="product">
+                <h6>${ten_loai_sp}</h6>
+            <span class="badge badge-warning float-right">${gia} đ</span>
+            <span class="badge badge-success float-right">${so_luot_mua} đ</span>
+          <span class="product-description">
+            ${ten_san_pham}
+          </span>
+        </div>
+      </li>
+      `
+    }).join(' ');
+    topSanPhamBanChayDOM.innerHTML = listThongKe;
+  }
+  catch (error) {
+    thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+  }
+
 }
+
+showTop10SanPhamBanChay();
