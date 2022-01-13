@@ -1,9 +1,10 @@
 const formDanhGiaDOM = document.querySelector('#formDanhGiaSanPham');
 const huyDanhGiaBtnDOM = document.querySelector('#huyDanhGiaBtn');
 const danhGiaBtnDOM = document.querySelector('#danhGiaBtn');
+const sapXepDanhGiaDOM = document.querySelector('#sapXepDanhGia');
 //Lấy mã sản phẩm trên đường dẫn
 const params = window.location.pathname.split('/').slice(0);
-const maSanPham = params[params.length - 1];
+const maSanPham = params.at(-1);
 
 //Các biến của chi tiết sản phẩm
 const nguoiDangSanPham = document.querySelector('#nguoiDangSanPham');
@@ -27,8 +28,8 @@ class SanPhamVuaXem {
 }
 
 //Các biến của đánh giá sản phẩm
-const danhGiaSPListDom = document.querySelector('#danhGiaSPListDom');
-const errorMsg = document.querySelector('#errorMsg');
+const danhGiaSPListDOM = document.querySelector('#danhGiaSPListDom');
+const phanTrangDanhGiaDOM = document.querySelector('#phanTrangDanhGia');
 
 // inline gallery
 const buildInlineGallery = (images) => lightGallery(anhSanPhamDOM, {
@@ -62,7 +63,7 @@ const showSanPhamDetail = async (skip = false) => {
         const { data: { sanpham } } = await axios.get(`${baseURL}api/v1/sanpham/${maSanPham}`);
         // có avatar nữa
         const { ten_san_pham, ten, ten_loai_sp, ma_loai_sp, mo_ta,
-            gia, anhSanPhams, xep_hang, username
+            gia, anhSanPhams, xep_hang, username, ma_loai_cha
         } = sanpham;
         if (typeof xep_hang === 'number') {
             danhGiaDOM.innerHTML = `<span>${(Math.round(xep_hang * 10) / 10) + " &#9733;"}</span>`;
@@ -95,18 +96,38 @@ const showSanPhamDetail = async (skip = false) => {
             }
         });
         buildInlineGallery(anhSanPhamData).openGallery();
-        showDanhGiaSPs();
+        showDanhGiaSPs(1);
+        getSanPhamCuaShop(username, maSanPham, ma_loai_sp, ma_loai_cha);
     } catch (error) {
         console.log(error);
         thongBao(error.response.data.message, true);
     }
 }
 
+const changePageDanhGia = async (page) => {
+    await showDanhGiaSPs(page);
+    danhGiaSPListDOM.scrollIntoView();
+}
+
+sapXepDanhGiaDOM.addEventListener('change', async () => {
+    const orderBy = sapXepDanhGiaDOM.value.split('-')[0];
+    const order = sapXepDanhGiaDOM.value.split('-')[1];
+    await showDanhGiaSPs(1, order, orderBy);
+});
+
 /* hiện danh sách đánh giá */
-const showDanhGiaSPs = async () => {
+const showDanhGiaSPs = async (page, order = '', orderBy = '') => {
     try {
-        const { data: { danhGiaSPs, daDanhGia } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/${maSanPham}`);
-        if (daDanhGia !== undefined) {
+        const { data: {
+            danhGiaSPs, daDanhGia, totalPages
+        } } = await axios.get(`${baseURL}api/v1/danhgia/sanpham/${maSanPham}`, {
+            params: {
+                page,
+                order,
+                orderBy
+            }
+        });
+        if (daDanhGia !== undefined && formDanhGiaDOM) {
             if (!daDanhGia) {
                 formDanhGiaDOM.classList.remove('d-none');
             }
@@ -115,7 +136,7 @@ const showDanhGiaSPs = async () => {
             }
         }
         if (danhGiaSPs.length === 0) {
-            danhGiaSPListDom.innerHTML = `<h4>Sản phẩm này chưa có đánh giá</h4>`;
+            danhGiaSPListDOM.innerHTML = `<h4>Sản phẩm này chưa có đánh giá</h4>`;
             return;
         }
         let danhGiaSPsHTML = '';
@@ -193,7 +214,13 @@ const showDanhGiaSPs = async () => {
             }).join('');
             danhGiaSPsHTML = allDanhGiaSPs;
         }
-        danhGiaSPListDom.innerHTML = danhGiaSPsHTML;
+        danhGiaSPListDOM.innerHTML = danhGiaSPsHTML;
+        phanTrangDanhGiaDOM.innerHTML = buildPagination(
+            page,
+            totalPages,
+            10,
+            "changePageDanhGia",
+        );
     } catch (error) {
         console.log(error);
         thongBao(error.response.data.message, true);
@@ -204,7 +231,7 @@ showSanPhamDetail();
 
 // hiển thị form sửa đánh giá
 const suaDanhGiaSP = (noiDung, soSao) => {
-    danhGiaSPListDom.querySelector('.danh-gia-div').classList.add('d-none');
+    danhGiaSPListDOM.querySelector('.danh-gia-div').classList.add('d-none');
     formDanhGiaDOM.classList.remove('d-none');
     formDanhGiaDOM.querySelector('textarea').value = noiDung;
     formDanhGiaDOM.querySelector('select').value = soSao;
@@ -217,11 +244,11 @@ const suaDanhGiaSP = (noiDung, soSao) => {
 const submitDanhGiaSP = async () => {
     const formData = new FormData(formDanhGiaDOM);
     try {
-        await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
+        const { data: { message } } = await axios.post(`${baseURL}api/v1/danhgia/sanpham/submit`, formData, { params: { maSanPham: maSanPham } });
         formDanhGiaDOM.classList.add('d-none');
         showSanPhamDetail(true);
-        showDanhGiaSPs();
-        thongBao("Gửi đánh giá thành công");
+        showDanhGiaSPs(1);
+        thongBao(message);
         formDanhGiaDOM.classList.add('d-none');
     } catch (error) {
         thongBao(error.response.data.message, true);
@@ -233,7 +260,7 @@ const xoaDanhGiaSP = async (maDanhGia) => {
     try {
         await axios.delete(`${baseURL}api/v1/danhgia/sanpham/delete`, { params: { maDanhGia: maDanhGia } });
         showSanPhamDetail(true);
-        showDanhGiaSPs();
+        showDanhGiaSPs(1);
         thongBao("Xóa đánh giá thành công");
     } catch (error) {
         thongBao(error.response.data.message, true);
@@ -250,7 +277,7 @@ if (formDanhGiaDOM) {
         // nút hủy đánh giá button chỉ được bấm khi người dùng đang sửa đánh giá
         // câu dưới sẽ select cá đánh giá đầu tiên, và sẽ hiện lại cái đánh giá đó
         // vì khi mình ấn nút sửa thì cái đánh giá đầu tiên bị ẩn, cái form hiện ra
-        danhGiaSPListDom.querySelector('.danh-gia-div').classList.remove('d-none');
+        danhGiaSPListDOM.querySelector('.danh-gia-div').classList.remove('d-none');
     });
 }
 
@@ -258,7 +285,7 @@ if (formDanhGiaDOM) {
 const buildFormPhanHoi = (ma_danh_gia) => {
     return `
         <button class="phan-hoi-btn btn btn-link text-decoration-none">Phản hồi</button>
-        <form style="display: none;">
+        <form class="d-none">
             <textarea type="text" name="noiDung" class="form-control mb-1" placeholder="Nhập nội dung phản hồi"></textarea>
             <div class="d-flex gap-2">
                 <button type="button" class="huy-phan-hoi w-100 btn btn-block btn-outline-danger">
@@ -278,12 +305,12 @@ const submitPhanHoiDanhGiaSP = async (_formDOM, ma_danh_gia) => {
     //Lấy dữ liệu từ chính cái form mà người dùng đang nhập
     //Form đó đã có noiDung
     const formDanhGiaSanPham = new FormData(_formDOM);
+    formDanhGiaSanPham.append('maDanhGia', ma_danh_gia);
     //Gửi dữ liệu vào request
     try {
-        await axios.post(`${baseURL}api/v1/phanhoi/submit`, formDanhGiaSanPham, {
-            params: { maDanhGia: ma_danh_gia }
-        });
+        await axios.post(`${baseURL}api/v1/phanhoi/submit`, formDanhGiaSanPham);
         thongBao(`Gửi phản hồi thành công`);
+        _formDOM.querySelector('textarea').value = '';
         return true;
     } catch (error) {
         thongBao(error.response.data.message, true);
@@ -414,16 +441,22 @@ const getPhanHoiAction = async (maPhanHoi, dropdown) => {
 // lưu sản phẩm vừa xem
 const luuSanPhamVuaXem = (tenSanPham, gia, anhSanPham) => {
     const danhSachSanPhamVuaXem = JSON.parse(localStorage.getItem('danhSachSanPhamVuaXem')) || [];
+    // nếu sản phẩm ko bị trùng thì thêm vào đầu danh sách
+    // nếu sản phẩm bị trùng thì chuyển nó lên đầu
     if (!danhSachSanPhamVuaXem.some(sp => sp.maSanPham === maSanPham)) {
         danhSachSanPhamVuaXem.unshift(new SanPhamVuaXem(maSanPham, tenSanPham, gia, anhSanPham));
-        localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem));
+    } else {
+        const index = danhSachSanPhamVuaXem.findIndex(sp => sp.maSanPham === maSanPham);
+        danhSachSanPhamVuaXem.splice(index, 1);
+        danhSachSanPhamVuaXem.unshift(new SanPhamVuaXem(maSanPham, tenSanPham, gia, anhSanPham));
     }
+    localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem));
     if (danhSachSanPhamVuaXem.length > 6) {
         localStorage.setItem('danhSachSanPhamVuaXem', JSON.stringify(danhSachSanPhamVuaXem.slice(0, 6)));
     }
 }
 
-danhGiaSPListDom.addEventListener('click', async (event) => {
+danhGiaSPListDOM.addEventListener('click', async (event) => {
     const eventTarget = event.target;
     const parentNode = eventTarget.parentNode; // => thẻ cha chứa thẻ mình bấm
     if (eventTarget.classList.contains('xem-phan-hoi')) { // ở đây là thẻ cha của button xem phản hồi
@@ -452,11 +485,13 @@ danhGiaSPListDom.addEventListener('click', async (event) => {
     }
     if (eventTarget.classList.contains('phan-hoi-btn')) {
         // nextElementSibling là thẻ form sau thẻ button
-        eventTarget.nextElementSibling.style.display = 'block';
+        eventTarget.nextElementSibling.classList.remove('d-none');
+        eventTarget.nextElementSibling.classList.add('d-block');
         return;
     }
     if (eventTarget.classList.contains('huy-phan-hoi')) {
-        parentNode.closest('form').style.display = 'none'; // là cái form phản hồi
+        parentNode.closest('form').classList.remove('d-block');
+        parentNode.closest('form').classList.add('d-none');
         return;
     }
     if (eventTarget.classList.contains('submit-phan-hoi')) {

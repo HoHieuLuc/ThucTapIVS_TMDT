@@ -56,7 +56,10 @@ const renderMainCategory = (loaiSanPhams) => {
                     class="text-decoration-none text-dark text-center" 
                 >
                     <img src="${baseURL}images/category/${anh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten_loai_sp}">
-                    <div>${ten_loai_sp}</div>
+                    <div 
+                        class="text-center tlt-overflow-ellipsis"
+                        title="${ten_loai_sp}"
+                    >${ten_loai_sp}</div>
                 </a>
             </div>
         `;
@@ -70,6 +73,13 @@ const changePage = (page) => {
 }
 
 const renderMainProduct = (sanPhams, currentPage, totalPages) => {
+    if (sanPhams.length === 0) {
+        mainCategoryDOM.innerHTML = `
+            <div class="d-flex justify-content-center">
+                <div class="fs-2">Không tìm thấy sản phẩm nào</div>
+            </div>
+        `;
+    }
     const html = sanPhams.map((sanPham) => {
         const { ma_san_pham, ten_san_pham, gia, anh, xep_hang } = sanPham;
         const giaVND = gia.toLocaleString("vi-VN", {
@@ -79,12 +89,22 @@ const renderMainProduct = (sanPhams, currentPage, totalPages) => {
         const xepHang = xep_hang === undefined ? 'Chưa có đánh giá' : `${xep_hang} &#9733;`;
         return `
             <div class="col-3">
-                <a href="${baseURL}sanpham/${ma_san_pham}" class="text-decoration-none text-dark text-center">
-                    <img src="${baseURL}images/product/${anh}" class="tlt-thumbnail rounded mx-auto d-block" alt="${ten_san_pham}">
-                    <div>${ten_san_pham}</div>
-                    <div>${xepHang}</div>
-                    <div>${giaVND}</div>
+                <a href="${baseURL}sanpham/${ma_san_pham}" class="text-decoration-none text-dark">
+                    <div class="d-flex">
+                        <img 
+                            src="${baseURL}images/product/${anh}" 
+                            class="tlt-thumbnail img-fluid rounded my-auto mx-auto" alt="${ten_san_pham}"
+                        >
+                    </div>
+                    <p 
+                        title="${ten_san_pham}"
+                        class="tlt-overflow-ellipsis"
+                    >
+                        ${ten_san_pham}
+                    </p>
                 </a>
+                <div class="text-center">${xepHang}</div>
+                <div class="text-center">${giaVND}</div>
                 <button type="button" data-masanpham="${ma_san_pham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
                     <i class="fas fa-cart-plus"></i>
                 </button>

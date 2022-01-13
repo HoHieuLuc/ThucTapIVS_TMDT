@@ -42,8 +42,8 @@
           display: block;
         }
         .tlt-thumbnail {
-          height: 15vh; 
-          width: 15vw; 
+          height: 15em; 
+          width: 15em; 
           object-fit: scale-down;
         }
         .tlt-thumbnail:hover {
@@ -53,6 +53,12 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+        }
+        .tlt-overflow-ellipsis {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
         }
         button>i {
           pointer-events: none;
