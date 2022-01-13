@@ -212,17 +212,4 @@ public class SanPhamAction extends ActionSupport {
         map.put("sanphams", listSanPham);
         return JsonResponse.createJsonResponse(map, 200, response);
     }
-
-    // ai đặt mua sản phẩm này cũng đặt
-    @Action(value = "/api/v1/sanpham/suggestion", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    })
-    public String getBuyers() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getPeopleWhoBoughtThisAlsoBought(maSanPham);
-        Map<String, Object> jsonRes = new HashMap<String, Object>();
-        jsonRes.put("sanPhams", listSanPham);
-        return JsonResponse.createJsonResponse(jsonRes, 200, response);
-    }
 }

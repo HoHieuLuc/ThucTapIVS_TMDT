@@ -269,13 +269,9 @@ public class GioHangAction extends ActionSupport {
     @Action(value = "/api/v1/fav/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
-            @InterceptorRef(value = "authStack"),
+            @InterceptorRef(value = "khachHangStack"),
     })
     public String themSanPhamYeuThich() throws IOException {
-        Integer level = (Integer) session.getAttribute("level");
-        if (level > 0){
-            return CustomError.createCustomError("Bạn không thể làm điều này", 403, response);
-        }
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamYeuThichMapper sanPhamYeuThichMapper = sqlSession.getMapper(SanPhamYeuThichMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();

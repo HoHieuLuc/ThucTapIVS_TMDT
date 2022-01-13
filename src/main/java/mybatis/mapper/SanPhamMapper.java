@@ -334,20 +334,4 @@ public interface SanPhamMapper {
 
     @Select(GET_NEWEST_PRODUCTS)
     public List<Map<String, Object>> getNewestProducts();
-
-    // những người đặt mua sản phẩm này cũng đặt
-    final String GET_PEOPLE_WHO_BOUGHT_THIS_ALSO_BOUGHT = "SELECT ctdh.ma_san_pham, sp.ten_san_pham, sp.gia, " +
-            "(SELECT anh FROM anh_san_pham asp " +
-            "WHERE asp.ma_san_pham = sp.ma_san_pham GROUP BY asp.ma_san_pham) AS anh " +
-            "FROM chi_tiet_dat_hang ctdh JOIN chi_tiet_dat_hang ctdh2 ON ctdh2.ma_dat_hang = ctdh.ma_dat_hang " +
-            "JOIN san_pham sp ON sp.ma_san_pham = ctdh.ma_san_pham " +
-            "WHERE ctdh2.ma_san_pham = #{maSanPham} " +
-            "AND ctdh.ma_san_pham != #{maSanPham} " +
-            "GROUP BY ctdh.ma_san_pham " +
-            "HAVING COUNT(ctdh.ma_san_pham) > 1 " +
-            "ORDER BY COUNT(ctdh.ma_san_pham) DESC " +
-            "LIMIT 12";
-
-    @Select(GET_PEOPLE_WHO_BOUGHT_THIS_ALSO_BOUGHT)
-    public List<Map<String, Object>> getPeopleWhoBoughtThisAlsoBought(@Param("maSanPham") String maSanPham);
 }

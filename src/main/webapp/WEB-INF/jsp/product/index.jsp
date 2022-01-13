@@ -139,16 +139,6 @@
             <div class="swiper-button-next" z-index="9999"></div>
         </div>
     </div>
-    <hr>
-    <div class="container-fluid sanPhamGoiYDiv d-none">
-        <h2 class="d-flex justify-content-center">Những người đặt mua sản phẩm này cũng đặt</h2>
-        <div class="swiper sanPhamGoiYSwiper">
-            <div class="swiper-wrapper sanPhamGoiYWrapper">
-            </div>
-            <div class="swiper-button-prev" z-index="9999"></div>
-            <div class="swiper-button-next" z-index="9999"></div>
-        </div>
-    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/lightgallery.min.js" integrity="sha512-0JtOysnU+g+PMlwAGKzc0vFjiDb0p9/OhzFib1lbuHn6BCdO+RSyxDN53UndKL8pNjlDhD0PIEsoVwl0i8W4lQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

@@ -98,7 +98,6 @@ const showSanPhamDetail = async (skip = false) => {
         buildInlineGallery(anhSanPhamData).openGallery();
         showDanhGiaSPs(1);
         getSanPhamCuaShop(username, maSanPham, ma_loai_sp, ma_loai_cha);
-        getSanPhamGoiY(maSanPham);
     } catch (error) {
         console.log(error);
         thongBao(error.response.data.message, true);

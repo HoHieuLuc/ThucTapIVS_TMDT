@@ -231,7 +231,7 @@ public class StoreApiAction extends ActionSupport {
     }
 
     // api lấy sản phẩm cùng store để gợi ý cho người dùng
-    @Action(value = "/api/v1/store/{username}/products/suggestion", results = {
+    @Action(value = "/api/v1/store/{username}/products/suggested", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String getSameStoreProducts() throws IOException {
