@@ -1,5 +1,6 @@
 const formThongKeDOM = document.querySelector('.formThongKe');
 const tuyChonThongKeDOM = document.querySelector('.tuyChonThongKe');
+let pieChart;
 
 const thongKeTinhTrangDonHangAll = async () => {
 
@@ -35,15 +36,14 @@ const thongKeTinhTrangDonHangAll = async () => {
       type: 'pie',
       data: data,
     };
-    const pieChart = new Chart(ctx, config);
+     pieChart = new Chart(ctx, config);
   }
   catch (error) {
     thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
   }
-
-
-
 }
+
+
 thongKeTinhTrangDonHangAll();
 
 const thongKeDonGian = async () => {
@@ -64,11 +64,11 @@ thongKeDonGian();
 
 tuyChonThongKeDOM.addEventListener('change', (event) => {
   if (event.target.value === 'tuychinh') {
-      formThongKeDOM.classList.remove('d-none');
+    formThongKeDOM.classList.remove('d-none');
   } else {
-      formThongKeDOM.classList.add('d-none');
-      //Bình thường sẽ thống kê toàn thời gian
-      thongKeTinhTrangDonHangAll();
+    formThongKeDOM.classList.add('d-none');
+    //Bình thường sẽ thống kê toàn thời gian
+    thongKeTinhTrangDonHangAll();
   }
 });
 
@@ -79,5 +79,47 @@ formThongKeDOM.addEventListener('submit', (event) => {
   const denNgay = formData.get('denNgay');
   console.log(tuNgay);
   console.log(denNgay);
-  //getSoDonDatHangThongKe(tuNgay, denNgay);
+  const ctx = document.getElementById('pieChart').getContext('2d');
+
+  try {
+    const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/2`,{
+      params: {
+          tuNgay,
+          denNgay,
+      }
+  });
+    console.log(thong_ke);
+
+    //Dữ liệu
+    const data = {
+      labels: [
+        'Bị hủy',
+        'Đang chờ tiếp nhận',
+        'Đang vận chuyển',
+        'Giao hàng thành công'
+      ],
+      datasets: [{
+        label: 'Tình Trạng Đơn Đặt Hàng',
+        data: [thong_ke.bi_huy, thong_ke.dang_cho, thong_ke.dang_van_chuyen, thong_ke.da_nhan_hang],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(211, 227, 110)',
+          'rgb(88, 130, 255)',
+          'rgb(1, 255, 1)'
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    //Cấu hình
+    const config = {
+      type: 'pie',
+      data: data,
+    };
+    pieChart.destroy();
+     pieChart = new Chart(ctx, config);
+  }
+  catch (error) {
+    thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+  }
 });

@@ -369,6 +369,18 @@ public class NhanVienApiAction {
                 thongKe = thongKeMapper.getDataTrangThaiDatHang();
                 break;
             case 2:
+                // Check null cho 2 giá trị ngày
+                if ( kiemTraNgayThongKe() ){
+
+                    // Kiểm tra ngày trước phải nhỏ hơn ngày sau
+                    if (tuNgay.compareTo(denNgay) > 0){ //>0 là khoảng thời gian không hợp lệ
+                        sqlSession.close();
+                        return CustomError.createCustomError("Thời gian không hợp lệ",400,response);
+                    }
+                    // Đủ 2 điều kiện,truy vấn dữ liệu
+                    thongKe = thongKeMapper.getDataTrangThaiDatHangByMonth(tuNgay, denNgay);
+                }
+                break;
             default:
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
         }
