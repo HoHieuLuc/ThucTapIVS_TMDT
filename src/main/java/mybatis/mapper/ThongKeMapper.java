@@ -49,7 +49,7 @@ public interface ThongKeMapper {
                         "	CASE WHEN (1=1) THEN " +
                         "(SELECT COUNT(ma_san_pham) FROM san_pham sp JOIN khach_hang kh ON sp.ma_khach_hang = kh.ma_khach_hang WHERE kh.ma_khach_hang = #{maNguoiBan}) END AS so_san_pham, " +
                         "   	CASE WHEN (1=1) THEN  " +
-                        "(SELECT COUNT(ma_dat_hang) FROM chi_tiet_dat_hang) END AS so_don_dat_hang; ";
+                        "(SELECT COUNT(ctdh.ma_dat_hang) FROM chi_tiet_dat_hang ctdh JOIN san_pham sp ON ctdh.ma_san_pham = sp.ma_san_pham WHERE sp.ma_khach_hang = #{maNguoiBan}) END AS so_don_dat_hang; ";
 
         @Select(GET_4_DATA_THONG_KE_USER)
         public Map<String, Object> get4DataThongKeUser(int maNguoiBan);
