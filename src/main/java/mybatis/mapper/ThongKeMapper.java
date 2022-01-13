@@ -75,6 +75,7 @@ public interface ThongKeMapper {
         final String TOP_10_SP_DUOC_MUA_NHIEU_NHAT_USER = "SELECT lsp.ten_loai_sp,sp.ten_san_pham ,COUNT((ctdh.ma_san_pham)) as 'so_luot_mua', sp.gia FROM "
                         + "loai_san_pham lsp JOIN san_pham sp ON lsp.ma_loai_sp = sp.ma_loai_san_pham " +
                         "LEFT JOIN chi_tiet_dat_hang ctdh ON ctdh.ma_san_pham = sp.ma_san_pham " +
+                        "WHERE sp.ma_khach_hang = #{maNguoiBan} " +
                         "GROUP BY sp.ten_san_pham,lsp.ten_loai_sp " +
                         "ORDER BY COUNT(ctdh.ma_san_pham) DESC LIMIT 10; ";
         @Select(TOP_10_SP_DUOC_MUA_NHIEU_NHAT_USER)
