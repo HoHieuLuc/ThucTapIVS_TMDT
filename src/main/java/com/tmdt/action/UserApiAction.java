@@ -609,7 +609,7 @@ public class UserApiAction extends ActionSupport {
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
             case 1:
-                ArrayList<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHangUser(maNguoiBan);
+                List<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHangUser(maNguoiBan);
                 jsonRes.put("thong_ke", thongKeTrangThaiDH);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
@@ -623,7 +623,7 @@ public class UserApiAction extends ActionSupport {
                         return CustomError.createCustomError("Thời gian không hợp lệ",400,response);
                     }
                     // Đủ 2 điều kiện,truy vấn dữ liệu
-                     ArrayList<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustomUser(tuNgay, denNgay,maNguoiBan);
+                     List<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustomUser(tuNgay, denNgay,maNguoiBan);
                      jsonRes.put("thong_ke", thongKeCustom);
                      sqlSession.close();
                      return JsonResponse.createJsonResponse(jsonRes, 200, response);
