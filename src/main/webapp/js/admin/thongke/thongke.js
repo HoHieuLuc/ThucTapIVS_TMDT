@@ -23,8 +23,8 @@ const thongKeTinhTrangDonHangAll = async () => {
         label: 'Tình Trạng Đơn Đặt Hàng',
         data: thong_ke,
         backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(211, 227, 110)',
+          'rgb(255,0,0)',
+          'rgb(255,255,0)',
           'rgb(88, 130, 255)',
           'rgb(1, 255, 1)'
         ],
@@ -69,6 +69,7 @@ tuyChonThongKeDOM.addEventListener('change', (event) => {
   } else {
     formThongKeDOM.classList.add('d-none');
     //Bình thường sẽ thống kê toàn thời gian
+    pieChart.destroy();
     thongKeTinhTrangDonHangAll();
   }
 });
@@ -90,6 +91,14 @@ formThongKeDOM.addEventListener('submit', async (event) => {
       }
     });
     console.log(thong_ke);
+    //Trường hợp khoảng ngày đó không có dữ liệu, thông báo là không có dữ liệu thống kê trong ngày này
+    if (thong_ke.length == 0)
+    {
+          thongBao("Không có dữ liệu thống kê trong khoảng thời gian này", true);
+          return;
+      
+    }
+    
 
     //Dữ liệu
     const data = {
@@ -103,8 +112,8 @@ formThongKeDOM.addEventListener('submit', async (event) => {
         label: 'Tình Trạng Đơn Đặt Hàng',
         data: thong_ke,
         backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(211, 227, 110)',
+          'rgb(255,0,0)',
+          'rgb(255,255,0)',
           'rgb(88, 130, 255)',
           'rgb(1, 255, 1)'
         ],
