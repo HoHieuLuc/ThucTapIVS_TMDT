@@ -114,22 +114,11 @@
               <li class="nav-item">
                 <a class="nav-link" href='<c:url value="/store" />'>Cửa hàng</a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  Danh mục sản phẩm
-                </a>
-                <ul class="dropdown-menu" id="danhMucSP">
-                  <!--- Chỗ này để hiện ra các danh mục bằng câu select-->
-                  <li><a class="dropdown-item" href="#">Điện thoại</a></li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/category" />'>Danh mục sản phẩm</a>
               </li>
             </ul>
-            <form class="d-flex me-auto">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            <ul class="navbar-nav mb-2 mb-lg-0">
+            <ul class="ms-auto navbar-nav mb-2 mb-lg-0">
               <c:choose>
                 <c:when test="${sessionScope.loggedIn != null && sessionScope.loggedIn == true}">
                   <c:choose>
