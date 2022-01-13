@@ -120,6 +120,7 @@ showStoreInfo();
 const changePage = (page) => {
     changeURLparam("page", page);
     showProductList();
+    productListDOM.scrollIntoView();
 };
 
 const showProductList = async () => {
@@ -158,11 +159,11 @@ const showProductList = async () => {
             return `
                 <div class="row mt-3">
                     <a href="${baseURL}sanpham/${ma_san_pham}" 
-                        class="col-md-3 d-flex justify-content-center store-product-img-link text-center rounded"
+                        class="col-md-3 d-flex store-product-img-link rounded"
                     >
                         <img alt="${ten_san_pham}" 
                         src="${baseURL}images/product/${anh}"" 
-                        class="store-product-img img-fluid">
+                        class="store-product-img mx-auto my-auto img-fluid">
                     </a>
                     <div class="col-md-9">
                         <a 
@@ -177,12 +178,24 @@ const showProductList = async () => {
                         <a href="${baseURL}category/${ma_loai_sp}" class="text-muted">${ten_loai_sp}</a>
                         <p>Xếp hạng: ${xepHang}</p>
                         <p class="fs-4">${giaVND}</p>
-                        <button type="button" data-masanpham="${ma_san_pham}" class="add-to-cart-btn btn btn-block btn-warning">
-                            Thêm vào giỏ hàng <i class="fas fa-cart-plus"></i>
-                        </button>
-                        <button type="button" data-masanpham="${ma_san_pham}" class="add-to-fav-btn btn btn-block btn-danger">
-                            Thêm vào mục yêu tích <i class="far fa-heart"></i>
-                        </button>
+                        <div class="row gy-2">
+                            <div class="col-md-6 col-lg-6 col-xl-5 col-sm-12">
+                                <button 
+                                    type="button" data-masanpham="${ma_san_pham}" 
+                                    class="w-100 add-to-cart-btn btn btn-block btn-warning"
+                                >
+                                    Thêm vào giỏ hàng <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-5 col-sm-12">
+                                <button 
+                                    type="button" data-masanpham="${ma_san_pham}" 
+                                    class="w-100 add-to-fav-btn btn btn-block btn-danger"
+                                >
+                                    Thêm vào mục yêu tích <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -206,13 +219,15 @@ const showProductList = async () => {
 searchFormDOM.addEventListener("submit", (event) => {
     event.preventDefault();
     removeURLparam("page");
-    const search = document.querySelector("#search").value;
-    const orderBy = document.querySelector("#orderBy").value;
-    const order = document.querySelector("#order").value;
+    const formData = new FormData(searchFormDOM);
+    const search = formData.get("search");
+    const orderBy = formData.get("orderBy");
+    const order = formData.get("order");
     changeURLparam("search", search);
     changeURLparam("ob", orderBy);
     changeURLparam("o", order);
     showProductList();
+    productListDOM.scrollIntoView();
 });
 
 // khi đổi giá trị số mặt hàng mỗi trang
@@ -220,6 +235,7 @@ rowsPerPageDOM.addEventListener("change", () => {
     changeURLparam("rpp", rowsPerPageDOM.value);
     removeURLparam("page");
     showProductList();
+    productListDOM.scrollIntoView();
 });
 
 //Mở form báo cáo ng dùng
@@ -235,7 +251,6 @@ if (baoCaoButtonDOM) {
             const formData = new FormData();
             formData.append('userName', username);
             formData.append('noiDung', noiDungBaoCaoDom.value);
-            //Lấy tạm tên route vô hình để test formData trong Payload 
             try {
                 await axios.post(`${baseURL}api/v1/baocao/${username}/submit`, formData);
                 thongBao('Gửi báo cáo thành công');

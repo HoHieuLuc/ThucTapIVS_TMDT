@@ -4,24 +4,22 @@ prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 <style>
   .store-product-img {
-    object-fit: scale-down;
-    height: 13rem;
-    width: 13rem;
+    width: 13em;
+    height: 13em;
+    object-fit: contain;
   }
   .store-product-img-link:hover {
     border: solid 1px gray;
   }
   #avatar {
-    width: 15rem;
-    height: 15rem;
     object-fit: scale-down;
   }
 </style>
 <div class="container">
   <div class="row mb-5 bg-light rounded">
-    <div class="col-md-3">
-      <div>
-        <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" alt="avatar" id="avatar" class="d-block img-fluid border border-3 border-white rounded-circle"/>
+    <div class="col-md-3 d-flex">
+      <div class="mx-auto my-auto">
+        <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" alt="avatar" id="avatar" class="img-fluid border border-3 border-white rounded-circle"/>
       </div>
     </div>
     <div class="col-md-9">
@@ -49,14 +47,13 @@ prefix="c" %>
             <c:when test="${sessionScope.level == 0}">
               <!-- Báo cáo người dùng -->
               <button type="button" id="baoCaoButton" class="btn btn-danger">Báo Cáo</button>
-                <div class="mb-3">
-                  </div>
-                  <div class="mb-3 d-none" id="formBaoCao">
-                    <label class="form-label">Nội dung báo cáo</label>
-                    <textarea class="form-control" rows="3" id="noiDungBaoCao"></textarea>
-                    <button type="submit" class="btn btn-primary">Gửi</button>
-                    <button class="btn btn-primary ms-2">Đóng</button>
-                </div>
+              <div class="mb-3"></div>
+              <div class="mb-3 d-none" id="formBaoCao">
+                <label class="form-label">Nội dung báo cáo</label>
+                <textarea class="form-control" rows="3" id="noiDungBaoCao"></textarea>
+                <button type="submit" class="btn btn-primary">Gửi</button>
+                <button class="btn btn-primary ms-2">Đóng</button>
+              </div>
            </c:when>
           </c:choose>
         </div>
@@ -69,16 +66,28 @@ prefix="c" %>
   </div>
 
   <div class="row mt-5">
-    <div class="col-md-3">bộ lọc</div>
-    <div class="col-md-9">
+    <div class="d-lg-block d-md-none col-lg-3">
+      <div class="text-center fs-5">Bộ lọc</div>
+      <form class="form-group">
+        <p>Giá</p>
+        <div class="d-flex">
+          <input type="number" class="form-control" id="minPrice" placeholder="Từ" />
+          <input type="number" class="form-control" id="maxPrice" placeholder="Đến" />
+          <button type="button" class="btn btn-outline-secondary">
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-12 col-lg-9">
       <form class="searchForm input-group mb-3">
-        <input id="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
-        <select id="orderBy" class="form-select">
+        <input name="search" id="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
+        <select name="orderBy" class="form-select">
           <option value="date">Ngày đăng</option>
           <option value="price">Giá</option>
           <option value="rating">Xếp hạng</option>
         </select>
-        <select id="order" class="form-select">
+        <select name="order" class="form-select">
           <option value="desc">Giảm dần</option>
           <option value="asc">Tăng dần</option>
         </select>

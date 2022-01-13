@@ -123,7 +123,7 @@ public class LoginAction extends ActionSupport {
     })
     public String logout() {
         session.removeAttribute("loggedIn");
-        session.removeAttribute("userName");
+        session.removeAttribute("username");
         session.removeAttribute("permission");
         session.removeAttribute("accountID");
         session.removeAttribute("maNguoiDung");

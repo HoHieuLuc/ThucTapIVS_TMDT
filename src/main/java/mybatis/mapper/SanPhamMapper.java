@@ -38,7 +38,7 @@ public interface SanPhamMapper {
     // Xem chi tiết sản phẩm
     final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham, kh.ten, " +
             "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, " +
-            "tk.username, tk.avatar, AVG(dgsp.so_sao) AS xep_hang, lsp.ma_loai_sp " +
+            "tk.username, tk.avatar, AVG(dgsp.so_sao) AS xep_hang, lsp.ma_loai_sp, lsp.ma_loai_cha " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
@@ -191,14 +191,16 @@ public interface SanPhamMapper {
 
     // lấy danh sách sản phẩm theo username cho trang store
     final String GET_SAN_PHAM_BY_USERNAME = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, lsp.ten_loai_sp, " +
-            "lsp.ma_loai_sp, sp.so_luong, sp.ngay_dang, asp.anh, AVG(dgsp.so_sao) AS xep_hang " +
+            "lsp.ma_loai_sp, sp.so_luong, sp.ngay_dang, asp.anh, AVG(dgsp.so_sao) AS xep_hang, " +
+            "lsp.ma_loai_cha " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "LEFT JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "WHERE tk.username = #{username} " +
-            "AND sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
+            "AND (sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
+            "OR lsp.ten_loai_sp LIKE CONCAT('%', #{search}, '%')) " +
             "GROUP BY sp.ma_san_pham " +
             "ORDER BY ${orderBy} ${order} " +
             "LIMIT #{offset}, #{rowsPerPage}";
@@ -211,6 +213,33 @@ public interface SanPhamMapper {
             @Param("order") String order,
             @Param("offset") int offset,
             @Param("rowsPerPage") int rowsPerPage);
+
+    // lấy danh sách sản phẩm của store cho trang sản phẩm
+    // loại trừ sản phẩm đang xem ra
+    // ưu tiên sắp xếp:
+    // 1: đưa sản phẩm cùng loại lên đầu
+    // 2: đưa sản phẩm cùng loại cha lên
+    // 3: cuối cùng sắp xếp theo ngày đăng
+    final String GET_SAN_PHAM_GOI_Y_CUNG_STORE = "SELECT sp.ma_san_pham, sp.ten_san_pham, sp.gia, " +
+            "asp.anh " +
+            "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
+            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
+            "LEFT JOIN anh_san_pham asp on asp.ma_san_pham = sp.ma_san_pham " +
+            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
+            "WHERE tk.username = #{username} " +
+            "AND sp.ma_san_pham != #{maSanPham} " +
+            "GROUP BY sp.ma_san_pham " +
+            "ORDER BY FIELD(lsp.ma_loai_sp, #{maLoaiSanPham}) DESC, " +
+            "FIELD(lsp.ma_loai_cha, #{maLoaiCha}) DESC, " +
+            "sp.ngay_dang DESC "+
+            "LIMIT 12";
+
+    @Select(GET_SAN_PHAM_GOI_Y_CUNG_STORE)
+    public List<Map<String, Object>> getSanPhamGoiYCungStore(@Param("username") String username,
+            @Param("maSanPham") String maSanPham,
+            @Param("maLoaiSanPham") int maLoaiSanPham,
+            @Param("maLoaiCha") int maLoaiCha);
 
     /* ==================== */
     /* dành cho trang admin */
