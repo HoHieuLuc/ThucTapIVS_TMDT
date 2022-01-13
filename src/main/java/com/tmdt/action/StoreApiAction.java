@@ -189,13 +189,13 @@ public class StoreApiAction extends ActionSupport {
         int countSanPham = sanPhamMapper.countSanPhamByUsername(username, _search);
 
         int offset = (_page - 1) * _rowsPerPage;
-        int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
+        int totalPages = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
 
         List<Map<String, Object>> storeProducts = sanPhamMapper.getSanPhamByUsername(username, _search, _orderBy,
                 _order, offset, _rowsPerPage);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("products", storeProducts);
-        jsonRes.put("total_page", totalPage);
+        jsonRes.put("totalPages", totalPages);
 
         sqlSession.close();
 
@@ -239,10 +239,6 @@ public class StoreApiAction extends ActionSupport {
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         Integer _maLoaiCha = getMaLoaiCha();
-        System.out.println("ma loai cha: " + _maLoaiCha);
-        System.out.println("ma loai san pham: " + maLoaiSanPham);
-        System.out.println("username: " + username);
-        System.out.println("ma san pham: " + maSanPham);
         List<Map<String, Object>> sanPhamGoiYCungStore = sanPhamMapper.getSanPhamGoiYCungStore(
             username, maSanPham, maLoaiSanPham, _maLoaiCha);
         sqlSession.close();
