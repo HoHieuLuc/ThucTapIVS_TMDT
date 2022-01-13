@@ -44,6 +44,7 @@
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/css/lightgallery-bundle.min.css" integrity="sha512-91yJwfiGTCo9TM74ZzlAIAN4Eh5EWHpQJUfvo/XhpH6lzQtiRFkFRW1W+JSg4ch4XW3/xzh+dY4TOw/ILpavQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="container mb-3">
+    <jsp:include page="/WEB-INF/jsp/include/searchbar.jsp" />
     <!-- Chi tiết sản phẩm -->
     <div class="container-fluid mb-3">
         <div class="row">
