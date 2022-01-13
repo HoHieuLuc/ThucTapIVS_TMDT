@@ -1,5 +1,6 @@
 package mybatis.mapper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -52,18 +53,18 @@ public interface ThongKeMapper {
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         // theo tháng cụ thể
-        final String GET_DATA_TRANG_THAI_DAT_HANG_BY_MONTH = "SELECT COUNT(*) FROM chi_tiet_dat_hang  ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang  " +
+        final String GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM = "SELECT COUNT(*) FROM chi_tiet_dat_hang  ctdh JOIN dat_hang dh ON ctdh.ma_dat_hang = dh.ma_dat_hang  " +
         "WHERE DATE(dh.ngay_dat) BETWEEN #{tuNgay} AND #{denNgay}  GROUP BY STATUS;";
 
-        @Select(GET_DATA_TRANG_THAI_DAT_HANG_BY_MONTH)
-        public Map<String, Object> getDataTrangThaiDatHangByMonth(
+        @Select(GET_DATA_TRANG_THAI_DAT_HANG_CUSTOM)
+        public ArrayList<Integer> getDataTrangThaiDatHangCustom(
                         @Param("tuNgay") Date tuNgay,
                         @Param("denNgay") Date denNgay);
 
         // Dành cho Vẽ đồ thị tròn biểu diễn trạng thái của từng chi tiết đơn đặt hàng
         final String GET_DATA_TRANG_THAI_DAT_HANG = "SELECT COUNT(*) FROM chi_tiet_dat_hang  GROUP BY STATUS;";
         @Select(GET_DATA_TRANG_THAI_DAT_HANG)
-        public Map<String, Object> getDataTrangThaiDatHang();
+        public ArrayList<Integer> getDataTrangThaiDatHang();
 
         // Top 10 sản phẩm được mua nhiều nhất
         final String TOP_10_SP_DUOC_MUA_NHIEU_NHAT = "SELECT lsp.ten_loai_sp,sp.ten_san_pham ,COUNT((ctdh.ma_san_pham)) as 'so_luot_mua', sp.gia FROM "

@@ -21,7 +21,7 @@ const thongKeTinhTrangDonHangAll = async () => {
       ],
       datasets: [{
         label: 'Tình Trạng Đơn Đặt Hàng',
-        data: [thong_ke.bi_huy, thong_ke.dang_cho, thong_ke.dang_van_chuyen, thong_ke.da_nhan_hang],
+        data: thong_ke,
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(211, 227, 110)',
@@ -101,7 +101,7 @@ formThongKeDOM.addEventListener('submit', async (event) => {
       ],
       datasets: [{
         label: 'Tình Trạng Đơn Đặt Hàng',
-        data: [thong_ke.bi_huy, thong_ke.dang_cho, thong_ke.dang_van_chuyen, thong_ke.da_nhan_hang],
+        data: thong_ke,
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(211, 227, 110)',
