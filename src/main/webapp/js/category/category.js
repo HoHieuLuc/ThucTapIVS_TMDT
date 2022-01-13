@@ -1,3 +1,4 @@
+const categoryDivDOM = document.querySelector('.categoryDiv');
 const sideCategoryDOM = document.querySelector('#sideCategory');
 const mainCategoryDOM = document.querySelector('#mainCategory');
 const searchFormDOM = document.querySelector('.searchForm');
@@ -5,8 +6,26 @@ const phanTrangDOM = document.querySelector('.phanTrang');
 const params = window.location.pathname.split('/').slice(0);
 let maLoaiSanPham = params.at(-1);
 
+const init = () => {
+    if (searchFormDOM) {
+        const newParams = window.location.search;
+        const search = new URLSearchParams(newParams).get("search") ?? "";
+        const orderBy = new URLSearchParams(newParams).get("ob") ?? "date";
+        const order = new URLSearchParams(newParams).get("o") ?? "desc";
+        searchFormDOM.querySelector("input[name=search]").value = search;
+        searchFormDOM.querySelector("select[name=orderBy]").value = orderBy;
+        searchFormDOM.querySelector("select[name=order]").value = order;
+    }
+}
+init();
+
 const showLoaiSanPhams = async () => {
     try {
+        const newParams = window.location.search;
+        const page = new URLSearchParams(newParams).get("page") ?? 1;
+        const search = new URLSearchParams(newParams).get("search") ?? "";
+        const orderBy = new URLSearchParams(newParams).get("ob") ?? "";
+        const order = new URLSearchParams(newParams).get("o") ?? "";
         if (maLoaiSanPham === 'category') {
             maLoaiSanPham = 0;
         }
@@ -15,7 +34,14 @@ const showLoaiSanPhams = async () => {
                 loaiSanPhams, loaiSanPhamHienTai, sanPhams,
                 loaiSanPhamCha, loaiSanPhamCungCha, totalPages
             }
-        } = await axios.get(`${baseURL}api/v1/category/${maLoaiSanPham}`);
+        } = await axios.get(`${baseURL}api/v1/category/${maLoaiSanPham}`, {
+            params: {
+                page,
+                search,
+                orderBy,
+                order
+            }
+        });
         if (loaiSanPhams) {
             renderSideCategory(loaiSanPhams, loaiSanPhamHienTai);
             renderMainCategory(loaiSanPhams);
@@ -27,6 +53,11 @@ const showLoaiSanPhams = async () => {
         }
     } catch (error) {
         console.log(error);
+        categoryDivDOM.innerHTML = `
+            <div class="d-flex justify-content-center">
+                <div class="fs-2">${error.response.data.message}</div>
+            </div>
+        `;
     }
 }
 
@@ -40,9 +71,21 @@ const renderSideCategory = (loaiSanPhams, loaiSanPhamHienTai) => {
         `;
     }).join('');
     if (loaiSanPhamHienTai) {
-        sideCategoryDOM.innerHTML = `
-            <p class="fs-5">${loaiSanPhamHienTai.ten_loai_sp}</p>
-        `
+        const { ten_loai_sp, ma_loai_cha } = loaiSanPhamHienTai;
+        if (ma_loai_cha === null || ma_loai_cha === undefined) {
+            sideCategoryDOM.innerHTML = `
+                <a class="fs-5 text-decoration-none" href="${baseURL}category">
+                    <i class="fas fa-arrow-circle-left"></i> ${ten_loai_sp}
+                </a>
+            `;
+        }
+        else {
+            sideCategoryDOM.innerHTML = `
+                <a class="fs-5 text-decoration-none" href="${baseURL}category/${ma_loai_cha}">
+                    <i class="fas fa-arrow-circle-left"></i> ${ten_loai_sp}
+                </a>
+            `;
+        }
     }
     sideCategoryDOM.innerHTML += html;
 }
@@ -51,7 +94,7 @@ const renderMainCategory = (loaiSanPhams) => {
     const html = loaiSanPhams.map((loaiSanPham) => {
         const { ma_loai_sp, ten_loai_sp, anh } = loaiSanPham;
         return `
-            <div class="col-3">
+            <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-3">
                 <a href="${baseURL}category/${ma_loai_sp}" 
                     class="text-decoration-none text-dark text-center" 
                 >
@@ -79,6 +122,7 @@ const renderMainProduct = (sanPhams, currentPage, totalPages) => {
                 <div class="fs-2">Không tìm thấy sản phẩm nào</div>
             </div>
         `;
+        return;
     }
     const html = sanPhams.map((sanPham) => {
         const { ma_san_pham, ten_san_pham, gia, anh, xep_hang } = sanPham;
@@ -88,7 +132,7 @@ const renderMainProduct = (sanPhams, currentPage, totalPages) => {
         });
         const xepHang = xep_hang === undefined ? 'Chưa có đánh giá' : `${xep_hang} &#9733;`;
         return `
-            <div class="col-3">
+            <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-3">
                 <a href="${baseURL}sanpham/${ma_san_pham}" class="text-decoration-none text-dark">
                     <div class="d-flex">
                         <img 
@@ -98,7 +142,7 @@ const renderMainProduct = (sanPhams, currentPage, totalPages) => {
                     </div>
                     <p 
                         title="${ten_san_pham}"
-                        class="tlt-overflow-ellipsis"
+                        class="tlt-overflow-ellipsis text-center"
                     >
                         ${ten_san_pham}
                     </p>
@@ -126,7 +170,9 @@ const renderSideProductCategory = (loaiSanPhamCha, loaiSanPhamCungCha) => {
         `;
     }).join('');
     const loaiSanPhamChaHTML = `
-        <p class="fs-5">${loaiSanPhamCha.ten_loai_sp}</p>
+        <a class="fs-5 text-decoration-none" href="${baseURL}category/${loaiSanPhamCha.ma_loai_sp}">
+            ${loaiSanPhamCha.ten_loai_sp}
+        </a>
     `;
     sideCategoryDOM.innerHTML = loaiSanPhamChaHTML + loaiSanPhamCungChaHTML;
 }
