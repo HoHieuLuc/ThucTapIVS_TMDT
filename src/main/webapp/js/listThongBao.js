@@ -38,7 +38,8 @@ const showThongBao = async (_status) => {
                         ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
                     </span>
                     ${danhDauDaDocCuThe}
-                </li>`;
+                </li>
+            `;
         }).join('');
         listThongBaoDOM.innerHTML = allThongBaos;
     }
@@ -64,6 +65,18 @@ showSoThongBao();
 // Cho tạm số bất kì khác 0,999 để hiện tất cả thông báo
 showThongBao(-1);
 
+const danhDauDaDoc = async (id) => {
+    try {
+        const { data: { message } } = await axios.get(`${baseURL}api/v1/thongbao/seen/${id}`);
+        thongBao(message, false);
+        showThongBao(-1);
+        showSoThongBao();
+    } catch (error) {
+        console.log(error);
+        thongBao(error.response.data.message, true);
+    }
+}
+
 const thongBaoMenuDOM = document.querySelector("#thongBaoMenu");
 
 // Thêm sự kiện cập nhật đã đọc cho từng thông báo trong dropdown menu
@@ -71,18 +84,9 @@ thongBaoMenuDOM.addEventListener('click', async (event) => {
     const target = event.target;
     if (target.classList.contains('seen-btn')) {
         const id = target.dataset.id;
-        try {
-            const { data: { message } } = await axios.get(`${baseURL}api/v1/thongbao/seen/${id}`);
-            thongBao(message, false);
-
-        } catch (error) {
-            console.log(error);
-            thongBao(error.response.data.message, true);
-        }
-        showThongBao(-1);
-        showSoThongBao();
+        await danhDauDaDoc(id);
     }
-})
+});
 
 
 //Nếu phát hiện element có id="thongbao-table"
@@ -102,27 +106,32 @@ if (thongbaoTableDOM) {
                 //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
                 if (status.includes("bg-secondary") || status.includes("bg-body")) {
                     danhDauDaDocCuThe = `
-                        <button type="button" class="btn btn-outline-primary" data-id="${ma_tb}">
+                        <button type="button" class="seen-btn btn btn-outline-primary rounded-circle" data-id="${ma_tb}">
                             <i class="fas fa-check"></i>
                         </button>
                     `;
                 } else {
                     danhDauDaDocCuThe = ``;
                 }
-
                 return `
-                    <tr>
-                        <td>${noi_dung}</td>
-                        <td>${nguoi_gui}</td>
-                        <td>${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} </td>
-                        <td>
-                            <div class="d-flex justify-content-evenly">
-                                ${danhDauDaDocCuThe}
-                            </div>
-                        </td>
-                    </tr>
+                    <div class="row border border-1 rounded">
+                        <div class="mt-1 col-10 col-sm-10 col-md-11 col-lg-11 fw-bold">
+                            Người gửi: ${nguoi_gui}
+                        </div>
+                        <div class="col-2 col-sm-2 col-md-1 col-lg-1">
+                            ${danhDauDaDocCuThe}
+                        </div>
+                        <div class="col-12 text-muted">
+                            Ngày tạo: ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
+                        </div>
+                        <div class="col-12 mb-1">
+                            <p class="fw-bold">Nội dung:</p> 
+                            <span style="white-space: pre-line; overflow-wrap: break-word;">
+                                ${noi_dung}
+                            </span>
+                        </div>
+                    </div>
                     `;
-
             }).join('');
             thongbaoTableDOM.innerHTML = allThongBaos;
         }
@@ -136,9 +145,14 @@ if (thongbaoTableDOM) {
     // Bộ lọc thông báo
     thongBaoFilterDOM.addEventListener('change', () => {
         showThongBaoTable(thongBaoFilterDOM.value);
-    })
+    });
+
+    thongbaoTableDOM.addEventListener('click', async (event) => {
+        const eventTarget = event.target;
+        if (eventTarget.classList.contains('seen-btn')) {
+            const id = eventTarget.dataset.id;
+            await danhDauDaDoc(id);
+            showThongBaoTable(-1);
+        }
+    });
 }
-
-
-
-
