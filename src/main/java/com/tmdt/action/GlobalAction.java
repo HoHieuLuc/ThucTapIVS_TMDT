@@ -23,6 +23,14 @@ public class GlobalAction extends ActionSupport {
         return SUCCESS;
     }
 
+    // route tới trang tìm kiếm sản phẩm
+    @Action(value = "/search", results = {
+            @Result(name = "success", location = "/WEB-INF/jsp/search.jsp")
+    })
+    public String searchSanPham() {
+        return SUCCESS;
+    }
+
     // route giao diện xem chi tiết sản phẩm
     @Action(value = "/sanpham/{params}", results = {
             @Result(name = SUCCESS, location = "/WEB-INF/jsp/product/index.jsp")
