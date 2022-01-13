@@ -42,5 +42,5 @@
 <script>
     document.getElementById('dashboard').classList.add('active');
 </script>
-<script src='<c:url value="/js/user/dashboard/index.js"/>'></script>
+<script src='<c:url value="/js/user/dashboard/thongke.js"/>'></script>
 <jsp:include page="/WEB-INF/jsp/user/include/footer.jsp" />
