@@ -132,19 +132,21 @@ formThongKeDOM.addEventListener('submit', async(event) => {
     getSoDonDatHangThongKe(tuNgay, denNgay);
 
     // Tiếp đến là sơ đồ tròn
+    const ctx = document.getElementById('pieChart').getContext('2d');
     try {
-        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/2`, {
+        let { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/2`, {
             params: {
                 tuNgay,
                 denNgay,
             }
         });
-        console.log(thong_ke);
-        //Trường hợp khoảng ngày đó không có dữ liệu, thông báo là không có dữ liệu thống kê trong ngày này
+       // console.log(thong_ke);
+        //Trường hợp khoảng ngày đó không có dữ liệu, đưa data array về  [0,0,0,0]
         if (thong_ke.length == 0) {
-            thongBao("Không có dữ liệu thống kê trong khoảng thời gian này", true);
-            return;
-
+            // thongBao("Không có dữ liệu thống kê trong khoảng thời gian này", true);
+            // return;
+            thong_ke = [0,0,0,0];
+            console.log(thong_ke);
         }
 
 
@@ -178,6 +180,7 @@ formThongKeDOM.addEventListener('submit', async(event) => {
         pieChart = new Chart(ctx, config);
     }
     catch (error) {
+        console.log(error)
         thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
     }
 });
