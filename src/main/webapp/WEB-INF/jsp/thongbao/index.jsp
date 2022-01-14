@@ -11,6 +11,13 @@
         <jsp:include page="/WEB-INF/jsp/user/include/header.jsp" />
     </c:otherwise>
 </c:choose>
+<style>
+    .tlt-thong-bao {
+        white-space: pre-line;
+        overflow-y: scroll;
+        overflow-wrap: break-word;
+    }
+</style>
                     
 <div class="mb-3">
     <select name="status" class="form-select" id="thongbao-filter">
