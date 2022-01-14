@@ -13,30 +13,36 @@ const showThongBao = async (_status) => {
         }
         //Map cho thông báo gần đây
         const allThongBaos = thong_baos.map(data => {
-
             const { noi_dung, nguoi_gui, ngay_tao, status, ma_tb } = data;
+            const bgColor = status === false ? "bg-secondary text-white" : "bg-light text-black";
             //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
-            if (status.includes("bg-secondary") || status.includes("bg-body")) {
+            if (!status) {
                 danhDauDaDocCuThe = `
-                    <button type="button" class="seen-btn btn btn-primary btn-sm rounded-circle" data-id="${ma_tb}">
+                    <button type="button" class="seen-btn align-self-center btn btn-primary btn-sm rounded-circle" data-id="${ma_tb}">
                         <i class="fas fa-check"></i>
                     </button>
                 `;
             }
             else {
-                danhDauDaDocCuThe = ``;
+                danhDauDaDocCuThe = `
+                    <button type="button" class="align-self-center btn btn-sm opacity-0">
+                        <i class="fas fa-check"></i>
+                    </button>
+                `;
             }
             return `
-                <li class="list-group-item d-flex justify-content-between align-items-start ${status} dropdown-item">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">${nguoi_gui}</div>
-                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width:123px;">
+                <li class="list-group-item d-flex justify-content-between align-items-start ${bgColor} dropdown-item">
+                    <div class="ms-2 me-auto w-100">
+                        <div class="d-flex">
+                            <div class="fw-bold me-2">${nguoi_gui}</div>
+                            <span class="badge ms-auto bg-warning rounded-pill">
+                                ${ngay_tao} 
+                            </span>
+                        </div>
+                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width:15em;">
                             ${noi_dung}
                         </div>
                     </div>
-                    <span class="badge bg-warning rounded-pill">
-                        ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year} 
-                    </span>
                     ${danhDauDaDocCuThe}
                 </li>
             `;
@@ -53,7 +59,8 @@ const showThongBao = async (_status) => {
 const showSoThongBao = async () => {
     try {
         const { data: { chua_doc } } = await axios.get(`${baseURL}api/v1/thongbao/${999}`);
-        document.querySelector("#soThongBao").innerHTML = chua_doc;
+        const soThongBaoChuaDoc = chua_doc > 9 ? "9+" : chua_doc;
+        document.querySelector("#soThongBao").textContent = soThongBaoChuaDoc;
     }
     catch (error) {
         console.log(error);
@@ -63,7 +70,7 @@ showSoThongBao();
 
 
 // Cho tạm số bất kì khác 0,999 để hiện tất cả thông báo
-showThongBao(-1);
+showThongBao(-999);
 
 const danhDauDaDoc = async (id) => {
     try {
@@ -88,6 +95,19 @@ thongBaoMenuDOM.addEventListener('click', async (event) => {
     }
 });
 
+// xóa thông báo
+const xoaThongBao = async (id) => {
+    try {
+        const { data: { message } } = await axios.delete(`${baseURL}api/v1/thongbao/delete/${id}`);
+        thongBao(message);
+        showThongBao(-1);
+        showSoThongBao();
+    } catch (error) {
+        console.log(error);
+        thongBao(error.response.data.message, true);
+    }
+}
+
 
 //Nếu phát hiện element có id="thongbao-table"
 if (thongbaoTableDOM) {
@@ -100,13 +120,11 @@ if (thongbaoTableDOM) {
             }
 
             const allThongBaos = thong_baos.map(data => {
-
                 const { noi_dung, nguoi_gui, ngay_tao, status, ma_tb } = data;
-
-                //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
-                if (status.includes("bg-secondary") || status.includes("bg-body")) {
+                const bgColor = status === false ? "bg-danger text-white" : "bg-primary text-black";                //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
+                if (!status) {
                     danhDauDaDocCuThe = `
-                        <button type="button" class="seen-btn btn btn-outline-primary rounded-circle" data-id="${ma_tb}">
+                        <button type="button" class="seen-btn btn btn-tool text-white" data-id="${ma_tb}">
                             <i class="fas fa-check"></i>
                         </button>
                     `;
@@ -114,24 +132,26 @@ if (thongbaoTableDOM) {
                     danhDauDaDocCuThe = ``;
                 }
                 return `
-                    <div class="row border border-1 rounded">
-                        <div class="mt-1 col-10 col-sm-10 col-md-11 col-lg-11 fw-bold">
-                            Người gửi: ${nguoi_gui}
+                    <div class="card" style="display: block;">
+                        <div class="card-header ${bgColor}">
+                            <h3 class="card-title text-white">${nguoi_gui}, lúc ${ngay_tao}</h3>
+                            <div class="card-tools">
+                                ${danhDauDaDocCuThe}
+                                <button type="button" class="btn btn-tool text-white" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" data-id=${ma_tb} class="xoa-btn btn btn-tool text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-2 col-sm-2 col-md-1 col-lg-1">
-                            ${danhDauDaDocCuThe}
-                        </div>
-                        <div class="col-12 text-muted">
-                            Ngày tạo: ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
-                        </div>
-                        <div class="col-12 mb-1">
-                            <p class="fw-bold">Nội dung:</p> 
-                            <span style="white-space: pre-line; overflow-wrap: break-word;">
+                        <div class="card-body p-0" style="display: block;">
+                            <div class="tlt-thong-bao pl-2 pr-2">
                                 ${noi_dung}
-                            </span>
+                            </div>
                         </div>
                     </div>
-                    `;
+                `;
             }).join('');
             thongbaoTableDOM.innerHTML = allThongBaos;
         }
@@ -152,6 +172,11 @@ if (thongbaoTableDOM) {
         if (eventTarget.classList.contains('seen-btn')) {
             const id = eventTarget.dataset.id;
             await danhDauDaDoc(id);
+            showThongBaoTable(-1);
+        }
+        if (eventTarget.classList.contains('xoa-btn')) {
+            const id = eventTarget.dataset.id;
+            await xoaThongBao(id);
             showThongBaoTable(-1);
         }
     });
