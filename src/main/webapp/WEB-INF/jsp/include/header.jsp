@@ -49,16 +49,17 @@
         .tlt-thumbnail:hover {
           border: solid 1px gray;
         }
-        .tlt-overflow-eclipse {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
         .tlt-overflow-ellipsis {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           display: block;
+        }
+        .tlt-sticky-top {
+          position: sticky;
+          top: 0;
+          height: 100%;
+          box-sizing: border-box;
         }
         button>i {
           pointer-events: none;
