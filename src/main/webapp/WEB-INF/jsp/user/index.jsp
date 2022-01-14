@@ -119,13 +119,9 @@
               <div class="card-body p-0" style="display: block;">
                 <ul class="products-list product-list-in-card pl-2 pr-2" id="topSanPhamBanChay">
                     <!-- Danh sách sản phẩm bán chạy -->
-
                   <!-- /.item -->
                 </ul>
               </div>
-
-
-
             </div>
             <!-- Kết thúc top sản phẩm bán chạy -->
           </section>
