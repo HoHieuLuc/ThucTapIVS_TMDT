@@ -19,13 +19,13 @@
       <tr>
         <th>
           Tên sản phẩm
-          <button class="sort-ten-desc border border-0 bg-transparent">
+          <button class="sort-btn sort-ten-desc border border-0 bg-transparent">
             <i class="sort-icon fas fa-angle-up"></i>
           </button>
         </th>
         <th>
           Giá
-          <button class="sort-gia-desc border border-0 bg-transparent">
+          <button class="sort-btn sort-gia-desc border border-0 bg-transparent">
             <i class="sort-icon fas fa-angle-up"></i>
           </button>
         </th>
