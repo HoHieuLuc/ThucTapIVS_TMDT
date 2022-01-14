@@ -54,9 +54,11 @@ public class DatHangAction extends ActionSupport {
             // đặt theo người bán
             if (!username.equals("null")) {
                 maDonDatHang = datHangMapper.themDonDHTheoSeller(maKhachHang, username);
+                // gửi mail
                 sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
             } else { // đặt tất cả
                 maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
+                // gửi mail
                 sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
             }
             if (sanPhams.isEmpty()){
@@ -69,7 +71,11 @@ public class DatHangAction extends ActionSupport {
                         (String) sanPham.get("ma_san_pham"),
                         (Integer) sanPham.get("so_luong"));
             }
-            // Khi sai mã sản phẩm ở câu querry thứ 2
+            // TODO: gửi mail
+            // xuất excel
+
+            
+            // Khi sai mã sản phẩm ở câu query thứ 2
             // Thì câu query thứ nhất không commit được dữ liệu vào database, dù nó chạy
             // được
         } catch (PersistenceException e) {
