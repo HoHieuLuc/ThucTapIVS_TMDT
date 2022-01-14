@@ -22,7 +22,7 @@
         <th>Số lượng</th>
         <th>Ngày đăng</th>
         <th>Tên người bán</th>
-        <th>Tên loại sản phẩm</th>
+        <th>Loại</th>
         <th><div class="text-center">Chức năng</div></th>
       </tr>
     </thead>
