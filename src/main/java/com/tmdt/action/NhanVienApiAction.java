@@ -102,7 +102,7 @@ public class NhanVienApiAction {
             case 30:
                 return rowsPerPage;
             default:
-                return 5;
+                return 10;
         }
     }
 

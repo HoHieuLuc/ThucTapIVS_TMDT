@@ -300,13 +300,14 @@ public interface SanPhamMapper {
     // Lấy danh sách các sản phẩm theo status và search nào đó
     final String GET_SP_BY_STATUS = "SELECT kh.ten,sp.ma_san_pham,sp.ten_san_pham,sp.mo_ta,sp.gia,lsp.ten_loai_sp, "
             +
-            "sp.so_luong,sp.ngay_dang " +
+            "sp.so_luong, DATE_FORMAT(sp.ngay_dang, '%d-%m-%Y') AS ngay_dang " +
             "FROM san_pham SP " +
             "RIGHT JOIN khach_hang KH ON SP.ma_khach_hang = KH.ma_khach_hang " +
             "RIGHT JOIN loai_san_pham LSP ON SP.ma_loai_san_pham = LSP.ma_loai_sp " +
             "WHERE SP.status = #{status} AND " +
             "(sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
             "OR kh.ten LIKE CONCAT('%', #{search}, '%')) " +
+            "ORDER BY sp.ngay_dang desc " +
             "LIMIT #{offset}, #{rowsPerPage}";
 
     @Select(GET_SP_BY_STATUS)

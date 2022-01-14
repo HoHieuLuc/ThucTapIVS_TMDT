@@ -29,8 +29,8 @@
       text-overflow: ellipsis;
     }
     .dropdown-menu {
-      min-width: 20em;
-      max-width: 20em;
+      min-width: 30em;
+      max-width: 30em;
     }
     button>i {
       pointer-events: none;
@@ -283,4 +283,4 @@
 
 
       <!-- Đừng thêm gì dưới đoạn này -->
-      <main role="main" class="container-fluid">
+      <main role="main" class="container-fluid pt-3">
