@@ -8,6 +8,7 @@ const listSPByStatusDOM = document.querySelector("#listSPByStatus");
 //Khu vực danh sách sản phẩm thẻ <div>
 const listSanPhamDOM = document.querySelector("#listSanPham");
 const phanTrangSanPhamDOM = document.querySelector("#phanTrangSanPham");
+let globalData = [];
 
 //Render lại danh sách sản phẩm đúng với status  
 listSPByStatusDOM.addEventListener('change', async () => {
@@ -24,7 +25,7 @@ const changePage = (page) => {
 
 //Hàm xuất table ra màn hình trang quản lý
 const renderData = (datas, totalPage, currentPage) => {
-    const allSanPhams = datas.map((data, index) => {
+    const allSanPhams = datas.map(data => {
         //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, ten, ten_loai_sp } = data;
         const giaVND = gia.toLocaleString("vi-VN", {
@@ -47,7 +48,9 @@ const renderData = (datas, totalPage, currentPage) => {
             </tr>`;
     }).join('');
     listSanPhamDOM.innerHTML = allSanPhams;
-    phanTrangSanPhamDOM.innerHTML = buildPagination(currentPage, totalPage, 5, "changePage");
+    if (currentPage !== undefined && totalPage !== undefined) {
+        phanTrangSanPhamDOM.innerHTML = buildPagination(currentPage, totalPage, 5, "changePage");
+    }
 }
 
 const showSanPhams = async () => {
@@ -65,6 +68,7 @@ const showSanPhams = async () => {
             search
         }
     });
+    globalData = sanphams;
     renderData(sanphams, total_page, page);
 }
 showSanPhams();
@@ -75,4 +79,55 @@ searchFormDOM.addEventListener('submit', (event) => {
     removeURLparam("page");
     changeURLparam("search", formData.get("search"));
     showSanPhams();
+});
+
+const sortTheoTen = (a, b) => {
+    const nameA = a.ten_san_pham.toUpperCase().normalize('NFKD').replace(/[^\w\s.-_\/]/g, '');
+    const nameB = b.ten_san_pham.toUpperCase().normalize('NFKD').replace(/[^\w\s.-_\/]/g, '');
+    return nameA.localeCompare(nameB);
+}
+
+const sortTheoGia = (a, b) => {
+    return a.gia - b.gia;
+}
+
+const mainTableDOM = document.querySelector(".tlt-fixed-table");
+
+mainTableDOM.addEventListener('click', (event) => {
+    const eventTarget = event.target;
+    const icon = eventTarget.querySelector(".sort-icon");
+    if (icon !== null && icon.classList.contains("fa-angle-up")) {
+        icon.classList.remove("fa-angle-up");
+        icon.classList.add("fa-angle-down");
+    } else if (icon !== null && icon.classList.contains("fa-angle-down")) {
+        icon.classList.remove("fa-angle-down");
+        icon.classList.add("fa-angle-up");
+    }
+    if (eventTarget.classList.contains("sort-ten-desc")) {
+        globalData.sort(sortTheoTen);
+        renderData(globalData);
+        eventTarget.classList.remove("sort-ten-desc");
+        eventTarget.classList.add("sort-ten-asc");
+        return;
+    }
+    if (eventTarget.classList.contains("sort-ten-asc")) {
+        globalData.sort(sortTheoTen).reverse();
+        renderData(globalData);
+        eventTarget.classList.remove("sort-ten-asc");
+        eventTarget.classList.add("sort-ten-desc");
+        return;
+    }
+    if (eventTarget.classList.contains("sort-gia-desc")) {
+        globalData.sort(sortTheoGia);
+        renderData(globalData);
+        eventTarget.classList.remove("sort-gia-desc");
+        eventTarget.classList.add("sort-gia-asc");
+        return;
+    }
+    if (eventTarget.classList.contains("sort-gia-asc")) {
+        globalData.sort(sortTheoGia).reverse();
+        renderData(globalData);
+        eventTarget.classList.remove("sort-gia-asc");
+        eventTarget.classList.add("sort-gia-desc");
+    }
 });
