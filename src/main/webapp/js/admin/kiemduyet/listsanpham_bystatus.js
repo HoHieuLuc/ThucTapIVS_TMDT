@@ -95,6 +95,9 @@ const mainTableDOM = document.querySelector(".tlt-fixed-table");
 
 mainTableDOM.addEventListener('click', (event) => {
     const eventTarget = event.target;
+    if (!eventTarget.classList.contains("sort-btn")) {
+        return;
+    }
     const icon = eventTarget.querySelector(".sort-icon");
     if (icon !== null && icon.classList.contains("fa-angle-up")) {
         icon.classList.remove("fa-angle-up");
@@ -103,31 +106,31 @@ mainTableDOM.addEventListener('click', (event) => {
         icon.classList.remove("fa-angle-down");
         icon.classList.add("fa-angle-up");
     }
-    if (eventTarget.classList.contains("sort-ten-desc")) {
-        globalData.sort(sortTheoTen);
-        renderData(globalData);
-        eventTarget.classList.remove("sort-ten-desc");
-        eventTarget.classList.add("sort-ten-asc");
-        return;
-    }
     if (eventTarget.classList.contains("sort-ten-asc")) {
-        globalData.sort(sortTheoTen).reverse();
+        globalData.sort(sortTheoTen);
         renderData(globalData);
         eventTarget.classList.remove("sort-ten-asc");
         eventTarget.classList.add("sort-ten-desc");
         return;
     }
-    if (eventTarget.classList.contains("sort-gia-desc")) {
-        globalData.sort(sortTheoGia);
+    if (eventTarget.classList.contains("sort-ten-desc")) {
+        globalData.sort(sortTheoTen).reverse();
         renderData(globalData);
-        eventTarget.classList.remove("sort-gia-desc");
-        eventTarget.classList.add("sort-gia-asc");
+        eventTarget.classList.remove("sort-ten-desc");
+        eventTarget.classList.add("sort-ten-asc");
         return;
     }
     if (eventTarget.classList.contains("sort-gia-asc")) {
-        globalData.sort(sortTheoGia).reverse();
+        globalData.sort(sortTheoGia);
         renderData(globalData);
         eventTarget.classList.remove("sort-gia-asc");
         eventTarget.classList.add("sort-gia-desc");
+        return;
+    }
+    if (eventTarget.classList.contains("sort-gia-desc")) {
+        globalData.sort(sortTheoGia).reverse();
+        renderData(globalData);
+        eventTarget.classList.remove("sort-gia-desc");
+        eventTarget.classList.add("sort-gia-asc");
     }
 });
