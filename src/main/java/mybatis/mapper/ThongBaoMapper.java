@@ -17,30 +17,33 @@ public interface ThongBaoMapper {
             @Param("noiDung") String noiDung);
 
     // Lấy tất cả thông báo của khách hàng có id
-    final String GET_ALL_THONG_BAO = "SELECT tb.ma_tb, tb.noi_dung,tb.ngay_tao, " +
+    final String GET_ALL_THONG_BAO = "SELECT tb.ma_tb, tb.noi_dung, " +
+            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
             "CASE " +
-            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' " +
+            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' "
+            +
             "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) "
             +
-            " END AS nguoi_gui, " +
-            " CASE " +
-            " WHEN tb.status = 0 THEN 'bg-secondary text-white' " +
-            " ELSE  'bg-light text-black' " +
-            " END AS status " +
-            " FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan};";
+            "END AS nguoi_gui, " +
+            "tb.status " +
+            "FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan} " +
+            "ORDER BY tb.ngay_tao DESC";
 
     @Select(GET_ALL_THONG_BAO)
     public List<Map<String, Object>> getAllThongBao(int idNguoiNhan);
 
     // Lấy tất cả thông báo chưa đọc của khách hàng có id
-    final String GET_ALL_THONG_BAO_CHUA_DOC = "SELECT tb.ma_tb,tb.noi_dung,tb.ngay_tao, " +
+    final String GET_ALL_THONG_BAO_CHUA_DOC = "SELECT tb.ma_tb, tb.noi_dung, " +
+            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
             "CASE " +
-            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' " +
-            "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) "
+            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' "
             +
-            " END AS nguoi_gui, " +
-            " 'bg-body text-black' AS status " +
-            " FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan} AND `status` = 0;";
+            "   ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) "
+            +
+            "END AS nguoi_gui, " +
+            "tb.status " +
+            "FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan} AND `status` = 0 " +
+            "ORDER BY tb.ngay_tao DESC";
 
     @Select(GET_ALL_THONG_BAO_CHUA_DOC)
     public List<Map<String, Object>> getAllThongBaoChuaDocs(int idNguoiNhan);
@@ -66,20 +69,27 @@ public interface ThongBaoMapper {
             @Param("idNguoiNhan") int idNguoiNhan);
 
     // Lấy tất cả thông báo của khách hàng có id
-    final String GET_RECENTLY_THONG_BAO = "SELECT tb.ma_tb, tb.noi_dung,tb.ngay_tao, " +
+    final String GET_RECENTLY_THONG_BAO = "SELECT tb.ma_tb, tb.noi_dung, " +
+            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
             "CASE " +
-            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' " +
+            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' "
+            +
             "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) "
             +
-            " END AS nguoi_gui, " +
-            " CASE " +
-            " WHEN tb.status = 0 THEN 'bg-secondary text-white' " +
-            " ELSE  'bg-light text-black' " +
-            " END AS status " +
-            " FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan} " + 
-            " ORDER BY tb.ngay_tao DESC LIMIT 5;";
+            "END AS nguoi_gui, " +
+            "tb.status " +
+            "FROM thong_bao tb  WHERE `id_nguoi_nhan` = #{idNguoiNhan} " +
+            "ORDER BY tb.ngay_tao DESC LIMIT 5;";
 
     @Select(GET_RECENTLY_THONG_BAO)
     public List<Map<String, Object>> getRecentlyThongBao(int idNguoiNhan);
 
+    // xóa thông báo
+    final String DELETE_THONG_BAO = "DELETE FROM thong_bao " +
+            "WHERE ma_tb = #{maThongBao} AND id_nguoi_nhan = #{idNguoiNhan}";
+
+    @Delete(DELETE_THONG_BAO)
+    public int deleteThongBao(
+            @Param("maThongBao") int maThongBao,
+            @Param("idNguoiNhan") int idNguoiNhan);
 }
