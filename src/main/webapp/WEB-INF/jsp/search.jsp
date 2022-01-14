@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <jsp:include page="/WEB-INF/jsp/include/searchbar.jsp" />
     <div class="row">
-        <div class="col-md-3 col-lg-3 col-xl-2 d-lg-block d-xl-block d-md-none d-sm-none d-none">
+        <div class="col-md-3 col-lg-3 col-xl-2 d-lg-block d-xl-block d-md-none d-sm-none d-none tlt-sticky-top">
             <div class="text-center fs-5">Bộ lọc</div>
             <form class="boLocForm form-group">
                 <p>Giá</p>
@@ -43,12 +43,25 @@
                         Đánh giá thấp nhất
                     </label>
                 </div>
+                <label>Giá</label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="order-check-input form-check-input" value="price-desc" name="order" type="radio">
+                        Cao đến thấp
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="order-check-input form-check-input" value="price-asc" name="order" type="radio">
+                        Thấp đến cao
+                    </label>
+                </div>
                 <button type="button" class="reset-form btn w-100 btn-outline-secondary">
                     Reset <i class="fas fa-undo"></i>
                 </button>
             </form>
         </div>
-        <div class="col-md-9 col-lg-9 col-xl-10">
+        <div class="col-md-12 col-lg-9 col-xl-10">
             <div class="sanPhamBrowser row">
 
             </div>

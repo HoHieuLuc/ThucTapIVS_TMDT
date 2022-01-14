@@ -112,8 +112,12 @@ public class SanPhamAction extends ActionSupport {
                 return "xep_hang desc";
             case "rating-asc":
                 return "xep_hang asc";
+            case "price-desc":
+                return "sp.gia desc";
+            case "price-asc":
+                return "sp.gia asc";
             default:
-                return "";
+                return "sp.ngay_dang desc";
         }
     }
 

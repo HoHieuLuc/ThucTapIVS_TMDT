@@ -21,6 +21,7 @@ import org.apache.struts2.convention.annotation.*;
 
 import mybatis.mapper.ThongBaoMapper;
 
+@InterceptorRef("authStack")
 public class ThongBaoAction extends ActionSupport {
     private int status;
     private int id;
@@ -57,13 +58,9 @@ public class ThongBaoAction extends ActionSupport {
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         Integer idNguoiNhan = (Integer) session.getAttribute("accountID");
 
-        // Kiểm tra đăng Nhập
-        if (idNguoiNhan == null) {
-            return CustomError.createCustomError("Bạn chưa đăng nhập", 403, response);
-        }
-
         List<Map<String, Object>> listThongBao;
-        // mặc định  là toàn bộ thông báo, 0 là thông báo chưa đọc, -999 là 5 thông báo gần
+        // mặc định là toàn bộ thông báo, 0 là thông báo chưa đọc, -999 là 5 thông báo
+        // gần
         // đây,999 là đếm số thông báo chưa đọc
         switch (status) {
             case 0:
@@ -95,11 +92,6 @@ public class ThongBaoAction extends ActionSupport {
         ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
         Integer idNguoiNhan = (Integer) session.getAttribute("accountID");
         Map<String, Object> jsonRes = new HashMap<String, Object>();
-
-        // Kiểm tra đăng Nhập
-        if (idNguoiNhan == null) {
-            return CustomError.createCustomError("Bạn chưa đăng nhập", 403, response);
-        }
         switch (id) {
             // -9999 là đánh dấu toàn bộ đã đọc
             case -9999:
@@ -117,10 +109,30 @@ public class ThongBaoAction extends ActionSupport {
                 }
                 break;
         }
-
         sqlSession.commit();
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
 
+    // xóa thông báo
+    @Action(value = "/api/v1/thongbao/delete/{id}", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String deleteThongBao() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+        Integer idNguoiNhan = (Integer) session.getAttribute("accountID");
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+
+        // xóa thông báo cụ thể nào đó
+        int validate = thongBaoMapper.deleteThongBao(id, idNguoiNhan);
+        if (validate == 0) {
+            return CustomError.createCustomError("Thông báo không tồn tại", 404, response);
+        } else {
+            jsonRes.put("message", "Xóa thông báo thành công");
+        }
+        sqlSession.commit();
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 }

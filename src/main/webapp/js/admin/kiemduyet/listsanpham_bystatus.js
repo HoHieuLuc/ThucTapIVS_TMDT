@@ -24,15 +24,19 @@ const changePage = (page) => {
 
 //Hàm xuất table ra màn hình trang quản lý
 const renderData = (datas, totalPage, currentPage) => {
-    const allSanPhams = datas.map(data => {
+    const allSanPhams = datas.map((data, index) => {
         //Tui định làm @Result mà thấy file SanPhamMapper dài quá nên thôi ^_^!, ô thông cảm nhan )
         const { ma_san_pham, ten_san_pham, gia, so_luong, ngay_dang, ten, ten_loai_sp } = data;
+        const giaVND = gia.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        });
         return `
             <tr>
                 <td>${ten_san_pham}</td>
-                <td>${gia}</td>
+                <td>${giaVND}</td>
                 <td>${so_luong}</td>
-                <td>   ${ngay_dang.date.day}/${ngay_dang.date.month}/${ngay_dang.date.year}
+                <td>${ngay_dang}</td>
                 <td>${ten}</td>
                 <td>${ten_loai_sp}</td>
                 <td>
