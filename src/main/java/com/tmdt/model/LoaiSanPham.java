@@ -3,13 +3,17 @@ package com.tmdt.model;
 public class LoaiSanPham {
     private int maLoaiSanPham;
     private String tenLoaiSanPham;
+    private Integer maLoaiCha;
+    private String anh;
 
     public LoaiSanPham() {
     }
 
-    public LoaiSanPham(int maLoaiSanPham, String tenLoaiSanPham) {
+    public LoaiSanPham(int maLoaiSanPham, String tenLoaiSanPham, String anh, Integer maLoaiCha) {
         this.maLoaiSanPham = maLoaiSanPham;
         this.tenLoaiSanPham = tenLoaiSanPham;
+        this.anh = anh;
+        this.maLoaiCha = maLoaiCha;
     }
 
     public int getMaLoaiSanPham() {
@@ -26,5 +30,21 @@ public class LoaiSanPham {
 
     public void setTenLoaiSanPham(String tenLoaiSanPham) {
         this.tenLoaiSanPham = tenLoaiSanPham;
+    }
+
+    public String getAnhLoaiSanPham() {
+        return anh;
+    }
+
+    public void setAnhLoaiSanPham(String anh) {
+        this.anh = anh;
+    }
+
+    public Integer getMaLoaiCha() {
+        return maLoaiCha;
+    }
+
+    public void setMaLoaiCha(Integer maLoaiCha) {
+        this.maLoaiCha = maLoaiCha;
     }
 }

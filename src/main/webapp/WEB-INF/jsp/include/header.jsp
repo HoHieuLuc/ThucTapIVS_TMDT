@@ -17,30 +17,49 @@
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+      <script src='<c:url value="/js/function.js"/>'></script>
       <script>
         const baseURL = <c:url value="/" />;
       </script>
 
       <style>
-        .tlt-bottom-of-div {
-          position: absolute;
-          bottom: 0;
+        .tlt-product-description {
+          max-height: 20em;
+          white-space: pre-line;
+          overflow-y: scroll;
+          display: block;
         }
-
         .tlt-description {
           max-height: 4rem;
           white-space: pre-line;
           overflow-y: scroll;
           display: block;
         }
-
         .tlt-comment {
           max-height: 10rem;
           white-space: pre-line;
           overflow-y: scroll;
           display: block;
         }
-
+        .tlt-thumbnail {
+          height: 15em; 
+          width: 15em; 
+          object-fit: scale-down;
+        }
+        .tlt-thumbnail:hover {
+          border: solid 1px gray;
+        }
+        .tlt-overflow-eclipse {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .tlt-overflow-ellipsis {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+        }
         button>i {
           pointer-events: none;
         }
@@ -76,7 +95,7 @@
       </div>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href='<c:url value="/" />'>
             <img src='<c:url value="/images/brand_logo.png" />' alt="" width="50" height="25" class="d-inline-block align-text-top">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -95,26 +114,20 @@
               <li class="nav-item">
                 <a class="nav-link" href='<c:url value="/store" />'>Cửa hàng</a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  Danh mục sản phẩm
-                </a>
-                <ul class="dropdown-menu" id="danhMucSP">
-                  <!--- Chỗ này để hiện ra các danh mục bằng câu select-->
-                  <li><a class="dropdown-item" href="#">Điện thoại</a></li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/category" />'>Danh mục sản phẩm</a>
               </li>
             </ul>
-            <form class="d-flex me-auto">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            <ul class="navbar-nav mb-2 mb-lg-0">
+            <ul class="ms-auto navbar-nav mb-2 mb-lg-0">
               <c:choose>
                 <c:when test="${sessionScope.loggedIn != null && sessionScope.loggedIn == true}">
                   <c:choose>
                     <c:when test="${sessionScope.level == 0}">
+                      <li class="nav-item">
+                        <a class="nav-link" href='<c:url value="/fav" />'>
+                          Sản phẩm yêu thích <i class="fas fa-heart"></i>
+                        </a>
+                      </li>
                       <li class="nav-item">
                         <a class="nav-link" href='<c:url value="/cart" />'>
                           Giỏ hàng <i class="fas fa-shopping-cart"></i>
@@ -139,6 +152,9 @@
                         <c:otherwise>
                           <li>
                             <a class="dropdown-item" href='<c:url value="/user"/>'>Trang cá nhân</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href='<c:url value="/store/${sessionScope.username}"/>'>My store</a>
                           </li>
                         </c:otherwise>
                       </c:choose>
@@ -165,13 +181,5 @@
           </div>
         </div>
       </nav>
-
-      <hr>
-
-      </div>
-      </nav>
-
-
-
-      <!-- Đừng thêm gì dưới đoạn này -->
-      <main role="main" class="container">
+    <!-- Đừng thêm gì dưới đoạn này -->
+  <main role="main" class="container-fluid mt-3" id="main">

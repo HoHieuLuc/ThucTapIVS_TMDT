@@ -1,4 +1,4 @@
-<?xml version = "1.0" encoding = "UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
@@ -7,16 +7,18 @@
             <transactionManager type="JDBC" />
             <dataSource type="UNPOOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver" />
-                
+
                 <!-- Đặt url để kết nối đến database tên "details" trong localhost port "3306" -->
                 <property name="url" value="jdbc:mysql://localhost:3306/thuong_mai_dien_tu?allowMultiQueries=true" />
-                
-                    <!-- Username và password phải là User Account mình vừa tạo trong MySQL Installer, chứ không phải Root Account -->
+
+                <!-- Username và password phải là User Account mình vừa tạo trong MySQL Installer, chứ không phải Root Account -->
                 <property name="username" value="root" />
                 <property name="password" value="" />
             </dataSource>
         </environment>
     </environments>
+    <mappers>
+        <package name="mybatis.mapper" />
+    </mappers>
 
-	
 </configuration>

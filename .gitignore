@@ -2,8 +2,3 @@
 *.bak
 src/main/resources/SqlMapConfig.xml
 src/main/java/com/tmdt/utilities/ProjectPath.java
-src/main/webapp/images/product
-src/main/webapp/images/user
-*.jpeg
-*.png
-*.jpg

@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class ConnectDB {
     private static SqlSessionFactory sqlSessionFactory;
     // tên package chứa các mapper
-    private static String packageName = "mybatis.mapper";
+    //private static String packageName = "mybatis.mapper";
 
     private ConnectDB() {
     }
@@ -22,7 +22,7 @@ public class ConnectDB {
                 String resource = "SqlMapConfig.xml";
                 Reader reader = Resources.getResourceAsReader(resource);
                 sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-                sqlSessionFactory.getConfiguration().addMappers(packageName);
+                //sqlSessionFactory.getConfiguration().addMappers(packageName);
             } catch (Exception e) {
                 e.printStackTrace();
             }

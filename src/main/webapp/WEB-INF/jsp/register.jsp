@@ -52,7 +52,7 @@
                 </div>
                 <div class="col-sm-3 form-group">
                     <label>Username</label>
-                    <input type="text" class="form-control" name="username"  placeholder="Username (Bắt buộc)" >
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Username (Bắt buộc)" >
                     <p id="username_error" class="text-danger"></p>
                 </div>
                 <div class="col-sm-3 form-group">
@@ -66,17 +66,15 @@
                 </div>
                 <div class="col-sm-6 form-group">
                     <label>Giới tính</label>
-                    <select name="gioiTinh" class="form-control">
+                    <select name="gioiTinh" class="form-select">
                         <option value="0">Nam</option>
                         <option value="1">Nữ</option>
                     </select>
                 </div>
-                <!-- Upload ảnh, đừng đổi tên userImage nhan, đổi nó lỗi  -->
                 <div class="col-sm-6 form-group">
                     <label>Chọn ảnh đại diện</label>
                     <input type="file" id="userImage" class="form-control" name="userImage">
                 </div>
-                <!-- Upload ảnh -->
                 <div class="col-sm-6 form-group">
                     <label>Xác nhận mật khẩu</label>
                     <input type="password" name="xacNhanPassword" class="form-control" 

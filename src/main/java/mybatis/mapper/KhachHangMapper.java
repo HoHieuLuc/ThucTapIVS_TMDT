@@ -26,14 +26,15 @@ public interface KhachHangMapper {
     /* store */
     /* ============================ */
     // lấy thông tin khách hàng cho trang store dựa vào username
-    final String GET_STORE_INFO = "SELECT kh.ma_khach_hang,kh.ten, kh.dia_chi, kh.gioi_thieu, tk.email, tk.so_dien_thoai, "
-            +
-            "tk.avatar, tk.ngay_tao, ttlh.twitter_link, ttlh.facebook_link, ttlh.personal_link, " +
-            "COUNT(dgkh.ma_danh_gia) AS so_danh_gia, AVG(dgkh.so_sao) AS rating " +
+    final String GET_STORE_INFO = "SELECT kh.ma_khach_hang,kh.ten, kh.dia_chi, kh.gioi_thieu, " +
+            "tk.email, tk.so_dien_thoai, tk.avatar, tk.ngay_tao, " +
+            "ttlh.twitter_link, ttlh.facebook_link, ttlh.personal_link, " +
+            "AVG(dgsp.so_sao) AS rating, COUNT(dgsp.ma_danh_gia) AS so_danh_gia " +
             "FROM khach_hang kh " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "LEFT JOIN thong_tin_lien_he ttlh ON ttlh.ma_khach_hang = kh.ma_khach_hang " +
-            "LEFT JOIN danh_gia_khach_hang dgkh ON dgkh.ma_kh_duoc_danh_gia = kh.ma_khach_hang " +
+            "LEFT JOIN san_pham sp ON sp.ma_khach_hang = kh.ma_khach_hang " +
+            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "WHERE tk.username = #{username}";
 
     @Select(GET_STORE_INFO)
@@ -53,10 +54,21 @@ public interface KhachHangMapper {
 
     // Lấy avatar, mã khách hàng, tên khách hàng để làm trang danh sách store
     final String GET_LIST_STORE = "SELECT TK.avatar,TK.username,KH.ten from khach_hang kh " +
-        "LEFT JOIN tai_khoan tk on kh.id_tai_khoan = tk.id " +
-        "WHERE tk.id NOT  IN (SELECT id_tai_khoan FROM nhan_vien) " +
-        "GROUP BY username;";
+            "LEFT JOIN tai_khoan tk on kh.id_tai_khoan = tk.id " +
+            "WHERE tk.id NOT  IN (SELECT id_tai_khoan FROM nhan_vien) " +
+            "GROUP BY username;";
 
     @Select(GET_LIST_STORE)
     public List<Map<String, Object>> getListStore();
+
+    // lấy top 6 cửa hàng đánh giá cao nhất
+    final String GET_TOP_STORE = "SELECT tk.username, kh.ten, tk.avatar, AVG(dgsp.so_sao) AS xep_hang " +
+            "FROM khach_hang kh JOIN san_pham sp ON sp.ma_khach_hang = kh.ma_khach_hang " +
+            "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
+            "LEFT JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
+            "GROUP BY kh.ma_khach_hang HAVING AVG(dgsp.so_sao) > 0 " +
+            "ORDER BY xep_hang DESC LIMIT 6";
+
+    @Select(GET_TOP_STORE)
+    public List<Map<String, Object>> getTopStore();
 }

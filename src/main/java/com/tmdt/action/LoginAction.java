@@ -76,7 +76,11 @@ public class LoginAction extends ActionSupport {
         if (account != null) {
             // Kiểm tra mật khẩu
             if (BCrypt.checkpw(password, account.getPassword())) {
-                System.out.println("account: " + account.toString());
+                // Kiểm tra số lần cảnh cáo
+                if (account.getSoLanCanhCao() == 3) {
+                    sqlSession.close();
+                    return CustomError.createCustomError("Tài khoản bị khóa vì bị cảnh cáo 3 lần", 403, response);
+                }
                 Map<String, Object> loginInfo;
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("permission", account.getMaQuyen());
@@ -102,6 +106,7 @@ public class LoginAction extends ActionSupport {
                 session.setAttribute("avatar", avatar);
 
                 System.out.println("Bạn đã đăng nhập account với quyền là " + session.getAttribute("permission"));
+                sqlSession.close();
                 return "loggedIn";
             }
         }
@@ -118,7 +123,7 @@ public class LoginAction extends ActionSupport {
     })
     public String logout() {
         session.removeAttribute("loggedIn");
-        session.removeAttribute("userName");
+        session.removeAttribute("username");
         session.removeAttribute("permission");
         session.removeAttribute("accountID");
         session.removeAttribute("maNguoiDung");

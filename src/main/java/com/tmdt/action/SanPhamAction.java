@@ -1,13 +1,9 @@
 package com.tmdt.action;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,17 +12,13 @@ import javax.servlet.http.HttpSession;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import com.tmdt.errors.CustomError;
-import com.tmdt.model.AnhSanPham;
-import com.tmdt.model.SanPham;
 import com.tmdt.utilities.JsonResponse;
-import com.tmdt.utilities.ProjectPath;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Result;
 
 import mybatis.mapper.AnhSanPhamMapper;
 import mybatis.mapper.SanPhamMapper;
@@ -38,125 +30,97 @@ import mybatis.mapper.SanPhamMapper;
 public class SanPhamAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private String maSanPham;
-    private String tenSanPham;
-    private String moTa;
-    private int gia;
-    private int maLoaiSanPham;
-    private int soLuong;
-    private int status;
-    private List<File> anhSanPhams = new ArrayList<File>();
-    private List<String> anhSanPhamsFileName = new ArrayList<String>();
-    private List<String> anhSanPhamsContentType = new ArrayList<String>();
+    private String search;
+    private int page;
+    private int rowsPerPage;
+    private Integer minPrice;
+    private Integer maxPrice;
+    private String order;
 
     // region Getter and Setter
-
     public String getMaSanPham() {
         return maSanPham;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public void setMaSanPham(String maSanPham) {
         this.maSanPham = maSanPham;
     }
 
-    public String getTenSanPham() {
-        return tenSanPham;
+    public String getSearch() {
+        return search == null ? "" : search;
     }
 
-    public void setTenSanPham(String tenSanPham) {
-        this.tenSanPham = tenSanPham;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
-    public String getMoTa() {
-        return moTa;
+    public int getPage() {
+        if (page < 1) {
+            page = 1;
+        }
+        return page;
     }
 
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
+    public void setPage(int page) {
+        this.page = page;
     }
 
-    public int getGia() {
-        return gia;
+    public int getRowsPerPage() {
+        switch (rowsPerPage) {
+            case 5:
+            case 10:
+            case 20:
+            case 30:
+            case 50:
+            case 100:
+                return rowsPerPage;
+            default:
+                return 5;
+        }
     }
 
-    public void setGia(int gia) {
-        this.gia = gia;
+    public void setRowsPerPage(int rowsPerPage) {
+        this.rowsPerPage = rowsPerPage;
     }
 
-    public int getMaLoaiSanPham() {
-        return maLoaiSanPham;
+    public Integer getMinPrice() {
+        return minPrice == null ? 0 : minPrice;
     }
 
-    public void setMaLoaiSanPham(int maLoaiSanPham) {
-        this.maLoaiSanPham = maLoaiSanPham;
+    public void setMinPrice(Integer minPrice) {
+        this.minPrice = minPrice;
     }
 
-    public int getSoLuong() {
-        return soLuong;
+    public Integer getMaxPrice() {
+        return maxPrice == null ? 0 : maxPrice;
     }
 
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
+    public void setMaxPrice(Integer maxPrice) {
+        this.maxPrice = maxPrice;
     }
 
-    public List<File> getAnhSanPhams() {
-        return anhSanPhams;
+    public String getOrder() {
+        if (order == null) {
+            return "";
+        }
+        switch (order) {
+            case "date-desc":
+                return "sp.ngay_dang desc";
+            case "date-asc":
+                return "sp.ngay_dang asc";
+            case "rating-desc":
+                return "xep_hang desc";
+            case "rating-asc":
+                return "xep_hang asc";
+            default:
+                return "";
+        }
     }
 
-    public void setAnhSanPhams(List<File> anhSanPhams) {
-        this.anhSanPhams = anhSanPhams;
-    }
-
-    public List<String> getAnhSanPhamsFileName() {
-        return anhSanPhamsFileName;
-    }
-
-    public void setAnhSanPhamsFileName(List<String> anhSanPhamsFileName) {
-        this.anhSanPhamsFileName = anhSanPhamsFileName;
-    }
-
-    public List<String> getAnhSanPhamsContentType() {
-        return anhSanPhamsContentType;
-    }
-
-    public void setAnhSanPhamsContentType(List<String> anhSanPhamsContentType) {
-        this.anhSanPhamsContentType = anhSanPhamsContentType;
+    public void setOrder(String order) {
+        this.order = order;
     }
     // endregion
-
-    /* validate */
-    // validate ảnh
-    public boolean validateAnhSanPham() {
-        if (anhSanPhams.isEmpty()) {
-            return false;
-        }
-        for (File u : anhSanPhams) {
-            if (u == null) {
-                return false;
-            }
-        }
-        for (String c : anhSanPhamsContentType) {
-            if (!c.contains("image/")) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // validate toàn bộ input
-    public boolean isValid() {
-        return tenSanPham != null && tenSanPham.length() > 0 &&
-                moTa != null && moTa.length() > 0 &&
-                gia > 0 && soLuong > 0 &&
-                validateAnhSanPham();
-    }
 
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -165,16 +129,51 @@ public class SanPhamAction extends ActionSupport {
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
     // Danh sách sản phẩm
-    @Action(value = "/api/v1/sanpham/getall", results = {
+    @Action(value = "/api/v1/sanpham", results = {
             @Result(name = "success", location = "/index.html")
     })
     public String getAllSanPhams() throws IOException {
+        int _minPrice = getMinPrice();
+        int _maxPrice = getMaxPrice();
+        if (_minPrice > _maxPrice || _minPrice < 0 || _maxPrice < 0) {
+            return CustomError.createCustomError("Giá không hợp lệ", 400, response);
+        }
+        if (_minPrice == 0 && _maxPrice == 0) {
+            _minPrice = 0;
+            _maxPrice = Integer.MAX_VALUE;
+        }
+        String _order = getOrder();
+        if (!_order.equals("")) {
+            _order = "ORDER BY " + _order;
+        }
+
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getAllSanPham();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sanphams", listSanPham);
-        return JsonResponse.createJsonResponse(map, 200, response);
+        String _search = getSearch();
+
+        int countSanPham = sanPhamMapper.countAllSanPham(_search, _minPrice, _maxPrice);
+        int _page = getPage();
+        int _rowsPerPage = 20;
+
+        int offset = (_page - 1) * _rowsPerPage;
+        int totalPages = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
+
+        List<Map<String, Object>> listSanPham = sanPhamMapper.searchSanPham(
+                _search, _minPrice, _maxPrice, _order, offset, _rowsPerPage);
+
+        if (listSanPham.isEmpty()) {
+            if (!_order.equals("")) {
+                _order = _order.replace("ORDER BY", ", ");
+            }
+            countSanPham = sanPhamMapper.countAllSanPhamFulltext(_search, _minPrice, _maxPrice);
+            totalPages = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
+            listSanPham = sanPhamMapper.searchSanPhamFulltext(
+                    _search, _minPrice, _maxPrice, _order, offset, _rowsPerPage);
+        }
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("sanphams", listSanPham);
+        jsonRes.put("totalPages", totalPages);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
     // Chi tiết sản phẩm
@@ -198,146 +197,32 @@ public class SanPhamAction extends ActionSupport {
         sanPham.put("anhSanPhams", listAnhSanPham);
 
         jsonRes.put("sanpham", sanPham);
-        System.out.println(sanPham);
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    /* ========================= */
-    /* Các action cho khách hàng */
-    /* ========================= */
-    // action lấy danh sách sản phẩm
-    @Action(value = "/api/v1/user/sanpham", results = {
+    // sản phẩm mới nhất
+    @Action(value = "/api/v1/sanpham/new", results = {
             @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef("khachHangStack")
     })
-    public String getSanPhamByMaKH() throws IOException {
-        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+    public String getNewSanPhams() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getAllSanPhamByMaKH(maKhachHang);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getNewestProducts();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sanphams", listSanPham);
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
-    // action lấy chi tiết sản phẩm
-    @Action(value = "/api/v1/user/sanpham/{maSanPham}", results = {
+    // ai đặt mua sản phẩm này cũng đặt
+    @Action(value = "/api/v1/sanpham/suggestion", results = {
             @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef("khachHangStack")
     })
-    public String getChiTietSanPhamByMaKH() throws IOException {
-        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+    public String getBuyers() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        Map<String, Object> sanPham = sanPhamMapper.getSanPhamByMaKHAndMaSP(maKhachHang, maSanPham);
-        if (sanPham.isEmpty()) {
-            return CustomError.createCustomError("Không tìm thấy sản phẩm", 404, response);
-        }
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getPeopleWhoBoughtThisAlsoBought(maSanPham);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
-        jsonRes.put("sanpham", sanPham);
-        jsonRes.put("status", 200);
-        System.out.println(jsonRes);
+        jsonRes.put("sanPhams", listSanPham);
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
-
-    // action thêm sản phẩm
-    @Action(value = "/api/v1/user/sanpham/create", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef("khachHangStack")
-    })
-    public String createSanPham() throws IOException {
-        if (!isValid()) {
-            return CustomError.createCustomError("Dữ liệu không hợp lệ", 400, response);
-        }
-        if (anhSanPhams.size() > 5) {
-            return CustomError.createCustomError("Số lượng ảnh không được vượt quá 5", 400, response);
-        }
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        AnhSanPhamMapper anhSanPhamMapper = sqlSession.getMapper(AnhSanPhamMapper.class);
-        int maKhachHang = (int) session.getAttribute("maNguoiDung");
-
-        // kiểm tra xem tên sản phẩm có bị trùng không
-        // chỉ kiểm tra sản phẩm mà khách hàng sở hữu
-        if (sanPhamMapper.countSanPhamByMaKHAndTenSP(maKhachHang, tenSanPham) > 0) {
-            return CustomError.createCustomError("Tên sản phẩm đã tồn tại", 409, response);
-        }
-
-        String filePath = session.getServletContext().getRealPath("/") + "images\\product\\";
-        String LocalPath = ProjectPath.getPath() + "\\images\\product\\";
-
-        SanPham sanPham = new SanPham(tenSanPham, maKhachHang, moTa, gia, 0, maLoaiSanPham, soLuong, 0);
-        try {
-            sanPhamMapper.insertSanPham(sanPham);
-            sqlSession.commit();
-            // khi thêm sản phẩm thành công thì mới bắt đầu thêm ảnh
-            String insertedId = sanPhamMapper.getIdSanPhamByMaKHAndTenSP(maKhachHang, tenSanPham);
-            for (int i = 0; i < anhSanPhams.size(); i++) {
-                String fileNameNew = System.currentTimeMillis() + "_" + anhSanPhamsFileName.get(i);
-                File fileTmp = new File(filePath + fileNameNew); // file ảnh được lưu tạm
-                File fileNew = new File(LocalPath + fileNameNew); // file ảnh lưu vào thư mục project
-                FileUtils.copyFile(anhSanPhams.get(i), fileTmp);
-                FileUtils.copyFile(anhSanPhams.get(i), fileNew);
-                AnhSanPham anhSanPham = new AnhSanPham(insertedId, fileNameNew);
-                anhSanPhamMapper.insertAnhSanPham(anhSanPham);
-            }
-            sqlSession.commit();
-        } catch (PersistenceException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            sqlSession.close();
-        }
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("message", "Thêm sản phẩm thành công");
-        return JsonResponse.createJsonResponse(map, 201, response);
-    }
-
-    /**
-     * Dành cho nhân viên stack
-     * 
-     * 
-     */
-
-    @Action(value = "/api/v1/sanpham/getbystatus/{status}", results = {
-            @Result(name = "success", location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "nhanVienStack"),
-    })
-    public String getAllSanPhamsChuaDuyet() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getSP_ByStatus(status);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sanphams", listSanPham);
-        return JsonResponse.createJsonResponse(map, 200, response);
-    }
-
-    @Action(value = "/api/v1/sanpham/changestatus", results = {
-            @Result(name = "success", location = "/index.html")
-    }, interceptorRefs = {
-            @InterceptorRef(value = "nhanVienStack"),
-    })
-    public String changeStatusSP() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
-
-        if (status >= -1 && status <= 2) {
-            int changeStatusSP = sanPhamMapper.updateSP_Status(status, maSanPham);
-            if (changeStatusSP == 1) {
-                sqlSession.commit();
-                sqlSession.close();
-                return CustomError.createCustomError("Cập nhật trạng thái sản phẩm thành công", 201, response);
-            }
-            sqlSession.close();
-            return CustomError.createCustomError("Mã sản phẩm không hợp lệ", 401, response);
-        }
-        // Map<String, Object> map = new HashMap<String, Object>();
-        // map.put("sanphams", listSanPham);
-        sqlSession.close();
-        return CustomError.createCustomError("Trạng thái sản phẩm không hợp lệ", 401, response);
-    }
-
 }

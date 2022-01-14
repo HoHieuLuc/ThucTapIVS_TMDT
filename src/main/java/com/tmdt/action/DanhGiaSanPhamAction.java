@@ -31,6 +31,10 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     private String noiDung;
     private int soSao;
     private int maDanhGia;
+    private int page;
+    private int rowsPerPage;
+    private String orderBy;
+    private String order;
 
     // region Getter and Setter
     public int getMaDanhGia() {
@@ -64,6 +68,61 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     public void setMaSanPham(String maSanPham) {
         this.maSanPham = maSanPham;
     }
+
+    public int getPage() {
+        if (page < 1) {
+            page = 1;
+        }
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getRowsPerPage() {
+        switch (rowsPerPage) {
+            case 5:
+            case 10:
+            case 20:
+            case 30:
+                return rowsPerPage;
+            default:
+                return 5;
+        }
+    }
+
+    public void setRowsPerPage(int rowsPerPage) {
+        this.rowsPerPage = rowsPerPage;
+    }
+
+    public String getOrderBy() {
+        if (orderBy == null) {
+            return "dgsp.ngay_tao";
+        }
+        if (orderBy.equals("rating")) {
+            return "dgsp.so_sao";
+        }
+        return "dgsp.ngay_tao";
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getOrder() {
+        if (order == null) {
+            return "desc";
+        }
+        if (order.equals("asc")) {
+            return "asc";
+        }
+        return "desc";
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
     // endregion
 
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -80,32 +139,93 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     public String getDanhGiaSP() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
-        // danh sách đánh giá
+
         List<Map<String, Object>> danhSachDanhGia = new LinkedList<Map<String, Object>>();
-        // đánh giá của khách hàng hiện tại
-        Map<String, Object> danhGiaCuaKhachHang = new HashMap<String, Object>();
-
         Map<String, Object> jsonRes = new HashMap<String, Object>();
+        // cái username này dùng để loại bỏ đánh giá của người dùng ra khi chuyển sang
+        // trang 2
+        // bỏ đánh giá ra bằng cách đưa lên đầu danh sách
+        // khi chưa đăng nhập, username trống, không loại bỏ ai hết
+        // nếu là nhân viên thì có đánh giá được đâu, nên bỏ ra cũng không sao
+        // nếu là khách hàng, thì trang 1 sẽ ưu tiên hiển thị đánh giá đó lên đầu
+        // trang 2 trở đi sẽ loại bỏ cái đánh giá đó ra
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            username = "";
+        }
 
-        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        int _page = getPage();
+        int _rowsPerPage = getRowsPerPage();
+        String _orderBy = getOrderBy();
+        String _order = getOrder();
+
+        int countDanhGiaSanPham = danhGiaSanPhamMapper.countAllDanhGiaSanPham(maSanPham);
+        int offset = (_page - 1) * _rowsPerPage;
+        int totalPages = (int) Math.ceil(countDanhGiaSanPham / (double) _rowsPerPage);
+
+        //Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
         // level xài Integer thay vì int vì int nó ko nhận null
         // nên là nếu chưa đăng nhập thì tới đoạn này nó crash luôn
         Integer level = (Integer) session.getAttribute("level");
         // khi chưa đăng nhập hoặc không phải là khách hàng thì lấy hết tất cả đánh giá
-        if (loggedIn == null || !loggedIn || level > 0) {
-            danhSachDanhGia = danhGiaSanPhamMapper.getAllDanhGiaSanPham(maSanPham);
+        // if (loggedIn == null || !loggedIn || level > 0 || page > 1) {
+        danhSachDanhGia = danhGiaSanPhamMapper.getAllDanhGiaSanPham(maSanPham, offset,
+                _rowsPerPage, username, _orderBy, _order);
+        if (!danhSachDanhGia.isEmpty() && ((String) danhSachDanhGia.get(0).get("username")).equals(username)) {
+            jsonRes.put("daDanhGia", true);
         } else {
-            int maKhachHang = (int) session.getAttribute("maNguoiDung");
-            danhGiaCuaKhachHang = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang, maSanPham);
-            danhSachDanhGia = danhGiaSanPhamMapper.getAllDanhGiaSanPhamExceptOwn(maSanPham, maKhachHang);
+            if (level != null && level > 0) {
+                jsonRes.put("daDanhGia", false);
+            } else {
+                Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
+                if (maKhachHang == null) {
+                    maKhachHang = -1;
+                }
+                int daDanhGia = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang, maSanPham);
+                jsonRes.put("daDanhGia", daDanhGia == 1);
+            }
         }
-        // nếu tìm thấy đánh giá của khách thì trả về thêm đánh giá đó
-        // như vậy không cần cái api kia nữa, mặc dù code bên js nhìn khá rác
-        if (danhGiaCuaKhachHang != null && !danhGiaCuaKhachHang.isEmpty()) {
-            jsonRes.put("danhGiaCuaBan", danhGiaCuaKhachHang);
-        }
-
+        /*
+         * } else {
+         * int maKhachHang = (int) session.getAttribute("maNguoiDung");
+         * danhSachDanhGia =
+         * danhGiaSanPhamMapper.getAllDanhGiaSanPhamOrderByCurrentUser(maSanPham,
+         * maKhachHang,
+         * _rowsPerPage);
+         * if (!danhSachDanhGia.isEmpty() && (int)
+         * danhSachDanhGia.get(0).get("ma_khach_hang") == maKhachHang) {
+         * jsonRes.put("daDanhGia", true);
+         * } else {
+         * jsonRes.put("daDanhGia", false);
+         * }
+         * }
+         */
         jsonRes.put("danhGiaSPs", danhSachDanhGia);
+        jsonRes.put("totalPages", totalPages);
+        sqlSession.close();
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // get action có thể có của người dùng đối với 1 đánh giá
+    @Action(value = "/api/v1/danhgia/sanpham/{maDanhGia}/action", results = {
+            @Result(name = SUCCESS, location = "/index.html"),
+    })
+    public String getActionDanhGiaSP() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        Integer level = (Integer) session.getAttribute("level");
+        boolean yours = false;
+        // nếu là đánh giá của chính mình thì sẽ hiện được nút sửa ở front end
+        if (loggedIn != null && loggedIn && level == 0) {
+            int maKhachHang = (int) session.getAttribute("maNguoiDung");
+            if (danhGiaSanPhamMapper.laDanhGiaCuaKhachHang(maDanhGia, maKhachHang) == 1) {
+                yours = true;
+            }
+        }
+        jsonRes.put("yours", yours);
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
@@ -117,7 +237,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
 
     // Kiểm tra hợp lệ các trường nhập liệu
     public boolean isValid() {
-        return between(noiDung, 2, 1000) && soSao >= 1 && soSao <= 5;
+        return noiDung != null && between(noiDung, 2, 1000) && soSao >= 1 && soSao <= 5;
     }
 
     @Action(value = "/api/v1/danhgia/sanpham/submit", results = {
@@ -136,10 +256,9 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         int maKhachHang = (int) session.getAttribute("maNguoiDung");
 
         Map<String, Object> jsonObject = new HashMap<String, Object>();
-        Map<String, Object> danhGiaSanPham = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang,
+        int danhGiaSanPham = danhGiaSanPhamMapper.getDanhGiaSanPhamByMaKHandMaSP(maKhachHang,
                 maSanPham);
-        if (danhGiaSanPham == null) {
-            System.out.println("insert");
+        if (danhGiaSanPham == 0) {
             DanhGiaSanPham dgsp = new DanhGiaSanPham(maSanPham, maKhachHang, noiDung, soSao);
             // Ngăn không cho khách hàng tự đánh giá sản phẩm chính mình
             if (maKhachHang == danhGiaSanPhamMapper.getMaKHFromMaSP(maSanPham)) {
@@ -153,7 +272,6 @@ public class DanhGiaSanPhamAction extends ActionSupport {
             return JsonResponse.createJsonResponse(jsonObject, 200, response);
 
         } else {
-            System.out.println("update");
             danhGiaSanPhamMapper.updateDanhGiaSp(maSanPham, maKhachHang, noiDung, soSao);
             sqlSession.commit();
             sqlSession.close();
@@ -162,4 +280,25 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         }
     }
 
+    // xóa đánh giá sản phẩm
+    @Action(value = "/api/v1/danhgia/sanpham/delete", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    }, interceptorRefs = {
+            @InterceptorRef(value = "khachHangStack"),
+    })
+    public String deleteDanhGiaSP() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DanhGiaSanPhamMapper danhGiaSanPhamMapper = sqlSession.getMapper(DanhGiaSanPhamMapper.class);
+        Map<String, Object> jsonObject = new HashMap<String, Object>();
+        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+        int numb = danhGiaSanPhamMapper.xoaDanhGiaSanPham(maDanhGia, maKhachHang);
+        sqlSession.commit();
+        sqlSession.close();
+        if (numb == 0) {
+            jsonObject.put("message", "Bạn không có quyền xóa đánh giá này");
+            return JsonResponse.createJsonResponse(jsonObject, 403, response);
+        }
+        jsonObject.put("message", "Xóa đánh giá thành công");
+        return JsonResponse.createJsonResponse(jsonObject, 200, response);
+    }
 }

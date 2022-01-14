@@ -4,7 +4,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class JBCryptTest {
     public static void main(String[] args) throws Exception {
-        String password = "thien-luc";
+        String password = "1111";
         String hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
         System.out.println("BCrypt hash: " + hash);
 

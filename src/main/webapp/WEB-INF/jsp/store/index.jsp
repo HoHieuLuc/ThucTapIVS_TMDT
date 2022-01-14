@@ -4,23 +4,22 @@ prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 <style>
   .store-product-img {
-    object-fit: cover;
-    height: 10rem;
-    width: 100%;
+    width: 13em;
+    height: 13em;
+    object-fit: contain;
   }
   .store-product-img-link:hover {
     border: solid 1px gray;
   }
   #avatar {
-    width: 15rem;
-    height: 15rem;
+    object-fit: scale-down;
   }
 </style>
 <div class="container">
   <div class="row mb-5 bg-light rounded">
-    <div class="col-md-3">
-      <div>
-        <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" alt="avatar" id="avatar" class="d-block img-fluid border border-3 border-white rounded-circle"/>
+    <div class="col-md-3 d-flex">
+      <div class="mx-auto my-auto">
+        <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" alt="avatar" id="avatar" class="img-fluid border border-3 border-white rounded-circle"/>
       </div>
     </div>
     <div class="col-md-9">
@@ -46,55 +45,16 @@ prefix="c" %>
           <p>Đánh giá: <span id="rating"></span></p>
           <c:choose>
             <c:when test="${sessionScope.level == 0}">
-              <!-- Nút đánh giá, hiện modal -->
-              <button type="button" class="btn btn-success" data-bs-toggle="modal"data-bs-target="#staticBackdrop">
-                Đánh giá
-              </button>
-              <!-- Modal, hiện form đánh giá -->
-              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <form id="formDanhGiaKhachHang" class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="staticBackdropLabel">
-                        Chọn mức đánh giá
-                      </h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="form-floating mb-1">
-                        <textarea class="form-control" id="floatingNoiDung" style="height: 100px;" name="noiDung"></textarea>
-                        <label for="floatingNoiDung">Nội dung</label>
-                      </div>
-                      <select class="form-select" size="5" aria-label="size 3" name="soSao">
-                        <option value="1">1. Không tốt</option>
-                        <option value="2">2. Tốt Vừa</option>
-                        <option value="3" selected>3. Tốt</option>
-                        <option value="4">4. Rất Tốt</option>
-                        <option value="5">5. Xuất sắc</option>
-                      </select>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary"data-bs-dismiss="modal">
-                        Thoát
-                      </button>
-                      <input type="submit" class="btn btn-primary" value="Xác nhận">
-                    </div>
-                  </form>
-                </div>
+              <!-- Báo cáo người dùng -->
+              <button type="button" id="baoCaoButton" class="btn btn-danger">Báo Cáo</button>
+              <div class="mb-3"></div>
+              <div class="mb-3 d-none" id="formBaoCao">
+                <label class="form-label">Nội dung báo cáo</label>
+                <textarea class="form-control" rows="3" id="noiDungBaoCao"></textarea>
+                <button type="submit" class="btn btn-primary">Gửi</button>
+                <button class="btn btn-primary ms-2">Đóng</button>
               </div>
            </c:when>
-            <c:when test="${sessionScope.level > 0}">
-              Bạn không phải là khách hàng
-            </c:when>
-            <c:otherwise>
-              Bạn phải <a id="loginDanhGia" href='<c:url value="/login"/>'>Đăng nhập</a> thì mới
-              được đánh giá cửa hàng
-            </c:otherwise>
           </c:choose>
         </div>
         <div class="col-md-4">
@@ -106,30 +66,32 @@ prefix="c" %>
   </div>
 
   <div class="row mt-5">
-    <div class="col-md-3">bộ lọc</div>
-    <div class="col-md-9">
+    <div class="d-lg-block d-md-none col-lg-3">
+      <div class="text-center fs-5">Bộ lọc</div>
+      <form class="form-group">
+        <p>Giá</p>
+        <div class="d-flex">
+          <input type="number" class="form-control" id="minPrice" placeholder="Từ" />
+          <input type="number" class="form-control" id="maxPrice" placeholder="Đến" />
+          <button type="button" class="btn btn-outline-secondary">
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-12 col-lg-9">
       <form class="searchForm input-group mb-3">
-        <input
-          id="search"
-          type="text"
-          class="form-control w-50"
-          placeholder="Tìm 1 mặt hàng"
-        />
-        <select id="orderBy" class="form-select">
+        <input name="search" id="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
+        <select name="orderBy" class="form-select">
           <option value="date">Ngày đăng</option>
           <option value="price">Giá</option>
           <option value="rating">Xếp hạng</option>
         </select>
-        <select id="order" class="form-select">
+        <select name="order" class="form-select">
           <option value="desc">Giảm dần</option>
           <option value="asc">Tăng dần</option>
         </select>
-        <input
-          type="submit"
-          class="btn btn-outline-secondary"
-          type="button"
-          value="Tìm kiếm"
-        />
+        <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
       </form>
       <div class="mb-2">
         Số mặt hàng mỗi trang:
@@ -149,7 +111,6 @@ prefix="c" %>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src='<c:url value="/js/function.js"/>'></script>
 <script src='<c:url value="/js/store/store.js"/>'></script>
 
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />

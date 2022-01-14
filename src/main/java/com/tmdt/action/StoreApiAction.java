@@ -22,6 +22,10 @@ import org.apache.struts2.convention.annotation.*;
 import mybatis.mapper.KhachHangMapper;
 import mybatis.mapper.SanPhamMapper;
 
+@Result(name = "input", location = "/index", type = "redirectAction", params = {
+    "namespace", "/",
+    "actionName", "bad-request"
+})
 public class StoreApiAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
     private String username;
@@ -30,6 +34,9 @@ public class StoreApiAction extends ActionSupport {
     private String order;
     private int page;
     private int rowsPerPage;
+    private String maSanPham;
+    private int maLoaiSanPham;
+    private Integer maLoaiCha;
 
     // region Getter and Setter
     public String getUsername() {
@@ -49,6 +56,9 @@ public class StoreApiAction extends ActionSupport {
     }
 
     public String getOrderBy() {
+        if (orderBy == null) {
+            return "ngay_dang";
+        }
         switch (orderBy) {
             case "price":
                 return "gia";
@@ -64,10 +74,13 @@ public class StoreApiAction extends ActionSupport {
     }
 
     public String getOrder() {
-        if (order.equals("asc")) {
-            return "ASC";
+        if (order == null) {
+            return "desc";
         }
-        return "DESC";
+        if (order.equals("asc")) {
+            return "asc";
+        }
+        return "desc";
     }
 
     public void setOrder(String order) {
@@ -101,6 +114,33 @@ public class StoreApiAction extends ActionSupport {
 
     public void setRowsPerPage(int rowsPerPage) {
         this.rowsPerPage = rowsPerPage;
+    }
+
+    public String getMaSanPham() {
+        return maSanPham;
+    }
+
+    public void setMaSanPham(String maSanPham) {
+        this.maSanPham = maSanPham;
+    }
+
+    public int getMaLoaiSanPham() {
+        return maLoaiSanPham;
+    }
+
+    public void setMaLoaiSanPham(int maLoaiSanPham) {
+        this.maLoaiSanPham = maLoaiSanPham;
+    }
+
+    public Integer getMaLoaiCha() {
+        if (maLoaiCha == null){
+            return 0;
+        }
+        return maLoaiCha;
+    }
+
+    public void setMaLoaiCha(Integer maLoaiCha) {
+        this.maLoaiCha = maLoaiCha;
     }
     // endregion
 
@@ -145,19 +185,17 @@ public class StoreApiAction extends ActionSupport {
         String _search = getSearch();
         String _orderBy = getOrderBy();
         String _order = getOrder();
-        System.out.println(_orderBy + " " + _order);
 
         int countSanPham = sanPhamMapper.countSanPhamByUsername(username, _search);
 
         int offset = (_page - 1) * _rowsPerPage;
-        int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
-        System.out.println("offset: " + offset);
+        int totalPages = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
 
         List<Map<String, Object>> storeProducts = sanPhamMapper.getSanPhamByUsername(username, _search, _orderBy,
                 _order, offset, _rowsPerPage);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("products", storeProducts);
-        jsonRes.put("total_page", totalPage);
+        jsonRes.put("totalPages", totalPages);
 
         sqlSession.close();
 
@@ -179,4 +217,32 @@ public class StoreApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    // api lấy top store
+    @Action(value = "/api/v1/store/top", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getTopStore() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        KhachHangMapper khachHangMapper = sqlSession.getMapper(KhachHangMapper.class);
+        List<Map<String, Object>> listStore = khachHangMapper.getTopStore();
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        jsonRes.put("topStores", listStore);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
+    // api lấy sản phẩm cùng store để gợi ý cho người dùng
+    @Action(value = "/api/v1/store/{username}/products/suggestion", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String getSameStoreProducts() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        Integer _maLoaiCha = getMaLoaiCha();
+        List<Map<String, Object>> sanPhamGoiYCungStore = sanPhamMapper.getSanPhamGoiYCungStore(
+            username, maSanPham, maLoaiSanPham, _maLoaiCha);
+        sqlSession.close();
+        jsonRes.put("products", sanPhamGoiYCungStore);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
 }

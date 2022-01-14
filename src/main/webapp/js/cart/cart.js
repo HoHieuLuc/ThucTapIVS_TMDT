@@ -1,10 +1,18 @@
-const gioHangDOM = document.getElementById('gioHangList');
+const gioHangDOM = document.querySelector('#gioHangList');
+const tongSoSanPhamDOM = document.querySelector('#tongSoSanPham');
+const tongTienDOM = document.querySelector('#tongTien');
+const mainGioHangDOM = document.querySelector('.mainGioHang');
 
 const showGioHang = async () => {
     try {
         const { data: { gio_hangs } } = await axios.get(`${baseURL}api/v1/giohang`);
         if (gio_hangs.length === 0) {
-            gioHangDOM.innerHTML = '<p>Giỏ hàng trống</p>';
+            mainGioHangDOM.innerHTML = `
+                <div class="text-center">
+                    <h3>Giỏ hàng trống</h3>
+                    <a href="${baseURL}" class="btn btn-primary">Tiếp tục mua hàng</a>
+                </div>
+            `;
             return;
         }
         const allGioHangs = gio_hangs.map((gio_hang) => {
@@ -17,7 +25,7 @@ const showGioHang = async () => {
                 });
                 return `
                     <hr>
-                    <div class="row mb-3 position-relative">
+                    <div class="row mb-3 position-relative cart-div">
                         <div class="col-3">
                             <img class="img-fluid" style="object-fit: contain; width: 100%; height: 12rem;" src="${baseURL}images/product/${anh}" alt="${ten_san_pham}">
                         </div>
@@ -70,18 +78,66 @@ const showGioHang = async () => {
                 <div class="container border border-1 mb-2">
                     <div class="my-3 d-flex justify-content-between">
                         <h5>Người bán <a href="${baseURL}store/${username}" class="text-dark">${ten}</a></h5>
-                        <button 
-                            data-username=${username} 
-                            class="only-pay-this-seller-btn text-nowrap btn btn-link"
+                        <a
+                            href="${baseURL}dathang?seller=${username}"
+                            class="text-nowrap btn btn-link"
                         >
                             Chỉ đặt mua của người bán này
-                        </button>
+                        </a>
                     </div>
             ` + sanPhamsHTML;
         }).join('');
         gioHangDOM.innerHTML = allGioHangs;
+        getTongTienVaSoLuong();
     } catch (error) {
         console.log(error);
     }
 }
 showGioHang();
+
+const getTongTienVaSoLuong = async () => {
+    try {
+        const { data: { gioHang } } = await axios.get(`${baseURL}api/v1/giohang/sum`);
+        const { so_luong, tong_tien } = gioHang;
+        tongSoSanPhamDOM.textContent = so_luong
+        tongTienDOM.textContent = tong_tien.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+gioHangDOM.addEventListener('focusout', async (event) => {
+    const eventTarget = event.target;
+    if (eventTarget.classList.contains('so-luong-cart-input')) {
+        const cartDivDOM = eventTarget.closest('.cart-div');
+        const tangGioHangDOM = cartDivDOM.querySelector('.tang-gio-hang');
+        const giamGioHangDOM = cartDivDOM.querySelector('.giam-gio-hang');
+        const tongTienThisCartDOM = cartDivDOM.querySelector('.tong-tien-cart');
+
+        tangGioHangDOM.disabled = true;
+        giamGioHangDOM.disabled = true;
+        eventTarget.disabled = true;
+
+        const soluong = parseInt(eventTarget.value);
+        const { masanpham, dongia } = eventTarget.dataset;
+        const formData = new FormData();
+
+        formData.append('maSanPham', masanpham);
+        formData.append('soLuong', soluong);
+
+        eventTarget.value = await updateCart(formData);
+        const tongTien = parseInt(eventTarget.value) * parseInt(dongia);
+        tongTienThisCartDOM.innerText = tongTien.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        });
+        await getTongTienVaSoLuong();
+
+        tangGioHangDOM.disabled = false;
+        giamGioHangDOM.disabled = false;
+        eventTarget.disabled = false;
+    }
+});
