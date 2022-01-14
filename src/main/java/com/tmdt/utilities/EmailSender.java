@@ -3,11 +3,14 @@ import java.util.Properties;
  
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class EmailSender {
       /*
@@ -23,6 +26,8 @@ public class EmailSender {
     public static final String APP_EMAIL = "minhthienmap2020@gmail.com"; // Địa chỉ email của hệ thống 
  
     public static final String APP_PASSWORD = "MinhThien2000"; // Mật khẩu mail
+
+    public static final String HTML_CODE = "<h3 style='color:green'>Stylist Mail</h3>";
  
     //Ẩn đi để thành hàm
     //public static final String  = "minhthienmap@gmail.com"; // Địa chỉ email người dùng
@@ -46,9 +51,30 @@ public class EmailSender {
  
         //TODO: Chỗ này soạn email, cái set text nếu được tui sẽ kiếm code html bỏ vô cho đẹp (MimeBodyPart)
         try {
+            /** 
+             * Chỗ này cấu hình nội dung mail định dạng HTML
+             * **/
             MimeMessage message = new MimeMessage(session);
+            Multipart multipart = new MimeMultipart("alternative");
+            // Text part là nội dung đơn thuần
+            MimeBodyPart textPart = new MimeBodyPart();
+            textPart.setText(CONTENT,"utf-8");
+
+            // Htmlpart là phần code html
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            htmlPart.setContent(HTML_CODE,"text/html; charset=UTF-8");
+
+            //Thứ tự chèn, code html trên và nội dung phía dưới, tương lai sẽ lồng  nội dung trong div html
+            multipart.addBodyPart(htmlPart);
+            multipart.addBodyPart(textPart);
+
+            //Đọc email nhận
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(RECEIVE_EMAIL));
+            //Tiêu đề
             message.setSubject(SUBJECT);
+            // Nội dùng kèm code HTML
+            message.setContent(multipart);
+            // Nội dung text đơn thuần
             message.setText(CONTENT);
  
             // Gửi email
