@@ -12,8 +12,8 @@ const init = () => {
     if (order === null) {
         boLocFormDOM.querySelector('input[name="order"]').checked = false;
     }
-    const allRadio = boLocFormDOM.querySelectorAll('input[name="order"]');
-    allRadio.forEach((radio) => {
+    const allRadios = boLocFormDOM.querySelectorAll('input[name="order"]');
+    allRadios.forEach((radio) => {
         if (radio.value === order) {
             radio.checked = true;
         }
