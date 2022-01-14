@@ -77,7 +77,7 @@ public class LoginAction extends ActionSupport {
             // Kiểm tra mật khẩu
             if (BCrypt.checkpw(password, account.getPassword())) {
                 // Kiểm tra số lần cảnh cáo
-                if (account.getSoLanCanhCao() == 3) {
+                if (account.getSoLanCanhCao() >= 3) {
                     sqlSession.close();
                     return CustomError.createCustomError("Tài khoản bị khóa vì bị cảnh cáo 3 lần", 403, response);
                 }
