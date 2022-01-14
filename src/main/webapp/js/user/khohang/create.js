@@ -40,8 +40,11 @@ const themSanPham = async () => {
     const formData = new FormData(formDOM);
     formData.set('maLoaiSanPham', formData.getAll('maLoaiSanPham').at(-1));
     try {
-        await axios.post(`${baseURL}api/v1/user/sanpham/them`, formData);
-        alert('Thêm sản phẩm thành công');
+        const { data: { message } } = await axios.post(`${baseURL}api/v1/user/sanpham/them`, formData);
+        thongBao('Thêm sản phẩm thành công, bạn sẽ được chuyển hướng ngay');
+        setInterval(() => {
+            window.location.href = `${baseURL}user/sanpham/${message}`;
+        }, 2000);
     } catch (error) {
         console.log(error);
         thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);

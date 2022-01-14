@@ -66,20 +66,7 @@ prefix="c" %>
   </div>
 
   <div class="row mt-5">
-    <div class="d-lg-block d-md-none col-lg-3">
-      <div class="text-center fs-5">Bộ lọc</div>
-      <form class="form-group">
-        <p>Giá</p>
-        <div class="d-flex">
-          <input type="number" class="form-control" id="minPrice" placeholder="Từ" />
-          <input type="number" class="form-control" id="maxPrice" placeholder="Đến" />
-          <button type="button" class="btn btn-outline-secondary">
-            <i class="fas fa-angle-double-right"></i>
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="col-md-12 col-lg-9">
+    <div class="col-md-12 col-lg-12 col-xl-12">
       <form class="searchForm input-group mb-3">
         <input name="search" id="search" type="text" class="form-control w-50" placeholder="Tìm 1 mặt hàng">
         <select name="orderBy" class="form-select">

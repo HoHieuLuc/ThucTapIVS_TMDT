@@ -233,6 +233,7 @@ public class UserApiAction extends ActionSupport {
     // validate toàn bộ input
     public boolean isValid() {
         return tenSanPham != null && tenSanPham.length() > 0 &&
+                tenSanPham.length() <= 255 &&
                 moTa != null && moTa.length() > 0 &&
                 gia > 0 && soLuong > 0 &&
                 validateAnhSanPham();
@@ -325,11 +326,12 @@ public class UserApiAction extends ActionSupport {
         String LocalPath = ProjectPath.getPath() + "\\images\\product\\";
 
         SanPham sanPham = new SanPham(tenSanPham, maKhachHang, moTa, gia, 0, maLoaiSanPham, soLuong, 0);
+        String insertedId = "";
         try {
             sanPhamMapper.insertSanPham(sanPham);
             sqlSession.commit();
             // khi thêm sản phẩm thành công thì mới bắt đầu thêm ảnh
-            String insertedId = sanPhamMapper.getIdSanPhamByMaKHAndTenSP(maKhachHang, tenSanPham);
+            insertedId = sanPhamMapper.getIdSanPhamByMaKHAndTenSP(maKhachHang, tenSanPham);
             for (int i = 0; i < anhSanPhams.size(); i++) {
                 String fileNameNew = System.currentTimeMillis() + "_" + anhSanPhamsFileName.get(i);
                 File fileTmp = new File(filePath + fileNameNew); // file ảnh được lưu tạm
@@ -346,7 +348,7 @@ public class UserApiAction extends ActionSupport {
             sqlSession.close();
         }
         Map<String, Object> jsonRes = new HashMap<String, Object>();
-        jsonRes.put("message", "Thêm sản phẩm thành công");
+        jsonRes.put("message", insertedId);
         return JsonResponse.createJsonResponse(jsonRes, 201, response);
     }
 
