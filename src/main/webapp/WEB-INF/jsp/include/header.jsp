@@ -152,7 +152,7 @@
                         <%-- khách hàng --%>
                         <c:otherwise>
                           <li>
-                            <a class="dropdown-item" href='<c:url value="/user/thongbao"/>'>Trang cá nhân</a>
+                            <a class="dropdown-item" href='<c:url value="/user"/>'>Trang cá nhân</a>
                           </li>
                           <li>
                             <a class="dropdown-item" href='<c:url value="/store/${sessionScope.username}"/>'>My store</a>
