@@ -20,7 +20,7 @@
             
           </div>
       </div>
-      <table class="tlt-fixed-table table table-striped table-hover" id="myTable">
+      <table class="tlt-fixed-table table table-striped table-hover" id="myTable" filename="Danh sách kiểm duyệt sản phẩm.xls">
         <thead>
           <tr>
             <th>

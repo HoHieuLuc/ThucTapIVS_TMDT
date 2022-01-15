@@ -35,7 +35,8 @@
             function ResultsToTable() {
                 $("#myTable").table2excel({
                     exclude: ".noExl",
-                    name: "Results"
+                    name: "Results",
+                    filename: $("#myTable").attr("filename")
                 });
             }
         });
