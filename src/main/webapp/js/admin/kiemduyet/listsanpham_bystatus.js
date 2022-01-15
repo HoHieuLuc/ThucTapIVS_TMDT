@@ -70,6 +70,19 @@ const showSanPhams = async () => {
     });
     globalData = sanphams;
     renderData(sanphams, total_page, page);
+    let tinh_trang = "";
+    if (status == -1) {
+        tinh_trang = "Bị xóa";
+    }
+    else if (status == 0) {
+        tinh_trang = "Trong kho";
+    } else if (status == 1) {
+        tinh_trang = "Đang chờ duyệt";
+    } else if (status == 2) {
+        tinh_trang = "Đang bán";
+    } 
+    //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
+    document.getElementsByTagName("table")[0].setAttribute("filename", `Danh sách kiểm duyệt sản phẩm (${tinh_trang})`);
 }
 showSanPhams();
 
