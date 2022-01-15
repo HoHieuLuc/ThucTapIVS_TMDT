@@ -12,13 +12,13 @@
             <option value="2">Đang bán</option>
           </select>
           <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
-          <div class="row">
-            <div class="col-md-2">
-              <a class="btn btn-default" id="export-btn">Xuất Excel</a>
-            </div>
-            <div class="col-md-10"></div>
-          </div>
         </form>
+        <div class="row mb-3">
+            <div class="col-md-2">
+              <a class="btn btn-primary" id="export-btn">Xuất Excel</a>
+            </div>
+            
+          </div>
       </div>
       <table class="tlt-fixed-table table table-striped table-hover" id="myTable">
         <thead>
