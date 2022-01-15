@@ -5,7 +5,7 @@
 <div>
     <form class="searchForm input-group mb-3">
       <input name="search" type="text" class="form-control w-50" placeholder="Tìm kiếm">
-      <select id="listBaoCaoByStatus" name="status" class="form-select">
+      <select name="status" class="form-select">
         <option value="-2">Vi phạm nặng nhất</option>
         <option value="-1">Cảnh cáo</option>
         <option value="0" selected>Chưa duyệt</option>
