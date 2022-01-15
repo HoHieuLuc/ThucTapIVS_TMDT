@@ -39,7 +39,7 @@ const renderData = (datas, totalPage, currentPage) => {
                 <td>${ngay_dang}</td>
                 <td>${ten}</td>
                 <td>${ten_loai_sp}</td>
-                <td>
+                <td class="noExport">
                     <div class="d-flex justify-content-evenly">
                          <a href="${baseURL}admin/sanpham/${ma_san_pham}" class="">Chi tiết</a>
                     </div>
@@ -76,3 +76,5 @@ searchFormDOM.addEventListener('submit', (event) => {
     changeURLparam("search", formData.get("search"));
     showSanPhams();
 });
+
+

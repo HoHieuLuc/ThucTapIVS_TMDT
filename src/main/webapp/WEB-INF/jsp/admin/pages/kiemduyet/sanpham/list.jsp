@@ -14,6 +14,7 @@
       <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
     </form>
   </div>
+<button id="export">Export</button>
   <table class="tlt-fixed-table table table-striped table-hover">
     <thead>
       <tr>
@@ -23,7 +24,7 @@
         <th>Ngày đăng</th>
         <th>Tên người bán</th>
         <th>Loại</th>
-        <th><div class="text-center">Chức năng</div></th>
+        <th class="noExport"><div class="text-center">Chức năng</div></th>
       </tr>
     </thead>
     <tbody id="listSanPham"></tbody>
@@ -37,4 +38,5 @@
 </script>
 
 <script src='<c:url value="/js/admin/kiemduyet/listsanpham_bystatus.js"/>'></script>
+
 <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />

@@ -22,6 +22,24 @@
 <!-- Script xử lý thông báo -->
 <script src='<c:url value="/js/listThongBao.js"/>'></script>
 <!-- Script vẽ sơ đồ  -->
+<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<!-- Table 2 Excel -->
+
+<!-- Cho nó nằm dưới Jquery -->
+<script>
+    $(document).ready(function() {
+      // if $('#export') {
+
+      // }
+        $('#export').on('click', function(e){
+            $("#table").table2excel({
+                exclude: ".noExport",
+                name: "Data",
+                filename: "Workbook",
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
