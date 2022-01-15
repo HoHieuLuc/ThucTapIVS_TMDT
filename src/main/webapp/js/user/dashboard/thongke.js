@@ -251,7 +251,7 @@ const thongKeDonGian = async () => {
         // Tui đành chuyển hướng họ về trang theo dõi đơn đặt hàng của mình
         // Để người mua khỏi nhìn thấy trang thống kê
         if (thong_ke.length == 0) {
-            window.location.href = `${baseURL}user/thongbao`;
+            window.location.href = `${baseURL}user/buyer/dathang`;
         }
         document.querySelector("#soDonHang").innerHTML = thong_ke.so_don_dat_hang;
         document.querySelector("#soSanPham").innerHTML = thong_ke.so_san_pham;
