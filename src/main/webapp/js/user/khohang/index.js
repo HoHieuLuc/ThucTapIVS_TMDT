@@ -21,10 +21,22 @@ const showSanPhamList = async () => {
                 page,
             }
         });
+        let tinh_trang = "";
+        if (_status === 0) {
+            tinh_trang = "Trong kho";
+        }
+        else if (_status === 1) {
+            tinh_trang = "Đang chờ duyệt";
+        } else if (_status === 2) {
+            tinh_trang = "Đang bán";
+        }
         const allSanPhams = sanphams.map(sanpham => {
             const { ma_san_pham, ten_san_pham, gia, so_luong,
                 ngay_dang, so_luong_da_ban, xep_hang
             } = sanpham;
+           
+            //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
+            document.getElementsByTagName("table")[0].setAttribute("filename",`Danh sách sản phẩm của bạn (${tinh_trang})`);
             const ngayDang = `${ngay_dang.date.day}/${ngay_dang.date.month}/${ngay_dang.date.year}`;
             const giaVND = gia.toLocaleString("vi-VN", {
                 style: "currency",

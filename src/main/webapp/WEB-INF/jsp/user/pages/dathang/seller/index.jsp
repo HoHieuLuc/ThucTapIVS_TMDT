@@ -24,7 +24,7 @@
      </div>
 </div>
 <div class="mb-3">
-    <table class="tlt-fixed-table table table-striped table-hover"  filename="Danh sách đơn hàng bạn được đặt.xls">
+    <table class="tlt-fixed-table table table-striped table-hover">
         <thead>
             <tr>
                 <th>Người đặt</th>
