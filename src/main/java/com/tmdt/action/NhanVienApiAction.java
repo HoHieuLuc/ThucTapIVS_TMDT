@@ -221,8 +221,8 @@ public class NhanVienApiAction {
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
-
-        List<Map<String, Object>> listBaoCao = baoCaoNguoiDungMapper.listBaoCaoByStatus(status);
+        String _search = getSearch();
+        List<Map<String, Object>> listBaoCao = baoCaoNguoiDungMapper.listBaoCaoByStatus(status, _search);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("list_baocaos", listBaoCao);
         sqlSession.close();

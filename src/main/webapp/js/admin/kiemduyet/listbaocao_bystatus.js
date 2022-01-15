@@ -1,21 +1,26 @@
-
-const statusButtonDOM = document.querySelector('#listBaoCaoByStatus');
 const listBaoCaoDOM = document.querySelector('#baocao-list');
+const searchFormDOM = document.querySelector('.searchForm');
+document.title = "Kiểm duyệt báo cáo người dùng";
 
+const init = () => {
+    const newParams = window.location.search;
+    const search = new URLSearchParams(newParams).get("search") ?? "";
+    const status = new URLSearchParams(newParams).get("status") ?? 0;
+    searchFormDOM.querySelector('input[name="search"]').value = search;
+    const allRadios = searchFormDOM.querySelectorAll('input[name="status"]');
+    allRadios.forEach(radio => {
+        if (radio.value === status) {
+            radio.checked = true;
+        }
+    });
+}
 
-
-statusButtonDOM.addEventListener('change', async () => {
-    const status = statusButtonDOM.value;
-    document.title = "Kiểm duyệt báo cáo người dùng";
-    const { data: { list_baocaos } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`);
-    renderData(list_baocaos);
-
-});
+init();
 
 //Render data  api/v1/nhanvien/baocao/{maBaoCao}
 const renderData = (datas) => {
     const allBaoCaos = datas.map(data => {
-        const { unameReceiver, unameSender, ngay_tao,ma_bao_cao } = data;
+        const { unameReceiver, unameSender, ngay_tao, ma_bao_cao } = data;
         return `
             <tr>
                 <td>${unameSender}</td>
@@ -33,9 +38,32 @@ const renderData = (datas) => {
 
 //Show list báo cáo lần đầu tiên
 const showListBaoCao = async () => {
-    const { data: { list_baocaos } } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/0`);
-    renderData(list_baocaos);
-    
+    try {
+        const newParams = window.location.search;
+        const search = new URLSearchParams(newParams).get("search") ?? "";
+        const status = new URLSearchParams(newParams).get("status") ?? 0;
+        const {
+            data: { list_baocaos }
+        } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`, {
+            params: {
+                search
+            }
+        });
+        renderData(list_baocaos);
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 showListBaoCao();
+
+searchFormDOM.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(searchFormDOM);
+    const status = formData.get('status');
+    const search = formData.get('search');
+    changeURLparam('status', status);
+    changeURLparam('search', search);
+    showListBaoCao();
+});
