@@ -51,7 +51,7 @@ const showDatHangList = async () => {
                     <td>${tinh_trang}</td>
                     <td>
                         <div class="d-flex justify-content-evenly">
-                            <a href="${baseURL}user/buyer/dathang/${ma_dat_hang}/${ma_san_pham}" class="">Chi tiết</a>
+                            <a  class="noExl" href="${baseURL}user/buyer/dathang/${ma_dat_hang}/${ma_san_pham}">Chi tiết</a>
                         </div>
                     </td>
                 </tr>`;
