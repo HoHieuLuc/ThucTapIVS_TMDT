@@ -17,16 +17,21 @@
         </select>
         <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
     </form>
+     <div class="row mb-3">
+        <div class="col-md-2">
+             <a class="btn btn-primary" id="export-btn">Xuất Excel</a>
+         </div>
+     </div>
 </div>
 <div class="mb-3">
-    <table class="tlt-fixed-table table table-striped table-hover">
+    <table class="tlt-fixed-table table table-striped table-hover"  filename="Danh sách đơn hàng bạn được đặt.xls">
         <thead>
             <tr>
                 <th>Người đặt</th>
                 <th>Ngày đặt</th>
                 <th>Tổng tiền</th>
                 <th>Tình trạng</th>
-                <th><div class="text-center">Chức năng</div></th>
+                <th><div class="text-center noExl">Chức năng</div></th>
             </tr>
         </thead>
         <tbody id="datHangList"></tbody>
