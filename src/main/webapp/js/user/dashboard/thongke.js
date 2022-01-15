@@ -247,12 +247,6 @@ thongKeTinhTrangDonHangAll();
 const thongKeDonGian = async () => {
     try {
         const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/user/thongke/0`);
-        // Nếu người dùng chưa đăng  sản phẩm nào, hoặc đây chính là người mua hàng
-        // Tui đành chuyển hướng họ về trang theo dõi đơn đặt hàng của mình
-        // Để người mua khỏi nhìn thấy trang thống kê
-        if (thong_ke.length == 0) {
-            window.location.href = `${baseURL}user/buyer/dathang`;
-        }
         document.querySelector("#soDonHang").innerHTML = thong_ke.so_don_dat_hang;
         document.querySelector("#soSanPham").innerHTML = thong_ke.so_san_pham;
         document.querySelector("#soDanhGia").innerHTML = thong_ke.so_danh_gia;
