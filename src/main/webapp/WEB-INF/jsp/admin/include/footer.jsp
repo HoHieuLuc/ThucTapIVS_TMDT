@@ -21,7 +21,26 @@
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 <!-- Script xử lý thông báo -->
 <script src='<c:url value="/js/listThongBao.js"/>'></script>
-<!-- Script vẽ sơ đồ  -->
+<!-- Script Xuất table sang excel -->
+<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<!--Vì jquery load cuối cùng nên cái hàm này cũng để ở cuối luôn,ô yên tâm mấy trang  khác trong admin ko có lỗi -->
+ <script>
+   jQuery(document).ready(function () {
+
+            $('#export-btn').on('click', function (e) {
+                e.preventDefault();
+                ResultsToTable();
+            });
+
+            function ResultsToTable() {
+                $("#myTable").table2excel({
+                    exclude: ".noExl",
+                    name: "Results"
+                });
+            }
+        });
+ </script>
+
 
 </body>
 </html>

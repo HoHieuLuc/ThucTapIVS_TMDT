@@ -42,7 +42,7 @@ const renderData = (datas, totalPage, currentPage) => {
                 <td>${ten_loai_sp}</td>
                 <td>
                     <div class="d-flex justify-content-evenly">
-                         <a href="${baseURL}admin/sanpham/${ma_san_pham}" class="">Chi tiết</a>
+                         <a href="${baseURL}admin/sanpham/${ma_san_pham}"  class="noExl">Chi tiết</a>
                     </div>
                 </td>
             </tr>`;
