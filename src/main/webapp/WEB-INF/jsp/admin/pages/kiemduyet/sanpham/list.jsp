@@ -17,8 +17,18 @@
   <table class="tlt-fixed-table table table-striped table-hover">
     <thead>
       <tr>
-        <th>Tên sản phẩm</th>
-        <th>Giá</th>
+        <th>
+          Tên sản phẩm
+          <button class="sort-btn sort-ten-desc border border-0 bg-transparent">
+            <i class="sort-icon fas fa-angle-up"></i>
+          </button>
+        </th>
+        <th>
+          Giá
+          <button class="sort-btn sort-gia-desc border border-0 bg-transparent">
+            <i class="sort-icon fas fa-angle-up"></i>
+          </button>
+        </th>
         <th>Số lượng</th>
         <th>Ngày đăng</th>
         <th>Tên người bán</th>
