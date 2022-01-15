@@ -37,6 +37,8 @@ const showDatHangList = async () => {
             } else if (status === 2) {
                 tinh_trang = "Đã nhận hàng";
             }
+            //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
+            document.getElementsByTagName("table")[0].setAttribute("filename",`Danh sách đơn hàng bạn được đặt (${tinh_trang})`);
             const giaVND = tong_tien.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
