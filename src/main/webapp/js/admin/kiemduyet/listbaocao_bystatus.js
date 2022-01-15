@@ -28,7 +28,7 @@ const renderData = (datas) => {
                 <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
                 <td>
                     <div class="d-flex justify-content-evenly">
-                        <a href="${baseURL}admin/baocao/${ma_bao_cao}" class="">Chi tiết</a>
+                        <a href="${baseURL}admin/baocao/${ma_bao_cao}" class="noExl">Chi tiết</a>
                     </div>
                 </td>
             </tr>`;

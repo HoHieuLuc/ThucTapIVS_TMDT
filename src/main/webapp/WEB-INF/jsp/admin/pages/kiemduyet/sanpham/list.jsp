@@ -18,7 +18,7 @@
               <a class="btn btn-primary" id="export-btn">Xuất Excel</a>
             </div>
             
-          </div>
+        </div>
       </div>
       <table class="tlt-fixed-table table table-striped table-hover" id="myTable" filename="Danh sách kiểm duyệt sản phẩm.xls">
         <thead>

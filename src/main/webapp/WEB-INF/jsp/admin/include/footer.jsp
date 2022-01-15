@@ -33,10 +33,10 @@
             });
 
             function ResultsToTable() {
-                $("#myTable").table2excel({
+                $("table").table2excel({
                     exclude: ".noExl",
                     name: "Results",
-                    filename: $("#myTable").attr("filename")
+                    filename: $("table").attr("filename")
                 });
             }
         });
