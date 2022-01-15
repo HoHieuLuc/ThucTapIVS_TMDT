@@ -35,6 +35,9 @@ const showDatHangList = async () => {
             } else if (status === 2) {
                 tinh_trang = "Đã giao hàng";
             }
+
+            //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
+            document.getElementsByTagName("table")[0].setAttribute("filename",`Danh sách đơn hàng của bạn (${tinh_trang})`);
             const giaVND = tong_tien.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
@@ -47,7 +50,7 @@ const showDatHangList = async () => {
                     <td>${tinh_trang}</td>
                     <td>
                         <div class="d-flex justify-content-evenly">
-                            <a href="${baseURL}user/seller/dathang/${ma_dat_hang}" class="">Chi tiết</a>
+                            <a class="noExl" href="${baseURL}user/seller/dathang/${ma_dat_hang}">Chi tiết</a>
                         </div>
                     </td>
                 </tr>`;

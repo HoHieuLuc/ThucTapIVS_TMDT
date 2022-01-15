@@ -14,15 +14,20 @@
       </select>
       <input type="submit" class="btn btn-outline-secondary" value="Tìm kiếm">
     </form>
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <a class="btn btn-primary" id="export-btn">Xuất Excel</a>
+        </div>    
+    </div>
   </div>
 
-<table class="tlt-fixed-table table table-striped table-hover" id="listBaoCaoTable">
+<table class="tlt-fixed-table table table-striped table-hover" id="listBaoCaoTable"  filename="Danh sách kiểm duyệt báo cáo.xls">
         <thead>
             <tr>
                 <th>Username người gửi</th>
                 <th>Username người bị báo cáo</th>
                 <th>Ngày tạo</th>
-                <th><div class="text-center">Chức năng</div></th>
+                <th  class="noExl"><div class="text-center">Chức năng</div></th>
             </tr>
         </thead>
         <tbody id="baocao-list">
