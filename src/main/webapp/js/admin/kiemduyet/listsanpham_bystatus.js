@@ -3,6 +3,14 @@ document.title = "Trang phê duyệt sản phẩm "
 
 const searchFormDOM = document.querySelector(".searchForm");
 
+const init = () => {
+    const newParams = window.location.search;
+    const search = new URLSearchParams(newParams).get("search") ?? "";
+    const _status = new URLSearchParams(newParams).get("status") ?? 0;
+    searchFormDOM.querySelector("input[name='search']").value = search;
+    searchFormDOM.querySelector("select[name='status']").value = _status;
+}
+
 //Nút hiển thị sản phẩm mới vô kho,yêu cầu kiểm duyệt,đã duyệt, và bị xóa (hide)
 const listSPByStatusDOM = document.querySelector("#listSPByStatus");
 //Khu vực danh sách sản phẩm thẻ <div>
@@ -82,7 +90,7 @@ const showSanPhams = async () => {
         tinh_trang = "Đang bán";
     } 
     //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
-    document.getElementsByTagName("table")[0].setAttribute("filename", `Danh sách kiểm duyệt sản phẩm (${tinh_trang})`);
+    document.querySelector('.tlt-fixed-table').setAttribute("filename", `Danh sách kiểm duyệt sản phẩm (${tinh_trang})`);
 }
 showSanPhams();
 

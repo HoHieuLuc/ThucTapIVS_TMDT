@@ -17,7 +17,6 @@ const init = () => {
 }
 
 init();
-console.log(status);
 
 //Render data  api/v1/nhanvien/baocao/{maBaoCao}
 const renderData = (datas) => {
@@ -58,7 +57,7 @@ const showListBaoCao = async () => {
             tinh_trang = "Không vi phạm";
         }
         //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
-        document.getElementsByTagName("table")[0].setAttribute("filename", `Danh sách báo cáo (${tinh_trang})`);
+        document.querySelector('.tlt-fixed-talbe').setAttribute("filename", `Danh sách báo cáo (${tinh_trang})`);
         const {
             data: { list_baocaos }
         } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`, {
@@ -70,7 +69,6 @@ const showListBaoCao = async () => {
     } catch (error) {
         console.log(error);
     }
-
 }
 
 showListBaoCao();
