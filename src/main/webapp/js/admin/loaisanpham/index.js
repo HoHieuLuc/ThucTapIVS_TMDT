@@ -27,6 +27,7 @@ const showLoaiSanPham = async () => {
             }
         });
         if (loaiSanPhams.length === 0) {
+            listLoaiSanPhamDOM.innerHTML = `<tr><td colspan="2">Không tìm thấy loại sản phẩm nào</td></tr>`;
             return;
         }
         const allLoaiSanPham = loaiSanPhams.map((loaiSanPham) => {
