@@ -57,7 +57,7 @@ const showListBaoCao = async () => {
             tinh_trang = "Không vi phạm";
         }
         //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
-        document.querySelector('.tlt-fixed-talbe').setAttribute("filename", `Danh sách báo cáo (${tinh_trang})`);
+        document.querySelector('.tlt-fixed-table').setAttribute("filename", `Danh sách báo cáo (${tinh_trang})`);
         const {
             data: { list_baocaos }
         } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`, {
