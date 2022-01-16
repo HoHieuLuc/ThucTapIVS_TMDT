@@ -26,10 +26,6 @@ const showLoaiSanPham = async () => {
                 search
             }
         });
-        if (loaiSanPhams.length === 0) {
-            listLoaiSanPhamDOM.innerHTML = `<tr><td colspan="2">Không tìm thấy loại sản phẩm nào</td></tr>`;
-            return;
-        }
         const allLoaiSanPham = loaiSanPhams.map((loaiSanPham) => {
             const { ma_loai_sp, ten_loai_sp, ma_loai_sp_cha, ten_loai_sp_cha } = loaiSanPham;
             const loaiSPCha = ma_loai_sp_cha
