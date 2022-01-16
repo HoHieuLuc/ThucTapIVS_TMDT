@@ -144,8 +144,6 @@ public class NhanVienApiAction {
         this.thang = thang;
     }
 
-
-
     HttpServletResponse response = ServletActionContext.getResponse();
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
@@ -176,7 +174,8 @@ public class NhanVienApiAction {
         int offset = (_page - 1) * _rowsPerPage;
         int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
 
-        List<Map<String, Object>> listSanPham = sanPhamMapper.getSanPhamByStatus(_status, offset, _rowsPerPage, _search);
+        List<Map<String, Object>> listSanPham = sanPhamMapper.getSanPhamByStatus(_status, offset, _rowsPerPage,
+                _search);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("sanphams", listSanPham);
         jsonRes.put("total_page", totalPage);
@@ -364,35 +363,34 @@ public class NhanVienApiAction {
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
             case 1:
-                List<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHang();
-                jsonRes.put("thong_ke", thongKeTrangThaiDH);
-                sqlSession.close();
-                return JsonResponse.createJsonResponse(jsonRes, 200, response);
-            case 2:
                 // Check null cho 2 giá trị ngày
-                if ( kiemTraNgayThongKe() ){
+                if (kiemTraNgayThongKe()) {
 
                     // Kiểm tra ngày trước phải nhỏ hơn ngày sau
-                    if (tuNgay.compareTo(denNgay) > 0){ //>0 là khoảng thời gian không hợp lệ
+                    if (tuNgay.compareTo(denNgay) > 0) { // >0 là khoảng thời gian không hợp lệ
                         sqlSession.close();
-                        return CustomError.createCustomError("Thời gian không hợp lệ",400,response);
+                        return CustomError.createCustomError("Thời gian không hợp lệ", 400, response);
                     }
                     // Đủ 2 điều kiện,truy vấn dữ liệu
-                     List<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustom(tuNgay, denNgay);
-                     jsonRes.put("thong_ke", thongKeCustom);
-                     sqlSession.close();
-                     return JsonResponse.createJsonResponse(jsonRes, 200, response);
+                    List<Map<String, Object>> thongKeCustom = thongKeMapper
+                            .getDataTrangThaiDatHangCustom(tuNgay, denNgay);
+                    jsonRes.put("thong_ke", thongKeCustom);
+                    sqlSession.close();
+                    return JsonResponse.createJsonResponse(jsonRes, 200, response);
+                } else {
+                    List<Map<String, Object>> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHang();
+                    jsonRes.put("thong_ke", thongKeTrangThaiDH);
+                    sqlSession.close();
+                    return JsonResponse.createJsonResponse(jsonRes, 200, response);
                 }
-                return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
-            case 3: 
+            case 2:
                 List<Map<String, Object>> thongKes = thongKeMapper.top10SPDuocMuaNhieuNhat();
-                jsonRes.put("thong_kes",thongKes);
+                jsonRes.put("thong_kes", thongKes);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
             default:
                 return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
         }
-
 
     }
 
