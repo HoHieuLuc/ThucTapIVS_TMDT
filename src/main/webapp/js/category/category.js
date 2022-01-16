@@ -130,7 +130,12 @@ const renderMainProduct = (sanPhams, currentPage, totalPages) => {
             style: "currency",
             currency: "VND",
         });
-        const xepHang = xep_hang === undefined ? 'Chưa có đánh giá' : `${xep_hang} &#9733;`;
+        let xepHang = '';
+        if (typeof xep_hang === 'number') {
+            xepHang = `${(Math.round(xep_hang * 10) / 10) + " &#9733;"}`;
+        } else {
+            xepHang = `Chưa có đánh giá`;
+        }
         return `
             <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-3 mb-1">
                 <div class="card">
