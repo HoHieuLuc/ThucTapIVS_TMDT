@@ -2,6 +2,14 @@ const searchFormDOM = document.querySelector(".searchForm");
 const listLoaiSanPhamDOM = document.querySelector('#listLoaiSanPham');
 const phanTrangDOM = document.querySelector('#phanTrang');
 
+const init = () => {
+    const newParams = window.location.search;
+    const search = new URLSearchParams(newParams).get("search") ?? "";
+    searchFormDOM.querySelector('input[name="search"]').value = search;
+}
+
+init();
+
 const changePage = (page) => {
     changeURLparam("page", page);
     showLoaiSanPham();
