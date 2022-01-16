@@ -2,6 +2,7 @@ const listBaoCaoDOM = document.querySelector('#baocao-list');
 const searchFormDOM = document.querySelector('.searchForm');
 document.title = "Kiểm duyệt báo cáo người dùng";
 
+// Khởi tạo những biến liên quan đến tìm kiếm, lọc thông tin
 const init = () => {
     const newParams = window.location.search;
     const search = new URLSearchParams(newParams).get("search") ?? "";
@@ -16,6 +17,7 @@ const init = () => {
 }
 
 init();
+console.log(status);
 
 //Render data  api/v1/nhanvien/baocao/{maBaoCao}
 const renderData = (datas) => {
@@ -28,7 +30,7 @@ const renderData = (datas) => {
                 <td>   ${ngay_tao.date.day}/${ngay_tao.date.month}/${ngay_tao.date.year}
                 <td>
                     <div class="d-flex justify-content-evenly">
-                        <a href="${baseURL}admin/baocao/${ma_bao_cao}" class="">Chi tiết</a>
+                        <a href="${baseURL}admin/baocao/${ma_bao_cao}" class="noExl">Chi tiết</a>
                     </div>
                 </td>
             </tr>`;
@@ -42,6 +44,21 @@ const showListBaoCao = async () => {
         const newParams = window.location.search;
         const search = new URLSearchParams(newParams).get("search") ?? "";
         const status = new URLSearchParams(newParams).get("status") ?? 0;
+        let tinh_trang = "";
+        if (status == -2) {
+            tinh_trang = "Vi phạm nặng nhất";
+        }
+        else if (status == -1) {
+            tinh_trang = "Cảnh cáo";
+        } else if (status == 0) {
+            tinh_trang = "Chưa duyệt";
+        } else if (status == 1) {
+            tinh_trang = "Nhắc nhở";
+        } else if (status == 2) {
+            tinh_trang = "Không vi phạm";
+        }
+        //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
+        document.getElementsByTagName("table")[0].setAttribute("filename", `Danh sách báo cáo (${tinh_trang})`);
         const {
             data: { list_baocaos }
         } = await axios.get(`${baseURL}api/v1/nhanvien/baocao/getbystatus/${status}`, {
