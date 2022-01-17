@@ -122,7 +122,7 @@ const showChiTietDatHang = async (skip = false) => {
                             <div class="col-10">
                                 ${ma_nhan_hang}
                             </div>
-                            <div class="col-auto chuc-nang">
+                            <div class="col-12 chuc-nang">
                                 ${chucNangHtml}
                             </div>
                         </div>
