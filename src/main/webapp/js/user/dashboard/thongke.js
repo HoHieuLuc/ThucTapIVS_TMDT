@@ -114,10 +114,97 @@ tuyChonThongKeDOM.addEventListener('change', (event) => {
     } else {
         formThongKeDOM.classList.add('d-none');
         getSoDonDatHangThongKe(null, null);
-        pieChart.destroy();
-        thongKeTinhTrangDonHangAll();
+        thongKeTinhTrangDonHang(1, null, null);
     }
 });
+
+// Tiếp đến là sơ đồ tròn
+const ctx = document.getElementById('pieChart').getContext('2d');
+
+const buildThongKeChart = (thongKe) => {
+    const dataThongKe = [];
+    const labels = [];
+    const colors = [];
+    //Trường hợp khoảng ngày đó không có dữ liệu, đưa data array về  [0,0,0,0]
+    if (thongKe.length == 0) {
+        thongBao("Tình trạng đặt hàng không có dữ liệu thống kê trong khoảng thời gian này", true);
+        dataThongKe.push(0);
+        labels.push("Chưa có dữ liệu");
+        colors.push("#ff0000");
+    }
+    else {
+        thongKe.forEach(item => {
+            if (item.status === -1) {
+                dataThongKe.push(item.so_luong);
+                labels.push('Bị hủy');
+                colors.push('rgb(255,0,0)');
+            }
+            else if (item.status === 0) {
+                dataThongKe.push(item.so_luong);
+                labels.push('Đang chờ tiếp nhận');
+                colors.push('rgb(255,255,0)');
+            }
+            else if (item.status === 1) {
+                dataThongKe.push(item.so_luong);
+                labels.push('Đang vận chuyển');
+                colors.push('rgb(88, 130, 255)');
+            }
+            else if (item.status === 2) {
+                dataThongKe.push(item.so_luong);
+                labels.push('Giao hàng thành công');
+                colors.push('rgb(1, 255, 1)');
+            }
+        });
+    }
+
+    //Dữ liệu
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Tình Trạng Đơn Đặt Hàng',
+            data: dataThongKe,
+            backgroundColor: colors,
+            hoverOffset: 4
+        }]
+    };
+
+    //Cấu hình
+    const config = {
+        type: 'pie',
+        data: data,
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Tình Trạng Chi Tiết Đặt Hàng',
+                    fontSize: 15
+                }
+            }
+        }
+    };
+    if (pieChart) {
+        pieChart.destroy();
+    }
+    pieChart = new Chart(ctx, config);
+}
+
+const thongKeTinhTrangDonHang = async (type, tuNgay, denNgay) => {
+    try {
+        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/user/thongke/${type}`, {
+            params: {
+                tuNgay,
+                denNgay,
+            }
+        });
+        buildThongKeChart(thong_ke);
+    }
+    catch (error) {
+        console.log(error)
+        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
+    }
+}
+
+thongKeTinhTrangDonHang(1, null, null)
 
 formThongKeDOM.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -125,124 +212,8 @@ formThongKeDOM.addEventListener('submit', async (event) => {
     const tuNgay = formData.get('tuNgay');
     const denNgay = formData.get('denNgay');
     getSoDonDatHangThongKe(tuNgay, denNgay);
-
-    // Tiếp đến là sơ đồ tròn
-    const ctx = document.getElementById('pieChart').getContext('2d');
-    try {
-        let { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/user/thongke/2`, {
-            params: {
-                tuNgay,
-                denNgay,
-            }
-        });
-        console.log(thong_ke);
-        //Trường hợp khoảng ngày đó không có dữ liệu, đưa data array về  [0,0,0,0]
-        if (thong_ke.length == 0) {
-            thongBao("Tình trạng đặt hàng không có dữ liệu thống kê trong khoảng thời gian này", true);
-            // return;
-            thong_ke = [0, 0, 0, 0]
-        }
-
-
-        //Dữ liệu
-        const data = {
-            labels: [
-                'Bị hủy',
-                'Đang chờ tiếp nhận',
-                'Đang vận chuyển',
-                'Giao hàng thành công'
-            ],
-            datasets: [{
-                label: 'Tình Trạng Đơn Đặt Hàng',
-                data: thong_ke,
-                backgroundColor: [
-                    'rgb(255,0,0)',
-                    'rgb(255,255,0)',
-                    'rgb(88, 130, 255)',
-                    'rgb(1, 255, 1)'
-                ],
-                hoverOffset: 4
-            }]
-        };
-
-        //Cấu hình
-        const config = {
-            type: 'pie',
-            data: data,
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Tình Trạng Chi Tiết Đặt Hàng',
-                        fontSize: 15
-                    }
-                }
-            }
-        };
-        pieChart.destroy();
-        pieChart = new Chart(ctx, config);
-    }
-    catch (error) {
-        console.log(error)
-        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
-    }
+    thongKeTinhTrangDonHang(1, tuNgay, denNgay);
 });
-
-
-
-const thongKeTinhTrangDonHangAll = async () => {
-
-    const ctx = document.getElementById('pieChart').getContext('2d');
-
-    try {
-        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/user/thongke/1`);
-        console.log(thong_ke);
-
-        //Dữ liệu
-        const data = {
-            labels: [
-                'Bị hủy',
-                'Đang chờ tiếp nhận',
-                'Đang vận chuyển',
-                'Giao hàng thành công'
-            ],
-            datasets: [{
-                label: 'Tình Trạng Đơn Đặt Hàng',
-                data: thong_ke,
-                backgroundColor: [
-                    'rgb(255,0,0)',
-                    'rgb(255,255,0)',
-                    'rgb(88, 130, 255)',
-                    'rgb(1, 255, 1)'
-                ],
-                hoverOffset: 4
-            }]
-        };
-
-        //Cấu hình
-        const config = {
-            type: 'pie',
-            data: data,
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Tình Trạng Chi Tiết Đặt Hàng',
-                        fontSize: 15
-                    }
-                }
-            }
-        };
-        pieChart = new Chart(ctx, config);
-    }
-    catch (error) {
-        thongBao(error.response.data.message ?? 'Có lỗi xảy ra', true);
-    }
-}
-
-
-thongKeTinhTrangDonHangAll();
-
 
 const thongKeDonGian = async () => {
     try {
@@ -258,13 +229,12 @@ const thongKeDonGian = async () => {
 
 thongKeDonGian();
 
-
 const showTop10SanPhamBanChay = async () => {
     try {
-        const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/user/thongke/3`);
+        const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/user/thongke/2`);
         console.log(thong_kes);
         const listThongKe = thong_kes.map((thong_ke) => {
-            const { ten_san_pham, /*gia,*/ ten_loai_sp, so_luot_mua } = thong_ke;
+            const { ten_san_pham, ten_loai_sp, so_luot_mua } = thong_ke;
             return `
                 <li class="item">
                     <div class="product">
@@ -276,7 +246,7 @@ const showTop10SanPhamBanChay = async () => {
                     </div>
                 </li>
             `;
-        }).join(' ');
+        }).join('');
         topSanPhamBanChayDOM.innerHTML = listThongKe;
     }
     catch (error) {

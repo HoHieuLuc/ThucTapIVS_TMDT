@@ -401,32 +401,6 @@ public class UserApiAction extends ActionSupport {
         return tuNgay != null && denNgay != null;
     }
 
-    // thống kê số đơn đặt hàng của khách hàng
-    @Action(value = "/api/v1/user/thongke/dathang", results = {
-            @Result(name = SUCCESS, location = "/index.html")
-    })
-    public String thongKeDonDat() throws IOException {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        ThongKeMapper thongKeMapper = sqlSession.getMapper(ThongKeMapper.class);
-        Map<String, Object> jsonRes = new HashMap<String, Object>();
-        int maKhachHang = (int) session.getAttribute("maNguoiDung");
-        List<Map<String, Object>> thongKe = new ArrayList<>();
-
-        if (kiemTraNgayThongKe()) {
-            if (tuNgay.compareTo(denNgay) > 0) {
-                return CustomError.createCustomError("Thời gian không hợp lệ", 400, response);
-            }
-            thongKe = thongKeMapper.thongKeSoDonDatHangChoKhachHangTuyChon(maKhachHang, tuNgay, denNgay);
-            jsonRes.put("trongThang", false);
-        } else {
-            thongKe = thongKeMapper.thongKeSoDonDatHangChoKhachHangTrongThang(maKhachHang);
-            jsonRes.put("trongThang", true);
-        }
-        sqlSession.close();
-        jsonRes.put("soDonDatHang", thongKe);
-        return JsonResponse.createJsonResponse(jsonRes, 200, response);
-    }
-
     // SELLER
     // lấy danh sách đặt hàng mà người khác đặt của user này
     @Action(value = "/api/v1/user/seller/dathang", results = {
@@ -587,6 +561,32 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    // thống kê số đơn đặt hàng của khách hàng
+    @Action(value = "/api/v1/user/thongke/dathang", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String thongKeDonDat() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        ThongKeMapper thongKeMapper = sqlSession.getMapper(ThongKeMapper.class);
+        Map<String, Object> jsonRes = new HashMap<String, Object>();
+        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+        List<Map<String, Object>> thongKe = new ArrayList<>();
+
+        if (kiemTraNgayThongKe()) {
+            if (tuNgay.compareTo(denNgay) > 0) {
+                return CustomError.createCustomError("Thời gian không hợp lệ", 400, response);
+            }
+            thongKe = thongKeMapper.thongKeSoDonDatHangChoKhachHangTuyChon(maKhachHang, tuNgay, denNgay);
+            jsonRes.put("trongThang", false);
+        } else {
+            thongKe = thongKeMapper.thongKeSoDonDatHangChoKhachHangTrongThang(maKhachHang);
+            jsonRes.put("trongThang", true);
+        }
+        sqlSession.close();
+        jsonRes.put("soDonDatHang", thongKe);
+        return JsonResponse.createJsonResponse(jsonRes, 200, response);
+    }
+
     // Dùng 1 action cho thống kê 4 loại dữ liệu đơn giản và thống kê tình trạng đặt
     // hàng
     @Action(value = "/api/v1/user/thongke/{status}", results = {
@@ -607,33 +607,34 @@ public class UserApiAction extends ActionSupport {
 
         switch (status) {
             case 0:
-                Map<String, Object> thongKe_4Data = thongKeMapper.ge3DataThongKeUser(maNguoiBan);
+                Map<String, Object> thongKe_4Data = thongKeMapper.get3DataThongKeUser(maNguoiBan);
                 jsonRes.put("thong_ke", thongKe_4Data);
                 sqlSession.close();
                 return JsonResponse.createJsonResponse(jsonRes, 200, response);
             case 1:
-                List<Integer> thongKeTrangThaiDH = thongKeMapper.getDataTrangThaiDatHangUser(maNguoiBan);
-                jsonRes.put("thong_ke", thongKeTrangThaiDH);
-                sqlSession.close();
-                return JsonResponse.createJsonResponse(jsonRes, 200, response);
-            case 2:
                 // Check null cho 2 giá trị ngày
                 if (kiemTraNgayThongKe()) {
-
                     // Kiểm tra ngày trước phải nhỏ hơn ngày sau
                     if (tuNgay.compareTo(denNgay) > 0) { // >0 là khoảng thời gian không hợp lệ
                         sqlSession.close();
                         return CustomError.createCustomError("Thời gian không hợp lệ", 400, response);
                     }
                     // Đủ 2 điều kiện,truy vấn dữ liệu
-                    List<Integer> thongKeCustom = thongKeMapper.getDataTrangThaiDatHangCustomUser(tuNgay, denNgay,
-                            maNguoiBan);
+                    List<Map<String, Object>> thongKeCustom = thongKeMapper
+                            .getDataTrangThaiDatHangCustomUser(tuNgay,
+                                    denNgay,
+                                    maNguoiBan);
                     jsonRes.put("thong_ke", thongKeCustom);
                     sqlSession.close();
                     return JsonResponse.createJsonResponse(jsonRes, 200, response);
+                } else {
+                    List<Map<String, Object>> thongKe = thongKeMapper
+                            .getDataTrangThaiDatHangUser(maNguoiBan);
+                    jsonRes.put("thong_ke", thongKe);
+                    sqlSession.close();
+                    return JsonResponse.createJsonResponse(jsonRes, 200, response);
                 }
-                return CustomError.createCustomError("Yêu cầu thống kê không hợp lệ", 403, response);
-            case 3:
+            case 2:
                 List<Map<String, Object>> thongKes = thongKeMapper.top10SPDuocMuaNhieuNhatUserByMonth(maNguoiBan);
                 jsonRes.put("thong_kes", thongKes);
                 sqlSession.close();

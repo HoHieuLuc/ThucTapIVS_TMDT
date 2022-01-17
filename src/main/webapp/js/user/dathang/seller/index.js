@@ -2,6 +2,16 @@ const searchFormDOM = document.querySelector('.searchForm');
 const datHangListDOM = document.querySelector('#datHangList');
 const paginationDOM = document.querySelector('#pagination');
 
+const init = () => {
+    const newParams = window.location.search;
+    const search = new URLSearchParams(newParams).get("search") ?? "";
+    const _status = new URLSearchParams(newParams).get("status") ?? 0;
+    searchFormDOM.querySelector('input[name="search"]').value = search;
+    searchFormDOM.querySelector('select[name="status"]').value = _status;
+}
+
+init();
+
 const changePage = (page) => {
     changeURLparam("page", page);
     showDatHangList();
@@ -22,22 +32,23 @@ const showDatHangList = async () => {
                 status: _status
             }
         });
+        let tinh_trang = "";
+        if (_status == -1) {
+            tinh_trang = "Đã hủy";
+        }
+        else if (_status == 0) {
+            tinh_trang = "Đang chờ";
+        } else if (_status == 1) {
+            tinh_trang = "Đang vận chuyển";
+        } else if (_status == 2) {
+            tinh_trang = "Đã giao hàng";
+        }
+        document.querySelector('.tlt-fixed-table').setAttribute("filename",`Danh sách đơn hàng của bạn (${tinh_trang})`);
         const allDatHangs = danhSachDatHang.map((datHang) => {
-            const { ma_dat_hang, ngay_dat, tong_tien, status, nguoi_mua } = datHang;
-            let tinh_trang = "";
-            if (status === -1) {
-                tinh_trang = "Đã hủy";
-            }
-            else if (status === 0) {
-                tinh_trang = "Đang chờ";
-            } else if (status === 1) {
-                tinh_trang = "Đang vận chuyển";
-            } else if (status === 2) {
-                tinh_trang = "Đã giao hàng";
-            }
+            const { ma_dat_hang, ngay_dat, tong_tien, nguoi_mua } = datHang;
+
 
             //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
-            document.getElementsByTagName("table")[0].setAttribute("filename",`Danh sách đơn hàng của bạn (${tinh_trang})`);
             const giaVND = tong_tien.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",

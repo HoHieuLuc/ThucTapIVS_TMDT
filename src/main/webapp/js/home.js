@@ -69,24 +69,49 @@ const showNewestProduct = async () => {
                 currency: "VND",
             });
             return `
-                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-2">
-                    <a href="${baseURL}sanpham/${ma_san_pham}" 
-                        class="text-decoration-none text-dark text-center" 
-                    >
-                        <div class="d-flex">
-                            <img 
-                                src="${baseURL}images/product/${anh}" 
-                                class="tlt-thumbnail img-fluid rounded my-auto mx-auto" alt="${ten_san_pham}"
+                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-3">
+                    <div class="card">
+                        <a href="${baseURL}sanpham/${ma_san_pham}">
+                            <div class="d-flex border-bottom">
+                                <img 
+                                    class="card-img-top img-fluid tlt-thumbnail mx-auto my-auto" 
+                                    src="${baseURL}images/product/${anh}"
+                                    alt="${ten_san_pham}"
+                                >
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <a 
+                                href="${baseURL}sanpham/${ma_san_pham}" 
+                                class="text-dark tlt-overflow-ellipsis" 
+                                title="${ten_san_pham}"
                             >
+                                ${ten_san_pham}
+                            </a>
+                            <div class="d-flex gap-2 justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button 
+                                        data-masanpham="${ma_san_pham}" 
+                                        class="add-to-cart-btn btn btn-sm btn-outline-secondary"
+                                    >
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                    <button 
+                                        data-masanpham="${ma_san_pham}"
+                                        class="add-to-fav-btn btn btn-sm btn-outline-secondary"
+                                    >
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <h6 
+                                    title="${giaVND}"
+                                    class="fw-bold tlt-overflow-ellipsis text-dark"
+                                >
+                                    ${giaVND}
+                                </h6>
+                            </div>
                         </div>
-                        <div class="tlt-overflow-ellipsis" title="${ten_san_pham}">
-                            ${ten_san_pham}
-                        </div>
-                    </a>
-                    <div class="text-center">${giaVND}</div>
-                    <button type="button" data-masanpham="${ma_san_pham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
-                        <i class="fas fa-cart-plus"></i>
-                    </button>
+                    </div>
                 </div>
             `;
         }).join('');
@@ -110,36 +135,60 @@ const showRecentlyViewedProduct = () => {
                     currency: "VND",
                 });
                 return `
-                <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-2">
-                    <a href="${baseURL}sanpham/${maSanPham}" 
-                        class="text-decoration-none text-dark text-center" 
-                    >
-                        <div class="d-flex">
-                            <img 
-                                src="${baseURL}images/product/${hinhAnh}" 
-                                class="tlt-thumbnail img-fluid rounded mx-auto my-auto" 
-                                alt="${tenSanPham}"
-                            >
+                    <div class="col-6 col-sm-3 col-md-3 col-lg-2 mb-3">
+                        <div class="card">
+                            <a href="${baseURL}sanpham/${maSanPham}">
+                                <div class="d-flex border-bottom">
+                                    <img 
+                                        class="card-img-top img-fluid tlt-thumbnail mx-auto my-auto" 
+                                        src="${baseURL}images/product/${hinhAnh}"
+                                        alt="${tenSanPham}"
+                                    >
+                                </div>
+                            </a>
+                            <div class="card-body">
+                                <a 
+                                    href="${baseURL}sanpham/${maSanPham}" 
+                                    class="text-dark tlt-overflow-ellipsis" 
+                                    title="${tenSanPham}"
+                                >
+                                    ${tenSanPham}
+                                </a>
+                                <div class="d-flex gap-2 justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button 
+                                            data-masanpham="${maSanPham}" 
+                                            class="add-to-cart-btn btn btn-sm btn-outline-secondary"
+                                        >
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                        <button 
+                                            data-masanpham="${maSanPham}"
+                                            class="add-to-fav-btn btn btn-sm btn-outline-secondary"
+                                        >
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                    <h6 
+                                        title="${giaVND}"
+                                        class="fw-bold tlt-overflow-ellipsis text-dark"
+                                    >
+                                        ${giaVND}
+                                    </h6>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tlt-overflow-ellipsis" title="${tenSanPham}">
-                            ${tenSanPham}
-                        </div>
-                    </a>
-                    <div class="text-center">${giaVND}</div>
-                    <button type="button" data-masanpham="${maSanPham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
-                        <i class="fas fa-cart-plus"></i>
-                    </button>
-                </div>
-            `;
+                    </div>
+                `;
             }).join('');
             const sanPhamVuaXemHtml = `
-            <div class="d-flex">
-                <h4>Sản phẩm vừa xem </h4>
-            </div>
-            <div class="row">
-                ${allRecentlyViewedProduct}
-            </div>
-        `;
+                <div class="d-flex">
+                    <h4>Sản phẩm vừa xem </h4>
+                </div>
+                <div class="row">
+                    ${allRecentlyViewedProduct}
+                </div>
+            `;
             sanPhamVuaXemDOM.innerHTML = sanPhamVuaXemHtml;
         }
     }
