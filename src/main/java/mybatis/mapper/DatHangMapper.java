@@ -153,7 +153,7 @@ public interface DatHangMapper {
 
     // lấy thông tin người đặt hàng
     final String GET_THONG_TIN_NGUOI_DAT_HANG = "SELECT kh.ten, kh.dia_chi, tk.email, tk.so_dien_thoai, " +
-            "DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y %T') AS ngay_dat " +
+            "DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y lúc %T') AS ngay_dat " +
             "FROM khach_hang kh " +
             "JOIN dat_hang dh ON dh.ma_khach_hang = kh.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
@@ -161,6 +161,20 @@ public interface DatHangMapper {
 
     @Select(GET_THONG_TIN_NGUOI_DAT_HANG)
     public Map<String, Object> getThongTinNguoiDatHang(@Param("maDatHang") int maDatHang);
+
+    // lấy id tài khoản người đặt hàng, tên sản phẩm để tạo thông báo
+    final String GET_ID_TK_NGUOI_DAT_HANG = "SELECT tk.id, sp.ten_san_pham, " +
+            "DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y lúc %T') AS ngay_dat " +
+            "FROM dat_hang dh JOIN khach_hang kh ON kh.ma_khach_hang = dh.ma_khach_hang " +
+            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
+            "JOIN chi_tiet_dat_hang ctdh ON ctdh.ma_dat_hang = dh.ma_dat_hang " +
+            "JOIN san_pham sp ON sp.ma_san_pham = ctdh.ma_san_pham " +
+            "WHERE dh.ma_dat_hang = #{maDatHang} AND ctdh.ma_san_pham = #{maSanPham}";
+
+    @Select(GET_ID_TK_NGUOI_DAT_HANG)
+    public Map<String, Object> getIdTKNguoiDatHang(
+            @Param("maDatHang") int maDatHang,
+            @Param("maSanPham") String maSanPham);
 
     // lấy tình trạng 1 chi tiết đơn đặt hàng của người bán hàng
     // để người bán không thể hủy vận chuyển đối với những đơn đã được giao xong
@@ -236,7 +250,7 @@ public interface DatHangMapper {
             "seller.ten, ctdh.ma_dat_hang, ctdh.ma_san_pham, " +
             "ctdh.so_luong AS so_luong_dat, ctdh.status, " +
             "ctdh.so_luong * sp.gia AS tong_tien, " +
-            "DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y %T') AS ngay_dat, " +
+            "DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y lúc %T') AS ngay_dat, " +
             "sp.ten_san_pham, sp.mo_ta, sp.gia AS don_gia, asp.anh " +
             "FROM chi_tiet_dat_hang ctdh JOIN dat_hang dh " +
             "ON dh.ma_dat_hang = ctdh.ma_dat_hang " +

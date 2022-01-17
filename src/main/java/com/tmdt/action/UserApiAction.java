@@ -53,6 +53,7 @@ public class UserApiAction extends ActionSupport {
     private Date denNgay;
     private int id;
     private String maNhanHang;
+    private String lyDo;
 
     // region Getter and Setter
     public String getMaSanPham() {
@@ -208,6 +209,17 @@ public class UserApiAction extends ActionSupport {
 
     public void setMaNhanHang(String maNhanHang) {
         this.maNhanHang = maNhanHang;
+    }
+
+    public String getLyDo() {
+        if (lyDo == null || lyDo.equals("")) {
+            return "Không có lý do";
+        }
+        return lyDo;
+    }
+
+    public void setLyDo(String lyDo) {
+        this.lyDo = lyDo;
     }
     // endregion
 
@@ -454,8 +466,6 @@ public class UserApiAction extends ActionSupport {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String capNhatTinhTrangDonDatHang() throws IOException {
-        // người bán hàng ko thể cập nhật status thành 2
-        // status 2 là người mua đã nhận hàng, người mua sẽ cập nhật
         if (status < -1 || status > 1) {
             return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
         }
@@ -471,9 +481,28 @@ public class UserApiAction extends ActionSupport {
         if (update == 0) {
             return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
         }
-        // TODO: sau khi cập nhật đơn đặt hàng thành công sẽ gửi thông báo đến người mua
+        if (status == -1 || status == 0) {
+            ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+            String _lyDo = getLyDo();
+            Map<String, Object> thongTinDatHang = datHangMapper.getIdTKNguoiDatHang(id, maSanPham);
+            int idNguoiDat = (int) thongTinDatHang.get("id");
+            int idNguoiBan = (int) session.getAttribute("accountID");
+            String _tenSanPham = (String) thongTinDatHang.get("ten_san_pham");
+            String ngayDat = (String) thongTinDatHang.get("ngay_dat");
+            String action = "";
+            if (status == -1){
+                action = "đã bị hủy";
+            } else {
+                action = "đã bị ngừng vận chuyển";
+            }
+            String noiDung = "Sản phẩm <b>" + _tenSanPham + "</b> mà bạn đặt ngày " + ngayDat + " " + action
+                    + ".\r\nLý do:\r\n"
+                    + _lyDo;
+            thongBaoMapper.taoThongBao(idNguoiDat, idNguoiBan, noiDung);
+        }
         sqlSession.commit();
         sqlSession.close();
+        jsonRes.put("message", "Cập nhật tình trạng đơn đặt hàng thành công");
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
