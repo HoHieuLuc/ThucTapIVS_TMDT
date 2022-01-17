@@ -18,6 +18,21 @@ const params = window.location.pathname.split('/').slice(0);
 const maSanPham = params.at(-1);
 const id = params.at(-2);
 
+const buildForm = () => {
+    return `
+        <form class="d-none">
+            <div class="form-group">
+                <label>Lý do</label>
+                <textarea class="form-control" name="lyDo"></textarea>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="button" class="toggle-form-btn btn btn-outline-danger">Đóng</button>
+                <button type="button" class="xac-nhan-btn btn btn-outline-success">Xác nhận</button>
+            </div>
+        </form>
+    `;
+}
+
 const showChiTietDatHang = async (skip = false) => {
     try {
         const { data: {
@@ -30,31 +45,36 @@ const showChiTietDatHang = async (skip = false) => {
         let chucNangHtml = "";
         if (status === -1){
             chucNangHtml = `
-                <div class="d-flex justify-content-evenly text-danger">
+                <div class="text-danger">
                     Đơn hàng đã bị hủy
                 </div>
             `;
         }
         else if (status === 0) {
             chucNangHtml = `
-                <button class="cap-nhat-btn d-block w-50 btn btn-warning">
-                    Hủy đơn hàng
-                </button>
-                <button class="disabled d-block w-50 btn btn-primary">
-                    Đang chờ...
-                </button>
+                <div class="d-flex gap-2">
+                    <button class="toggle-form-btn btn btn-warning">
+                        Hủy đơn hàng
+                    </button>
+                    <button class="disabled btn btn-primary">
+                        Đang chờ...
+                    </button>
+                </div>
+                ${buildForm()}
             `;
         }
         else if (status === 1) {
             chucNangHtml = `
-                <div class="input-group mb-3">
-                    <input id="maNhanHang" type="text" class="form-control border border-success" placeholder="Mã nhận hàng">
-                    <button class="cap-nhat-btn btn btn-success w-50" type="button">Đã nhận được hàng</button>
-                </div>
+                <form>
+                    <div class="input-group mb-3">
+                        <input name="maNhanHang" type="text" class="form-control border border-success" placeholder="Mã nhận hàng">
+                        <button class="xac-nhan-btn btn btn-success" type="button">Đã nhận được hàng</button>
+                    </div>
+                </form>
             `;
         } else if (status === 2) {
             chucNangHtml = `
-                <div class="d-flex justify-content-evenly text-success">
+                <div class="text-success">
                     Đã nhận được hàng
                 </div>
             `;
@@ -95,25 +115,28 @@ const showChiTietDatHang = async (skip = false) => {
 
 showChiTietDatHang();
 
+const capNhatTinhTrang = async (formData) => {
+    try {
+        await axios.post(`${baseURL}api/v1/user/buyer/dathang/${id}/${maSanPham}/capnhat`, formData);
+        showChiTietDatHang(true);
+    } catch (error) {
+        console.log(error);
+        const { response: { data: { message } } } = error;
+        thongBao(message ?? 'Có lỗi xảy ra', true);
+    }
+}
 
 chucNangDOM.addEventListener('click', async (event) => {
     const eventTarget = event.target;
     const { classList } = eventTarget;
-    const maNhanHangDOM = document.querySelector('#maNhanHang');
-    let maNhanHang = "";
-    if (maNhanHangDOM){
-        maNhanHang = maNhanHangDOM.value;
+    if (classList.contains('toggle-form-btn')) {
+        const formDOM = chucNangDOM.querySelector('form');
+        formDOM.classList.toggle('d-none');
+        return;
     }
-    if (classList.contains('cap-nhat-btn')) {
-        try {
-            const formData = new FormData();
-            formData.append('maNhanHang', maNhanHang);
-            await axios.post(`${baseURL}api/v1/user/buyer/dathang/${id}/${maSanPham}/capnhat`, formData);
-            showChiTietDatHang(true);
-        } catch (error) {
-            console.log(error);
-            const { response: { data: { message } } } = error;
-            thongBao(message ?? 'Có lỗi xảy ra', true);
-        }
+    if (classList.contains('xac-nhan-btn')) {
+        const formDOM = eventTarget.closest('form');
+        const formData = new FormData(formDOM);
+        capNhatTinhTrang(formData);
     }
 });

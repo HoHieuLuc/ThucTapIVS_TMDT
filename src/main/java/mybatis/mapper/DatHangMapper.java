@@ -163,16 +163,15 @@ public interface DatHangMapper {
     public Map<String, Object> getThongTinNguoiDatHang(@Param("maDatHang") int maDatHang);
 
     // lấy id tài khoản người đặt hàng, tên sản phẩm để tạo thông báo
-    final String GET_ID_TK_NGUOI_DAT_HANG = "SELECT tk.id, sp.ten_san_pham, " +
+    final String GET_ID_TK_NGUOI_DAT_HANG = "SELECT kh.id_tai_khoan AS id, sp.ten_san_pham, " +
             "DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y lúc %T') AS ngay_dat " +
             "FROM dat_hang dh JOIN khach_hang kh ON kh.ma_khach_hang = dh.ma_khach_hang " +
-            "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "JOIN chi_tiet_dat_hang ctdh ON ctdh.ma_dat_hang = dh.ma_dat_hang " +
             "JOIN san_pham sp ON sp.ma_san_pham = ctdh.ma_san_pham " +
             "WHERE dh.ma_dat_hang = #{maDatHang} AND ctdh.ma_san_pham = #{maSanPham}";
 
     @Select(GET_ID_TK_NGUOI_DAT_HANG)
-    public Map<String, Object> getIdTKNguoiDatHang(
+    public Map<String, Object> getIdTaiKhoanNguoiMua(
             @Param("maDatHang") int maDatHang,
             @Param("maSanPham") String maSanPham);
 
@@ -266,6 +265,19 @@ public interface DatHangMapper {
     @Select(GET_CHI_TIET_DON_DAT_HANG)
     public Map<String, Object> getChiTietDonDatHangChoNguoiMua(
             @Param("maNguoiMua") int maNguoiMua,
+            @Param("maDatHang") int maDatHang,
+            @Param("maSanPham") String maSanPham);
+
+    // lấy id tài khoản người bán hàng để tạo thông báo
+    final String GET_ID_TAI_KHOAN_NGUOI_BAN = "SELECT kh.id_tai_khoan AS id, sp.ten_san_pham, " +
+            "DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y lúc %T') AS ngay_dat " +
+            "FROM dat_hang dh JOIN chi_tiet_dat_hang ctdh ON ctdh.ma_dat_hang = dh.ma_dat_hang " +
+            "JOIN san_pham sp ON sp.ma_san_pham = ctdh.ma_san_pham " +
+            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
+            "WHERE dh.ma_dat_hang = #{maDatHang} AND ctdh.ma_san_pham = #{maSanPham}";
+
+    @Select(GET_ID_TAI_KHOAN_NGUOI_BAN)
+    public Map<String, Object> getIdTaiKhoanNguoiBan(
             @Param("maDatHang") int maDatHang,
             @Param("maSanPham") String maSanPham);
 

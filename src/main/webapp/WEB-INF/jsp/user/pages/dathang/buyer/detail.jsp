@@ -57,7 +57,7 @@
             <div class="col-4 fw-bold">Thành tiền</div>
             <div class="tongTien col-8"></div>
 
-            <div class="chucNang col-8 d-flex gap-2"></div>
+            <div class="chucNang col-auto"></div>
         </div>
     </div>
 </div> 
