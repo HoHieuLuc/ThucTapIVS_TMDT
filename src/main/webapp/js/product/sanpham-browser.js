@@ -63,26 +63,52 @@ const searchSanPham = async () => {
                 style: "currency",
                 currency: "VND",
             });
+            //col-6 col-sm-3 col-md-3 col-lg-3 mb-2
             return `
-                <div class="col-6 col-sm-3 col-md-3 col-lg-3 mb-2">
-                    <a href="${baseURL}sanpham/${ma_san_pham}" 
-                        class="text-decoration-none text-dark text-center" 
-                    >
-                        <div class="d-flex">
-                            <img 
-                                src="${baseURL}images/product/${anh}" 
-                                class="tlt-thumbnail img-fluid rounded my-auto mx-auto" alt="${ten_san_pham}"
+                <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-3 mb-1">
+                    <div class="card">
+                        <a href="${baseURL}sanpham/${ma_san_pham}">
+                            <div class="d-flex border-bottom">
+                                <img 
+                                    class="card-img-top img-fluid tlt-thumbnail mx-auto my-auto" 
+                                    src="${baseURL}images/product/${anh}"
+                                    alt="${ten_san_pham}"
+                                >
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <a 
+                                href="${baseURL}sanpham/${ma_san_pham}" 
+                                class="text-dark tlt-overflow-ellipsis" 
+                                title="${ten_san_pham}"
                             >
+                                ${ten_san_pham}
+                            </a>
+                            <div>${xepHang}</div>
+                            <div class="d-flex gap-2 justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button 
+                                        data-masanpham="${ma_san_pham}" 
+                                        class="add-to-cart-btn btn btn-sm btn-outline-secondary"
+                                    >
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                    <button 
+                                        data-masanpham="${ma_san_pham}"
+                                        class="add-to-fav-btn btn btn-sm btn-outline-secondary"
+                                    >
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <h6 
+                                    title="${giaVND}"
+                                    class="fw-bold tlt-overflow-ellipsis text-dark"
+                                >
+                                    ${giaVND}
+                                </h6>
+                            </div>
                         </div>
-                        <div class="tlt-overflow-ellipsis" title="${ten_san_pham}">
-                            ${ten_san_pham}
-                        </div>
-                    </a>
-                    <div class="text-center">${xepHang}</div>
-                    <div class="text-center">${giaVND}</div>
-                    <button type="button" data-masanpham="${ma_san_pham}" class="add-to-cart-btn w-100 btn btn-block btn-warning">
-                        <i class="fas fa-cart-plus"></i>
-                    </button>
+                    </div>
                 </div>
             `;
         }).join('');

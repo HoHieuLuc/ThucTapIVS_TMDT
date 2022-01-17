@@ -257,9 +257,9 @@ public class LoaiSanPhamAction extends ActionSupport {
             String _orderBy = getOrderBy();
             String _order = getOrder();
 
-            int countLoaiSanPham = sanPhamMapper.countSanPhamByLSP(maLoaiSanPham, _search);
+            int countSanPham = sanPhamMapper.countSanPhamByLSP(maLoaiSanPham, _search);
             int offset = (_page - 1) * _rowsPerPage;
-            int totalPage = (int) Math.ceil(countLoaiSanPham / (double) _rowsPerPage);
+            int totalPage = (int) Math.ceil(countSanPham / (double) _rowsPerPage);
 
             List<Map<String, Object>> sanPhams = sanPhamMapper.getAllSanPhamByLSP(maLoaiSanPham, _search, offset,
                     _rowsPerPage, _orderBy, _order);

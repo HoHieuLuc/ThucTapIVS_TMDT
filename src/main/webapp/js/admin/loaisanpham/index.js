@@ -2,6 +2,14 @@ const searchFormDOM = document.querySelector(".searchForm");
 const listLoaiSanPhamDOM = document.querySelector('#listLoaiSanPham');
 const phanTrangDOM = document.querySelector('#phanTrang');
 
+const init = () => {
+    const newParams = window.location.search;
+    const search = new URLSearchParams(newParams).get("search") ?? "";
+    searchFormDOM.querySelector('input[name="search"]').value = search;
+}
+
+init();
+
 const changePage = (page) => {
     changeURLparam("page", page);
     showLoaiSanPham();
@@ -18,9 +26,6 @@ const showLoaiSanPham = async () => {
                 search
             }
         });
-        if (loaiSanPhams.length === 0) {
-            return;
-        }
         const allLoaiSanPham = loaiSanPhams.map((loaiSanPham) => {
             const { ma_loai_sp, ten_loai_sp, ma_loai_sp_cha, ten_loai_sp_cha } = loaiSanPham;
             const loaiSPCha = ma_loai_sp_cha

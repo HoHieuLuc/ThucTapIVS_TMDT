@@ -21,13 +21,15 @@ const showSanPhamYeuThich = async () => {
             return `
                 <div class="col-6 col-md-4 col-lg-3 col-xl-3 mb-3">
                     <div class="card">
-                        <div class="d-flex">
-                            <img 
-                                class="card-img-top tlt-thumbnail mx-auto my-auto" 
-                                src="${baseURL}images/product/${anh}"
-                                 alt="${ten_san_pham}"
-                            >
-                        </div>
+                        <a href="${baseURL}sanpham/${ma_san_pham}">
+                            <div class="d-flex border-bottom">
+                                <img 
+                                    class="card-img-top img-fluid tlt-thumbnail mx-auto my-auto" 
+                                    src="${baseURL}images/product/${anh}"
+                                    alt="${ten_san_pham}"
+                                >
+                            </div>
+                        </a>
                         <div class="card-body">
                             <a 
                                 href="${baseURL}sanpham/${ma_san_pham}" 
@@ -51,7 +53,12 @@ const showSanPhamYeuThich = async () => {
                                         <i class="fas fa-heart-broken"></i>
                                     </button>
                                 </div>
-                                <h6 class="font-weight-bold text-dark">${donGiaVND}</h6>
+                                <h6 
+                                    title="${donGiaVND}"
+                                    class="font-weight-bold tlt-overflow-ellipsis text-dark"
+                                >
+                                    ${donGiaVND}
+                                </h6>
                             </div>
                         </div>
                     </div>

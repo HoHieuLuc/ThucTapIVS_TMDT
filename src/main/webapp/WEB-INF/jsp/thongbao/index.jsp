@@ -14,7 +14,6 @@
 <style>
     .tlt-thong-bao {
         white-space: pre-line;
-        overflow-y: scroll;
         overflow-wrap: break-word;
     }
 </style>
