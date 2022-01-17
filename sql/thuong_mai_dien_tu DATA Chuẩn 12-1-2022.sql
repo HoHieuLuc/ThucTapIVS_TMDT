@@ -1023,3 +1023,53 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ALTER TABLE san_pham ADD FULLTEXT(ten_san_pham)
+DELIMITER $$
+CREATE TRIGGER `thong_bao_danh_gia_san_pham` AFTER INSERT ON `danh_gia_san_pham`
+ FOR EACH ROW BEGIN 
+	INSERT INTO thong_bao (id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+    SELECT tk_nhan.id, tk_gui.id, CONCAT("Đã đánh giá sản phẩm <b>", sp.ten_san_pham, "</b> của bạn.\r\nSố sao: ", 
+ NEW.so_sao, ".\r\nNội dung: ", NEW.noi_dung ), NOW(), 0
+    FROM khach_hang kh_gui JOIN tai_khoan tk_gui ON tk_gui.id = kh_gui.id_tai_khoan
+    JOIN san_pham sp ON sp.ma_san_pham = NEW.ma_san_pham
+    JOIN khach_hang kh_nhan ON kh_nhan.ma_khach_hang = sp.ma_khach_hang
+    JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
+    WHERE kh_gui.ma_khach_hang = NEW.ma_khach_hang;
+END$$
+DELIMITER;
+
+DELIMITER $$
+CREATE TRIGGER `thong_bao_don_hang` AFTER UPDATE ON `chi_tiet_dat_hang`
+ FOR EACH ROW BEGIN
+	IF (NEW.status = 1) THEN
+    	INSERT INTO thong_bao(id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+        SELECT tk_nhan.id, tk_gui.id, CONCAT("Sản phẩm <b>", sp.ten_san_pham, "</b> đang được vận chuyển."), NOW(), 0
+        FROM khach_hang kh_nhan JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
+        JOIN dat_hang dh ON dh.ma_dat_hang = NEW.ma_dat_hang
+        JOIN san_pham sp ON sp.ma_san_pham = NEW.ma_san_pham
+        JOIN khach_hang kh_gui ON kh_gui.ma_khach_hang = sp.ma_khach_hang
+        JOIN tai_khoan tk_gui ON tk_gui.id = kh_gui.id_tai_khoan
+        WHERE kh_nhan.ma_khach_hang = dh.ma_khach_hang;
+    ELSEIF (NEW.status = 2) THEN
+    	INSERT INTO thong_bao(id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+        SELECT tk_nhan.id, -1, 
+        CONCAT("Sản phẩm <b>", sp.ten_san_pham, "</b> đã được giao thành công."), NOW(), 0
+        FROM khach_hang kh_nhan JOIN san_pham sp ON sp.ma_khach_hang = kh_nhan.ma_khach_hang
+        JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
+        WHERE sp.ma_san_pham = NEW.ma_san_pham;
+    END IF;
+END$$
+DELIMITER;
+
+DELIMITER $$
+CREATE TRIGGER `thong_bao_duyet_san_pham` AFTER UPDATE ON `san_pham`
+ FOR EACH ROW BEGIN 
+	IF (NEW.status = 2) THEN
+    	INSERT INTO thong_bao (id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+        SELECT tk.id, -1, CONCAT("Sản phẩm <b>", NEW.ten_san_pham, "</b> của bạn đã được duyệt."), NOW(), 0
+        FROM khach_hang kh
+        JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan
+        WHERE kh.ma_khach_hang = NEW.ma_khach_hang;
+    END IF;
+END $$
+DELIMITER;
