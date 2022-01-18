@@ -121,7 +121,7 @@ if (thongbaoTableDOM) {
 
             const allThongBaos = thong_baos.map(data => {
                 const { noi_dung, nguoi_gui, ngay_tao, status, ma_tb } = data;
-                const bgColor = status === false ? "bg-danger text-white" : "bg-primary text-black";                //Nếu phát hiện thông báo này chưa đọc, tạo nút đã đọc tương ứng
+                const bgColor = status === false ? "bg-primary" : "bg-secondary";
                 if (!status) {
                     danhDauDaDocCuThe = `
                         <button type="button" class="seen-btn btn btn-tool text-white" data-id="${ma_tb}">
@@ -134,7 +134,7 @@ if (thongbaoTableDOM) {
                 return `
                     <div class="card" style="display: block;">
                         <div class="card-header ${bgColor}">
-                            <h3 class="card-title text-white">${nguoi_gui}, lúc ${ngay_tao}</h3>
+                            <h3 class="card-title text-white">${nguoi_gui}, ${ngay_tao}</h3>
                             <div class="card-tools">
                                 ${danhDauDaDocCuThe}
                                 <button type="button" class="btn btn-tool text-white" data-card-widget="collapse">

@@ -23,8 +23,8 @@ public interface DanhGiaSanPhamMapper {
 	// Lấy tất cả đánh giá của sản phẩm, khi khách hàng chưa đăng nhập
 	final String GET_ALL_DANH_GIA_SAN_PHAM = "SELECT COUNT(phdgsp.ma_phan_hoi) as so_phan_hoi, kh.ten, " +
 			"dgsp.so_sao,dgsp.ma_danh_gia, dgsp.noi_dung, " +
-			"DATE_FORMAT(dgsp.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
-			"DATE_FORMAT(dgsp.ngay_sua, '%d-%m-%Y %T') AS ngay_sua, " +
+			"DATE_FORMAT(dgsp.ngay_tao, '%d-%m-%Y lúc %T') AS ngay_tao, " +
+			"DATE_FORMAT(dgsp.ngay_sua, '%d-%m-%Y lúc %T') AS ngay_sua, " +
 			"dgsp.ma_san_pham, tk.username, tk.avatar " +
 			"FROM khach_hang kh LEFT JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
 			"JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
@@ -56,8 +56,8 @@ public interface DanhGiaSanPhamMapper {
 	final String GET_ALL_DGSP_ORDER_BY_CURRENT_USER = "SELECT COUNT(phdgsp.ma_phan_hoi) as so_phan_hoi, " +
 			"kh.ten, kh.ma_khach_hang, " +
 			"dgsp.so_sao, dgsp.ma_danh_gia, dgsp.noi_dung, " +
-			"DATE_FORMAT(dgsp.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
-			"DATE_FORMAT(dgsp.ngay_sua, '%d-%m-%Y %T') AS ngay_sua, " +
+			"DATE_FORMAT(dgsp.ngay_tao, '%d-%m-%Y lúc %T') AS ngay_tao, " +
+			"DATE_FORMAT(dgsp.ngay_sua, '%d-%m-%Y lúc %T') AS ngay_sua, " +
 			"dgsp.ma_san_pham, tk.username, tk.avatar " +
 			"FROM khach_hang kh LEFT JOIN danh_gia_san_pham dgsp ON kh.ma_khach_hang = dgsp.ma_khach_hang " +
 			"JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +

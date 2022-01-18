@@ -3,6 +3,23 @@ const chiTietDatHangDOM = document.querySelector('.chiTietDatHang');
 const params = window.location.pathname.split('/').slice(0);
 const id = params.at(-1);
 
+const buildForm = (maSanPham, status) => {
+    return `
+        <form class="d-none">
+            <input type="hidden" name="maSanPham" value="${maSanPham}">
+            <input type="hidden" name="status" value="${status}">
+            <div class="form-group">
+                <label>Lý do</label>
+                <textarea class="form-control" name="lyDo"></textarea>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="button" class="toggle-form-btn btn btn-outline-danger">Đóng</button>
+                <button type="button" class="xac-nhan-btn btn btn-outline-success">Xác nhận</button>
+            </div>
+        </form>
+    `;
+}
+
 const showChiTietDatHang = async (skip = false) => {
     try {
         const { data: {
@@ -19,37 +36,35 @@ const showChiTietDatHang = async (skip = false) => {
             let chucNangHtml = "";
             if (status === -1) {
                 chucNangHtml = `
-                    <div class="d-flex justify-content-evenly text-danger">
+                    <div class="text-danger">
                         Đơn hàng đã bị hủy
                     </div>
                 `;
             }
             else if (status === 0) {
                 chucNangHtml = `
-                <button 
-                    data-id="${ma_san_pham}" data-status="-1"
-                    class="cap-nhat-btn d-block w-100 btn btn-danger"
-                >
-                    Từ chối
-                </button>
-                <button data-id="${ma_san_pham}" data-status="1"
-                    class="cap-nhat-btn d-block w-100 btn btn-primary"
-                >
-                    Bắt đầu chuyển hàng
-                </button>
+                    <div class="d-flex gap-2">
+                        <button class="toggle-form-btn d-block btn btn-danger">
+                            Từ chối
+                        </button>
+                        <button data-id="${ma_san_pham}" data-status="1"
+                            class="cap-nhat-btn d-block btn btn-primary"
+                        >
+                            Bắt đầu chuyển hàng
+                        </button>
+                    </div>
+                    ${buildForm(ma_san_pham, -1)}
                 `;
             } else if (status === 1) {
                 chucNangHtml = `
-                <button 
-                    data-id="${ma_san_pham}" data-status="0"
-                    class="cap-nhat-btn d-block w-50 btn btn-danger"
-                >
-                    Ngừng chuyển hàng
-                </button>
+                    <button class="toggle-form-btn d-block btn btn-danger">
+                        Ngừng chuyển hàng
+                    </button>
+                    ${buildForm(ma_san_pham, 0)}
                 `;
-            } else if(status === 2){
+            } else if (status === 2) {
                 chucNangHtml = `
-                    <div class="d-flex justify-content-evenly text-success">
+                    <div class="text-success">
                         Đã giao hàng
                     </div>
                 `;
@@ -107,7 +122,7 @@ const showChiTietDatHang = async (skip = false) => {
                             <div class="col-10">
                                 ${ma_nhan_hang}
                             </div>
-                            <div class="col-8 d-flex gap-2">
+                            <div class="col-12 chuc-nang">
                                 ${chucNangHtml}
                             </div>
                         </div>
@@ -117,17 +132,17 @@ const showChiTietDatHang = async (skip = false) => {
         }).join('');
         if (!skip) {
             thongTinNguoiDatDOM.innerHTML = `
-            <div class="col-2 fw-bold">Tên người đặt</div>
-            <div class="col-10">${ten}</div>
-            <div class="col-2 fw-bold">Địa chỉ</div>
-            <div class="col-10">${dia_chi}</div>
-            <div class="col-2 fw-bold">Số điện thoại</div>
-            <div class="col-10">${so_dien_thoai}</div>
-            <div class="col-2 fw-bold">Email</div>
-            <div class="col-10">${email}</div>
-            <div class="col-2 fw-bold">Ngày đặt</div>
-            <div class="col-10">${ngay_dat}</div>
-        `;
+                <div class="col-2 fw-bold">Tên người đặt</div>
+                <div class="col-10">${ten}</div>
+                <div class="col-2 fw-bold">Địa chỉ</div>
+                <div class="col-10">${dia_chi}</div>
+                <div class="col-2 fw-bold">Số điện thoại</div>
+                <div class="col-10">${so_dien_thoai}</div>
+                <div class="col-2 fw-bold">Email</div>
+                <div class="col-10">${email}</div>
+                <div class="col-2 fw-bold">Ngày đặt</div>
+                <div class="col-10">${ngay_dat}</div>
+            `;
         }
         chiTietDatHangDOM.innerHTML = allChiTietDatHang;
     } catch (error) {
@@ -139,10 +154,7 @@ const showChiTietDatHang = async (skip = false) => {
 
 showChiTietDatHang();
 
-const capNhatStatus = async (maSanPham, status) => {
-    const formData = new FormData();
-    formData.append('maSanPham', maSanPham);
-    formData.append('status', status);
+const capNhatTinhTrang = async (formData) => {
     try {
         await axios.post(`${baseURL}api/v1/user/seller/dathang/${id}/capnhat`, formData);
         showChiTietDatHang(true);
@@ -158,6 +170,21 @@ chiTietDatHangDOM.addEventListener('click', async (event) => {
     const { classList } = eventTarget;
     if (classList.contains('cap-nhat-btn')) {
         const { dataset: { id: maSanPham, status } } = eventTarget;
-        capNhatStatus(maSanPham, status);
+        const formData = new FormData();
+        formData.append('status', status);
+        formData.append('maSanPham', maSanPham);
+        capNhatTinhTrang(formData);
+        return;
+    }
+    if (classList.contains('toggle-form-btn')) {
+        const chucNangDOM = eventTarget.closest('.chuc-nang');
+        const formDOM = chucNangDOM.querySelector('form');
+        formDOM.classList.toggle('d-none');
+        return;
+    }
+    if (classList.contains('xac-nhan-btn')) {
+        const formDOM = eventTarget.closest('form');
+        const formData = new FormData(formDOM);
+        capNhatTinhTrang(formData);
     }
 });
