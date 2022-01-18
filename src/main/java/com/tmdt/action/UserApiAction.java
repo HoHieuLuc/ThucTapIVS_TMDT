@@ -53,6 +53,7 @@ public class UserApiAction extends ActionSupport {
     private Date denNgay;
     private int id;
     private String maNhanHang;
+    private String lyDo;
 
     // region Getter and Setter
     public String getMaSanPham() {
@@ -208,6 +209,17 @@ public class UserApiAction extends ActionSupport {
 
     public void setMaNhanHang(String maNhanHang) {
         this.maNhanHang = maNhanHang;
+    }
+
+    public String getLyDo() {
+        if (lyDo == null || lyDo.equals("")) {
+            return "Không có lý do";
+        }
+        return lyDo;
+    }
+
+    public void setLyDo(String lyDo) {
+        this.lyDo = lyDo;
     }
     // endregion
 
@@ -454,8 +466,6 @@ public class UserApiAction extends ActionSupport {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String capNhatTinhTrangDonDatHang() throws IOException {
-        // người bán hàng ko thể cập nhật status thành 2
-        // status 2 là người mua đã nhận hàng, người mua sẽ cập nhật
         if (status < -1 || status > 1) {
             return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
         }
@@ -471,9 +481,26 @@ public class UserApiAction extends ActionSupport {
         if (update == 0) {
             return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
         }
-        // TODO: sau khi cập nhật đơn đặt hàng thành công sẽ gửi thông báo đến người mua
+        if (status == -1 || status == 0) {
+            ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+            Map<String, Object> thongTinNguoiMua = datHangMapper.getIdTaiKhoanNguoiMua(id, maSanPham);
+            int idNguoiMua = (int) thongTinNguoiMua.get("id");
+            String _tenSanPham = (String) thongTinNguoiMua.get("ten_san_pham");
+            String ngayDat = (String) thongTinNguoiMua.get("ngay_dat");
+            String action = "";
+            if (status == -1) {
+                action = "đã bị hủy";
+            } else {
+                action = "đã bị ngừng vận chuyển";
+            }
+            String noiDung = "Sản phẩm <b>" + _tenSanPham + "</b> do bạn đặt ngày " + ngayDat + " " + action
+                    + ".\r\nLý do:\r\n"
+                    + getLyDo();
+            thongBaoMapper.taoThongBao(idNguoiMua, -1, noiDung);
+        }
         sqlSession.commit();
         sqlSession.close();
+        jsonRes.put("message", "Cập nhật tình trạng đơn đặt hàng thành công");
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
@@ -555,9 +582,21 @@ public class UserApiAction extends ActionSupport {
         if (update == 0) {
             return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
         }
-        // TODO: sau khi cập nhật đơn đặt hàng thành công sẽ gửi thông báo đến người bán
+        if (status == -1) {
+            ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
+            Map<String, Object> thongTinNguoiBan = datHangMapper.getIdTaiKhoanNguoiBan(id, maSanPham);
+            int idNguoiBan = (int) thongTinNguoiBan.get("id");
+            String tenNguoiMua = (String) session.getAttribute("ten");
+            String _tenSanPham = (String) thongTinNguoiBan.get("ten_san_pham");
+            String ngayDat = (String) thongTinNguoiBan.get("ngay_dat");
+            String noiDung = "Sản phẩm <b>" + _tenSanPham + "</b> do <u><i>" +
+                    tenNguoiMua + "</i></u> đặt ngày " +
+                    ngayDat + " đã bị hủy.\r\nLý do:\r\n" + getLyDo();
+            thongBaoMapper.taoThongBao(idNguoiBan, -1, noiDung);
+        }
         sqlSession.commit();
         sqlSession.close();
+        jsonRes.put("message", "Cập nhật tình trạng đơn đặt hàng thành công");
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 

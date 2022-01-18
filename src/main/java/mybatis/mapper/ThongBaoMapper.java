@@ -18,9 +18,9 @@ public interface ThongBaoMapper {
 
     // Lấy tất cả thông báo của khách hàng có id
     final String GET_ALL_THONG_BAO = "SELECT tb.ma_tb, tb.noi_dung, " +
-            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
+            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y lúc %T') AS ngay_tao, " +
             "CASE " +
-            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' "
+            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Hệ thống' "
             +
             "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) "
             +
@@ -34,9 +34,9 @@ public interface ThongBaoMapper {
 
     // Lấy tất cả thông báo chưa đọc của khách hàng có id
     final String GET_ALL_THONG_BAO_CHUA_DOC = "SELECT tb.ma_tb, tb.noi_dung, " +
-            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
+            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y lúc %T') AS ngay_tao, " +
             "CASE " +
-            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' "
+            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Hệ thống' "
             +
             "   ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) "
             +
@@ -70,9 +70,9 @@ public interface ThongBaoMapper {
 
     // Lấy tất cả thông báo của khách hàng có id
     final String GET_RECENTLY_THONG_BAO = "SELECT tb.ma_tb, tb.noi_dung, " +
-            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y %T') AS ngay_tao, " +
+            "DATE_FORMAT(tb.ngay_tao, '%d-%m-%Y lúc %T') AS ngay_tao, " +
             "CASE " +
-            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Quản trị viên' "
+            "   WHEN (SELECT ma_quyen FROM tai_khoan WHERE id = tb.id_nguoi_gui  ) = 'admin' THEN 'Hệ thống' "
             +
             "    ELSE (SELECT ten FROM khach_hang kh JOIN tai_khoan tk ON kh.id_tai_khoan = tk.id WHERE tk.id = tb.id_nguoi_gui ) "
             +
