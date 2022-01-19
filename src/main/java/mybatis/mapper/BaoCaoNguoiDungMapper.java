@@ -20,7 +20,8 @@ public interface BaoCaoNguoiDungMapper {
 
     // Hiển thị danh sách các báo cáo theo trạng thái
     final String LIST_BAO_CAO_BY_STATUS = "SELECT bcnd.ma_bao_cao,tk2.username as 'unameSender', " +
-            "tk1.username as 'unameReceiver', bcnd.ngay_tao, bcnd.noi_dung " +
+            "tk1.username as 'unameReceiver', bcnd.noi_dung, " +
+            "DATE_FORMAT(bcnd.ngay_tao, '%d-%m-%Y lúc %T') AS ngay_tao " +
             "FROM bao_cao_nguoi_dung bcnd LEFT JOIN tai_khoan tk1 ON tk1.id = bcnd.id_nguoi_nhan " +
             "LEFT JOIN tai_khoan tk2 ON tk2.id = bcnd.id_nguoi_gui " +
             "WHERE bcnd.status = #{status} " +
@@ -29,7 +30,8 @@ public interface BaoCaoNguoiDungMapper {
             "ORDER BY bcnd.ngay_tao DESC";
 
     @Select(LIST_BAO_CAO_BY_STATUS)
-    public List<Map<String, Object>> listBaoCaoByStatus(@Param("status") int status, @Param("search") String search);
+    public List<Map<String, Object>> listBaoCaoByStatus(@Param("status") int status,
+            @Param("search") String search);
 
     // Cập nhật trạng thái cho báo cáo
     final String UPDATE_BAO_CAO_STATUS = "UPDATE `bao_cao_nguoi_dung` SET `status` = #{status} WHERE `bao_cao_nguoi_dung`.`ma_bao_cao` = #{maBaoCao};";
@@ -43,6 +45,13 @@ public interface BaoCaoNguoiDungMapper {
     // sang -1
     final String TANG_SO_LAN_CANH_BAO = "UPDATE `tai_khoan` SET `so_lan_canh_cao` = `so_lan_canh_cao` + #{number} WHERE `tai_khoan`.`id` = #{idNguoiNhan};";
 
+    // get báo cáo
+    final String GET_BAO_CAO = "SELECT * FROM bao_cao_nguoi_dung " +
+            "WHERE ma_bao_cao = #{maBaoCao}";
+
+    @Select(GET_BAO_CAO)
+    public Map<String, Object> getBaoCao(@Param("maBaoCao") int maBaoCao);
+
     @Update(TANG_SO_LAN_CANH_BAO)
     // public int tangSoLanCanhBao(int idNguoiNhan);
     public int tangSoLanCanhBao(
@@ -50,13 +59,14 @@ public interface BaoCaoNguoiDungMapper {
             @Param("number") int number);
 
     // Hiển thị chi tiết báo cáo cụ thể
-    final String DETAIL_BAO_CAO = "SELECT bcnd.ma_bao_cao,tk2.username as 'unameSender',tk1.username as 'unameReceiver',bcnd.ngay_tao,bcnd.noi_dung,bcnd.status "
-            +
+    final String DETAIL_BAO_CAO = "SELECT bcnd.ma_bao_cao, tk2.username as 'unameSender', " +
+            "tk1.username as 'unameReceiver', bcnd.noi_dung, bcnd.status, " +
+            "DATE_FORMAT(bcnd.ngay_tao, '%d-%m-%Y lúc %T') AS ngay_tao " +
             "FROM bao_cao_nguoi_dung bcnd LEFT JOIN tai_khoan tk1 ON tk1.id = bcnd.id_nguoi_nhan " +
             "LEFT JOIN tai_khoan tk2 ON tk2.id = bcnd.id_nguoi_gui WHERE bcnd.ma_bao_cao = #{maBaoCao};";
 
     @Select(DETAIL_BAO_CAO)
-    public Map<String, Object> detaiBaoCao(int maBaoCao);
+    public Map<String, Object> detailBaoCao(int maBaoCao);
 
     // Lấy số lần cảnh cáo để nhắc nhở người bị báo cáo
     final String GET_SO_LAN_CANH_CAO = "SELECT so_lan_canh_cao FROM tai_khoan WHERE username = #{userName}";
