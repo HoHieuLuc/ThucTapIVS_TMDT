@@ -27,8 +27,8 @@
                     <th>Số lượng đã bán</th>
                     <th>Ngày đăng</th>
                     <th>Xếp hạng</th>
-                    <th>
-                        <div class="text-center noExl">Chức năng</div>
+                    <th class="noExl">
+                        <div class="text-center">Chức năng</div>
                     </th>
                 </tr>
             </thead>
