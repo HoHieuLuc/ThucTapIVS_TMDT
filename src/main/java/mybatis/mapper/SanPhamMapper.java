@@ -199,14 +199,17 @@ public interface SanPhamMapper {
             @Param("tenSanPham") String tenSanPham);
 
     // sửa sản phẩm
-    final String UPDATE_SP_INFO = "UPDATE `san_pham` SET `ten_san_pham`=#{tenSanPham},`mo_ta`=#{moTa},`gia`=#{gia}, "
-            +
-            "`status`=#{status},`ma_loai_san_pham`=#{maLoaiSanPham},`so_luong`=#{soLuong},`ngay_dang`=#{ngayDang} "
-            +
-            " WHERE `ma_san_pham` = #{maSanPham}  AND `ma_khach_hang`= #{maKhachHang};";
+    final String UPDATE_SP_INFO = "UPDATE san_pham SET ten_san_pham=#{tenSanPham}, mo_ta=#{moTa}, gia=#{gia}, " +
+            "so_luong=#{soLuong} " +
+            "WHERE ma_san_pham = #{maSanPham} AND ma_khach_hang= #{maKhachHang}";
 
     @Update(UPDATE_SP_INFO)
-    public int updateSanPham(SanPham sanpham);
+    public int updateSanPhamInfo(@Param("maSanPham") String maSanPham,
+            @Param("maKhachHang") int maKhachHang,
+            @Param("tenSanPham") String tenSanPham,
+            @Param("moTa") String moTa,
+            @Param("gia") int gia,
+            @Param("soLuong") int soLuong);
 
     // lấy tình trạng của 1 sản phẩm
     final String GET_STATUS_FROM_SAN_PHAM = "SELECT status FROM san_pham WHERE ma_san_pham = #{maSanPham} " +
@@ -318,7 +321,7 @@ public interface SanPhamMapper {
             @Param("search") String search);
 
     // Thay đổi trạng thái Sản phẩm (Duyệt = 1, Ẩn = 0)
-    final String UPDATE_SP_STATUS = "UPDATE `san_pham` SET `status` = #{status} WHERE `san_pham`.`ma_san_pham` = #{maSanPham};";
+    final String UPDATE_SP_STATUS = "UPDATE san_pham SET status = #{status} WHERE san_pham.ma_san_pham = #{maSanPham};";
 
     @Update(UPDATE_SP_STATUS)
     public int updateSanPhamStatus(
