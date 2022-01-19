@@ -140,12 +140,12 @@ public interface SanPhamMapper {
             "sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, " +
             "sp.so_luong_da_ban, AVG(dgsp.so_sao) AS xep_hang " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
-            "JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "WHERE sp.ma_khach_hang = #{maKhachHang} " +
             "AND sp.ten_san_pham LIKE CONCAT('%', #{search}, '%') " +
             "AND sp.status = #{status} " +
             "GROUP BY sp.ma_san_pham " +
+            "ORDER BY sp.ngay_dang DESC " +
             "LIMIT #{offset}, #{rowsPerPage}";
 
     @Select(GET_SAN_PHAM_BY_MA_KH)
