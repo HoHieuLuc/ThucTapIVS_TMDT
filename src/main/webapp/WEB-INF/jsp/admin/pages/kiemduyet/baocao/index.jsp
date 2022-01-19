@@ -22,22 +22,22 @@
   </div>
 
 <table class="tlt-fixed-table table table-striped table-hover" id="listBaoCaoTable"  filename="Danh sách kiểm duyệt báo cáo.xls">
-        <thead>
-            <tr>
-                <th>Username người gửi</th>
-                <th>Username người bị báo cáo</th>
-                <th>Ngày tạo</th>
-                <th  class="noExl"><div class="text-center">Chức năng</div></th>
-            </tr>
-        </thead>
-        <tbody id="baocao-list">
-        </tbody>
-    </table>
+    <thead>
+        <tr>
+            <th>Username người gửi</th>
+            <th>Username người bị báo cáo</th>
+            <th>Ngày tạo</th>
+            <th class="noExl"><div class="text-center">Chức năng</div></th>
+        </tr>
+    </thead>
+    <tbody id="baocao-list">
+    </tbody>
+</table>
 
 <script>
     document.getElementById('aside-kiem-duyet-bao-cao').classList.add('active');
     document.getElementById('aside-kiem-duyet').classList.add('menu-is-opening', 'menu-open');
 </script>
     <!--Js chính của trang này -->
-<script src='<c:url value="/js/admin/kiemduyet/listbaocao_bystatus.js"/>'></script>
+<script src='<c:url value="/js/admin/kiemduyet/baocao/index.js"/>'></script>
 <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
