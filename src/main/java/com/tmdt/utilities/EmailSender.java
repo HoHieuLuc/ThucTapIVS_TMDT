@@ -31,17 +31,22 @@ public class EmailSender {
     // public static final String = "minhthienmap@gmail.com"; // Địa chỉ email người
     // dùng
 
-    public static void senderEmail(String RECEIVE_EMAIL, String SUBJECT, String CONTENT) {
+    private EmailSender() {
+    }
+
+    public static void guiEmail(String receiveEmail, String subject, String content) {
         // Tạo biến chứa các thuộc tính cấu hình mail
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.host", HOST_NAME);
         props.put("mail.smtp.socketFactory.port", SSL_PORT);
+        props.put("mail.smtp.ssl.checkserveridentity", true);
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.port", SSL_PORT);
 
         // Lại tạo session gửi mail và login vào mail hệ thống
         Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(APP_EMAIL, APP_PASSWORD);
             }
@@ -51,11 +56,11 @@ public class EmailSender {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(APP_EMAIL));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(RECEIVE_EMAIL));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiveEmail));
 
             // Ui, đơn giản hơn code trên stackOverFlow
-            message.setSubject(SUBJECT);
-            String htmlContent = " <h1>Welcome to <a href=\"gpcoder.com\">GP Coder</a></h1> " + CONTENT +
+            message.setSubject(subject);
+            String htmlContent = " <h1>Welcome to <a href=\"gpcoder.com\">GP Coder</a></h1> " + content +
                     "<img src='https://cdn.discordapp.com/attachments/925309182574469143/931512663123566602/keqcopium.png' " 
                     + " width=\"300\" " + " height=\"180\" " + " border=\"0\" " + " alt=\"gpcoder.com\" />";
             message.setContent(htmlContent, "text/html");
@@ -67,7 +72,5 @@ public class EmailSender {
         } catch (MessagingException ex) {
             ex.printStackTrace();
         }
-
     }
-
 }

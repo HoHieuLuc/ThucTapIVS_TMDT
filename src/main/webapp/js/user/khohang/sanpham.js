@@ -78,7 +78,7 @@ const showSanPham = async (skip = false) => {
         tenDOM.textContent = ten_san_pham;
         loaiSanPhamDOM.textContent = ten_loai_sp;
         ngayDangDOM.textContent = ngayDang;
-        moTaDOM.textContent = mo_ta;
+        moTaDOM.innerHTML = mo_ta;
         giaDOM.textContent = giaVND;
         xepHangDOM.textContent = xep_hang;
         soLuongDOM.textContent = so_luong;

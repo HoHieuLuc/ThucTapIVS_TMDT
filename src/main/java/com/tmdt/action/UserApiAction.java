@@ -247,8 +247,7 @@ public class UserApiAction extends ActionSupport {
         return tenSanPham != null && tenSanPham.length() > 0 &&
                 tenSanPham.length() <= 255 &&
                 moTa != null && moTa.length() > 0 &&
-                gia > 0 && soLuong > 0 &&
-                validateAnhSanPham();
+                gia > 0 && soLuong > 0;
     }
 
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -311,7 +310,7 @@ public class UserApiAction extends ActionSupport {
             @Result(name = SUCCESS, location = "/index.html")
     })
     public String createSanPham() throws IOException {
-        if (!isValid()) {
+        if (!isValid() || !validateAnhSanPham()) {
             return CustomError.createCustomError("Dữ liệu không hợp lệ", 400, response);
         }
         if (anhSanPhams.size() > 5) {
@@ -362,6 +361,26 @@ public class UserApiAction extends ActionSupport {
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("message", insertedId);
         return JsonResponse.createJsonResponse(jsonRes, 201, response);
+    }
+
+    // action cập nhật sản phẩm
+    @Action(value = "/api/v1/user/sanpham/{maSanPham}/edit", results = {
+            @Result(name = SUCCESS, location = "/index.html")
+    })
+    public String editSanPham() throws IOException {
+        if (!isValid()) {
+            return CustomError.createCustomError("Dữ liệu không hợp lệ", 400, response);
+        }
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+        int maKhachHang = (int) session.getAttribute("maNguoiDung");
+        int numb = sanPhamMapper.updateSanPhamInfo(maSanPham, maKhachHang, tenSanPham, moTa, gia, soLuong);
+        if (numb == 0) {
+            return CustomError.createCustomError("Sản phẩm không tồn tại", 404, response);
+        }
+        sqlSession.commit();
+        sqlSession.close();
+        return CustomError.createCustomError("Cập nhật sản phẩm thành công", 200, response);
     }
 
     // cập nhật tình trạng sản phẩm

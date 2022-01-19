@@ -1,6 +1,17 @@
 const formDOM = document.querySelector("#them-san-pham-form");
 const loaiSanPhamDOM = document.querySelector("#loaiSanPham");
 
+ClassicEditor
+    .create(formDOM.querySelector('textarea[name="moTa"]'), {
+        removePlugins: [
+            'CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption',
+            'ImageStyle', 'ImageToolbar', 'ImageUpload', 'MediaEmbed'
+        ],
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
 const buildLoaiSanPham = async (maLoai) => {
     try {
         const { data: { loaiSanPhams } } = await axios.get(`${baseURL}api/v1/subcategory/${maLoai}`);

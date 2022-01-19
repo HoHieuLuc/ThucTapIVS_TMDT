@@ -24,22 +24,21 @@
 <!-- Script Xuất table sang excel -->
 <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 <!--Vì jquery load cuối cùng nên cái hàm này cũng để ở cuối luôn,ô yên tâm mấy trang  khác trong admin ko có lỗi -->
- <script>
-   jQuery(document).ready(function () {
+<script>
+jQuery(document).ready(function () {
+  $('#export-btn').on('click', function (e) {
+    e.preventDefault();
+    ResultsToTable();
+  });
 
-            $('#export-btn').on('click', function (e) {
-                e.preventDefault();
-                ResultsToTable();
-            });
-
-            function ResultsToTable() {
-                $("table").table2excel({
-                    exclude: ".noExl",
-                    name: "Results",
-                    filename: $("table").attr("filename")
-                });
-            }
-        });
- </script>
+  function ResultsToTable() {
+    $("table").table2excel({
+      exclude: ".noExl",
+      name: "Results",
+      filename: $("table").attr("filename")
+    });
+  }
+});
+</script>
 </body>
 </html>
