@@ -1,5 +1,6 @@
 const listBaoCaoDOM = document.querySelector('#baocao-list');
 const searchFormDOM = document.querySelector('.searchForm');
+const phanTrangBaoCaoDOM = document.querySelector('.phanTrangBaoCao');
 document.title = "Kiểm duyệt báo cáo người dùng";
 
 // Khởi tạo những biến liên quan đến tìm kiếm, lọc thông tin
@@ -37,12 +38,18 @@ const renderData = (datas) => {
     listBaoCaoDOM.innerHTML = allBaoCaos;
 }
 
+const changePage = (page) => {
+    changeURLparam("page", page);
+    showListBaoCao();
+};
+
 //Show list báo cáo lần đầu tiên
 const showListBaoCao = async () => {
     try {
         const newParams = window.location.search;
         const search = new URLSearchParams(newParams).get("search") ?? "";
         const status = new URLSearchParams(newParams).get("status") ?? 0;
+        const page = new URLSearchParams(newParams).get("page") ?? 1;
         let tinh_trang = "";
         if (status == -2) {
             tinh_trang = "Vi phạm nặng nhất";
@@ -59,13 +66,15 @@ const showListBaoCao = async () => {
         //Thêm tên trạng thái vào thuộc tính filename trong thẻ table..
         document.querySelector('.tlt-fixed-table').setAttribute("filename", `Danh sách báo cáo (${tinh_trang})`);
         const {
-            data: { list_baocaos }
+            data: { list_baocaos, totalPages }
         } = await axios.get(`${baseURL}api/v1/admin/baocao/getbystatus/${status}`, {
             params: {
-                search
+                search,
+                page
             }
         });
         renderData(list_baocaos);
+        phanTrangBaoCaoDOM.innerHTML = buildPagination(page, totalPages, 5, "changePage");
     } catch (error) {
         console.log(error);
     }
@@ -80,5 +89,6 @@ searchFormDOM.addEventListener('submit', (e) => {
     const search = formData.get('search');
     changeURLparam('status', status);
     changeURLparam('search', search);
+    removeURLparam('page');
     showListBaoCao();
 });

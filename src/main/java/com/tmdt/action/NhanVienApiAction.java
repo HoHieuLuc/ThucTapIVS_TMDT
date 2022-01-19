@@ -217,12 +217,20 @@ public class NhanVienApiAction {
     })
     public String getBaoCaoByStatus() throws IOException {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-
         BaoCaoNguoiDungMapper baoCaoNguoiDungMapper = sqlSession.getMapper(BaoCaoNguoiDungMapper.class);
         String _search = getSearch();
-        List<Map<String, Object>> listBaoCao = baoCaoNguoiDungMapper.listBaoCaoByStatus(status, _search);
+        int _page = getPage();
+        int _rowsPerPage = getRowsPerPage();
+
+        int countBaoCao = baoCaoNguoiDungMapper.countBaoCaoByStatus(status, _search);
+        int offset = (_page - 1) * _rowsPerPage;
+        int totalPages = (int) Math.ceil(countBaoCao / (double) _rowsPerPage);
+
+        List<Map<String, Object>> listBaoCao = baoCaoNguoiDungMapper.listBaoCaoByStatus(status, _search, offset,
+                _rowsPerPage);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         jsonRes.put("list_baocaos", listBaoCao);
+        jsonRes.put("totalPages", totalPages);
         sqlSession.close();
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }

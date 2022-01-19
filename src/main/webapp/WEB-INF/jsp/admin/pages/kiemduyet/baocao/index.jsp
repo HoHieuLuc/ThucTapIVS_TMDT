@@ -33,6 +33,7 @@
     <tbody id="baocao-list">
     </tbody>
 </table>
+<div class="phanTrangBaoCao d-flex justify-content-center"></div>
 
 <script>
     document.getElementById('aside-kiem-duyet-bao-cao').classList.add('active');
