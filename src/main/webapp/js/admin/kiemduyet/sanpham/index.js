@@ -48,9 +48,9 @@ const renderData = (datas, totalPage, currentPage) => {
                 <td>${ngay_dang}</td>
                 <td>${ten}</td>
                 <td>${ten_loai_sp}</td>
-                <td>
+                <td class="noExl">
                     <div class="d-flex justify-content-evenly">
-                         <a href="${baseURL}admin/sanpham/${ma_san_pham}"  class="noExl">Chi tiết</a>
+                        <a href="${baseURL}admin/kiemduyet/sanpham/${ma_san_pham}">Chi tiết</a>
                     </div>
                 </td>
             </tr>`;
@@ -69,7 +69,7 @@ const showSanPhams = async () => {
     const page = new URLSearchParams(newParams).get("page") ?? 1;
     const { data: {
         sanphams, total_page
-    } } = await axios.get(`${baseURL}api/v1/nhanvien/sanpham/getbystatus/${status}`, {
+    } } = await axios.get(`${baseURL}api/v1/admin/sanpham/getbystatus/${status}`, {
         params: {
             page,
             status: _status,

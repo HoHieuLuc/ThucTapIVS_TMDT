@@ -78,7 +78,7 @@ const showSanPhamDetail = async (skip = false) => {
         tenSanPhamDOM.textContent = ten_san_pham;
         loaiSanPhamDOM.href = `${baseURL}category/${ma_loai_sp}`;
         loaiSanPhamDOM.textContent = ten_loai_sp;
-        moTaSanPhamDOM.textContent = mo_ta;
+        moTaSanPhamDOM.innerHTML = mo_ta;
         giaDOM.innerHTML = gia.toLocaleString("vi-VN", {
             style: "currency",
             currency: "VND",

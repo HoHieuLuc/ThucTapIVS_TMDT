@@ -73,7 +73,7 @@ const buildThongKeChart = (thongKe) => {
 
 const thongKeTinhTrangDonHang = async (type, tuNgay, denNgay) => {
     try {
-        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/${type}`, {
+        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/admin/thongke/${type}`, {
             params: {
                 tuNgay,
                 denNgay,
@@ -91,7 +91,7 @@ thongKeTinhTrangDonHang(1, null, null);
 
 const thongKeDonGian = async () => {
     try {
-        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/0`);
+        const { data: { thong_ke } } = await axios.get(`${baseURL}api/v1/admin/thongke/0`);
         document.querySelector("#soDonHang").innerHTML = thong_ke.so_don_dat_hang;
         document.querySelector("#soSanPham").innerHTML = thong_ke.so_san_pham;
         document.querySelector("#soNguoiDung").innerHTML = thong_ke.so_thanh_vien;
@@ -121,7 +121,7 @@ formThongKeDOM.addEventListener('submit', async (event) => {
 
 const showTop10SanPhamBanChay = async () => {
     try {
-        const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/nhanvien/thongke/2`);
+        const { data: { thong_kes } } = await axios.get(`${baseURL}api/v1/admin/thongke/2`);
         console.log(thong_kes);
         const listThongKe = thong_kes.map((thong_ke) => {
             const { ten_san_pham, ten_loai_sp, so_luot_mua } = thong_ke;

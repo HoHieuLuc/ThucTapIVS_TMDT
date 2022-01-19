@@ -21,7 +21,7 @@
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/css/lightgallery-bundle.min.css" integrity="sha512-91yJwfiGTCo9TM74ZzlAIAN4Eh5EWHpQJUfvo/XhpH6lzQtiRFkFRW1W+JSg4ch4XW3/xzh+dY4TOw/ILpavQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<div class="row">
+<div class="row mb-3">
     <div class="col-6 inline-gallery-container" id="anhSanPham">
     </div>
     <div class="col-6">
@@ -33,9 +33,6 @@
         </div>
         <div>
             Ngày đăng: <span id="ngayDang"></span>
-        </div>
-        <div>
-            Mô tả: <p id="moTa" style="white-space: pre-line;" class="tlt-description"></p>
         </div>
         <div>
             Giá: <span id="gia"></span>
@@ -52,6 +49,10 @@
         <div>
             Tình trạng: <span id="tinhTrang"></span>
         </div>
+    </div>
+    <div class="col-12">
+        <h3>Mô tả:</h3>
+        <div id="moTa" class="tlt-description"></div>
     </div>
     <div class="col-12">
         <div class="d-flex justify-content-center">
