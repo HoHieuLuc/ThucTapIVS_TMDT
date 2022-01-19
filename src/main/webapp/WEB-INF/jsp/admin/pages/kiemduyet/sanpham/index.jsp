@@ -1,67 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-  <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
-    <style>
-    .inline-gallery-container {
-        padding-bottom: 30%;
-    }
-    .lg-backdrop {
-        background-color: white !important;
-    }
-    .lg-components{
-        background-color: white !important;
-    }
-    .lg-icon{
-        background-color: transparent !important;
-        color: black !important;
-    }
-    .lg-thumb-outer{
-        background-color: white !important;
-    }
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/css/lightgallery-bundle.min.css" />
-<div class="container mb-3">
-    <!-- Chi tiết sản phẩm -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6 border border-dark inline-gallery-container" id="anhSanPham">
-            </div>
-            <div class="col-md-6 position-relative">
-                <div class="row">
-                    <div class="col-4 border border-dark"><b>Tên Sản phẩm</b></div>
-                    <div class="col-8 border border-dark"> <p class="" id="tenSanPham"></p></div>
-                    <div class="col-4 border border-dark"><b>Người Đăng</b></div>
-                    <div class="col-8 border border-dark"> <p class="" id="nguoiDangSanPham"></p></div>
-                    <div class="col-4 border border-dark"><b>Mô Tả</b></div>
-                    <div class="col-8 border border-dark" > 
-                    <p class="" id="moTaSanPham" style="max-height: 4rem;
-                                                white-space: pre-line;
-                                                overflow-y: scroll;
-                                                display: block;"></p></div>
-                    <div class="col-4 border border-dark"><b>Giá</b></div>
-                    <div class="col-8 border border-dark"> <p class="" id="gia"></p></div>
-                    <div class="col-4 border border-dark"><b>Trạng Thái</b></div>
-                    <div class="col-8 border border-dark"> <p class="" id="status"></p></div>
-                    <div class="col-6 pt-3" id="chucNang">   
-                    </div>
-            </div>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
+<div class="container">
+  <div>
+    <form class="searchForm input-group mb-3">
+      <input name="search" type="text" class="form-control w-50" placeholder="Tìm kiếm">
+      <select id="listSPByStatus" name="status" class="form-select">
+        <option value="-1">Bị xóa</option>
+        <option value="0">Trong kho</option>
+        <option value="1" selected>Đang chờ duyệt</option>
+        <option value="2">Đang bán</option>
+      </select>
+      <input type="submit" class="btn btn-outline-secondary" type="button" value="Tìm kiếm">
+    </form>
+    <div class="row mb-3">
+        <div class="col-md-2">
+          <a class="btn btn-primary" id="export-btn">Xuất Excel</a>
         </div>
+        
     </div>
+  </div>
+  <table class="tlt-fixed-table table table-striped table-hover" id="myTable" filename="Danh sách kiểm duyệt sản phẩm.xls">
+    <thead>
+      <tr>
+        <th>
+          Tên sản phẩm
+          <button class="sort-btn sort-ten-desc border border-0 bg-transparent">
+            <i class="sort-icon fas fa-angle-up"></i>
+          </button>
+        </th>
+        <th>
+          Giá
+          <button class="sort-btn sort-gia-desc border border-0 bg-transparent">
+            <i class="sort-icon fas fa-angle-up"></i>
+          </button>
+        </th>
+        <th>Số lượng</th>
+        <th>Ngày đăng</th>
+        <th>Tên người bán</th>
+        <th>Loại</th>
+        <th class="noExl">
+          <div class="text-center">Chức năng</div>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="listSanPham"></tbody>
+  </table>
+  <div id="phanTrangSanPham" class="d-flex justify-content-center"></div>
 </div>
 
-
 <script>
-    document.getElementById('aside-kiem-duyet-san-pham').classList.add('active');
-    document.getElementById('aside-kiem-duyet').classList.add('menu-is-opening', 'menu-open');
+  document.getElementById('aside-kiem-duyet-san-pham').classList.add('active');
+  document.getElementById('aside-kiem-duyet').classList.add('menu-is-opening', 'menu-open');
 </script>
 
-<!-- JS thư viện ảnh sideshow -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/lightgallery.min.js"></script>
-<!-- lightgallery plugins -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/plugins/thumbnail/lg-thumbnail.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.4.0-beta.0/plugins/zoom/lg-zoom.min.js"></script>
-<!--Js chính của trang này -->
-<script src='<c:url value="/js/admin/kiemduyet/chitietsanpham.js"/>'></script>
-   
-   
+<script src='<c:url value="/js/admin/kiemduyet/sanpham/index.js"/>'></script>
 <jsp:include page="/WEB-INF/jsp/admin/include/footer.jsp" />
