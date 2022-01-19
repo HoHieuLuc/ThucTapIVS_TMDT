@@ -59,9 +59,14 @@ const showSanPhamList = async () => {
                     <td>${so_luong_da_ban}</td>
                     <td>${ngayDang}</td>
                     <td>${xep_hang ?? 0}</td>
-                    <td>
+                    <td class="noExl">
                         <div class="d-flex justify-content-evenly">
-                            <a class="noExl" href="${baseURL}user/sanpham/${ma_san_pham}" >Chi tiết</a>
+                            <a title="Chi tiết" href="${baseURL}user/sanpham/${ma_san_pham}">
+                                <i class="fas fa-info"></i>
+                            </a>
+                            <a title="Sửa" href="${baseURL}user/sanpham/${ma_san_pham}/edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>`;
