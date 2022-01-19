@@ -184,14 +184,14 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href='<c:url value="/admin/phe-duyet-san-pham"/>' class="nav-link"
+                <a href='<c:url value="/admin/kiemduyet/sanpham"/>' class="nav-link"
                   id="aside-kiem-duyet-san-pham">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sản phẩm</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href='<c:url value="/admin/phe-duyet-bao-cao"/>' class="nav-link" id="aside-kiem-duyet-bao-cao">
+                <a href='<c:url value="/admin/kiemduyet/baocao"/>' class="nav-link" id="aside-kiem-duyet-bao-cao">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Báo cáo</p>
                 </a>
