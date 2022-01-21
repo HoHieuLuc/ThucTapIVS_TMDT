@@ -11,7 +11,6 @@
 
 [5.Chạy trên localhost](#run_on_tomcat)
 
-[6.Hướng dẫn test chức năng của quản trị viên](#admin_guide)
 
 
 <a name = "download"></a>
@@ -86,6 +85,9 @@
 - Mở chrome, vào trang **localhost:8080**, nhấn vào liên kết màu xanh dương
 ![image](https://user-images.githubusercontent.com/31031585/150515695-6a560579-1553-4633-88cf-0cbb5366c02d.png)
 
+- Giao diện web xuất hiện, nghĩa là bạn đã chạy thành công
+
+![image](https://user-images.githubusercontent.com/31031585/150515848-5597df8e-4d49-4a41-bc2f-6d82cbbdd219.png)
 
 
 
