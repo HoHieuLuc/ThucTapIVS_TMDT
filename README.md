@@ -11,6 +11,7 @@
 
 [5.Chạy trên localhost](#run_on_tomcat)
 
+[6.Tài khoản admin, và tài khoản khách hàng để test] (#account_test).
 
 
 <a name = "download"></a>
@@ -89,6 +90,12 @@
 
 ![image](https://user-images.githubusercontent.com/31031585/150515848-5597df8e-4d49-4a41-bc2f-6d82cbbdd219.png)
 
+
+#
+<a name="account_test"></a>
+### 6. Tài khoản admin, và tài khoản khách hàng để test
+- Tất cả **username** tài khoản nằm trong table *"tai_khoan* đề có **password** là *"1111"*
+- Tài khoản admin có **username** là *"admin"*
 
 
 
