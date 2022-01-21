@@ -27,8 +27,10 @@ Thực hiện : **Lâm Minh Thiện**
 <a name = "import_sql"></a>
 ### 2. Nhập Database vào MySQL Server thông qua MySQL Workbench
 - Nhấn Rescan Server để tìm MySQL Server đang có 
+
 ![image](https://user-images.githubusercontent.com/31031585/150508757-9f7e6f43-6e7e-471d-afcc-eb4058553008.png)
 - Nhập mật khẩu để vào giao diện quản lý các Database 
+
 ![image](https://user-images.githubusercontent.com/31031585/150508905-3e08e999-6aa7-4b38-b1d8-758f30a97eaf.png)
 - Chọn Tab Server -> Data Import 
 ![image](https://user-images.githubusercontent.com/31031585/150509036-763adcb9-36bc-46f5-81fb-cdc39cb62b49.png)
