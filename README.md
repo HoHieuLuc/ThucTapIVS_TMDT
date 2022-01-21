@@ -58,8 +58,10 @@ Thực hiện : **Lâm Minh Thiện**
 <a name = "buildProject"></a>
 ### 4. Build Project
 - Mở *"Terminal"* và gõ lệnh *"mvn clean install"*
+
 ![image](https://user-images.githubusercontent.com/31031585/150513815-f482560f-43b6-4051-96b5-83d6a0d5ac4e.png)
 - Khi có dòng chữ "*BUILD SUCCESS*" là đã thành công
+
 ![image](https://user-images.githubusercontent.com/31031585/150513899-dddf4c9f-e50f-4b9c-99e0-3309f914836e.png)
 
 
