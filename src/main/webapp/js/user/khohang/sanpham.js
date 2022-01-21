@@ -56,20 +56,20 @@ const showSanPham = async (skip = false) => {
         if(status === 0) {
             tinhTrangDOM.innerHTML = 'Trong kho';
             chucNangDOM.innerHTML = `
-                <button class="xoa-btn btn btn-danger d-block w-100">Xóa</button>
-                <button class="yeu-cau-duyet-btn btn btn-success d-block w-100">Yêu cầu duyệt</button>
+                <button class="xoa-btn btn btn-danger d-block">Xóa</button>
+                <button class="yeu-cau-duyet-btn btn btn-success d-block">Yêu cầu duyệt</button>
             `;
         } 
         if(status === 1) {
             tinhTrangDOM.innerHTML = 'Đang chờ duyệt';
             chucNangDOM.innerHTML = `
-                <button class="huy-btn btn btn-danger d-block w-100">Hủy yêu cầu duyệt</button>
+                <button class="huy-btn btn btn-danger d-block">Hủy yêu cầu duyệt</button>
             `;
         }
         if(status === 2) {
             tinhTrangDOM.innerHTML = 'Đang bán';
             chucNangDOM.innerHTML = `
-                <button class="huy-btn btn btn-danger d-block w-100">Ngừng bán</button>
+                <button class="huy-btn btn btn-danger d-block">Ngừng bán</button>
             `;
         }
         if (skip){
