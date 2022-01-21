@@ -44,7 +44,7 @@ Thực hiện : **Lâm Minh Thiện**
  
  
  #
-<a name = "path_config"></a>
+<a name = "config"></a>
 ### 3. Thiết lập đường dẫn để lưu hình ảnh và cấu hình kết nối MySQL Server trên project
 - Mở Visual Studio Code, chọn File -> Open Folder để mở thu mục project vừa giải nén.
 - Mở file *"ProjectPath.java"* tại đường dẫn *"src\main\java\com\tmdt\utilities\ProjectPath.java*"
@@ -53,6 +53,14 @@ Thực hiện : **Lâm Minh Thiện**
 - Mở file *"SqlMapConfig.xml"* Thay đổi 2 thuộc tính *"value"* tại thẻ *"property*" của *"username"* và *"password"* 
 ![image](https://user-images.githubusercontent.com/31031585/150513274-44799d15-34e4-45f3-a259-62cde22b0ade.png)
 
+
+#
+<a name = "buildProject"></a>
+### 4. Build Project
+- Mở *"Terminal"* và gõ lệnh *"mvn clean install"*
+![image](https://user-images.githubusercontent.com/31031585/150513815-f482560f-43b6-4051-96b5-83d6a0d5ac4e.png)
+- Khi có dòng chữ "*BUILD SUCCESS*" là đã thành công
+![image](https://user-images.githubusercontent.com/31031585/150513899-dddf4c9f-e50f-4b9c-99e0-3309f914836e.png)
 
 
 
