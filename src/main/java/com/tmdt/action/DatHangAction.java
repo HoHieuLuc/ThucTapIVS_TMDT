@@ -54,11 +54,9 @@ public class DatHangAction extends ActionSupport {
             // đặt theo người bán
             if (!username.equals("null")) {
                 maDonDatHang = datHangMapper.themDonDHTheoSeller(maKhachHang, username);
-                // gửi mail
                 sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
             } else { // đặt tất cả
                 maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
-                // gửi mail
                 sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
             }
             if (sanPhams.isEmpty()){
