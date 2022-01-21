@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import com.tmdt.errors.CustomError;
+import com.tmdt.utilities.EmailSender;
 
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
@@ -47,6 +48,8 @@ public class DatHangAction extends ActionSupport {
         DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
+        // Lấy email khách hàng từ session
+        String email = (String) session.getAttribute("email");
         // Thêm đơn đặt hàng mới
         try {
             int maDonDatHang;
@@ -55,10 +58,12 @@ public class DatHangAction extends ActionSupport {
             if (!username.equals("null")) {
                 maDonDatHang = datHangMapper.themDonDHTheoSeller(maKhachHang, username);
                 // gửi mail
+                EmailSender.guiEmail(email, "Đặt hàng theo người bán " + username, "Đơn đặt hàng của bạn đang được tiếp nhận");
                 sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
             } else { // đặt tất cả
                 maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
                 // gửi mail
+                EmailSender.guiEmail(email, "Đặt hàng", "Đơn đặt hàng của bạn đang được tiếp nhận");
                 sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
             }
             if (sanPhams.isEmpty()){

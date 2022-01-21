@@ -7,6 +7,6 @@ public class EmailSenderUtilitiesTest {
         String RECEIVE_EMAIL = "minhthienmap@gmail.com";
         String SUBJECT = "Attack of Titan";
         String CONTENT = "Final Session Erren cày nát nhà";
-        EmailSender.senderEmail(RECEIVE_EMAIL, SUBJECT, CONTENT);
+        EmailSender.guiEmail(RECEIVE_EMAIL, SUBJECT, CONTENT);
     }
 }

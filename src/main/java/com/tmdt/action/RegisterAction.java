@@ -289,6 +289,8 @@ public class RegisterAction extends ActionSupport {
                 session.setAttribute("level", 0);
                 session.setAttribute("avatar", avatar);
                 session.setAttribute("permission", "KH");
+                // Thêm email vào session
+                session.setAttribute("email",email);
                 // không phải lỗi nhưng xài luôn cho tiện
                 return CustomError.createCustomError("Đăng ký thành công", 201, response);
             } catch (PersistenceException e) {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2022 at 05:53 AM
+-- Generation Time: Jan 21, 2022 at 09:46 AM
 -- Server version: 8.0.27
 -- PHP Version: 8.1.1
 
@@ -105,6 +105,18 @@ CREATE TABLE `bao_cao_nguoi_dung` (
   `ngay_tao` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+--
+-- Dumping data for table `bao_cao_nguoi_dung`
+--
+
+INSERT INTO `bao_cao_nguoi_dung` (`ma_bao_cao`, `id_nguoi_nhan`, `id_nguoi_gui`, `noi_dung`, `status`, `ngay_tao`) VALUES
+(1, 24, 7, 'abcd', -1, '2022-01-18 14:53:49'),
+(2, 27, 30, 'Giao hàng kém chất lượng', 0, '2022-01-18 15:01:02'),
+(3, 4, 29, '4214', 0, '2022-01-18 15:01:11'),
+(4, 7, 31, '124124', 1, '2022-01-18 15:01:19'),
+(5, 7, 18, '412412412', -2, '2022-01-18 15:01:27'),
+(6, 7, 4, '41241241', 2, '2022-01-18 15:01:43');
+
 -- --------------------------------------------------------
 
 --
@@ -130,7 +142,7 @@ INSERT INTO `chi_tiet_dat_hang` (`ma_dat_hang`, `ma_san_pham`, `so_luong`, `stat
 (20, '5dfb7106-651f-11ec-b702-7845f2f0d96e', 2, 0, '9FBCB2'),
 (21, '130ea67a-6528-11ec-b702-7845f2f0d96e', 2, -1, '57594C'),
 (21, '35a99f29-64da-11ec-bb14-8378cfa7d63d', 2, -1, 'D85BD3'),
-(21, '5dfb7106-651f-11ec-b702-7845f2f0d96e', 1, 0, '426B60'),
+(21, '5dfb7106-651f-11ec-b702-7845f2f0d96e', 1, -1, '426B60'),
 (21, 'test', 3, -1, 'B4BA57'),
 (25, '0eb9971b-6a4a-11ec-a83a-bbd4f44da03f', 2, -1, 'A1FC29'),
 (25, '5dfb7106-651f-11ec-b702-7845f2f0d96e', 1, 0, '16A41D'),
@@ -189,12 +201,48 @@ INSERT INTO `chi_tiet_dat_hang` (`ma_dat_hang`, `ma_san_pham`, `so_luong`, `stat
 (61, '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', 1, -1, '04CE42'),
 (62, '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', 1, -1, 'E092A0'),
 (63, 'aa76ecd2-6b6b-11ec-8506-571a7e295222', 2, 0, '50650F'),
-(64, '0eb9971b-6a4a-11ec-a83a-bbd4f44da03f', 2, 0, 'FAC14C'),
-(64, 'aa76ecd2-6b6b-11ec-8506-571a7e295222', 1, 0, '0ABD93'),
+(64, '0eb9971b-6a4a-11ec-a83a-bbd4f44da03f', 2, 1, 'FAC14C'),
+(64, 'aa76ecd2-6b6b-11ec-8506-571a7e295222', 1, 1, '0ABD93'),
 (65, '35a99f29-64da-11ec-bb14-8378cfa7d63d', 2, 1, '5627C0'),
-(65, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', 1, 0, '8F8E3E'),
+(65, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', 1, -1, '8F8E3E'),
 (66, '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', 1, 1, '1F9940'),
-(67, '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', 3, 2, 'AD7646');
+(67, '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', 3, 2, 'AD7646'),
+(72, '0eb9971b-6a4a-11ec-a83a-bbd4f44da03f', 1, -1, 'C5F880'),
+(72, '560c2201-6ef1-11ec-9aea-4c52b493c111', 1, -1, 'A18686'),
+(72, '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', 4, -1, '3EEBDA'),
+(72, 'aa76ecd2-6b6b-11ec-8506-571a7e295222', 1, 1, 'F4EE50'),
+(72, 'bc49e268-6528-11ec-b702-7845f2f0d96e', 2, 0, 'D32F3F'),
+(72, 'd23e005c-6ef6-11ec-9aea-4c52b493c111', 1, -1, 'FDC40C'),
+(73, 'bc49e268-6528-11ec-b702-7845f2f0d96e', 1, 0, '13E2F4'),
+(74, '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', 14, -1, '79E585'),
+(75, '5dfb7106-651f-11ec-b702-7845f2f0d96e', 1, 0, '256EDB');
+
+--
+-- Triggers `chi_tiet_dat_hang`
+--
+DELIMITER $$
+CREATE TRIGGER `thong_bao_don_hang` AFTER UPDATE ON `chi_tiet_dat_hang` FOR EACH ROW BEGIN
+	IF (NEW.status = 1) THEN
+    	INSERT INTO thong_bao(id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+        SELECT tk_nhan.id, -1, CONCAT("Sản phẩm <b>", sp.ten_san_pham, "</b> do bạn đặt ngày ", 					DATE_FORMAT(dh.ngay_dat, '%d-%m-%Y lúc %T'), " đang được vận chuyển."), NOW(), 0
+        FROM khach_hang kh_nhan JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
+        JOIN dat_hang dh ON dh.ma_dat_hang = NEW.ma_dat_hang
+        JOIN san_pham sp ON sp.ma_san_pham = NEW.ma_san_pham
+        WHERE kh_nhan.ma_khach_hang = dh.ma_khach_hang;
+    ELSEIF (NEW.status = 2) THEN
+    	INSERT INTO thong_bao(id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+        SELECT kh_nhan.id_tai_khoan, -1, 
+        CONCAT("Sản phẩm <b>", sp.ten_san_pham, "</b> do <u><i>", kh_mua.ten,"</i></u> đặt đã được giao thành công."),
+        NOW(), 0
+        FROM khach_hang kh_nhan JOIN san_pham sp ON sp.ma_khach_hang = kh_nhan.ma_khach_hang
+        JOIN dat_hang dh ON dh.ma_dat_hang = NEW.ma_dat_hang
+        JOIN khach_hang kh_mua ON kh_mua.ma_khach_hang = dh.ma_khach_hang
+        JOIN tai_khoan tk_mua ON tk_mua.id = kh_mua.id_tai_khoan
+        WHERE sp.ma_san_pham = NEW.ma_san_pham;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -250,12 +298,31 @@ INSERT INTO `danh_gia_san_pham` (`ma_danh_gia`, `ma_khach_hang`, `so_sao`, `noi_
 (23, 1, 1, '9999999999999', '35a99f29-64da-11ec-bb14-8378cfa7d63d', '2021-12-27 14:32:18', '2021-12-27 14:33:16'),
 (24, 1, 1, '41242w112212', 'test', '2021-12-28 08:05:52', '2021-12-28 08:05:52'),
 (25, 1, 5, 'aa', '1e717293-652c-11ec-b702-7845f2f0d96e', '2021-12-28 08:13:54', '2021-12-28 08:14:04'),
-(26, 1, 1, '412412', 'bc49e268-6528-11ec-b702-7845f2f0d96e', '2021-12-28 09:53:24', '2021-12-28 10:53:13'),
 (27, 1, 1, '4214', 'e4f55954-652b-11ec-b702-7845f2f0d96e', '2021-12-28 12:11:30', '2021-12-28 12:11:30'),
 (28, 21, 5, 'rất\r\nlà\r\nok', '0eb9971b-6a4a-11ec-a83a-bbd4f44da03f', '2021-12-31 21:59:29', '2021-12-31 21:59:29'),
 (32, 19, 4, 'fag\r\nga\r\nha\r\nh', '130ea67a-6528-11ec-b702-7845f2f0d96e', '2022-01-04 14:31:14', '2022-01-04 14:31:14'),
 (33, 19, 5, 'xd', 'aa76ecd2-6b6b-11ec-8506-571a7e295222', '2022-01-04 15:13:22', '2022-01-04 15:13:22'),
-(34, 6, 5, 'okkkkk', 'test', '2022-01-09 22:45:31', '2022-01-09 22:45:31');
+(34, 6, 5, 'okkkkk', 'test', '2022-01-09 22:45:31', '2022-01-09 22:45:31'),
+(38, 1, 1, '421421', '983c63d6-6d77-11ec-b3a9-b7f6ab7445fb', '2022-01-17 09:26:34', '2022-01-17 09:26:34');
+
+--
+-- Triggers `danh_gia_san_pham`
+--
+DELIMITER $$
+CREATE TRIGGER `thong_bao_danh_gia_san_pham` AFTER INSERT ON `danh_gia_san_pham` FOR EACH ROW BEGIN 
+	INSERT INTO thong_bao (id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+    SELECT tk_nhan.id, tk_gui.id, CONCAT("Đã đánh giá sản phẩm <b>", sp.ten_san_pham, "</b> của bạn.
+Số sao: ", 
+ NEW.so_sao, ".
+Nội dung: ", NEW.noi_dung ), NOW(), 0
+    FROM khach_hang kh_gui JOIN tai_khoan tk_gui ON tk_gui.id = kh_gui.id_tai_khoan
+    JOIN san_pham sp ON sp.ma_san_pham = NEW.ma_san_pham
+    JOIN khach_hang kh_nhan ON kh_nhan.ma_khach_hang = sp.ma_khach_hang
+    JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
+    WHERE kh_gui.ma_khach_hang = NEW.ma_khach_hang;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -325,7 +392,11 @@ INSERT INTO `dat_hang` (`ma_dat_hang`, `ma_khach_hang`, `ngay_dat`, `tong_tien`)
 (68, 10, '2022-01-12 11:44:09', 9602000),
 (69, 10, '2022-01-12 11:45:45', 9602000),
 (70, 10, '2022-01-12 11:45:50', 9602000),
-(71, 10, '2022-01-12 11:46:50', 7497000);
+(71, 10, '2022-01-12 11:46:50', 7497000),
+(72, 1, '2022-01-17 17:49:30', 30731000),
+(73, 1, '2022-01-18 08:11:26', 30000),
+(74, 1, '2022-01-18 08:11:33', 1792000),
+(75, 1, '2022-01-18 09:38:46', 1990000);
 
 -- --------------------------------------------------------
 
@@ -344,7 +415,6 @@ CREATE TABLE `gio_hang` (
 --
 
 INSERT INTO `gio_hang` (`ma_khach_hang`, `ma_san_pham`, `so_luong`) VALUES
-(1, 'bc49e268-6528-11ec-b702-7845f2f0d96e', 1),
 (10, '35a99f29-64da-11ec-bb14-8378cfa7d63d', 1),
 (10, '560c2201-6ef1-11ec-9aea-4c52b493c111', 63),
 (10, 'a862b5ce-64d6-11ec-bb14-8378cfa7d63d', 1);
@@ -503,7 +573,6 @@ INSERT INTO `phan_hoi_danh_gia_sp` (`ma_phan_hoi`, `ma_danh_gia`, `noi_dung`, `m
 (19, 25, 'mới mới\r\nmới\r\nmới', 6, '2021-12-31 21:40:30', NULL),
 (20, 28, 'ukm', 21, '2021-12-31 21:59:35', NULL),
 (21, 16, 'gaag', 21, '2021-12-31 22:03:10', NULL),
-(24, 26, 'asd', 6, '2022-01-02 08:29:15', NULL),
 (25, 16, 'f\r\ng\r\n\r\ng\r\nga\r\n\r\nga\r\n', 6, '2022-01-04 14:27:37', NULL),
 (28, 22, 'xd', 19, '2022-01-04 14:57:22', NULL),
 (29, 22, 'xd', 19, '2022-01-04 14:58:03', NULL),
@@ -518,7 +587,8 @@ INSERT INTO `phan_hoi_danh_gia_sp` (`ma_phan_hoi`, `ma_danh_gia`, `noi_dung`, `m
 (40, 28, 'afgggg', 6, '2022-01-04 22:57:14', NULL),
 (43, 8, 'gg', 6, '2022-01-04 22:57:39', NULL),
 (45, 21, 'gggag', 6, '2022-01-04 22:59:33', NULL),
-(46, 28, 'cảm ơn', 6, '2022-01-07 22:43:08', NULL);
+(46, 28, 'cảm ơn', 6, '2022-01-07 22:43:08', NULL),
+(52, 33, '41241241241241241412441241414124124214124214', 1, '2022-01-17 10:42:09', '2022-01-17 10:42:22');
 
 -- --------------------------------------------------------
 
@@ -564,9 +634,9 @@ CREATE TABLE `san_pham` (
 --
 
 INSERT INTO `san_pham` (`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`, `gia`, `status`, `ma_loai_san_pham`, `so_luong`, `ngay_dang`, `so_luong_da_ban`) VALUES
-('0eb9971b-6a4a-11ec-a83a-bbd4f44da03f', 6, 'Bộ máy tính I5 Siêu nhanh', '  Cấu hình phù hợp mọi Game thủ Chơi,đồ họa mượt  LoL, đột kích ,truy kích,free fire  ,văn phòng cấu hình cao', 4890000, 0, 20, 15, '2021-12-31 21:58:04', 0),
+('0eb9971b-6a4a-11ec-a83a-bbd4f44da03f', 6, 'Bộ máy tính I5 Siêu nhanh', '  Cấu hình phù hợp mọi Game thủ Chơi,đồ họa mượt  LoL, đột kích ,truy kích,free fire  ,văn phòng cấu hình cao', 4890000, 2, 20, 15, '2021-12-31 21:58:04', 0),
 ('130ea67a-6528-11ec-b702-7845f2f0d96e', 15, 'Áo vest nam DARNELL', 'Áo vest Darnell với thiết kế form vừa vặn, cấu trúc đường may tỉ mỉ, đẹp mắt, giúp bạn thể hiện phong cách thời trang nơi công sở. Bạn dễ dàng phối với áo sơ mi, áo polo,...item không thể thiếu trong tủ đồ của phái nam.\n\nChất liệu: Nhung Dạ\nMàu kẻ đơn giản, sang trọng\nKiểu dáng trẻ trung\nForm vừa vặn\nCông sở là quá chuẩn\nMàu sắc: Đen Trơn, Ghi Kẻ Ô, Kẻ Tím, Đen Nhung, Xanh Xước\nKích thước : S – M - L - XL\nThương hiệu: Darnell\nXuất xứ: Việt Nam\n\nĐẶC TÍNH VƯỢT TRỘI:\nChất vải co giãn, đẹp, bền, không bai, không xù, không bám dính\nĐường may tinh tế, chỉn chu, khéo léo\nMàu sắc đa dạng, trẻ trung\nChất lượng sản phẩm tốt, giá cả hợp lý', 1189000, 0, 13, 10, '2021-12-13 04:19:07', 0),
-('1e717293-652c-11ec-b702-7845f2f0d96e', 6, 'Áo phao lông vũ nam ', 'áo ba lỗ siêu nhẹ, giữ nhiệt tốt cản nước cản gió', 679000, 0, 15, 12, '2021-12-23 03:12:11', 0),
+('1e717293-652c-11ec-b702-7845f2f0d96e', 6, 'Áo phao lông vũ nam ', 'áo ba lỗ siêu nhẹ, giữ nhiệt tốt cản nước cản gió', 679000, 1, 15, 12, '2021-12-23 03:12:11', 0),
 ('35a99f29-64da-11ec-bb14-8378cfa7d63d', 15, 'Apple MacBook Air (2020)', 'Máy tính xách tay mỏng và nhẹ nhất của Apple, nay siêu mạnh mẽ với chip Apple M1. Xử lý công việc giúp bạn với CPU 8 lõi nhanh như chớp. Đưa các ứng dụng và game có đồ họa khủng lên một tầm cao mới với GPU 8 lõi. Đồng thời, tăng tốc các tác vụ máy học với Neural Engine 16 lõi. Tất cả gói gọn trong một thiết kế không quạt, giảm thiểu tiếng ồn, thời lượng pin dài nhất từ trước đến nay lên đến 18 giờ. (1) MacBook Air. Vẫn cực kỳ cơ động. Mà mạnh mẽ hơn nhiều.\n \nTính năng nổi bật \n•       Chip M1 do Apple thiết kế tạo ra một cú nhảy vọt về hiệu năng máy học, CPU và GPU \n•       Tăng thời gian sử dụng với thời lượng pin lên đến 18 giờ (1) \n•       CPU 8 lõi cho tốc độ nhanh hơn đến 3.5x, xử lý công việc nhanh chóng hơn bao giờ hết (2)  \n•       GPU lên đến 8 lõi với tốc độ xử lý đồ họa nhanh hơn đến 5x cho các ứng dụng và game đồ họa khủng (2)  \n•       Neural Engine 16 lõi cho công nghệ máy học hiện đại \n•       Bộ nhớ thống nhất 8GB giúp bạn làm việc gì cũng nhanh chóng và trôi chảy  \n•       Ổ lưu trữ SSD siêu nhanh giúp mở các ứng dụng và tập tin chỉ trong tích tắc \n•       Thiết kế không quạt giảm tối đa tiếng ồn khi sử dụng  \n•       Màn hình Retina 13.3 inch với dải màu rộng P3 cho hình ảnh sống động và chi tiết ấn tượng (3)\n•       Camera FaceTime HD với bộ xử lý tín hiệu hình ảnh tiên tiến cho các cuộc gọi video đẹp hình, rõ tiếng hơn \n•       Bộ ba micro phối hợp tập trung thu giọng nói của bạn, không thu tạp âm môi trường \n•       Wi-Fi 6 thế hệ mới giúp kết nối nhanh hơn \n•       Hai cổng Thunderbolt / USB 4 để sạc và kết nối phụ kiện \n•       Bàn phím Magic Keyboard có đèn nền và Touch ID giúp mở khóa và thanh toán an toàn hơn \n•       macOS Big Sur với thiết kế mới đầy táo bạo cùng nhiều cập nhật quan trọng cho các ứng dụng Safari, Messages và Maps \n•       Hiện có màu vàng kim, xám bạc và bạc \n\nPháp lý \nHiện có sẵn các lựa chọn để nâng cấp. \n(1) Thời lượng pin khác nhau tùy theo cách sử dụng và cấu hình. Truy cập apple.com/batteries để biết thêm thông tin. \n(2) So với thế hệ máy trước. \n(3) Kích thước màn hình tính theo đường chéo. ', 30700000, 0, 21, 20, '2021-12-24 00:00:00', 0),
 ('560c2201-6ef1-11ec-9aea-4c52b493c111', 6, 'Chuột không dây Bluetooth SIDOTECH', 'CHUỘT KHÔNG DÂY BLUETOOTH TỰ SẠC PIN SIDOTECH M1P\n\nƯU ĐIỂM NỔI BẬT CHUỘT KHÔNG DÂY BLUETOOTH SẠC PIN SIDOTECH M1P\n• Không cần sử dụng pin tiểu AAA\n• Sạc trực tiếp thông qua cổng USB\n• Một lần sạc đầy khoảng 2h và sử dụng trong 1 tuần liên tục\n• Có thể vừa sạc vừa dùng như một chiếc chuột có dây thông thường\n• Kết nối xa 10 mét\n• Độ nhạy DPI 1000/1200/1600 điều chỉnh thông qua nút\n• 3 chế độ kết nối, dùng cổng USB, Bluetooth, cổng Sạc\n• Thiết kế hiện đại thoải mái sang trọng như chuột của Apple\n• Nhiều màu để lựa chọn', 119000, 2, 22, 63, '2022-01-06 20:05:35', 0),
 ('5dfb7106-651f-11ec-b702-7845f2f0d96e', 16, 'Xe Đạp Trẻ Em LanQ FD', '- Tên sản phẩm : Xe Đạp Trẻ Em LanQ FD Có Giảm Xóc\n- Nhập khẩu và phân phối : Công Ty TNHH Toykid Việt Nam\n- Địa chỉ : 414 Bạch Đằng, phường Chương Dương, quận Hoàn Kiếm, Hà Nội\n- Xuất Xứ : Trung Quốc\n- Lưu ý : Không dùng cho trẻ em dưới 12 tháng tuổi', 1990000, 0, 25, 15, '2021-12-25 00:00:00', 0),
@@ -574,10 +644,26 @@ INSERT INTO `san_pham` (`ma_san_pham`, `ma_khach_hang`, `ten_san_pham`, `mo_ta`,
 ('a862b5ce-64d6-11ec-bb14-8378cfa7d63d', 15, 'Hub cổng chuyển đổi', 'Hub chuyển đa năng Baseus CAHUB-BG0G 16 trong 1 được trang bị gần như tất cả các cổng chuyển đổi cơ bản và hỗ trợ hầu hết các thiết bị số hiện nay từ Macbook, smartphone/ Tablet/ Laptop Android/Windows... HUB chuyển đổi có ngõ vào là cổng USB Type C và ngỏ ra là hầu hết các chuẩn giao tiếp phổ thông hiện nay như : USB 2.0/ USB 3.0 / HDMI/ VGA/ USB 3.0/ Card Reader/ RJ-45/AUX 3.5mm ...\n- Với Hub chuyển đa năng Baseus Working Station 16 in 1 Multifunctional bạn có thể dễ dàng xuất hình ảnh, âm thanh độ nét cao qua cổng HDMI/ VGA/ AUX 3.5mm, đồng bộ và chia sẽ dữ liệu/ hình ảnh từ thẻ nhớ, các thiết bị lưu trữ. Ngoài ra bộ HUB còn được trang bị cổng mạng LAN có dây (RJ-45) cho phép bạn có thể kết nối mạng ở những nơi không có Wifi . Bạn sẽ không còn phải gặp các phiền phức và bất tiện do thiếu cổng kết nối.\n- Sản phẩm được trang bị cổng HDMI và VGA hỗ trợ 4K ở ngõ ra cho phép bạn xuất hình ảnh từ Laptop ra 2 màn hình lớn khác nhau ở cả 2 chế độ song song hoặc mở rộng (chia/ghép màn hình) .\n- Trang bị chip xử lý thông minh, đảm bảo tốc độ truyền tải nhanh và ổn định , tương thích với hầu hết các thiết bị Type C . Chỉ việc cắm và sử dụng (Plug & Play) không cần phải thực hiện các thao tác cài đặt phức tạp .\n- Thiết kế dạng dock tiện dụng, bề mặt bằng nhôm tinh chế với tông màu xám sang trong và đẳng cấp tạo sự đồng bộ với thiết kế của Macbook.\nThông số kỹ thuật sản phẩm \n- Chất liệu: Hợp kim nhôm\n- Kích thước: 80mm * 86mm * 162mm\n- Trọng lượng: 400g\n- Giao diện: Loại-CPD (đầu vào) + Loại-C (đầu ra) + USB2.0 * 2 + VGA * 1 + 4K HD * 1 + - Bộ nguồn DC * 1 + RJ45 * 1 + SD + TF * 1 + USB 3.0 * 3+\n- Jack âm thanh loại: C + 3,5mm\n- Đầu vào PD loại C: 100W\n- 4K HD: Hỗ trợ màn hình 4K @ 30HZ HD\n- VGA: Hỗ trợ màn hình HD 1080P @ 60HZ\n- RJ45: Tốc độ mạng Gigabit, kết nối mạng có dây, kết nối mạng cho máy tính, máy tính bảng và điện thoại di động\n- USB3.0 * 3: đọc và ghi dữ liệu tốc độ cao của đĩa flash, tương thích hướng xuống với USB2.0 và USB1.1\n- USB2.0 * 2: đọc và ghi dữ liệu tốc độ cao của đĩa flash, tương thích hướng xuống với USB1.1\n- SD / TF: Hỗ trợ đọc dữ liệu tối đa 2T (không hỗ trợ đọc đồng thời, ưu tiên thẻ được đọc trước tiên)\n- Giắc âm thanh 3,5 mm: Hỗ trợ đầu vào và đầu ra\n- Loại-C * 2: Hỗ trợ đọc từ đĩa flash Loại-C (Không hỗ trợ đầu ra âm thanh Loại-c)\n- Giao diện: Loại-CPD (đầu vào) + Loại-C (đầu ra) + USB2.0 * 2 + VGA * 1 + 4K HD * 1 + Bộ nguồn DC * 1 + RJ45 * 1 + SD + TF * 1 + USB 3.0 * 3+\n- 16 in 1 Model (CAHUB-BG0G): USB 3.0*3 + USB 2.0*2 + HDMI +VGA +TF/SD Card Reader + RJ45 +PD + PC +3.5mm Jack + DC Port + PD Cable + UK/EU Plug + CN DC Cord (Suit)\nLưu ý \n- Do giới hạn về hệ thống của MACOS, MacBook không hỗ trợ tách thành 3 màn hình khác nhau.\n- Khi sử dụng một cổng HDMI, chất lượng hình ảnh là 4K / 60Hz, khi sử dụng hai cổng HDMI, chất lượng hình ảnh là 4K / 30Hz, khi sử dụng 3 cổng HDMI, chất lượng hình ảnh là 1080p\n- Khi nguồ', 2105000, 0, 22, 500, '2021-12-24 00:00:00', 0),
 ('aa76ecd2-6b6b-11ec-8506-571a7e295222', 6, 'Xe đạp điện DK Bike 133M ', 'Thông số kỹ thuật\nKích cỡ/Sizes	1593mm x 635mm x 1015mm\nMàu sắc/Colors	Đỏ, Ghi, Xanh cửu long, Cam\nẮc quy/Battery	Chì axit kín khí 48V-12A\nCông suất động cơ/Motor	600W\nVận tốc tối đa/Max speed	35 – 40 km/h\nQuãng đường di chuyển/Range	50 – 60km/lần sạc\nBánh xe trước/Front Wheel	Lốp 16″x3.0\nBánh xe sau/Rear Tires	Lốp 16″x3.0\nThắng trước/Front Brakes	Thắng tang trống\nThắng sau/Rear Brakes	Thắng tang trống\nSạc điện/Charge	Ắc quy tự ngắt khi sạc đầy', 25000000, 0, 25, 20, '2022-01-02 08:31:10', 0),
 ('bc49e268-6528-11ec-b702-7845f2f0d96e', 17, 'Quần lót ren lọt khe form T No Limit Miss K', '✨ Chất liệu ren nhập khẩu, thoáng mát và mềm mại\n✨ Form T lọt khe gợi cảm\n✨ Phù hợp với nhiều trang phục', 30000, 0, 18, 10, '2021-12-25 00:00:00', 0),
-('d23e005c-6ef6-11ec-9aea-4c52b493c111', 6, 'Đế Tản Nhiệt Máy Tính Xách Tay INPHIC R2 Với Hai Quạt Siêu Mát Dùng Cho Máy 14 đến 17 inch', 'Thương hiệu: INPHIC\nKích thước gói: 40,6 x 31,7 x 3,7 cm\nTrọng lượng: 760 ± 20 g\nModel: R2\nKích thước phù hợp cho máy tính: 14 đến 17 inch\nTấm làm mát máy tính xách tay R2 được phát triển bởi đội ngũ thiết kế sản phẩm xuất sắc của INPHIC. Hai quạt hoạt động mạnh mẽ nhưng cực kỳ yên tĩnh để bạn cảm thấy thoải mái nhất khi làm việc hoặc giải trí.\n- Kích thước sản phẩm: 390 x 280 x 28 mm.\n- Số lượng và kích thước quạt: 2 quạt lớn\n- Đường kính quạt: 125 mm \n- Tốc độ quạt: 1500 vòng / phút \n- Nguồn điện: USB 5 V DC.\n- Dòng điện làm việc: 1 A.\n- Công suất nguồn: 5 W.\nĐặc trưng:\n- Chân đế điều chỉnh 4 mức.\n- Phù hợp với các loại laptop từ 14 - 17 inch.\n- Mặt lưới kim loại.', 150000, 0, 22, 52, '2022-01-06 20:44:50', 0),
+('d23e005c-6ef6-11ec-9aea-4c52b493c111', 6, 'Đế Tản Nhiệt Máy Tính Xách Tay INPHIC R2 Với Hai Quạt Siêu Mát Dùng Cho Máy 14 đến 17 inch', 'Thương hiệu: INPHIC\nKích thước gói: 40,6 x 31,7 x 3,7 cm\nTrọng lượng: 760 ± 20 g\nModel: R2\nKích thước phù hợp cho máy tính: 14 đến 17 inch\nTấm làm mát máy tính xách tay R2 được phát triển bởi đội ngũ thiết kế sản phẩm xuất sắc của INPHIC. Hai quạt hoạt động mạnh mẽ nhưng cực kỳ yên tĩnh để bạn cảm thấy thoải mái nhất khi làm việc hoặc giải trí.\n- Kích thước sản phẩm: 390 x 280 x 28 mm.\n- Số lượng và kích thước quạt: 2 quạt lớn\n- Đường kính quạt: 125 mm \n- Tốc độ quạt: 1500 vòng / phút \n- Nguồn điện: USB 5 V DC.\n- Dòng điện làm việc: 1 A.\n- Công suất nguồn: 5 W.\nĐặc trưng:\n- Chân đế điều chỉnh 4 mức.\n- Phù hợp với các loại laptop từ 14 - 17 inch.\n- Mặt lưới kim loại.', 150000, -1, 22, 52, '2022-01-06 20:44:50', 0),
 ('e4f55954-652b-11ec-b702-7845f2f0d96e', 6, 'Quần jean nam LB, vải jean denim co giãn, màu xám đen trơn, phom slim fit DNBB5226', 'hông tin sản phẩm quần jeans dài nam LBjean 5226\nThương hiệu : LB\n Xuất xứ : được thiết kế và gia công tại xưỡng sản xuất LBjean,tp HCM – Việt Nam\n- Chất liệu : 100% jean Cotton\n- Chất jean cotton loại 1 dày dặn lên dáng chuẩn lắm các bạn nhé \n- Thiết kế cạp cao cá tính mặc vào tôn dáng lắm luôn nà \n- Dễ dàng phối đồ với áo polo thích hợp 4 mùa, mặc đi chơi dạo phố đều rất đẹp nà\n- Thiết kế theo xu hướng thời trang mới nhất.\n- Phong cách hàn quốc phù hợp mọi lứa tuổi \n- Quần jeans được làm màu bằng công nghệ mới giúp vãi mềm mịn và tươi màu, không bị phai bạc màu khi sữ dụng nên bạn yên tâm hàng luôn bền màu như mới nhé', 299000, 0, 14, 2626, '2021-12-25 00:00:00', 0),
 ('SP001', 15, 'Xe máy Honda Vision 2021 - Phiên bản cao cấp Smartkey', '\nĐặc điểm Honda Vision 2021\n\nThiết kế phía trước hiện đại và năng động\nThiết kế phía trước kế thừa sự năng động vốn có của Vision nhưng ấn tượng hơn với diện mạo hoàn toàn mới.\n\nLogo 3D nổi trên thân xe với đường nét liền mạch, rõ ràng mang đến hình ảnh trẻ trung và năng động\n', 36900000, 0, 24, 20, '2021-01-13 00:00:00', 0),
 ('test', 15, 'Sạc Dự Phòng TOPK I1007P 20W PD QC3.0 10000mAh Sạc Nhanh Hiển Thị Màn Hình Điện Tử', '  Chi tiết sản phẩm: \n  ☀ Tên sản phẩm: Sạc dự phòng TOPK I1006P màn hình kỹ thuật số 10000mAh\n  ☀ Màu sắc: Xanh Navy/Bạc\n  ☀ Kích thước: 135 * 66.2 * 14.7mm\n  ☀ Cổng đầu ra: Type-C (PD3.0), USB\n  ☀ Cổng đầu vào: Type-C, Micro\n  ☀ Dung lượng định mức: 6500mAh\n  ☀ Dung lượng: 10000mAh\n  ☀ Tương thích cho tất cả các thiết bị Apple, Type C và Android.\n  \n  Đặc trưng:\n  ☀ Sạc nhanh 20W PD3.0 + QC 3.0: Cổng USB-C phân phối nhanh hai chiều, hỗ trợ cung cấp năng lượng lên đến 20W ở đầu vào và đầu ra. Đầu ra QC 3.0 hỗ trợ 5V/3A, 9V/2A, 12V/1.66A. Bạn có thể sạc 2 điện thoại cùng một lúc, pin sẽ sạc nhanh cho các thiết bị của bạn khi sử dụng tất cả 2 đầu ra cùng nhau.\n  ☀ Kích thước nhỏ dung lượng lớn: Sạc dự phòng DP 10000mAh 20W có thể sạc cho iPhone 8 3.5 lần, iPhone 12 XS 2.7 lần, Xiaomi Mi 9 2.2 lần. Thích hợp cho công việc, du lịch, đi chơi, bạn không phải lo lắng về việc điện thoại bị hết pin.\n  ☀ Vỏ bằng hợp kim nhôm với màn hình LED: Thiết kế chống trượt và chống vân tay với màn hình LED để hiển thị dung lượng pin còn lại. Màn hình sẽ hiển thị \"PD\" khi sạc nhanh thiết bị của bạn. Khi lượng pin của iPhone bạn được sạc lên tới 80%, pin sạc dự phòng sẽ sạc iPhone của bạn ở tốc độ thường nhờ hệ thống an toàn IOS.\n  ☀ Bảo vệ an toàn: Các biện pháp bảo vệ tích hợp giúp bảo vệ các thiết bị của bạn khỏi cường độ điện quá mức, quá nhiệt và quá tải.', 259000, 0, 12, 100000, '2021-12-21 00:00:00', 25);
+
+--
+-- Triggers `san_pham`
+--
+DELIMITER $$
+CREATE TRIGGER `thong_bao_duyet_san_pham` AFTER UPDATE ON `san_pham` FOR EACH ROW BEGIN 
+	IF (NEW.status = 2) THEN
+    	INSERT INTO thong_bao (id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
+        SELECT tk.id, -1, CONCAT("Sản phẩm <b>", NEW.ten_san_pham, "</b> của bạn đã được duyệt."), NOW(), 0
+        FROM khach_hang kh
+        JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan
+        WHERE kh.ma_khach_hang = NEW.ma_khach_hang;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -616,7 +702,8 @@ CREATE TABLE `tai_khoan` (
 --
 
 INSERT INTO `tai_khoan` (`id`, `username`, `password`, `email`, `ngay_tao`, `so_dien_thoai`, `ngay_sinh`, `gioi_tinh`, `so_lan_canh_cao`, `status`, `ma_quyen`, `avatar`) VALUES
-(4, 'thienlam782', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'thien@gmail.com', '2021-12-21 00:00:00', '0828504336', '2021-12-09', 0, 0, 0, 'KH', '1.png'),
+(-1, 'administrator', '111', '11@gmail.com', '2022-01-18 03:35:35', '0828494124', '2022-01-17', 1, 0, 0, 'admin', NULL),
+(4, 'thienlam782', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'thien.lm.60cntt@ntu.edu.vn', '2021-12-21 00:00:00', '0828504336', '2021-12-09', 0, 0, 0, 'KH', '1.png'),
 (5, 'provjpzz123', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'fafa.gagag@gmail.com', '2021-12-22 00:00:00', '62626262', '2021-12-21', 0, 0, 0, 'KH', '2.png'),
 (7, 'admin', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'kingofika123@gmail.com', '2021-12-23 00:00:00', '5226262626', '2021-12-15', 0, 0, 0, 'admin', '3.png'),
 (10, 'trantest', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'x@x.x', '2021-12-23 00:00:00', '0987654321', '2021-12-23', 1, 0, 0, 'KH', '4.png'),
@@ -657,7 +744,23 @@ INSERT INTO `thong_bao` (`ma_tb`, `id_nguoi_nhan`, `id_nguoi_gui`, `noi_dung`, `
 (4, 4, 7, 'Vì \"nội dung\" nên bạn bị nhắc nhở mà không tăng số lần cảnh cáo. Nếu tái phạm sẽ bị cảnh cáo', '2022-01-12 18:32:11', 1),
 (5, 4, 5, 'abc', '2022-01-11 10:19:16', 1),
 (6, 4, 10, '412412', '2022-01-11 10:19:34', 1),
-(9, 7, 32, 'aaaaa', '2022-01-11 15:45:13', 1);
+(9, 7, 32, 'aaaaa', '2022-01-11 15:45:13', 1),
+(11, 10, 4, 'Đã đánh giá sản phẩm <b>Áo lót mút mỏng chất ren BOM SISTER BR009</b> của bạn.\r\nSố sao: 1.\r\nNội dung: abcd', '2022-01-17 07:51:31', 1),
+(12, 10, 4, 'Đã đánh giá sản phẩm <b>Áo lót mút mỏng chất ren BOM SISTER BR009</b> của bạn.\r\nSố sao: 1.\r\nNội dung: 51241', '2022-01-17 08:58:27', 1),
+(13, 10, 4, 'Đã đánh giá sản phẩm <b>Áo lót mút mỏng chất ren BOM SISTER BR009</b> của bạn.\r\nSố sao: 3.\r\nNội dung: 5424', '2022-01-17 09:21:14', 1),
+(14, 10, 4, 'Đã đánh giá sản phẩm <b>Áo lót mút mỏng chất ren BOM SISTER BR009</b> của bạn.\r\nSố sao: 1.\r\nNội dung: 421421', '2022-01-17 09:26:34', 1),
+(21, 10, -1, 'Sản phẩm <b>Áo lót mút mỏng chất ren BOM SISTER BR009</b> do <u><i>Lâm Minh Thiện</i></u> đặt ngày 18-01-2022 lúc 08:11:33 đã bị hủy.\r\nLý do:\r\nyes', '2022-01-18 09:36:50', 1),
+(22, 10, -1, 'Sản phẩm <b>Áo lót mút mỏng chất ren BOM SISTER BR009</b> do <u><i>Lâm Minh Thiện</i></u> đặt ngày 17-01-2022 lúc 17:49:30 đã bị hủy.\r\nLý do:\r\ntest', '2022-01-18 09:37:20', 1),
+(23, 23, -1, 'Sản phẩm <b>Bộ máy tính I5 Siêu nhanh</b> do bạn đặt ngày 11-01-2022 lúc 00:36:10 đang được vận chuyển.', '2022-01-18 11:28:25', 0),
+(24, 4, -1, 'Sản phẩm <b>Chuột không dây Bluetooth SIDOTECH</b> do bạn đặt ngày 17-01-2022 lúc 17:49:30 đang được vận chuyển.', '2022-01-18 16:08:17', 0),
+(25, 4, -1, 'Sản phẩm <b>Chuột không dây Bluetooth SIDOTECH</b> do bạn đặt ngày 17-01-2022 lúc 17:49:30 đã bị ngừng vận chuyển.\r\nLý do:\r\nhàng bị chặn ở cửa khẩu', '2022-01-18 16:34:12', 0),
+(26, 4, -1, 'Sản phẩm <b>Chuột không dây Bluetooth SIDOTECH</b> do bạn đặt ngày 17-01-2022 lúc 17:49:30 đã bị hủy.\r\nLý do:\r\nhàng bị chặn\r\nở cửa khẩu', '2022-01-18 16:34:34', 0),
+(27, 4, -1, 'Sản phẩm <b>Xe đạp điện DK Bike 133M </b> do bạn đặt ngày 17-01-2022 lúc 17:49:30 đang được vận chuyển.', '2022-01-18 16:38:38', 0),
+(28, 23, -1, 'Sản phẩm <b>Xe đạp điện DK Bike 133M </b> do bạn đặt ngày 11-01-2022 lúc 00:36:10 đang được vận chuyển.', '2022-01-18 16:40:01', 0),
+(29, 4, -1, 'Sản phẩm <b>Đế Tản Nhiệt Máy Tính Xách Tay INPHIC R2 Với Hai Quạt Siêu Mát Dùng Cho Máy 14 đến 17 inch</b> do bạn đặt ngày 17-01-2022 lúc 17:49:30 đã bị hủy.\r\nLý do:\r\nKhông có lý do', '2022-01-18 17:14:45', 0),
+(30, 23, -1, 'Sản phẩm <b>Hub cổng chuyển đổi</b> do <u><i>Quang Thế Bảo</i></u> đặt ngày 11-01-2022 lúc 00:50:48 đã bị hủy.\r\nLý do:\r\nabc', '2022-01-18 17:42:18', 0),
+(31, 24, -1, 'Sản phẩm <b>Xe Đạp Trẻ Em LanQ FD</b> do <u><i>Quang Thế Bảo</i></u> đặt ngày 10-01-2022 lúc 14:03:13 đã bị hủy.\r\nLý do:\r\nKhông có lý do', '2022-01-18 19:15:05', 0),
+(32, 10, -1, 'Sản phẩm <b>Bộ máy tính I5 Siêu nhanh</b> của bạn đã được duyệt.', '2022-01-19 07:33:08', 1);
 
 -- --------------------------------------------------------
 
@@ -853,19 +956,19 @@ ALTER TABLE `anh_san_pham`
 -- AUTO_INCREMENT for table `bao_cao_nguoi_dung`
 --
 ALTER TABLE `bao_cao_nguoi_dung`
-  MODIFY `ma_bao_cao` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ma_bao_cao` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `danh_gia_san_pham`
 --
 ALTER TABLE `danh_gia_san_pham`
-  MODIFY `ma_danh_gia` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `ma_danh_gia` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `dat_hang`
 --
 ALTER TABLE `dat_hang`
-  MODIFY `ma_dat_hang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `ma_dat_hang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `khach_hang`
@@ -889,7 +992,7 @@ ALTER TABLE `log`
 -- AUTO_INCREMENT for table `phan_hoi_danh_gia_sp`
 --
 ALTER TABLE `phan_hoi_danh_gia_sp`
-  MODIFY `ma_phan_hoi` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `ma_phan_hoi` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `tai_khoan`
@@ -901,7 +1004,7 @@ ALTER TABLE `tai_khoan`
 -- AUTO_INCREMENT for table `thong_bao`
 --
 ALTER TABLE `thong_bao`
-  MODIFY `ma_tb` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ma_tb` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Constraints for dumped tables
@@ -1023,53 +1126,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-ALTER TABLE san_pham ADD FULLTEXT(ten_san_pham)
-DELIMITER $$
-CREATE TRIGGER `thong_bao_danh_gia_san_pham` AFTER INSERT ON `danh_gia_san_pham`
- FOR EACH ROW BEGIN 
-	INSERT INTO thong_bao (id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
-    SELECT tk_nhan.id, tk_gui.id, CONCAT("Đã đánh giá sản phẩm <b>", sp.ten_san_pham, "</b> của bạn.\r\nSố sao: ", 
- NEW.so_sao, ".\r\nNội dung: ", NEW.noi_dung ), NOW(), 0
-    FROM khach_hang kh_gui JOIN tai_khoan tk_gui ON tk_gui.id = kh_gui.id_tai_khoan
-    JOIN san_pham sp ON sp.ma_san_pham = NEW.ma_san_pham
-    JOIN khach_hang kh_nhan ON kh_nhan.ma_khach_hang = sp.ma_khach_hang
-    JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
-    WHERE kh_gui.ma_khach_hang = NEW.ma_khach_hang;
-END$$
-DELIMITER;
-
-DELIMITER $$
-CREATE TRIGGER `thong_bao_don_hang` AFTER UPDATE ON `chi_tiet_dat_hang`
- FOR EACH ROW BEGIN
-	IF (NEW.status = 1) THEN
-    	INSERT INTO thong_bao(id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
-        SELECT tk_nhan.id, tk_gui.id, CONCAT("Sản phẩm <b>", sp.ten_san_pham, "</b> đang được vận chuyển."), NOW(), 0
-        FROM khach_hang kh_nhan JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
-        JOIN dat_hang dh ON dh.ma_dat_hang = NEW.ma_dat_hang
-        JOIN san_pham sp ON sp.ma_san_pham = NEW.ma_san_pham
-        JOIN khach_hang kh_gui ON kh_gui.ma_khach_hang = sp.ma_khach_hang
-        JOIN tai_khoan tk_gui ON tk_gui.id = kh_gui.id_tai_khoan
-        WHERE kh_nhan.ma_khach_hang = dh.ma_khach_hang;
-    ELSEIF (NEW.status = 2) THEN
-    	INSERT INTO thong_bao(id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
-        SELECT tk_nhan.id, -1, 
-        CONCAT("Sản phẩm <b>", sp.ten_san_pham, "</b> đã được giao thành công."), NOW(), 0
-        FROM khach_hang kh_nhan JOIN san_pham sp ON sp.ma_khach_hang = kh_nhan.ma_khach_hang
-        JOIN tai_khoan tk_nhan ON tk_nhan.id = kh_nhan.id_tai_khoan
-        WHERE sp.ma_san_pham = NEW.ma_san_pham;
-    END IF;
-END$$
-DELIMITER;
-
-DELIMITER $$
-CREATE TRIGGER `thong_bao_duyet_san_pham` AFTER UPDATE ON `san_pham`
- FOR EACH ROW BEGIN 
-	IF (NEW.status = 2) THEN
-    	INSERT INTO thong_bao (id_nguoi_nhan, id_nguoi_gui, noi_dung, ngay_tao, status)
-        SELECT tk.id, -1, CONCAT("Sản phẩm <b>", NEW.ten_san_pham, "</b> của bạn đã được duyệt."), NOW(), 0
-        FROM khach_hang kh
-        JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan
-        WHERE kh.ma_khach_hang = NEW.ma_khach_hang;
-    END IF;
-END $$
-DELIMITER;
