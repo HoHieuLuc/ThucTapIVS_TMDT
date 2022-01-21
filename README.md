@@ -1,6 +1,5 @@
 # HƯỚNG DẪN SỬ DỤNG CHƯƠNG TRÌNH
 
-Thực hiện : **Lâm Minh Thiện**
 ## Mục lục
 [1. Tải Source Code ?](#download)
 
@@ -83,6 +82,9 @@ Thực hiện : **Lâm Minh Thiện**
 - Chọn file WAR để khởi động Server
 
 ![image](https://user-images.githubusercontent.com/31031585/150515236-34b5310e-1183-470a-a290-de6cd3a7a366.png)
+
+- Mở chrome, vào trang **localhost:8080**, nhấn vào liên kết màu xanh dương
+![image](https://user-images.githubusercontent.com/31031585/150515695-6a560579-1553-4633-88cf-0cbb5366c02d.png)
 
 
 
