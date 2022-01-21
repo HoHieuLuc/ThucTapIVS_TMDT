@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import com.opensymphony.xwork2.ActionSupport;
 import com.tmdt.db.ConnectDB;
 import com.tmdt.errors.CustomError;
-import com.tmdt.utilities.EmailSender;
 
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
@@ -62,8 +61,6 @@ public class DatHangAction extends ActionSupport {
                 sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
             } else { // đặt tất cả
                 maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
-                // gửi mail, tạm ẩn vì tui chốt báo cáo rồi
-                //EmailSender.guiEmail(email, "Đặt hàng", "Đơn đặt hàng của bạn đang được tiếp nhận");
                 sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
             }
             if (sanPhams.isEmpty()){
