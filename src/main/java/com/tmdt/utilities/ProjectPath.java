@@ -11,6 +11,6 @@ public class ProjectPath {
 
     // có gì chỉnh trong đây, up lên rồi bỏ cái file này vô .gitignore luôn
     public static String getPath() {
-        return LINUX_PATH;
+        return THIEN_PATH;
     }
 }

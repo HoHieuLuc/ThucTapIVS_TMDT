@@ -57,13 +57,13 @@ public class DatHangAction extends ActionSupport {
             // đặt theo người bán
             if (!username.equals("null")) {
                 maDonDatHang = datHangMapper.themDonDHTheoSeller(maKhachHang, username);
-                // gửi mail
-                EmailSender.guiEmail(email, "Đặt hàng theo người bán " + username, "Đơn đặt hàng của bạn đang được tiếp nhận");
+                // gửi mail, tạm ẩn vì tui chốt báo cáo rồi
+               // EmailSender.guiEmail(email, "Đặt hàng theo người bán " + username, "Đơn đặt hàng của bạn đang được tiếp nhận");
                 sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
             } else { // đặt tất cả
                 maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
-                // gửi mail
-                EmailSender.guiEmail(email, "Đặt hàng", "Đơn đặt hàng của bạn đang được tiếp nhận");
+                // gửi mail, tạm ẩn vì tui chốt báo cáo rồi
+                //EmailSender.guiEmail(email, "Đặt hàng", "Đơn đặt hàng của bạn đang được tiếp nhận");
                 sanPhams = datHangMapper.getGioHangByMaKH(maKhachHang);
             }
             if (sanPhams.isEmpty()){
