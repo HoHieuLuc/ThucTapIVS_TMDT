@@ -155,14 +155,16 @@ public class GioHangAction extends ActionSupport {
         if (maKhachHang == gioHangMapper.getMaKhachHangByMaSP(maSanPham)) {
             return CustomError.createCustomError("Bạn không thể thêm sản phẩm của mình vào giỏ hàng", 403, response);
         }
-
+        int soLuongSPHienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
+        if(soLuongSPHienCo <= 0) {
+            return CustomError.createCustomError("Sản phẩm đã hết hàng", 403, response);
+        }
         // Thêm sản phẩm
         try {
             gioHangMapper.themSanPhamVaoGioHang(maKhachHang, maSanPham);
         } catch (PersistenceException e) {
             if (e.getMessage().contains("PRIMARY")) {
                 int soLuongSPTrongGioHang = gioHangMapper.getSoLuongSPTrongGioHang(maKhachHang, maSanPham);
-                int soLuongSPHienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
                 if (soLuongSPTrongGioHang >= soLuongSPHienCo) {
                     gioHangMapper.updateSoLuongSanPhamTrongGioHang(maKhachHang, maSanPham, soLuongSPHienCo);
                     return CustomError.createCustomError(
