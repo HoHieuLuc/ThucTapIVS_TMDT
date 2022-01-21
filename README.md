@@ -24,12 +24,14 @@ Thực hiện : **Lâm Minh Thiện**
 - Nhấn chuột vào ![image](https://user-images.githubusercontent.com/31031585/150507386-37c1cca1-f340-4551-854c-62edbd904993.png) để tải về máy
 - Giải nén vào vị trí nào đó bạn có thể dễ tìm.
 
+#
 <a name = "import_sql"></a>
 ### 2. Nhập Database vào MySQL Server thông qua MySQL Workbench
 - Nhấn Rescan Server để tìm MySQL Server đang có ![image](https://user-images.githubusercontent.com/31031585/150508757-9f7e6f43-6e7e-471d-afcc-eb4058553008.png)
 - Nhập mật khẩu để vào giao diện quản lý các Database ![image](https://user-images.githubusercontent.com/31031585/150508905-3e08e999-6aa7-4b38-b1d8-758f30a97eaf.png)
 - Chọn Tab Server -> Data Import ![image](https://user-images.githubusercontent.com/31031585/150509036-763adcb9-36bc-46f5-81fb-cdc39cb62b49.png)
 - Chọn Import from Self-Contained File và chọn tệp tin *"thuong_mai_dien_tu DATA Chuẩn 21-1-2022.sql"*
-- Nhấn chuột vào ![image](https://user-images.githubusercontent.com/31031585/150507386-37c1cca1-f340-4551-854c-62edbd904993.png) để tải về máy
-- Giải nén vào vị trí nào đó bạn có thể dễ tìm.
+- Nhấn *"Start Import"*
+- Tại tab Navigator, nhấn chuột vào biểu tượng ![image](https://user-images.githubusercontent.com/31031585/150509982-34d39d9d-88fc-41e1-9b66-d200aafffc86.png)
+
 
