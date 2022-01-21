@@ -11,7 +11,7 @@
 
 [5.Chạy trên localhost](#run_on_tomcat)
 
-[6.Tài khoản admin, và tài khoản khách hàng để test] (#account_test).
+[6.Tài khoản admin, và tài khoản khách hàng để test](#account_test).
 
 
 <a name = "download"></a>
