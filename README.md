@@ -6,15 +6,13 @@ Thực hiện : **Lâm Minh Thiện**
 
 [2.Nhập Database vào MySQL Server thông qua MySQL Workbench ](#import_sql)
 
-[3.Thiết lập đường dẫn để lưu hình ảnh ](#path_config)
+[3.Thiết lập đường dẫn để lưu hình ảnh và cấu hình kết nối MySQL Server trên project ](#config)
 
-[4.Thiết lập cấu hình kết nối MySQL Server trên project](#sqlMapConfig)
+[4.Build Project](#buildProject)
 
-[5.Build Project](#buildProject)
+[5.Chạy trên localhost](#run_on_tomcat)
 
-[6.Chạy trên localhost](#run_on_tomcat)
-
-[7.Hướng dẫn test chức năng của quản trị viên](#admin_guide)
+[6.Hướng dẫn test chức năng của quản trị viên](#admin_guide)
 
 
 <a name = "download"></a>
@@ -47,12 +45,12 @@ Thực hiện : **Lâm Minh Thiện**
  
  #
 <a name = "path_config"></a>
-### 3. Thiết lập đường dẫn để lưu hình ảnh
+### 3. Thiết lập đường dẫn để lưu hình ảnh và cấu hình kết nối MySQL Server trên project
 - Mở Visual Studio Code, chọn File -> Open Folder để mở thu mục project vừa giải nén.
 - Mở file *"ProjectPath.java"* tại đường dẫn *"src\main\java\com\tmdt\utilities\ProjectPath.java*"
 - Tạo biến *"static Final String"* và chỉnh sửa tựa như hình dưới đây:
 ![image](https://user-images.githubusercontent.com/31031585/150512639-30536628-bc48-4af7-b4ce-b3d1f04da423.png)
-- Mở file *SqlMapConfig.xml* Thay đổi 2 thuộc tính *"value"* tại thẻ *"property*" của *"username"* và *"password"* 
+- Mở file *"SqlMapConfig.xml"* Thay đổi 2 thuộc tính *"value"* tại thẻ *"property*" của *"username"* và *"password"* 
 ![image](https://user-images.githubusercontent.com/31031585/150513274-44799d15-34e4-45f3-a259-62cde22b0ade.png)
 
 
