@@ -77,15 +77,14 @@ public interface SanPhamMapper {
 
     // Xem chi tiết sản phẩm
     final String SAN_PHAM_DETAIL = "SELECT sp.ma_san_pham, sp.ten_san_pham, kh.ten, " +
-            "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, "
-            +
+            "sp.mo_ta, sp.gia, sp.status, lsp.ten_loai_sp, sp.so_luong, sp.ngay_dang, sp.so_luong_da_ban, " +
             "tk.username, tk.avatar, AVG(dgsp.so_sao) AS xep_hang, lsp.ma_loai_sp, lsp.ma_loai_cha " +
             "FROM SAN_PHAM sp JOIN LOAI_SAN_PHAM lsp ON sp.MA_LOAI_SAN_PHAM = lsp.MA_LOAI_SP " +
             "LEFT JOIN danh_gia_san_pham dgsp ON dgsp.ma_san_pham = sp.ma_san_pham " +
             "RIGHT JOIN khach_hang kh ON kh.ma_khach_hang = sp.ma_khach_hang " +
             "JOIN tai_khoan tk ON tk.id = kh.id_tai_khoan " +
             "WHERE sp.ma_san_pham = #{maSanPham} " +
-            "GROUP BY sp.ma_san_pham ";
+            "GROUP BY sp.ma_san_pham";
 
     @Select(SAN_PHAM_DETAIL)
     public Map<String, Object> getDetailSanPham(String maSanPham);
@@ -209,6 +208,23 @@ public interface SanPhamMapper {
             @Param("tenSanPham") String tenSanPham,
             @Param("moTa") String moTa,
             @Param("gia") int gia,
+            @Param("soLuong") int soLuong);
+
+    // cập nhật số lượng sản phẩm khi đặt hàng
+    final String UPDATE_SO_LUONG_SAN_PHAM = "UPDATE san_pham SET so_luong=so_luong - #{soLuong} " +
+            "WHERE ma_san_pham = #{maSanPham} AND ma_khach_hang= #{maKhachHang}";
+
+    @Update(UPDATE_SO_LUONG_SAN_PHAM)
+    public int updateSoLuongSanPham(@Param("maSanPham") String maSanPham,
+            @Param("maKhachHang") int maKhachHang,
+            @Param("soLuong") int soLuong);
+
+    // cập nhật số lượng đã bán khi nhận được hàng
+    final String UPDATE_SO_LUONG_DA_BAN = "UPDATE san_pham SET so_luong_da_ban=so_luong_da_ban + #{soLuong} " +
+            "WHERE ma_san_pham = #{maSanPham}";
+
+    @Update(UPDATE_SO_LUONG_DA_BAN)
+    public int updateSoLuongDaBan(@Param("maSanPham") String maSanPham,
             @Param("soLuong") int soLuong);
 
     // lấy tình trạng của 1 sản phẩm

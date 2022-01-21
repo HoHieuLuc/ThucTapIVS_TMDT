@@ -56,6 +56,7 @@
                 Cửa hàng <a href="" class="" id="nguoiDangSanPham"></a>
                 <div id="danhGia"></div>
                 <h4 id="gia"></h4>
+                <div id="soLuong"></div>
                 <div class="row mx-auto gap-2">
                     <button type="button" id="addToCartBtn" class="add-to-cart-btn col-12 col-md-5 btn btn-warning">
                         Thêm vào giỏ hàng <i class="fas fa-cart-plus"></i>
@@ -159,5 +160,6 @@
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src='<c:url value="/js/product/suggested-product.js"/>'></script>
 <script src='<c:url value="/js/product/sanpham.js"/>'></script>
+<script src='<c:url value="/js/product/danhgia.js"/>'></script>
 
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp" />

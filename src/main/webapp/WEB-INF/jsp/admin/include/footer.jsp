@@ -19,8 +19,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- AdminLTE App -->
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-<!-- Script xử lý thông báo -->
-<script src='<c:url value="/js/listThongBao.js"/>'></script>
 <!-- Script Xuất table sang excel -->
 <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 <!--Vì jquery load cuối cùng nên cái hàm này cũng để ở cuối luôn,ô yên tâm mấy trang  khác trong admin ko có lỗi -->

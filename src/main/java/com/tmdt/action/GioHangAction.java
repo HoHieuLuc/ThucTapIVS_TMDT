@@ -72,25 +72,13 @@ public class GioHangAction extends ActionSupport {
             @InterceptorRef(value = "khachHangStack"),
     })
     public String getGioHangData() throws IOException {
-
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
         GioHangMapper gioHangMapper = sqlSession.getMapper(GioHangMapper.class);
-
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
         // Tạo list gioHangs;
         List<Map<String, Object>> gioHangs = new ArrayList<Map<String, Object>>();
-        /*
-         * if (username != null) {
-         * Map<String, Object> sellerInfo = gioHangMapper.getSellerInfo(username);
-         * List<Map<String, Object>> sanPhams =
-         * gioHangMapper.getGioHangBySeller(maKhachHang, username);
-         * Map<String, Object> sanPhamsObject = new HashMap<String, Object>();
-         * sanPhamsObject.put("san_phams", sanPhams);
-         * gioHangs.add(sanPhamsObject);
-         * } else {
-         */
         // Lấy seller id cho các sản phẩm trong giỏ hàng
         List<Map<String, Object>> sellerList = new ArrayList<Map<String, Object>>();
         if (username != null) {
@@ -104,12 +92,9 @@ public class GioHangAction extends ActionSupport {
             seller.put("san_phams", sanPhams);
         }
         gioHangs.addAll(sellerList);
-        // }
         sqlSession.commit();
         sqlSession.close();
-
         Map<String, Object> jsonRes = new HashMap<String, Object>();
-
         jsonRes.put("gio_hangs", gioHangs);
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
@@ -155,14 +140,16 @@ public class GioHangAction extends ActionSupport {
         if (maKhachHang == gioHangMapper.getMaKhachHangByMaSP(maSanPham)) {
             return CustomError.createCustomError("Bạn không thể thêm sản phẩm của mình vào giỏ hàng", 403, response);
         }
-
+        int soLuongSPHienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
+        if(soLuongSPHienCo <= 0) {
+            return CustomError.createCustomError("Sản phẩm đã hết hàng", 403, response);
+        }
         // Thêm sản phẩm
         try {
             gioHangMapper.themSanPhamVaoGioHang(maKhachHang, maSanPham);
         } catch (PersistenceException e) {
             if (e.getMessage().contains("PRIMARY")) {
                 int soLuongSPTrongGioHang = gioHangMapper.getSoLuongSPTrongGioHang(maKhachHang, maSanPham);
-                int soLuongSPHienCo = gioHangMapper.getSoLuongSPHienCo(maSanPham);
                 if (soLuongSPTrongGioHang >= soLuongSPHienCo) {
                     gioHangMapper.updateSoLuongSanPhamTrongGioHang(maKhachHang, maSanPham, soLuongSPHienCo);
                     return CustomError.createCustomError(
@@ -237,7 +224,11 @@ public class GioHangAction extends ActionSupport {
             sqlSession.commit();
             sqlSession.close();
             jsonRes.put("soLuong", soLuongSPHienCo);
-            jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSPHienCo + " sản phẩm cho sản phẩm này");
+            if (soLuongSPHienCo <= 0){
+                jsonRes.put("message", "Sản phẩm đã hết hàng");
+            } else {
+                jsonRes.put("message", "Bạn chỉ có thể đặt tối đa " + soLuongSPHienCo + " sản phẩm cho sản phẩm này");
+            }
             return JsonResponse.createJsonResponse(jsonRes, 403, response);
         }
         gioHangMapper.updateSoLuongSanPhamTrongGioHang(maKhachHang, maSanPham, soLuong);
