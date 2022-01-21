@@ -488,17 +488,23 @@ public class UserApiAction extends ActionSupport {
         if (status < -1 || status > 1) {
             return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
         }
-        // TODO: nếu status = 1 (đang ship) thì cập nhật lại số lượng sản phẩm luôn
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         int maNguoiBan = (int) session.getAttribute("maNguoiDung");
-        if (datHangMapper.getCurrentStatusChiTietDatHangSeller(id, maSanPham, maNguoiBan) == 2) {
+        Map<String, Object> chiTietDatHang = datHangMapper.getChiTietDatHang(id, maSanPham, maNguoiBan);
+        if ((int) chiTietDatHang.get("status") == 2) {
             return CustomError.createCustomError("Đơn đặt hàng đã được nhận", 403, response);
         }
         int update = datHangMapper.capNhatTinhTrangChiTietDatHangNguoiBan(status, id, maSanPham, maNguoiBan);
         if (update == 0) {
-            return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
+            return CustomError.createCustomError("Số lượng hàng không đủ", 403, response);
+        }
+        int soLuongDatHang = (int) chiTietDatHang.get("so_luong");
+        // cập nhật số lượng sản phẩm còn lại khi chuyển sang giai đoạn chuyển hàng
+        if (status == 1) {
+            SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+            sanPhamMapper.updateSoLuongSanPham(maSanPham, maNguoiBan, soLuongDatHang);
         }
         if (status == -1 || status == 0) {
             ThongBaoMapper thongBaoMapper = sqlSession.getMapper(ThongBaoMapper.class);
@@ -510,6 +516,9 @@ public class UserApiAction extends ActionSupport {
             if (status == -1) {
                 action = "đã bị hủy";
             } else {
+                // cập nhật số lượng sản phẩm khi đơn bị ngừng vận chuyển
+                SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+                sanPhamMapper.updateSoLuongSanPham(maSanPham, maNguoiBan, -soLuongDatHang);
                 action = "đã bị ngừng vận chuyển";
             }
             String noiDung = "Sản phẩm <b>" + _tenSanPham + "</b> do bạn đặt ngày " + ngayDat + " " + action
@@ -579,21 +588,24 @@ public class UserApiAction extends ActionSupport {
         DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
         Map<String, Object> jsonRes = new HashMap<String, Object>();
         int maNguoiMua = (int) session.getAttribute("maNguoiDung");
-        Map<String, Object> currentStatus = datHangMapper.getStatusAndMaNhanHangCTDHNguoiMua(maNguoiMua, id, maSanPham);
+        Map<String, Object> chiTietDatHang = datHangMapper.getChiTietDatHangChoNguoiMua(maNguoiMua, id, maSanPham);
         // không tìm thấy status tức là chi tiết đặt hàng ko tồn tại
         // hoặc chi tiết đặt hàng đó ko phải của người mua
         // status hiện tại = 1 là đang vận chuyển, mình chỉ cho 1 nút duy nhất là "đã
         // nhận được hàng"
         // suy ra cập nhật status = 2
         // status hiện tại là 0 là đang chờ, lúc này mình có thể hủy
-        if (currentStatus == null) {
+        if (chiTietDatHang == null) {
             return CustomError.createCustomError("Không tìm thấy đơn đặt hàng", 404, response);
-        } else if ((int) currentStatus.get("status") == 1) {
-            if (!maNhanHang.equals(currentStatus.get("ma_nhan_hang"))) {
+        } else if ((int) chiTietDatHang.get("status") == 1) {
+            if (!maNhanHang.equals(chiTietDatHang.get("ma_nhan_hang"))) {
                 return CustomError.createCustomError("Mã nhận hàng không chính xác", 401, response);
             }
             status = 2;
-        } else if ((int) currentStatus.get("status") == 0) {
+            int soLuongDatHang = (int) chiTietDatHang.get("so_luong");
+            SanPhamMapper sanPhamMapper = sqlSession.getMapper(SanPhamMapper.class);
+            sanPhamMapper.updateSoLuongDaBan(maSanPham, soLuongDatHang);
+        } else if ((int) chiTietDatHang.get("status") == 0) {
             status = -1;
         }
         int update = datHangMapper.capNhatTinhTrangChiTietDatHangNguoiMua(maNguoiMua, id, maSanPham, status);

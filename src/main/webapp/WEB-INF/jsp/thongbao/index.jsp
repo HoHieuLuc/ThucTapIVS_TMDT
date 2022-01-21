@@ -34,6 +34,7 @@
 <script>
     document.getElementById('aside-thong-bao').classList.add('active');
 </script>
+<script src='<c:url value="/js/thongbao/all-thongbao.js"/>'></script>
 
 <%-- Kiểm tra footer cho từng đối tượng user hoặc admin --%>
 <c:choose>

@@ -10,10 +10,8 @@
     <div class="col-md-12 d-flex justify-content-center fs-4">
         Thông tin người bán
     </div>
-    <div class="col-md-3">
-        <div>
-          <img src="" alt="avatar" class="avatar d-block img-fluid rounded-circle"/>
-        </div>
+    <div class="col-md-3 d-flex">
+        <img src="" alt="avatar" class="avatar mx-auto my-auto d-block img-fluid rounded-circle"/>
     </div>
     <div class="col-md-9">
         <div class="row">
@@ -33,13 +31,11 @@
     </div>
 </div>
 <div class="row mb-3">
-    <div class="col-2">
+    <div class="col-3 d-flex me-1">
         <img src="" alt=""
-            class="anhSanPham tlt-thumbnail rounded mx-auto d-block img-fluid"
-            style="height:11rem; width:11rem; object-fit: scale-down;"
+            class="anhSanPham tlt-thumbnail rounded mx-auto my-auto d-block img-fluid"
         >
     </div>
-    <div class="col-1"></div>
     <div class="col-8">
         <div class="row">
             <div class="col-12">

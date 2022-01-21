@@ -49,18 +49,16 @@
         <div>
             Tình trạng: <span id="tinhTrang"></span>
         </div>
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <div class="d-flex gap-2" id="chucNang">
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-12">
         <h3>Mô tả:</h3>
         <div id="moTa" class="tlt-description"></div>
-    </div>
-    <div class="col-12">
-        <div class="d-flex justify-content-center">
-            <div class="d-flex w-50 gap-2" id="chucNang">
-
-
-            </div>
-        </div>
     </div>
 </div>
 

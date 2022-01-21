@@ -175,15 +175,15 @@ if (tltMainSearchFormDOM) {
     tltMainSearchFormDOM.addEventListener('submit', async (event) => {
         event.preventDefault();
         const formData = new FormData(tltMainSearchFormDOM);
-        const q = formData.get('q');
-        const cat = formData.get('cat');
+        const query = formData.get('q');
+        const category = formData.get('cat');
         if (formData.get('q') === "") {
             return;
         }
-        if (cat === "") {
-            window.location.href = `${baseURL}search?q=${q}`;
+        if (category === "") {
+            window.location.href = `${baseURL}search?q=${encodeURIComponent(query)}`;
         } else {
-            window.location.href = `${baseURL}category/${cat}?search=${q}`;
+            window.location.href = `${baseURL}category/${category}?search=${encodeURIComponent(query)}`;
         }
     })
 }

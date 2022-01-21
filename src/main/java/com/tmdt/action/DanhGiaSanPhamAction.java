@@ -185,21 +185,6 @@ public class DanhGiaSanPhamAction extends ActionSupport {
                 jsonRes.put("daDanhGia", daDanhGia == 1);
             }
         }
-        /*
-         * } else {
-         * int maKhachHang = (int) session.getAttribute("maNguoiDung");
-         * danhSachDanhGia =
-         * danhGiaSanPhamMapper.getAllDanhGiaSanPhamOrderByCurrentUser(maSanPham,
-         * maKhachHang,
-         * _rowsPerPage);
-         * if (!danhSachDanhGia.isEmpty() && (int)
-         * danhSachDanhGia.get(0).get("ma_khach_hang") == maKhachHang) {
-         * jsonRes.put("daDanhGia", true);
-         * } else {
-         * jsonRes.put("daDanhGia", false);
-         * }
-         * }
-         */
         jsonRes.put("danhGiaSPs", danhSachDanhGia);
         jsonRes.put("totalPages", totalPages);
         sqlSession.close();

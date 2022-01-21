@@ -68,17 +68,12 @@ public class DatHangAction extends ActionSupport {
                         maDonDatHang,
                         (String) sanPham.get("ma_san_pham"),
                         (Integer) sanPham.get("so_luong"));
-            }
-            // TODO: gửi mail
-            // xuất excel
-
-            
+            }     
             // Khi sai mã sản phẩm ở câu query thứ 2
             // Thì câu query thứ nhất không commit được dữ liệu vào database, dù nó chạy
             // được
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
-
             if (e.getMessage().contains("foreign")) {
                 return CustomError.createCustomError("Thêm đơn đặt hàng thất bại", 400, response);
             }
@@ -88,5 +83,4 @@ public class DatHangAction extends ActionSupport {
         }
         return CustomError.createCustomError("Cảm ơn, đơn đặt hàng của bạn đã được gửi", 201, response);
     }
-
 }

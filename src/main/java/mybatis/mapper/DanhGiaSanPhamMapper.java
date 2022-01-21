@@ -84,7 +84,7 @@ public interface DanhGiaSanPhamMapper {
 
 	// Thêm đánh giá sản phẩm
 	final String THEM_DANH_GIA_SAN_PHAM = "INSERT INTO danh_gia_san_pham (ma_khach_hang, so_sao, noi_dung, ma_san_pham, ngay_tao, ngay_sua)"
-			+ "VALUES (#{maKhachHang}, #{soSao}, #{noiDung}, #{maSanPham}, now(), now());";
+			+ "VALUES (#{maKhachHang}, #{soSao}, #{noiDung}, #{maSanPham}, now(), NULL);";
 
 	@Insert(THEM_DANH_GIA_SAN_PHAM)
 	@Options(useGeneratedKeys = true, keyProperty = "maDanhGia", keyColumn = "ma_danh_gia")
