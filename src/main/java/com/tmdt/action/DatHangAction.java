@@ -49,7 +49,7 @@ public class DatHangAction extends ActionSupport {
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
         // Lấy email khách hàng từ session
-        String email = (String) session.getAttribute("email");
+        //String email = (String) session.getAttribute("email");
         // Thêm đơn đặt hàng mới
         try {
             int maDonDatHang;
