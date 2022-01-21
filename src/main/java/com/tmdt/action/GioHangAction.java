@@ -267,7 +267,7 @@ public class GioHangAction extends ActionSupport {
         }
         Integer level = (Integer) session.getAttribute("level");
         if (level > 0) {
-            return CustomError.createCustomError("Nhân viên không thể thêm vào giỏ hàng", 403, response);
+            return CustomError.createCustomError("Nhân viên không thể thêm sản phẩm yêu thích", 403, response);
         }
         SqlSession sqlSession = sqlSessionFactory.openSession();
         SanPhamYeuThichMapper sanPhamYeuThichMapper = sqlSession.getMapper(SanPhamYeuThichMapper.class);
