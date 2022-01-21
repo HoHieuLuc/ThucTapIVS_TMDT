@@ -43,6 +43,20 @@ Thực hiện : **Lâm Minh Thiện**
 - Tại tab Navigator, nhấn chuột vào biểu tượng ![image](https://user-images.githubusercontent.com/31031585/150509982-34d39d9d-88fc-41e1-9b66-d200aafffc86.png)
 - Xuất hiện database *"thuong_mai_dien_tu"* là bạn đã hoàn thành
  ![image](https://user-images.githubusercontent.com/31031585/150510603-2f2aca5b-b59f-4777-b7e4-ba647f1c9995.png)
+ 
+ 
+ #
+<a name = "path_config"></a>
+### 3. Thiết lập đường dẫn để lưu hình ảnh
+- Mở Visual Studio Code, chọn File -> Open Folder để mở thu mục project vừa giải nén.
+- Mở file *"ProjectPath.java"* tại đường dẫn *"src\main\java\com\tmdt\utilities\ProjectPath.java*"
+- Tạo biến *"static Final String"* và chỉnh sửa tựa như hình dưới đây:
+![image](https://user-images.githubusercontent.com/31031585/150512639-30536628-bc48-4af7-b4ce-b3d1f04da423.png)
+
+
+
+
+
 
 
 
