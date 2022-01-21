@@ -40,6 +40,7 @@ Thực hiện : **Lâm Minh Thiện**
 - Chọn Import from Self-Contained File và chọn tệp tin *"thuong_mai_dien_tu DATA Chuẩn 21-1-2022.sql"*
 - Tại *"Default Schema to be Imported To:"*, nhấn chuột vào *"New..."*
 - Gõ *"thuong_mai_dien_tu"* và nhấn OK
+
 ![image](https://user-images.githubusercontent.com/31031585/150510441-5ac90501-952d-4a18-9296-6c4156d5eb1f.png)
 
 - Nhấn *"Start Import"*
