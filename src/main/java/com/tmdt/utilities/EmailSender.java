@@ -35,7 +35,6 @@ public class EmailSender {
     }
 
     public static void guiEmail(String receiveEmail, String subject, String content) {
-        System.out.println("Đã gưi mail đến " + receiveEmail);
         // Tạo biến chứa các thuộc tính cấu hình mail
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

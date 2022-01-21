@@ -85,8 +85,6 @@ public class LoginAction extends ActionSupport {
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("permission", account.getMaQuyen());
                 session.setAttribute("username", username);
-                // Thêm email vào session
-                session.setAttribute("email",account.getEmail());
                 if (account.getMaQuyen().equals("KH")) {
                     loginInfo = taiKhoanMapper.getKhLoginInfoByUsername(username);
                     int maNguoiDung = (int) loginInfo.get("maNguoiDung");
