@@ -1,4 +1,4 @@
-### HƯỚNG DẪN SỬ DỤNG CHƯƠNG TRÌNH
+# HƯỚNG DẪN SỬ DỤNG CHƯƠNG TRÌNH
 
 Thực hiện : ** Lâm Minh Thiện **
 ## Mục lục
@@ -16,7 +16,7 @@ Thực hiện : ** Lâm Minh Thiện **
 
 
 
-# 1. Tải Source Code
+### 1. Tải Source Code
 <a name = "download"></a>
 - Nhấn chuột vào biểu tượng ![image](https://user-images.githubusercontent.com/31031585/150507286-ba76a9a5-37cf-42dd-9682-4fc8f3683944.png)
 - Nhấn chuột vào ![image](https://user-images.githubusercontent.com/31031585/150507386-37c1cca1-f340-4551-854c-62edbd904993.png) để tải về máy
