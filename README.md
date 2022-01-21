@@ -32,8 +32,11 @@ Thực hiện : **Lâm Minh Thiện**
 - Nhập mật khẩu để vào giao diện quản lý các Database 
 
 ![image](https://user-images.githubusercontent.com/31031585/150508905-3e08e999-6aa7-4b38-b1d8-758f30a97eaf.png)
+
 - Chọn Tab Server -> Data Import 
+
 ![image](https://user-images.githubusercontent.com/31031585/150509036-763adcb9-36bc-46f5-81fb-cdc39cb62b49.png)
+
 - Chọn Import from Self-Contained File và chọn tệp tin *"thuong_mai_dien_tu DATA Chuẩn 21-1-2022.sql"*
 - Tại *"Default Schema to be Imported To:"*, nhấn chuột vào *"New..."*
 - Gõ *"thuong_mai_dien_tu"* và nhấn OK
