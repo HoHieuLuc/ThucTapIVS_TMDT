@@ -52,7 +52,8 @@ Thực hiện : **Lâm Minh Thiện**
 - Mở file *"ProjectPath.java"* tại đường dẫn *"src\main\java\com\tmdt\utilities\ProjectPath.java*"
 - Tạo biến *"static Final String"* và chỉnh sửa tựa như hình dưới đây:
 ![image](https://user-images.githubusercontent.com/31031585/150512639-30536628-bc48-4af7-b4ce-b3d1f04da423.png)
-
+- Mở file *SqlMapConfig.xml* Thay đổi 2 thuộc tính *"value"* tại thẻ *"property*" của *"username"* và *"password"* 
+![image](https://user-images.githubusercontent.com/31031585/150513274-44799d15-34e4-45f3-a259-62cde22b0ade.png)
 
 
 
