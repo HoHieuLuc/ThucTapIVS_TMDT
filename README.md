@@ -1,6 +1,6 @@
 # HƯỚNG DẪN SỬ DỤNG CHƯƠNG TRÌNH
 
-Thực hiện : ** Lâm Minh Thiện **
+Thực hiện : **Lâm Minh Thiện**
 ## Mục lục
 [1. Tải Source Code ?](#download)
 
