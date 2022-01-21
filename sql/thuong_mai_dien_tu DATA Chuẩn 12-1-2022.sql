@@ -616,22 +616,22 @@ CREATE TABLE `tai_khoan` (
 --
 
 INSERT INTO `tai_khoan` (`id`, `username`, `password`, `email`, `ngay_tao`, `so_dien_thoai`, `ngay_sinh`, `gioi_tinh`, `so_lan_canh_cao`, `status`, `ma_quyen`, `avatar`) VALUES
-(4, 'thienlam782', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'thien@gmail.com', '2021-12-21 00:00:00', '0828504336', '2021-12-09', 0, 0, 0, 'KH', '1.png'),
-(5, 'provjpzz123', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'fafa.gagag@gmail.com', '2021-12-22 00:00:00', '62626262', '2021-12-21', 0, 0, 0, 'KH', '2.png'),
-(7, 'admin', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'kingofika123@gmail.com', '2021-12-23 00:00:00', '5226262626', '2021-12-15', 0, 0, 0, 'admin', '3.png'),
-(10, 'trantest', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'x@x.x', '2021-12-23 00:00:00', '0987654321', '2021-12-23', 1, 0, 0, 'KH', '4.png'),
-(13, 'hohieuluc', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', '525ffa@ga.q', '2021-12-23 00:00:00', '636372726', '2021-12-08', 0, 0, 0, 'KH', '6.png'),
-(18, 'test1234', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', '52ddad5ffa@ga.q', '2021-12-24 00:00:00', '5252626262', '2021-12-15', 1, 0, 1, 'KH', '9.png'),
-(19, 'testtest123', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', '5hfhfha@ghaaf.fafaf', '2021-12-24 00:00:00', '526377262', '2021-12-08', 1, 0, 1, 'KH', '8.png'),
-(23, 'nguyenthitest', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'gakgag@gahgag.agag', '2021-12-24 00:00:00', '526372626', '2021-12-01', 0, 0, 1, 'KH', '10.png'),
-(24, 'khtest123', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'khtest@ktktkkttk.ttqjtkqkt', '2021-12-25 00:00:00', '74736373737', '2021-12-16', 0, 0, 1, 'KH', '11.png'),
-(25, 'minhthienmap', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'lamminhthien02012000@gmail.com', '2021-12-25 00:00:00', '08285043336', '2006-02-14', 0, 0, 1, 'KH', 'kequing.png'),
-(26, 'fafafafafaffa', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'gagaggg@gg.a.gag', '2021-12-25 00:00:00', '525252525', '2021-12-10', 0, 0, 1, 'KH', '12.png'),
-(27, 'johntest', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'johntest2252@s.g.s.g.s', '2021-12-26 00:00:00', '5555252525', '2021-12-15', 0, 0, 1, 'KH', '13.png'),
-(29, 'thienlam1100', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'thien1100@gmail.com', '2021-12-27 11:36:24', '08285043336', '2021-11-30', 0, 0, 1, 'KH', '14.png'),
-(30, 'testlan6', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'fag@gga.hhq', '2021-12-31 21:59:08', '112254646', '2021-12-15', 0, 0, 1, 'KH', '15.png'),
-(31, 'testlan3', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'taga@ga.gaga', '2022-01-01 22:12:00', '5525255555', '2022-01-06', 0, 0, 1, 'KH', '16.png'),
-(32, 'taikhoanmoi', '$2a$12$qIUcCjPDF.pcsWLorMeJy.aSd3NQOAEHY8iEfnRkBNKY2BNjX75mm', 'hsg@gg.hhwttq', '2022-01-02 09:41:07', '25252525666', '2022-01-04', 0, 0, 1, 'KH', '17.png');
+(4, 'thienlam782', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'thien@gmail.com', '2021-12-21 00:00:00', '0828504336', '2021-12-09', 0, 0, 0, 'KH', '1.png'),
+(5, 'provjpzz123', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'fafa.gagag@gmail.com', '2021-12-22 00:00:00', '62626262', '2021-12-21', 0, 0, 0, 'KH', '2.png'),
+(7, 'admin', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'kingofika123@gmail.com', '2021-12-23 00:00:00', '5226262626', '2021-12-15', 0, 0, 0, 'admin', '3.png'),
+(10, 'trantest', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'x@x.x', '2021-12-23 00:00:00', '0987654321', '2021-12-23', 1, 0, 0, 'KH', '4.png'),
+(13, 'hohieuluc', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', '525ffa@ga.q', '2021-12-23 00:00:00', '636372726', '2021-12-08', 0, 0, 0, 'KH', '6.png'),
+(18, 'test1234', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', '52ddad5ffa@ga.q', '2021-12-24 00:00:00', '5252626262', '2021-12-15', 1, 0, 1, 'KH', '9.png'),
+(19, 'testtest123', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', '5hfhfha@ghaaf.fafaf', '2021-12-24 00:00:00', '526377262', '2021-12-08', 1, 0, 1, 'KH', '8.png'),
+(23, 'nguyenthitest', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'gakgag@gahgag.agag', '2021-12-24 00:00:00', '526372626', '2021-12-01', 0, 0, 1, 'KH', '10.png'),
+(24, 'khtest123', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'khtest@ktktkkttk.ttqjtkqkt', '2021-12-25 00:00:00', '74736373737', '2021-12-16', 0, 0, 1, 'KH', '11.png'),
+(25, 'minhthienmap', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'lamminhthien02012000@gmail.com', '2021-12-25 00:00:00', '08285043336', '2006-02-14', 0, 0, 1, 'KH', 'kequing.png'),
+(26, 'fafafafafaffa', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'gagaggg@gg.a.gag', '2021-12-25 00:00:00', '525252525', '2021-12-10', 0, 0, 1, 'KH', '12.png'),
+(27, 'johntest', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'johntest2252@s.g.s.g.s', '2021-12-26 00:00:00', '5555252525', '2021-12-15', 0, 0, 1, 'KH', '13.png'),
+(29, 'thienlam1100', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'thien1100@gmail.com', '2021-12-27 11:36:24', '08285043336', '2021-11-30', 0, 0, 1, 'KH', '14.png'),
+(30, 'testlan6', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'fag@gga.hhq', '2021-12-31 21:59:08', '112254646', '2021-12-15', 0, 0, 1, 'KH', '15.png'),
+(31, 'testlan3', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'taga@ga.gaga', '2022-01-01 22:12:00', '5525255555', '2022-01-06', 0, 0, 1, 'KH', '16.png'),
+(32, 'taikhoanmoi', '$2a$12$1L.ptNS2HeHXFLYdebBt9eP4IzbIRQz8ZSQX0uoVGtdxt43LH0oBa', 'hsg@gg.hhwttq', '2022-01-02 09:41:07', '25252525666', '2022-01-04', 0, 0, 1, 'KH', '17.png');
 
 -- --------------------------------------------------------
 
