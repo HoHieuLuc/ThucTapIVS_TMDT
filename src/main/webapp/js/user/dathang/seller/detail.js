@@ -80,15 +80,14 @@ const showChiTietDatHang = async (skip = false) => {
             });
             return `
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-3 d-flex me-1">
                         <img 
                             src="${baseURL}images/product/${anh}" 
-                            class="tlt-thumbnail rounded mx-auto d-block img-fluid"
-                            style="height:11rem; width:11rem; object-fit: scale-down;"
+                            class="tlt-thumbnail rounded mx-auto my-auto d-block img-fluid"
                             alt="${ten_san_pham}"
                         >
                     </div>
-                    <div class="col-10">
+                    <div class="col-8">
                         <div class="row">
                             <div class="col-12">
                                 <a
