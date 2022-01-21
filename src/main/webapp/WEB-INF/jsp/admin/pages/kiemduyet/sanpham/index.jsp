@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/jsp/admin/include/header.jsp" />
-<div class="container">
+<div class="container-fluid">
   <div>
     <form class="searchForm input-group mb-3">
       <input name="search" type="text" class="form-control w-50" placeholder="Tìm kiếm">
@@ -17,7 +17,6 @@
         <div class="col-md-2">
           <a class="btn btn-primary" id="export-btn">Xuất Excel</a>
         </div>
-        
     </div>
   </div>
   <table class="tlt-fixed-table table table-striped table-hover" id="myTable" filename="Danh sách kiểm duyệt sản phẩm.xls">
