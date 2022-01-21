@@ -37,5 +37,8 @@ Thực hiện : **Lâm Minh Thiện**
 
 - Nhấn *"Start Import"*
 - Tại tab Navigator, nhấn chuột vào biểu tượng ![image](https://user-images.githubusercontent.com/31031585/150509982-34d39d9d-88fc-41e1-9b66-d200aafffc86.png)
+- Xuất hiện database *"thuong_mai_dien_tu"* là bạn đã hoàn thành
+ ![image](https://user-images.githubusercontent.com/31031585/150510603-2f2aca5b-b59f-4777-b7e4-ba647f1c9995.png)
+
 
 
