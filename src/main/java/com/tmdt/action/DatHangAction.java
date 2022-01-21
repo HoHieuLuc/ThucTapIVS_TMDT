@@ -47,8 +47,6 @@ public class DatHangAction extends ActionSupport {
         DatHangMapper datHangMapper = sqlSession.getMapper(DatHangMapper.class);
         // Lấy mã khách hàng từ session
         Integer maKhachHang = (Integer) session.getAttribute("maNguoiDung");
-        // Lấy email khách hàng từ session
-        //String email = (String) session.getAttribute("email");
         // Thêm đơn đặt hàng mới
         try {
             int maDonDatHang;
@@ -56,8 +54,6 @@ public class DatHangAction extends ActionSupport {
             // đặt theo người bán
             if (!username.equals("null")) {
                 maDonDatHang = datHangMapper.themDonDHTheoSeller(maKhachHang, username);
-                // gửi mail, tạm ẩn vì tui chốt báo cáo rồi
-               // EmailSender.guiEmail(email, "Đặt hàng theo người bán " + username, "Đơn đặt hàng của bạn đang được tiếp nhận");
                 sanPhams = datHangMapper.getGioHangBySeller(maKhachHang, username);
             } else { // đặt tất cả
                 maDonDatHang = datHangMapper.themDonDHMoi(maKhachHang);
