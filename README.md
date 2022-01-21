@@ -1,7 +1,7 @@
-# HƯỚNG DẪN SỬ DỤNG CHƯƠNG TRÌNH
+### HƯỚNG DẪN SỬ DỤNG CHƯƠNG TRÌNH
 
 Thực hiện : ** Lâm Minh Thiện **
-### Mục lục
+## Mục lục
 [1. Tải Source Code ?](#download)
 
 [2.Nhập Database vào MySQL Server thông qua MySQL Workbench ](#import_sql)
