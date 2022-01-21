@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
   <style>
     .tlt-fixed-table {
       table-layout: fixed;
@@ -27,6 +26,11 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .tlt-thumbnail {
+      height: 15em; 
+      width: 15em; 
+      object-fit: scale-down;
     }
     .dropdown-menu {
       min-width: 30em;
@@ -50,7 +54,6 @@
       const baseURL = <c:url value="/" />;
     </script>
     <script src='<c:url value="/js/function.js"/>'></script>
-
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
@@ -90,40 +93,42 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <%-- nút hiện thông báo nhanh --%>
-        <li class="nav-item dropdown me-2">
-          <a class="nav-link dropdown position-relative" href="#" id="navbarDropdown" role="button"
-            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <i class="far fa-bell"></i>
-            <span class="badge position-absolute top-20 start-100 translate-middle  rounded-pill bg-danger"
-              id="soThongBao">
-              0
-            </span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" id="thongBaoMenu" aria-labelledby="navbarDropdown">
-            <div class="">
-              <div class="p-1">
-                <p class="text-center fw-bold fs-4">Thông báo gần đây</p>
-              </div>
+      <li class="nav-item dropdown me-2">
+        <a class="nav-link dropdown position-relative" href="#" id="navbarDropdown" role="button"
+          data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          <i class="far fa-bell"></i>
+          <span class="badge position-absolute top-20 start-100 translate-middle  rounded-pill bg-danger"
+            id="soThongBao">
+            0
+          </span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" id="thongBaoMenu" aria-labelledby="navbarDropdown">
+          <div class="">
+            <div class="p-1">
+              <p class="text-center fw-bold fs-4">Thông báo gần đây</p>
             </div>
-            <li class="m-2 list-group list-group-numbered" id="listThongBao">
-              Danh sách thông báo đang trống
-            </li>
-            <div class="m-2 gap-2 d-flex">
-              <a href='<c:url value="/thongbao"/>' class="btn btn-outline-success">
-                Xem tất cả
-              </a>
-              <button type="button" class="seen-btn btn btn-outline-primary" data-id="-9999">
-                Đánh dấu tất cả đã đọc
-              </button>
-            </div>
-          </ul>
-        </li>
-          <%-- chưa biết để làm gì nhưng sau này chắc cần --%>
-        <li class="nav-item">
-          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-            <i class="fas fa-th-large"></i>
-          </a>
-        </li>
+          </div>
+          <li class="m-2 list-group list-group-numbered" id="listThongBao">
+            Danh sách thông báo đang trống
+          </li>
+          <div class="m-2 gap-2 d-flex">
+            <a href='<c:url value="/thongbao"/>' class="btn btn-outline-success">
+              Xem tất cả
+            </a>
+            <button type="button" class="seen-btn btn btn-outline-primary" data-id="-9999">
+              Đánh dấu tất cả đã đọc
+            </button>
+          </div>
+        </ul>
+      </li>
+      <!-- Script xử lý thông báo -->
+      <script src='<c:url value="/js/thongbao/menu-thongbao.js"/>'></script>
+      <%-- chưa biết để làm gì nhưng sau này chắc cần --%>
+      <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+          <i class="fas fa-th-large"></i>
+        </a>
+      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
