@@ -60,6 +60,7 @@ public class LoginAction extends ActionSupport {
         return "success";
     }
 
+    //TODO: Xử lý đăng nhập và lưu thông tin vào Client Session
     @Action(value = "/loginAction", results = {
             @Result(name = "loggedIn", type = "redirect", location = "/"),
             @Result(name = "success", location = "/WEB-INF/jsp/login.jsp"),
@@ -116,6 +117,7 @@ public class LoginAction extends ActionSupport {
 
     }
 
+    //TODO: Đăng xuất
     @Action(value = "/logout", results = {
             @Result(name = "success", location = "/", type = "redirect")
     }, interceptorRefs = {

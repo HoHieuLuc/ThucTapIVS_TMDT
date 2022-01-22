@@ -224,7 +224,7 @@ public class UserApiAction extends ActionSupport {
     // endregion
 
     /* validate */
-    // validate ảnh
+    //TODO: validate ảnh (định dạng tệp ảnh)
     public boolean validateAnhSanPham() {
         if (anhSanPhams.isEmpty()) {
             return false;
@@ -256,7 +256,7 @@ public class UserApiAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    // action lấy danh sách sản phẩm
+    //TODO: action lấy danh sách sản phẩm
     @Action(value = "/api/v1/user/sanpham", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -283,7 +283,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // action lấy chi tiết sản phẩm
+    //TODO: action lấy chi tiết sản phẩm
     @Action(value = "/api/v1/user/sanpham/{maSanPham}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -305,7 +305,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // action thêm sản phẩm
+    //TODO: action thêm sản phẩm
     @Action(value = "/api/v1/user/sanpham/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -363,7 +363,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 201, response);
     }
 
-    // action cập nhật sản phẩm
+    //TODO: action cập nhật sản phẩm
     @Action(value = "/api/v1/user/sanpham/{maSanPham}/edit", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -383,7 +383,7 @@ public class UserApiAction extends ActionSupport {
         return CustomError.createCustomError("Cập nhật sản phẩm thành công", 200, response);
     }
 
-    // cập nhật tình trạng sản phẩm
+    //TODO: cập nhật tình trạng sản phẩm
     @Action(value = "/api/v1/user/sanpham/changestatus", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -433,7 +433,7 @@ public class UserApiAction extends ActionSupport {
     }
 
     // SELLER
-    // lấy danh sách đặt hàng mà người khác đặt của user này
+    //TODO: lấy danh sách đặt hàng mà người khác đặt mua của user này
     @Action(value = "/api/v1/user/seller/dathang", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -460,7 +460,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // lấy chi tiết đơn đặt hàng
+    //TODO: lấy chi tiết đơn đặt hàng (SELLER)
     @Action(value = "/api/v1/user/seller/dathang/{id}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -480,7 +480,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // cập nhật tình trạng đơn đặt hàng cho người bán hàng
+    //TODO: cập nhật tình trạng đơn đặt hàng cho người bán hàng
     @Action(value = "/api/v1/user/seller/dathang/{id}/capnhat", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -533,7 +533,7 @@ public class UserApiAction extends ActionSupport {
     }
 
     // BUYER
-    // lấy danh sách đơn đặt hàng cho người mua
+    //TODO: lấy danh sách đơn đặt hàng cho người mua
     @Action(value = "/api/v1/user/buyer/dathang", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -560,7 +560,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // lấy chi tiết 1 đơn đặt hàng
+    //TODO: lấy chi tiết 1 đơn đặt hàng của người mua
     @Action(value = "/api/v1/user/buyer/dathang/{id}/{maSanPham}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -579,7 +579,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // thay đổi tình trạng đơn hàng cho người mua
+    //TODO: thay đổi tình trạng đơn hàng cho người mua
     @Action(value = "/api/v1/user/buyer/dathang/{id}/{maSanPham}/capnhat", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -631,7 +631,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // thống kê số đơn đặt hàng của khách hàng
+    //TODO: thống kê số đơn đặt hàng của khách hàng
     @Action(value = "/api/v1/user/thongke/dathang", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -657,8 +657,7 @@ public class UserApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // Dùng 1 action cho thống kê 4 loại dữ liệu đơn giản và thống kê tình trạng đặt
-    // hàng
+    //TODO: Dùng 1 action cho thống kê 4 loại dữ liệu đơn giản và thống kê tình trạng đặt hàng
     @Action(value = "/api/v1/user/thongke/{status}", results = {
             @Result(name = "success", location = "/index.html")
     })

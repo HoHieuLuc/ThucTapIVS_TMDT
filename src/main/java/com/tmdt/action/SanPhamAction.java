@@ -132,7 +132,7 @@ public class SanPhamAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    // Danh sách sản phẩm
+    //TODO: Danh sách sản phẩm
     @Action(value = "/api/v1/sanpham", results = {
             @Result(name = "success", location = "/index.html")
     })
@@ -180,7 +180,7 @@ public class SanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // Chi tiết sản phẩm
+    //TODO: Chi tiết sản phẩm
     @Action(value = "/api/v1/sanpham/{maSanPham}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -204,7 +204,7 @@ public class SanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // sản phẩm mới nhất
+    //TODO: sản phẩm mới nhất
     @Action(value = "/api/v1/sanpham/new", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -217,7 +217,7 @@ public class SanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
-    // ai đặt mua sản phẩm này cũng đặt
+    //TODO Hiển thị danh sách sản phẩm mà người mua khác đặt mua sản phẩm này cũng đặt mua những sản phẩm khác
     @Action(value = "/api/v1/sanpham/suggestion", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
