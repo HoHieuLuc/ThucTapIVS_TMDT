@@ -68,6 +68,7 @@ public class BaoCaoNguoiDungAction extends ActionSupport {
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
+    //TODO: Gửi báo cáo
     public String baoCaoNguoiDung() throws IOException {
         System.out.println("Username bị báo cáo là " + userName);
         System.out.println("Nội dung báo cáo là " + noiDung);

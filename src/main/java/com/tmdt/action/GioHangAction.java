@@ -117,6 +117,7 @@ public class GioHangAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    //TODO: Thêm vào giỏ hàng
     @Action(value = "/api/v1/giohang/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -174,6 +175,7 @@ public class GioHangAction extends ActionSupport {
             @InterceptorRef(value = "khachHangStack"),
     })
 
+    //TODO: Xóa sản phẩm bất kì khỏi giỏ hàng
     public String xoaKhoiGioHang() throws IOException {
 
         // SqlSession và Mapper
@@ -197,6 +199,7 @@ public class GioHangAction extends ActionSupport {
             @InterceptorRef(value = "khachHangStack"),
     })
 
+    //TODO: Thay đổi số lượng sản phẩm bất kì trong giỏ hàng
     public String capNhatGioHang() throws IOException {
         // SqlSession và Mapper
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -238,6 +241,7 @@ public class GioHangAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    //TODO: Xem list sản phẩm yêu thích
     @Action(value = "/api/v1/fav", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -256,7 +260,7 @@ public class GioHangAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // thêm sản phẩm yêu thích
+    //TODO: thêm sản phẩm yêu thích
     @Action(value = "/api/v1/fav/them", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -287,7 +291,7 @@ public class GioHangAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // xóa sản phẩm yêu thích
+    //TODO: xóa sản phẩm bất kì khỏi list sản phẩm yêu thích
     @Action(value = "/api/v1/fav/xoa", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {

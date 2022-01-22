@@ -132,7 +132,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    // get tất cả đánh giá sản phẩm bởi id sản phẩm
+    //TODO: get tất cả đánh giá sản phẩm bởi id sản phẩm
     @Action(value = "/api/v1/danhgia/sanpham/{maSanPham}", results = {
             @Result(name = SUCCESS, location = "/index.html"),
     })
@@ -191,7 +191,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // get action có thể có của người dùng đối với 1 đánh giá
+    //TODO: get action có thể có của người dùng đối với 1 đánh giá
     @Action(value = "/api/v1/danhgia/sanpham/{maDanhGia}/action", results = {
             @Result(name = SUCCESS, location = "/index.html"),
     })
@@ -230,6 +230,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
     }, interceptorRefs = {
             @InterceptorRef(value = "khachHangStack"),
     })
+    //TODO: Gửi đánh giá sản phẩm
     public String danhGiaSPSubmit() throws IOException {
         if (!isValid()) {
             return CustomError.createCustomError("Vui lòng nhập đầy đủ thông tin", 400, response);
@@ -265,7 +266,7 @@ public class DanhGiaSanPhamAction extends ActionSupport {
         }
     }
 
-    // xóa đánh giá sản phẩm
+    //TODO: xóa đánh giá sản phẩm
     @Action(value = "/api/v1/danhgia/sanpham/delete", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {

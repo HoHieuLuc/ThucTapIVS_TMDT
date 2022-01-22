@@ -166,7 +166,7 @@ public class LoaiSanPhamAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    // tất cả loại sản phẩm api cho trang quản lý
+    //TODO: Api lấy tất cả loại sản phẩm cho trang quản lý
     @Action(value = "/api/v1/category", results = {
             @Result(name = "success", location = "/index.html")
     })
@@ -190,7 +190,7 @@ public class LoaiSanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // Lấy tất cả loại sản phẩm con
+    //TODO: Lấy tất cả loại sản phẩm con
     @Action(value = "/api/v1/subcategory/{maLoaiSanPham}", results = {
             @Result(name = "success", location = "/index.html")
     })
@@ -210,7 +210,7 @@ public class LoaiSanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
-    // Kiểm tra xem category đó có sản phẩm hay chưa
+    //TODO: Kiểm tra xem category đó có sản phẩm hay chưa
     @Action(value = "/api/v1/category_have_product", results = {
             @Result(name = "success", location = "/index.html")
     })
@@ -225,7 +225,7 @@ public class LoaiSanPhamAction extends ActionSupport {
         return JsonResponse.createJsonResponse(map, 200, response);
     }
 
-    // Liệt kê sản phẩm cùng category
+    //TODO: Liệt kê sản phẩm cùng category
     @Action(value = "/api/v1/category/{maLoaiSanPham}", results = {
             @Result(name = "success", location = "/index.html")
     })
@@ -285,6 +285,7 @@ public class LoaiSanPhamAction extends ActionSupport {
                 && anhLoaiSanPhamContentType.contains("image/");
     }
 
+    //TODO: Thêm loại sản phẩm mới
     @Action(value = "/api/v1/admin/loaisanpham/them", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -321,6 +322,7 @@ public class LoaiSanPhamAction extends ActionSupport {
         return CustomError.createCustomError("Có lỗi xảy ra", 500, response);
     }
 
+    //TODO: Lấy danh sách các loại sản phẩm phổ biến
     @Action(value = "/api/v1/category/popular", results = {
             @Result(name = "success", location = "/index.html")
     })

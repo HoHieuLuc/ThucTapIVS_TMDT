@@ -155,6 +155,7 @@ public class NhanVienApiAction {
      * 
      */
     /****** Kiểm duyệt sản phẩm ******/
+    //TODO: Lấy danh sách tất cả sản phẩm chưa duyệt
     @Action(value = "/api/v1/admin/sanpham/getbystatus/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -182,7 +183,7 @@ public class NhanVienApiAction {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // Phê duyệt và Cập nhật trạng thái cho từng sản phẩm
+    //TODO: Phê duyệt và Cập nhật trạng thái cho từng sản phẩm
     @Action(value = "/api/v1/admin/sanpham/{maSanPham}/duyet", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -209,7 +210,7 @@ public class NhanVienApiAction {
     }
 
     /****** Kiểm duyệt báo cáo người dùng ******/
-    // Lấy danh sách báo cáo cần phê duyệt
+    //TODO: Lấy danh sách báo cáo cần phê duyệt
     @Action(value = "/api/v1/admin/baocao/getbystatus/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -235,6 +236,7 @@ public class NhanVienApiAction {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    //TODO: Duyệt báo cáo người dùng
     @Action(value = "/api/v1/admin/baocao/{maBaoCao}/duyet", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -323,7 +325,7 @@ public class NhanVienApiAction {
         return CustomError.createCustomError("Yêu cầu không hợp lệ", 400, response);
     }
 
-    // Lấy thông tin chi tiết báo cáo cần phê duyệt
+    //TODO: Lấy thông tin chi tiết báo cáo cần phê duyệt
     @Action(value = "/api/v1/admin/baocao/{maBaoCao}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {
@@ -339,12 +341,12 @@ public class NhanVienApiAction {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // kiểm tra ngày thống kê
+    //TODO: kiểm tra ngày thống kê
     public boolean kiemTraNgayThongKe() {
         return tuNgay != null && denNgay != null;
     }
 
-    // Dùng 1 action cho thống kê
+    //TODO: Dùng 1 action cho thống kê của quản trị viên
     @Action(value = "/api/v1/admin/thongke/{status}", results = {
             @Result(name = "success", location = "/index.html")
     }, interceptorRefs = {

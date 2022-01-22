@@ -229,6 +229,7 @@ public class RegisterAction extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpSession session = request.getSession();
 
+    //TODO: Xử lí đăng ký
     @Action(value = "/registerSubmit", results = {
             @Result(name = "success", location = "/index.html"),
     })
