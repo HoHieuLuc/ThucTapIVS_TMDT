@@ -150,7 +150,7 @@ public class StoreApiAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    // lấy thông tin store
+    //TODO: Xử lí để hiển thị thông tin chi tiết của store bất kì
     @Action(value = "/api/v1/store/{username}/info", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -172,7 +172,7 @@ public class StoreApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // lấy danh sách sản phẩm
+    //TODO: lấy danh sách sản phẩm của cửa hàng cụ thể
     @Action(value = "/api/v1/store/{username}/products", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -202,6 +202,7 @@ public class StoreApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
+    //TODO: Liệt kê tất cả store
     @Action(value = "/api/v1/store", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -217,7 +218,7 @@ public class StoreApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // api lấy top store
+    //TODO: api lấy top store
     @Action(value = "/api/v1/store/top", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -230,7 +231,7 @@ public class StoreApiAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // api lấy sản phẩm cùng store để gợi ý cho người dùng
+    //TODO: api lấy sản phẩm cùng store để gợi ý cho người dùng
     @Action(value = "/api/v1/store/{username}/products/suggestion", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })

@@ -73,7 +73,7 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         return noiDung != null && between(noiDung, 2, 255);
     }
 
-    // Action thêm đánh giá sản phẩm
+    //TODO: Action thêm đánh giá sản phẩm
     @Action(value = "/api/v1/phanhoi/submit", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -99,7 +99,7 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         return SUCCESS;
     }
 
-    // Get phản hồi đánh giá sản phẩm
+    //TODO: Lấy danh sách  phản hồi của đánh giá sản phẩm bất kì
 
     @Action(value = "/api/v1/phanhoi/{maDanhGia}", results = {
             @Result(name = SUCCESS, location = "/index.html")
@@ -142,7 +142,7 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // cập nhật phản hồi
+    //TODO: cập nhật phản hồi
     @Action(value = "/api/v1/phanhoi/{maPhanHoi}/update", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {
@@ -170,7 +170,7 @@ public class PhanHoiDanhGiaSPAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // xóa phản hồi
+    //TODO: xóa phản hồi
     @Action(value = "/api/v1/phanhoi/{maPhanHoi}/delete", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {

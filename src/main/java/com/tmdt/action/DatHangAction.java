@@ -37,6 +37,7 @@ public class DatHangAction extends ActionSupport {
     HttpSession session = request.getSession();
     SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
+    //TODO: Đặt hàng
     @Action(value = "/api/v1/dathang", results = {
             @Result(name = SUCCESS, location = "/index.html")
     }, interceptorRefs = {

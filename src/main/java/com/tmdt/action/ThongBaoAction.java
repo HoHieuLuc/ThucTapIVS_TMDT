@@ -48,7 +48,7 @@ public class ThongBaoAction extends ActionSupport {
 
     private SqlSessionFactory sqlSessionFactory = ConnectDB.getSqlSessionFactory();
 
-    // Lấy danh sách tất cả thông báo hoặc danh sách thông báo chưa đọc
+    //TODO: Lấy danh sách tất cả thông báo hoặc danh sách thông báo chưa đọc
     @Action(value = "/api/v1/thongbao/{status}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -83,7 +83,7 @@ public class ThongBaoAction extends ActionSupport {
 
     }
 
-    // Đánh dấu thông báo đó đã đọc '
+    //TODO: Đánh dấu thông báo đó đã đọc '
     @Action(value = "/api/v1/thongbao/seen/{id}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
@@ -114,7 +114,7 @@ public class ThongBaoAction extends ActionSupport {
         return JsonResponse.createJsonResponse(jsonRes, 200, response);
     }
 
-    // xóa thông báo
+    //TODO: xóa thông báo
     @Action(value = "/api/v1/thongbao/delete/{id}", results = {
             @Result(name = SUCCESS, location = "/index.html")
     })
